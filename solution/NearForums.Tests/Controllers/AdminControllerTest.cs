@@ -103,7 +103,7 @@ namespace NearForums.Tests.Controllers
 		public void AdminController_TestAccessWrites()
 		{
 			FakeHttpContext context = new FakeHttpContext("http://localhost/");
-			DirectoryInfo directory = new DirectoryInfo(context.Server.MapPath("/Content/Templates/"));
+			DirectoryInfo directory = new DirectoryInfo(context.Server.MapPath("/content/templates/"));
 			//AuthorizationRuleCollection ruleCollection = directory.GetAccessControl().GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
 
 			//bool canWrite = false;
@@ -118,39 +118,8 @@ namespace NearForums.Tests.Controllers
 
 			//Assert.IsTrue(canWrite);
 
-			UserFileAccessRights fileAccessRights = new UserFileAccessRights(context.Server.MapPath("/Content/Templates/"));
+			UserFileAccessRights fileAccessRights = new UserFileAccessRights(context.Server.MapPath("/content/templates/"));
 			Assert.IsTrue(fileAccessRights.canWrite());
-		}
-
-		[TestMethod]
-		public void TimeZone_Test()
-		{
-			Assert.IsTrue(DateTime.Now != DateTime.UtcNow);
-			#region Get necessary data
-			List<ForumCategory> forumList = ForumsServiceClient.GetList();
-			User user = UsersServiceClient.GetTestUser();
-
-			if (forumList.Count == 0 || user == null)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Forum forum = forumList[0].Forums[0];
-			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
-
-			if (topicList.Count == 0)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
-			#endregion
-
-			DateTime convertedUtc = new DateTime(topic.Date.Ticks, DateTimeKind.Utc);
-			DateTimeOffset dateOffset = new DateTimeOffset(topic.Date, new TimeSpan(-6, 0, 0));
-			DateTime localDate = DateTime.SpecifyKind(topic.Date.Add(new TimeSpan(-6, 0, 0)), DateTimeKind.Local);
-
-			string text1 = dateOffset.ToString();
-			string text2 = dateOffset.DateTime.ToString();
-			string text3 = localDate.ToString();
 		}
 	}
 }
