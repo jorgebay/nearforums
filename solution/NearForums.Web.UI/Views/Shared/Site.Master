@@ -16,16 +16,8 @@
 			<asp:Panel runat="server" ID="pnlLogged" runat="server" Visible="false">
 				User: <%=User.UserName %>
 			</asp:Panel>
-            <ul id="menu">              
-                <li><%= Html.ActionLink("Home", "Index", "Home")%></li>
-                <li><%= Html.ActionLink("About", "About", "Home", new{reference="topBar"}, null)%></li>
-                <li><%= Html.ActionLink("Contact Us", "Contact", "Feedback")%></li>
-                <li><%= Html.ActionLink("Technology", "Detail", "Categories", new{category="technology"}, null)%></li>
-                <li><%= Html.ActionLink("Technology Page 0", "Detail", "Categories", new{category="technology", page=0, extra="yes"}, null)%></li>
-                <li><%= Html.ActionLink("Technology Page 1", "Detail", "Categories", new{category="technology", page=1, extra="yes"}, null)%></li>
-            </ul>
         </div>
-        <div id="main">
+        <div id="content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
         </div>
         <div id="footer">

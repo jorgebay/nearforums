@@ -281,7 +281,7 @@
     <Content Include="Scripts\ckeditor\skins\v2\skin.js" />
     <Content Include="Scripts\ckeditor\skins\v2\templates.css" />
     <Content Include="Scripts\ckeditor\themes\default\theme.js" />
-    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\site2.css" />
     <Content Include="Views\Forums\Detail.aspx" />
     <Content Include="Views\Forums\ForumTopicList.ascx" />
     <Content Include="Views\Forums\List.aspx" />
@@ -325,6 +325,10 @@
     <Content Include="Content\Templates\Sample\template.part.1.html" />
     <Content Include="Content\Templates\Sample\template.html" />
     <Content Include="Images\iconrss.gif" />
+    <Content Include="Images\temp\arrow-right.gif" />
+    <Content Include="Images\temp\body-bg.gif" />
+    <Content Include="Images\temp\content-top.gif" />
+    <Content Include="Images\temp\next-big.gif" />
     <Content Include="Scripts\overtip.js" />
     <Content Include="Scripts\pager.js" />
     <Content Include="Scripts\quoting.js" />
