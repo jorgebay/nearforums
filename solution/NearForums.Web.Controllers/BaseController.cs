@@ -77,7 +77,7 @@ namespace NearForums.Web.Controllers
 
 		protected virtual void Init()
 		{
-			if (Cache.Template == null)
+			if (Cache.Template == null && this.Config.Template.Master == "Templated")
 			{
 				LoadTemplate();
 			}

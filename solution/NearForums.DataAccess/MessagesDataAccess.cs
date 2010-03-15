@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Data;
 using NearForums.DataAccess;
 
@@ -13,8 +13,8 @@ namespace NearForums.DataAccess
 		public List<Message> GetByTopic(int topicId)
 		{
 			List<Message> list = new List<Message>();
-			SqlCommand comm = this.GetCommand("SPMessagesGetByTopic");
-			comm.AddParameter("@TopicId", SqlDbType.Int, topicId);
+			DbCommand comm = this.GetCommand("SPMessagesGetByTopic");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -35,8 +35,8 @@ namespace NearForums.DataAccess
 		public List<Message> GetByTopicLatest(int topicId)
 		{
 			List<Message> list = new List<Message>();
-			SqlCommand comm = this.GetCommand("SPMessagesGetByTopicLatest");
-			comm.AddParameter("@TopicId", SqlDbType.Int, topicId);
+			DbCommand comm = this.GetCommand("SPMessagesGetByTopicLatest");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -66,10 +66,10 @@ namespace NearForums.DataAccess
 		public List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex)
 		{
 			List<Message> list = new List<Message>();
-			SqlCommand comm = this.GetCommand("SPMessagesGetByTopicUpTo");
-			comm.AddParameter("@TopicId", SqlDbType.Int, topicId);
-			comm.AddParameter("@FirstMsg", SqlDbType.Int, firstMsg);
-			comm.AddParameter("@LastMsg", SqlDbType.Int, lastMsg);
+			DbCommand comm = this.GetCommand("SPMessagesGetByTopicUpTo");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
+			comm.AddParameter(this.Factory, "FirstMsg", DbType.Int32, firstMsg);
+			comm.AddParameter(this.Factory, "LastMsg", DbType.Int32, lastMsg);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -85,10 +85,10 @@ namespace NearForums.DataAccess
 		public List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex)
 		{
 			List<Message> list = new List<Message>();
-			SqlCommand comm = this.GetCommand("SPMessagesGetByTopicFrom");
-			comm.AddParameter("@TopicId", SqlDbType.Int, topicId);
-			comm.AddParameter("@FirstMsg", SqlDbType.Int, firstMsg);
-			comm.AddParameter("@Amount", SqlDbType.Int, amount);
+			DbCommand comm = this.GetCommand("SPMessagesGetByTopicFrom");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
+			comm.AddParameter(this.Factory, "FirstMsg", DbType.Int32, firstMsg);
+			comm.AddParameter(this.Factory, "Amount", DbType.Int32, amount);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -103,13 +103,13 @@ namespace NearForums.DataAccess
 
 		public void Add(Message message, string ip)
 		{
-			SqlCommand comm = this.GetCommand("SPMessagesInsert");
-			comm.AddParameter("@TopicId", SqlDbType.Int, message.Topic.Id);
-			comm.AddParameter("@MessageBody", SqlDbType.VarChar, message.Body);
-			comm.AddParameter("@UserId", SqlDbType.Int, message.User.Id);
-			comm.AddParameter("@Ip", SqlDbType.VarChar, ip);
+			DbCommand comm = this.GetCommand("SPMessagesInsert");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, message.Topic.Id);
+			comm.AddParameter(this.Factory, "MessageBody", DbType.String, message.Body);
+			comm.AddParameter(this.Factory, "UserId", DbType.Int32, message.User.Id);
+			comm.AddParameter(this.Factory, "Ip", DbType.String, ip);
 
-			SqlParameter idParameter = comm.AddParameter("@MessageId", SqlDbType.Int, null);
+			DbParameter idParameter = comm.AddParameter(this.Factory, "MessageId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;
 
 			this.SafeExecuteNonQuery(comm);

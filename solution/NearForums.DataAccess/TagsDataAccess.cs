@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
 
 namespace NearForums.DataAccess
 {
@@ -12,9 +12,9 @@ namespace NearForums.DataAccess
 		public List<WeightTag> GetMostViewed(int forumId, int top)
 		{
 			List<WeightTag> list = new List<WeightTag>();
-			SqlCommand comm = GetCommand("SPTagsGetMostViewed");
-			comm.AddParameter("@ForumId", SqlDbType.Int, forumId);
-			comm.AddParameter("@Top", SqlDbType.BigInt, top);
+			DbCommand comm = GetCommand("SPTagsGetMostViewed");
+			comm.AddParameter(this.Factory, "ForumId", DbType.Int32, forumId);
+			comm.AddParameter(this.Factory, "Top", DbType.Int64, top);
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{

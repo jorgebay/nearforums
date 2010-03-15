@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Data;
+using System.Data.SqlClient;
+using NearForums.Configuration;
 
 namespace NearForums.DataAccess
 {
 	public static class AdoExtensions
 	{
-		public static SqlParameter AddParameter(this SqlCommand comm, string parameterName, SqlDbType type, object value)
+		public static DbParameter AddParameter(this DbCommand comm, DbProviderFactory factory, string parameterName, DbType type, object value)
 		{
-			SqlParameter param = comm.Parameters.Add(new SqlParameter(parameterName, type));
+			DbParameter param = factory.CreateParameter();
+			param.DbType = type;
+			param.ParameterName = SiteConfiguration.Current.DataAccess.ParameterPrefix + parameterName;
 			if (value == null)
 			{
 				param.Value = DBNull.Value;
@@ -25,10 +29,11 @@ namespace NearForums.DataAccess
 				param.Value = value;
 			}
 
+			comm.Parameters.Add(param);
 			return param;
 		}
 
-		public static string GetNullableString(this SqlDataReader reader, string columnName)
+		public static string GetNullableString(this DbDataReader reader, string columnName)
 		{
 			object value = reader[columnName];
 			if (value == DBNull.Value)
@@ -38,13 +43,13 @@ namespace NearForums.DataAccess
 			return value.ToString();
 		}
 
-		public static string GetString(this SqlDataReader reader, string columnName)
+		public static string GetString(this DbDataReader reader, string columnName)
 		{
 			object value = reader[columnName];
 			return value.ToString();
 		}
 
-		public static T GetNullable<T>(this SqlDataReader reader, string columnName)
+		public static T GetNullable<T>(this DbDataReader reader, string columnName)
 		{
 			object value = reader[columnName];
 			if (value == DBNull.Value)
@@ -54,7 +59,7 @@ namespace NearForums.DataAccess
 			return Get<T>(reader, columnName);
 		}
 
-		public static T Get<T>(this SqlDataReader reader, string columnName)
+		public static T Get<T>(this DbDataReader reader, string columnName)
 		{
 			try
 			{
@@ -124,7 +129,7 @@ namespace NearForums.DataAccess
 			}
 		}
 
-		public static int SafeExecuteNonQuery(this SqlCommand comm)
+		public static int SafeExecuteNonQuery(this DbCommand comm)
 		{
 			int rowsAffected = 0;
 			try

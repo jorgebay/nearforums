@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
 using NearForums.DataAccess;
 
 namespace NearForums.DataAccess
@@ -13,10 +13,10 @@ namespace NearForums.DataAccess
 		public List<Topic> GetByForum(int forumId, int startIndex, int length)
 		{
 			List<Topic> list = new List<Topic>();
-			SqlCommand comm = this.GetCommand("SPTopicsGetByForum");
-			comm.AddParameter("@ForumId", SqlDbType.Int, forumId);
-			comm.AddParameter("@StartIndex", SqlDbType.Int, startIndex);
-			comm.AddParameter("@Length", SqlDbType.Int, length);
+			DbCommand comm = this.GetCommand("SPTopicsGetByForum");
+			comm.AddParameter(this.Factory, "ForumId", DbType.Int32, forumId);
+			comm.AddParameter(this.Factory, "StartIndex", DbType.Int32, startIndex);
+			comm.AddParameter(this.Factory, "Length", DbType.Int32, length);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -32,10 +32,10 @@ namespace NearForums.DataAccess
 		public List<Topic> GetByForumLatest(int forumId, int startIndex, int length)
 		{
 			List<Topic> list = new List<Topic>();
-			SqlCommand comm = this.GetCommand("SPTopicsGetByForumLatest");
-			comm.AddParameter("@ForumId", SqlDbType.Int, forumId);
-			comm.AddParameter("@StartIndex", SqlDbType.Int, startIndex);
-			comm.AddParameter("@Length", SqlDbType.Int, length);
+			DbCommand comm = this.GetCommand("SPTopicsGetByForumLatest");
+			comm.AddParameter(this.Factory, "ForumId", DbType.Int32, forumId);
+			comm.AddParameter(this.Factory, "StartIndex", DbType.Int32, startIndex);
+			comm.AddParameter(this.Factory, "Length", DbType.Int32, length);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -51,7 +51,7 @@ namespace NearForums.DataAccess
 		public List<Topic> GetLatest()
 		{
 			List<Topic> list = new List<Topic>();
-			SqlCommand comm = this.GetCommand("SPTopicsGetLatest");
+			DbCommand comm = this.GetCommand("SPTopicsGetLatest");
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -67,8 +67,8 @@ namespace NearForums.DataAccess
 		public Topic Get(int id)
 		{
 			Topic t = null;
-			SqlCommand comm = GetCommand("SPTopicsGet");
-			comm.AddParameter("@TopicId", SqlDbType.Int, id);
+			DbCommand comm = GetCommand("SPTopicsGet");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, id);
 			DataRow dr = this.GetFirstRow(comm);
 			if (dr != null)
 			{
@@ -86,19 +86,19 @@ namespace NearForums.DataAccess
 		public List<Topic> GetRelatedTopics(Topic topic, int amount)
 		{
 			List<Topic> list = new List<Topic>();
-			SqlCommand comm = GetCommand("SPTopicsGetByRelated");
-			comm.AddParameter("@Tag1", SqlDbType.VarChar, null);
-			comm.AddParameter("@Tag2", SqlDbType.VarChar, null);
-			comm.AddParameter("@Tag3", SqlDbType.VarChar, null);
-			comm.AddParameter("@Tag4", SqlDbType.VarChar, null);
-			comm.AddParameter("@Tag5", SqlDbType.VarChar, null);
-			comm.AddParameter("@Tag6", SqlDbType.VarChar, null);
+			DbCommand comm = GetCommand("SPTopicsGetByRelated");
+			comm.AddParameter(this.Factory, "Tag1", DbType.String, null);
+			comm.AddParameter(this.Factory, "Tag2", DbType.String, null);
+			comm.AddParameter(this.Factory, "Tag3", DbType.String, null);
+			comm.AddParameter(this.Factory, "Tag4", DbType.String, null);
+			comm.AddParameter(this.Factory, "Tag5", DbType.String, null);
+			comm.AddParameter(this.Factory, "Tag6", DbType.String, null);
 			for (int i = 0; i < topic.Tags.Count; i++)
 			{
 				comm.Parameters[i].Value = topic.Tags[i];
 			}
-			comm.AddParameter("@TopicId", SqlDbType.Int, topic.Id);
-			comm.AddParameter("@Amount", SqlDbType.Int, amount);
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topic.Id);
+			comm.AddParameter(this.Factory, "Amount", DbType.Int32, amount);
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
@@ -130,16 +130,16 @@ namespace NearForums.DataAccess
 
 		public void Add(Topic topic, string ip)
 		{
-			SqlCommand comm = this.GetCommand("SPTopicsInsert");
-			comm.AddParameter("@TopicTitle", SqlDbType.VarChar, topic.Title);
-			comm.AddParameter("@TopicShortName", SqlDbType.VarChar, topic.ShortName);
-			comm.AddParameter("@TopicDescription", SqlDbType.VarChar, topic.Description);
-			comm.AddParameter("@UserId", SqlDbType.Int, topic.User.Id);
-			comm.AddParameter("@TopicTags", SqlDbType.VarChar, topic.Tags.ToString());
-			comm.AddParameter("@Forum", SqlDbType.VarChar, topic.Forum.ShortName);
-			comm.AddParameter("@Ip", SqlDbType.VarChar, ip);
+			DbCommand comm = this.GetCommand("SPTopicsInsert");
+			comm.AddParameter(this.Factory, "TopicTitle", DbType.String, topic.Title);
+			comm.AddParameter(this.Factory, "TopicShortName", DbType.String, topic.ShortName);
+			comm.AddParameter(this.Factory, "TopicDescription", DbType.String, topic.Description);
+			comm.AddParameter(this.Factory, "UserId", DbType.Int32, topic.User.Id);
+			comm.AddParameter(this.Factory, "TopicTags", DbType.String, topic.Tags.ToString());
+			comm.AddParameter(this.Factory, "Forum", DbType.String, topic.Forum.ShortName);
+			comm.AddParameter(this.Factory, "Ip", DbType.String, ip);
 
-			SqlParameter idParameter = comm.AddParameter("@TopicId", SqlDbType.Int, null);
+			DbParameter idParameter = comm.AddParameter(this.Factory, "TopicId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;
 
 			this.SafeExecuteNonQuery(comm);
@@ -155,21 +155,21 @@ namespace NearForums.DataAccess
 
 		public void Edit(Topic topic, string ip)
 		{
-			SqlCommand comm = this.GetCommand("SPTopicsUpdate");
-			comm.AddParameter("@TopicId", SqlDbType.Int, topic.Id);
-			comm.AddParameter("@TopicTitle", SqlDbType.VarChar, topic.Title);
-			comm.AddParameter("@TopicDescription", SqlDbType.VarChar, topic.Description);
-			comm.AddParameter("@UserId", SqlDbType.Int, topic.User.Id);
-			comm.AddParameter("@TopicTags", SqlDbType.VarChar, topic.Tags.ToString());
-			comm.AddParameter("@Ip", SqlDbType.VarChar, ip);
+			DbCommand comm = this.GetCommand("SPTopicsUpdate");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topic.Id);
+			comm.AddParameter(this.Factory, "TopicTitle", DbType.String, topic.Title);
+			comm.AddParameter(this.Factory, "TopicDescription", DbType.String, topic.Description);
+			comm.AddParameter(this.Factory, "UserId", DbType.Int32, topic.User.Id);
+			comm.AddParameter(this.Factory, "TopicTags", DbType.String, topic.Tags.ToString());
+			comm.AddParameter(this.Factory, "Ip", DbType.String, ip);
 
 			this.SafeExecuteNonQuery(comm);
 		}
 
 		public void AddVisit(int topicId)
 		{
-			SqlCommand comm = this.GetCommand("SPTopicsAddVisit");
-			comm.AddParameter("@TopicId", SqlDbType.Int, topicId);
+			DbCommand comm = this.GetCommand("SPTopicsAddVisit");
+			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
 
 			this.SafeExecuteNonQuery(comm);
 		}

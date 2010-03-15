@@ -13,7 +13,12 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return (SiteConfiguration) ConfigurationManager.GetSection("site");
+				SiteConfiguration config = (SiteConfiguration)ConfigurationManager.GetSection("site");
+				if (config == null)
+				{
+					throw new System.Configuration.ConfigurationErrorsException("Siteconfiguration not set.");
+				}
+				return config;
 			}
 		}
 		#endregion
@@ -80,6 +85,19 @@ namespace NearForums.Configuration
 			set
 			{
 				this["replacements"] = value;
+			}
+		}
+
+		[ConfigurationProperty("dataAccess", IsRequired = true)]
+		public DataAccessElement DataAccess
+		{
+			get
+			{
+				return (DataAccessElement)this["dataAccess"];
+			}
+			set
+			{
+				this["dataAccess"] = value;
 			}
 		}
 

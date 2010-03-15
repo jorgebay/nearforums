@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using NearForums.DataAccess;
-using System.Data.SqlClient;
+using System.Data.Common;
 
 namespace NearForums.DataAccess
 {
@@ -13,7 +13,7 @@ namespace NearForums.DataAccess
 		public List<Template> GetAll()
 		{
 			List<Template> list = new List<Template>();
-			SqlCommand comm = this.GetCommand("SPTemplatesGetAll");
+			DbCommand comm = this.GetCommand("SPTemplatesGetAll");
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
@@ -29,7 +29,7 @@ namespace NearForums.DataAccess
 		public Template GetCurrent()
 		{
 			Template t = new Template();
-			SqlCommand comm = this.GetCommand("SPTemplatesGetCurrent");
+			DbCommand comm = this.GetCommand("SPTemplatesGetCurrent");
 
 			DataRow dr = this.GetFirstRow(comm);
 			if (dr != null)
@@ -43,8 +43,8 @@ namespace NearForums.DataAccess
 		public Template Get(int id)
 		{
 			Template t = new Template();
-			SqlCommand comm = this.GetCommand("SPTemplatesGet");
-			comm.AddParameter("@TemplateId", SqlDbType.Int, id);
+			DbCommand comm = this.GetCommand("SPTemplatesGet");
+			comm.AddParameter(this.Factory, "TemplateId", DbType.Int32, id);
 
 			DataRow dr = this.GetFirstRow(comm);
 			if (dr != null)
@@ -60,8 +60,8 @@ namespace NearForums.DataAccess
 		/// </summary>
 		public void SetCurrent(int id)
 		{
-			SqlCommand comm = this.GetCommand("SPTemplatesUpdateCurrent");
-			comm.AddParameter("@TemplateId", SqlDbType.Int, id);
+			DbCommand comm = this.GetCommand("SPTemplatesUpdateCurrent");
+			comm.AddParameter(this.Factory, "TemplateId", DbType.Int32, id);
 
 			this.SafeExecuteNonQuery(comm);
 		}
@@ -77,11 +77,11 @@ namespace NearForums.DataAccess
 
 		public void Add(Template t)
 		{
-			SqlCommand comm = this.GetCommand("SPTemplatesInsert");
-			comm.AddParameter("@TemplateKey", SqlDbType.VarChar, t.Key);
-			comm.AddParameter("@TemplateDescription", SqlDbType.VarChar, t.Description);
+			DbCommand comm = this.GetCommand("SPTemplatesInsert");
+			comm.AddParameter(this.Factory, "TemplateKey", DbType.String, t.Key);
+			comm.AddParameter(this.Factory, "TemplateDescription", DbType.String, t.Description);
 
-			SqlParameter idParameter = comm.AddParameter("@TemplateId", SqlDbType.Int, null);
+			DbParameter idParameter = comm.AddParameter(this.Factory, "TemplateId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;
 
 			this.SafeExecuteNonQuery(comm);
@@ -99,8 +99,8 @@ namespace NearForums.DataAccess
 
 		public void Delete(int id)
 		{
-			SqlCommand comm = this.GetCommand("SPTemplatesDelete");
-			comm.AddParameter("@TemplateId", SqlDbType.Int, id);
+			DbCommand comm = this.GetCommand("SPTemplatesDelete");
+			comm.AddParameter(this.Factory, "TemplateId", DbType.Int32, id);
 			this.SafeExecuteNonQuery(comm);
 		}
 	}

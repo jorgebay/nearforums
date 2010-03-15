@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
+using System.Data.Common;
 using NearForums.DataAccess;
 using System.Data;
 
@@ -12,7 +12,7 @@ namespace NearForums.DataAccess
 	{
 		public List<ForumCategory> GetList()
 		{
-			SqlCommand comm = GetCommand("SPForumsGetByCategory");
+			DbCommand comm = GetCommand("SPForumsGetByCategory");
 			DataTable dt = GetTable(comm);
 
 			List<ForumCategory> categoryList = new List<ForumCategory>();
@@ -49,8 +49,8 @@ namespace NearForums.DataAccess
 		public Forum GetByShortName(string shortName)
 		{
 			Forum forum = null;
-			SqlCommand comm = GetCommand("SPForumsGetByShortName");
-			comm.AddParameter("@ShortName", SqlDbType.VarChar, shortName);
+			DbCommand comm = GetCommand("SPForumsGetByShortName");
+			comm.AddParameter(this.Factory, "ShortName", DbType.String, shortName);
 			DataRow dr = this.GetFirstRow(comm);
 			if (dr != null)
 			{
