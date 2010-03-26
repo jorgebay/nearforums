@@ -18,6 +18,7 @@ namespace NearForums
 			value = Regex.Replace(value, @"[^a-z- ]+", "");
 			value = Regex.Replace(value, @" ", "-");
 			value = Regex.Replace(value, @"-+", "-");
+			value = Regex.Replace(value, @"^-+|-+$", "");
 			if (value.Length > maxLength)
 			{
 				value = value.Substring(0, maxLength);

@@ -5,11 +5,16 @@
 	<%= ViewData.WriteIf("IsEdit", "Edit forum", "Create a forum") %>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<ul class="path floatContainer">
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+		<li><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
+		<li><%=Html.ActionLink("Manage forums", "Manage", "Forums") %></li>
+	</ul>
     <h1><%= ViewData.WriteIf("IsEdit", "Edit forum", "Create a forum") %></h1>
     <%=Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 		{
 			{"Description", "Description must not be blank."}
-			,{"Name", "Subject must not be blank."}
+			,{"Name", "Forum name must not be blank."}
 			,{"ShortName", ""}
 			,{"Category.Id", "Category must not be blank."}
 		}, null)%>
@@ -22,7 +27,7 @@
 		</div>
 		<div class="formItem floatContainer">
 			<label for="category_id">Category</label>
-			<%=Html.DropDownListDefault("category.id", ViewData.Get<SelectList>("Categories"), "", "Select a Category") %>
+			<%=Html.DropDownListDefault("category.id", ViewData.Get<SelectList>("Categories"), "", "-Select a Category-") %>
 		</div>
 		<div class="formItem textarea">
 			<label for="description">Message</label>

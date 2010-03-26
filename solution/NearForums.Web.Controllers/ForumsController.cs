@@ -13,11 +13,20 @@ namespace NearForums.Web.Controllers
 	public class ForumsController : BaseController
 	{
 		#region List
+		#region List
 		public ActionResult List()
 		{
 			List<ForumCategory> list = ForumsServiceClient.GetList();
 			return View(list);
-		} 
+		}
+		#endregion 
+
+		#region List topics by Tag
+		public ActionResult ListByTag(string forum, string tag, int page)
+		{
+			return View();
+		}
+		#endregion
 		#endregion
 
 		#region Manage
@@ -91,7 +100,6 @@ namespace NearForums.Web.Controllers
 				if (!String.IsNullOrEmpty(forum.Name))
 				{
 					forum.ShortName = Utils.ToUrlFragment(forum.Name, 32);
-					//TODO: Check if its repeated.
 				}
 				ForumsServiceClient.Add(forum, this.User.Id);
 				return RedirectToAction("Manage");
@@ -114,8 +122,31 @@ namespace NearForums.Web.Controllers
 			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
 			ViewData["Categories"] = categories;
 			Forum f = ForumsServiceClient.Get(forum);
+			ViewData["IsEdit"] = true;
 			return View("Edit", f);
 		}
+
+		[AcceptVerbs(HttpVerbs.Post)]
+		[RequireAuthorization(UserGroup.Moderator)]
+		public ActionResult Edit(string forum, [Bind(Prefix = "")] Forum f)
+		{
+			try
+			{
+				//fill the short name to use it as key
+				f.ShortName = forum;
+
+				ForumsServiceClient.Edit(f, this.User.Id);
+				return RedirectToAction("Manage");
+			}
+			catch (ValidationException ex)
+			{
+				this.AddErrors(this.ModelState, ex);
+			}
+			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			ViewData["Categories"] = categories;
+			ViewData["IsEdit"] = true;
+			return View("Edit", f);
+		} 
 		#endregion
 		#endregion
 	}

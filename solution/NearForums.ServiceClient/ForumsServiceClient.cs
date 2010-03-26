@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NearForums.DataAccess;
+using NearForums.Validation;
 
 namespace NearForums.ServiceClient
 {
@@ -23,8 +24,30 @@ namespace NearForums.ServiceClient
 		public static void Add(Forum forum, int userId)
 		{
 			forum.ValidateFields();
+			SetAvailableShortName(forum);
 			ForumsDataAccess da = new ForumsDataAccess();
 			da.Add(forum, userId);
+		}
+
+		/// <summary>
+		/// Validates if a forum shortname is already taken
+		/// </summary>
+		/// <exception cref="ArgumentNullException"></exception>
+		public static void SetAvailableShortName(Forum forum)
+		{
+			if (forum == null || forum.ShortName == null)
+			{
+				throw new ArgumentNullException("Forum.ShortName");
+			}
+			ForumsDataAccess da = new ForumsDataAccess();
+			forum.ShortName = da.GetAvailableShortName(forum.ShortName);
+		}
+
+		public static void Edit(Forum forum, int userId)
+		{
+			forum.ValidateFields();
+			ForumsDataAccess da = new ForumsDataAccess();
+			da.Edit(forum, userId);
 		}
 	}
 }
