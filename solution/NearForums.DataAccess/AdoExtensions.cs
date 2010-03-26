@@ -13,6 +13,14 @@ namespace NearForums.DataAccess
 	{
 		public static DbParameter AddParameter(this DbCommand comm, DbProviderFactory factory, string parameterName, DbType type, object value)
 		{
+			if (parameterName == null)
+			{
+				throw new ArgumentNullException("parameterName");
+			}
+			if (parameterName.StartsWith("@") || parameterName.StartsWith(":") || parameterName.StartsWith("?"))
+			{
+				throw new ArgumentException("Do not include prefix in parameter name.");
+			}
 			DbParameter param = factory.CreateParameter();
 			param.DbType = type;
 			param.ParameterName = SiteConfiguration.Current.DataAccess.ParameterPrefix + parameterName;
@@ -129,6 +137,11 @@ namespace NearForums.DataAccess
 			}
 		}
 
+		/// <summary>
+		/// Safely opens the connection, executes and closes the connection
+		/// </summary>
+		/// <param name="comm"></param>
+		/// <returns></returns>
 		public static int SafeExecuteNonQuery(this DbCommand comm)
 		{
 			int rowsAffected = 0;

@@ -88,23 +88,13 @@ namespace NearForums.DataAccess
 		}
 
 		/// <summary>
-		/// Opens the connection, executes and closes the connection
+		/// Safely opens the connection, executes and closes the connection
 		/// </summary>
 		/// <param name="comm"></param>
 		/// <returns></returns>
 		protected int SafeExecuteNonQuery(DbCommand comm)
 		{
-			int rowsAffected = 0;
-			try
-			{
-				comm.Connection.Open();
-				rowsAffected = comm.ExecuteNonQuery();
-			}
-			finally
-			{
-				comm.Connection.Close();
-			}
-			return rowsAffected;
+			return comm.SafeExecuteNonQuery();
 		}
 	}
 }

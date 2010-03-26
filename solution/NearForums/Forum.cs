@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NearForums.Validation;
 
 namespace NearForums
 {
-	public class Forum
+	public class Forum : Entity
 	{
 		public int Id
 		{
@@ -13,18 +14,23 @@ namespace NearForums
 			set;
 		}
 
+		[RequireField]
+		[Length(255)]
 		public string Name
 		{
 			get;
 			set;
 		}
 
+		[RequireField]
+		[Length(32)]
 		public string ShortName
 		{
 			get;
 			set;
 		}
 
+		[RequireField]
 		/// <summary>
 		/// Plain text forum description
 		/// </summary>
@@ -34,6 +40,7 @@ namespace NearForums
 			set;
 		}
 
+		[RequireField]
 		public ForumCategory Category
 		{
 			get;

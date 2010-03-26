@@ -19,5 +19,12 @@ namespace NearForums.ServiceClient
 			ForumsDataAccess da = new ForumsDataAccess();
 			return da.GetByShortName(shortName);
 		}
+
+		public static void Add(Forum forum, int userId)
+		{
+			forum.ValidateFields();
+			ForumsDataAccess da = new ForumsDataAccess();
+			da.Add(forum, userId);
+		}
 	}
 }

@@ -10,14 +10,14 @@ using NearForums;
 using NearForums.Web.Extensions;
 using System.Web.Routing;
 
-namespace NearForums.Web.ActionFilters
+namespace NearForums.Web.Controllers.Filters
 {
 	public class RequireAuthorizationAttribute : FilterAttribute, IAuthorizationFilter
 	{
 		/// <summary>
 		/// Required minimal UserGroup
 		/// </summary>
-		public UserGroup UserGroup
+		public UserGroup? UserGroup
 		{
 			get;
 			set;
@@ -32,7 +32,16 @@ namespace NearForums.Web.ActionFilters
 		public RequireAuthorizationAttribute()
 		{
 			this.Routes = RouteTable.Routes;
-			this.UserGroup = UserGroup.Level1;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userGroup">Required minimal UserGroup</param>
+		public RequireAuthorizationAttribute(UserGroup userGroup)
+			: this()
+		{
+			this.UserGroup = userGroup;
 		}
 
 		/// <summary>
@@ -68,7 +77,7 @@ namespace NearForums.Web.ActionFilters
 					return;
 				}
 				string redirectOnSuccess = HttpUtility.UrlEncode(filterContext.HttpContext.Request.Url.PathAndQuery);
-				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new{controller="Home",action="Login",returnUrl=redirectOnSuccess}));
+				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new{controller="Home",action="Login",returnUrl=redirectOnSuccess,group=this.UserGroup}));
 				if (path == null)
 				{
 					throw new ArgumentException("Route for Home>Login not found.");
@@ -86,9 +95,12 @@ namespace NearForums.Web.ActionFilters
 			{
 				return false;
 			}
-			if (user.Group < this.UserGroup)
+			if (this.UserGroup != null)
 			{
-				return false;
+				if (user.Group < this.UserGroup.Value)
+				{
+					return false;
+				}
 			}
 			return true;
 		}

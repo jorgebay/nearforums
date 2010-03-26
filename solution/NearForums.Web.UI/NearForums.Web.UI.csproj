@@ -304,7 +304,7 @@
     <Content Include="scripts\overtip.js" />
     <Content Include="scripts\pager.js" />
     <Content Include="scripts\quoting.js" />
-    <Content Include="styles\Site.css" />
+    <Content Include="styles\site.css" />
     <Content Include="Views\Admin\AddTemplate.aspx" />
     <Content Include="Views\Admin\Dashboard.aspx" />
     <Content Include="Views\Admin\ListTemplates.aspx" />

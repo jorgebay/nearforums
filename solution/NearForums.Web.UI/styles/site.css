@@ -111,9 +111,7 @@ input
 select
 {
 	vertical-align: middle; 
-	border: solid 1px #C3D3D5;
 	font-size: 13px;
-	width: 138px;
 }
 fieldset
 {
@@ -420,4 +418,52 @@ p.action
 {
 	padding: 40px 0 0 0;
 	font-size: 14px;
+}
+ul.validation-summary-errors
+{
+	color:#DD3333;
+	font-weight:bold;
+	padding:10px 0 20px 30px;
+}
+form legend
+{
+	padding: 0 0 10px 0;
+	font-size: 13px;
+}
+form div.formItem
+{
+	font-size: 13px;
+	padding:3px 0;
+}
+form div.formItem label
+{
+	font-weight: bold;
+	float: left;
+	width: 150px;
+	padding:5px 0;
+	color:#555555;
+}
+form div.textarea label
+{
+	float: none;
+	display: block;
+}
+form div.formItem select
+{
+	width: 160px;
+	float: left;
+	margin-top:3px;
+	border: solid 1px #A3A3A5;
+}
+form div.formItem input
+{
+	border:1px solid #A3A3A5;
+	width:150px;
+	padding: 4px;
+	float:left;
+}
+form div.buttons input
+{
+	width: auto;
+	padding:4px 8px;
 }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.ServiceClient;
 using NearForums.Web.UI;
+using NearForums.Validation;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
@@ -72,20 +74,48 @@ namespace NearForums.Web.Controllers
 		#region Add / Edit
 		#region Add
 		[AcceptVerbs(HttpVerbs.Get)]
+		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Add()
 		{
+			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			ViewData["Categories"] = categories;
 			return View("Edit");
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
+		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Forum forum)
 		{
+			try
+			{
+				if (!String.IsNullOrEmpty(forum.Name))
+				{
+					forum.ShortName = Utils.ToUrlFragment(forum.Name, 32);
+					//TODO: Check if its repeated.
+				}
+				ForumsServiceClient.Add(forum, this.User.Id);
+				return RedirectToAction("Manage");
+			}
+			catch (ValidationException ex)
+			{
+				this.AddErrors(this.ModelState, ex);
+			}
+			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			ViewData["Categories"] = categories;
 			return View("Edit", forum);
 		} 
 		#endregion
 
 		#region Edit
-		
+		[AcceptVerbs(HttpVerbs.Get)]
+		[RequireAuthorization(UserGroup.Moderator)]
+		public ActionResult Edit(string forum)
+		{
+			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			ViewData["Categories"] = categories;
+			Forum f = ForumsServiceClient.Get(forum);
+			return View("Edit", f);
+		}
 		#endregion
 		#endregion
 	}

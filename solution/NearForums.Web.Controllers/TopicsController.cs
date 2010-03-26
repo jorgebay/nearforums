@@ -6,9 +6,8 @@ using System.Web.Mvc;
 using NearForums.ServiceClient;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
-using NearForums.Web.ActionFilters;
-using System.Web.Routing;
 using NearForums.Web.Controllers.Filters;
+using System.Web.Routing;
 
 namespace NearForums.Web.Controllers
 {

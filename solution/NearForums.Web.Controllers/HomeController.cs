@@ -19,11 +19,14 @@ namespace NearForums.Web.Controllers
 			return View(null, "Site", null);
 		}
 
-		public ActionResult Login(string returnUrl)
+		public ActionResult Login(string returnUrl, UserGroup? group)
 		{
 			if (User != null)
 			{
-				return Redirect(HttpUtility.UrlDecode(returnUrl));
+				if (group == null || User.Group >= group)
+				{
+					return Redirect(HttpUtility.UrlDecode(returnUrl));
+				}
 			}
 			return View();
 		}

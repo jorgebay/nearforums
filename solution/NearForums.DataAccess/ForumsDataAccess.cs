@@ -33,6 +33,18 @@ namespace NearForums.DataAccess
 			return categoryList;
 		}
 
+		public void Add(Forum f, int userId)
+		{
+			DbCommand comm = this.GetCommand("SPForumsInsert");
+			comm.AddParameter(this.Factory, "ForumName", DbType.String, f.Name);
+			comm.AddParameter(this.Factory, "ForumShortName", DbType.String, f.ShortName);
+			comm.AddParameter(this.Factory, "ForumDescription", DbType.String, f.Description);
+			comm.AddParameter(this.Factory, "CategoryId", DbType.String, f.Category.Id);
+			comm.AddParameter(this.Factory, "UserId", DbType.String, userId);
+
+			comm.SafeExecuteNonQuery();
+		}
+
 		protected virtual Forum ParseForumDataRow(DataRow dr)
 		{
 			Forum f = new Forum();

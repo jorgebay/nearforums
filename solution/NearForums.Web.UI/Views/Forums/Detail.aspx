@@ -17,6 +17,7 @@
 			<%=Html.ActionLink("Latest topics", "LatestTopics", new{format=NearForums.Web.UI.ResultFormat.Html}) %>
 			<a rel="nofollow" href="<%=Url.Action("LatestTopics", new{format=NearForums.Web.UI.ResultFormat.Rss}) %>"><img src="/images/iconrss.gif" alt="rss" /></a>
 		</div>
+		<p><%=Model.Description %></p>
 		<% Html.RenderPartial("ForumTopicList", this.Model); %>
 		<%=Html.Pager(Config.Forums.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], "Previous", "Next") %>
 		
