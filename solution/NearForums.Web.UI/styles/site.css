@@ -467,3 +467,8 @@ form div.buttons input
 	width: auto;
 	padding:4px 8px;
 }
+p.highlight
+{
+	font-weight: bold;
+	font-size: 14px;
+}

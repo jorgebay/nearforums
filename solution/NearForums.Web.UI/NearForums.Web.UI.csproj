@@ -89,7 +89,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\RouteMapping.config" />
+    <Content Include="Config\Routes.config" />
     <Content Include="images\loadingMini.gif" />
     <Content Include="scripts\ckeditor\CHANGES.html" />
     <Content Include="scripts\ckeditor\ckeditor.js" />

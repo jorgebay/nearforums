@@ -9,4 +9,5 @@
     <p>
         Welcome to homepage
     </p>
+    <p class="highlight">Go to <%=Html.ActionLink("Forums list >>", "List", "Forums") %></p>
 </asp:Content>
