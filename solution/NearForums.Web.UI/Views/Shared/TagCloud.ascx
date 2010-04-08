@@ -26,7 +26,7 @@
 			size = 5;
 		}
 %>
-		<li class="weight<%=size %>"><%= Html.ActionLink(tag.Value, "Detail", "Tags", new{tag=tag.Value}, null) %></li>
+		<li class="weight<%=size %>"><%= Html.ActionLink(tag.Value, "TagDetail", "Forums", new{tag=tag.Value}, null) %></li>
 <%		
 	}
 %>

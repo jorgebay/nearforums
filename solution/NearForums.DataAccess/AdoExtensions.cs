@@ -41,6 +41,42 @@ namespace NearForums.DataAccess
 			return param;
 		}
 
+		public static DbParameter AddParameter<T>(this DbCommand comm, DbProviderFactory factory, string parameterName, T value)
+		{
+			Type type = typeof(T);
+			DbType dbType;
+			switch (type.FullName)
+			{
+				case "System.String":
+					dbType = DbType.String;
+					break;
+				case "System.Int32":
+					dbType = DbType.Int32;
+					break;
+				case "System.DateTime":
+					dbType = DbType.DateTime;
+					break;
+				case "System.Int64":
+					dbType = DbType.Int64;
+					break;
+				case "System.Int16":
+					dbType = DbType.Int16;
+					break;
+				case "System.Decimal":
+					dbType = DbType.Decimal;
+					break;
+				case "System.Double":
+					dbType = DbType.Double;
+					break;
+				case "System.Boolean":
+					dbType = DbType.Boolean;
+					break;
+				default:
+					throw new System.Data.DataException("Type not supported for implicit DbType mapping.");
+			}
+			return AddParameter(comm, factory, parameterName, dbType, value);
+		}
+
 		public static string GetNullableString(this DbDataReader reader, string columnName)
 		{
 			object value = reader[columnName];

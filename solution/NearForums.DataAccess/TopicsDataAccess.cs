@@ -29,13 +29,31 @@ namespace NearForums.DataAccess
 			return list;
 		}
 
+		public List<Topic> GetByTag(string tag, int forumId)
+		{
+			List<Topic> list = new List<Topic>();
+			DbCommand comm = this.GetCommand("SPTopicsGetByTag");
+			comm.AddParameter<string>(this.Factory, "Tag", tag);
+			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+
+			DataTable dt = this.GetTable(comm);
+			foreach (DataRow dr in dt.Rows)
+			{
+				Topic t = ParseBasicTopicDataRow(dr);
+				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
+
+				list.Add(t);
+			}
+			return list;
+		}
+
 		public List<Topic> GetByForumLatest(int forumId, int startIndex, int length)
 		{
 			List<Topic> list = new List<Topic>();
 			DbCommand comm = this.GetCommand("SPTopicsGetByForumLatest");
-			comm.AddParameter(this.Factory, "ForumId", DbType.Int32, forumId);
-			comm.AddParameter(this.Factory, "StartIndex", DbType.Int32, startIndex);
-			comm.AddParameter(this.Factory, "Length", DbType.Int32, length);
+			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+			comm.AddParameter<int>(this.Factory, "StartIndex", startIndex);
+			comm.AddParameter<int>(this.Factory, "Length", length);
 
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)

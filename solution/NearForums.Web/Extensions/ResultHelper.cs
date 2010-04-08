@@ -25,7 +25,7 @@ namespace NearForums.Web.Extensions
 			}
 
 			ViewResult viewResult = new ViewResult();
-			viewResult.ViewName = "/Views/Error/404.aspx";
+			viewResult.ViewName = "/Views/Errors/404.aspx";
 			return viewResult;
 		}
 
@@ -48,7 +48,7 @@ namespace NearForums.Web.Extensions
 			}
 
 			ViewResult viewResult = new ViewResult();
-			viewResult.ViewName = "/Views/Error/403.aspx";
+			viewResult.ViewName = "/Views/Errors/403.aspx";
 			return viewResult;
 		}
 

@@ -7,26 +7,18 @@ using NearForums.ServiceClient;
 using NearForums.Web.UI;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
 	public class ForumsController : BaseController
 	{
 		#region List
-		#region List
 		public ActionResult List()
 		{
 			List<ForumCategory> list = ForumsServiceClient.GetList();
 			return View(list);
 		}
-		#endregion 
-
-		#region List topics by Tag
-		public ActionResult ListByTag(string forum, string tag, int page)
-		{
-			return View();
-		}
-		#endregion
 		#endregion
 
 		#region Manage
@@ -41,8 +33,12 @@ namespace NearForums.Web.Controllers
 		public ActionResult Detail(string forum, int page)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
+			if (f == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			//Get the topics of the forum
-			//Must Page the topics on the backend (Can be too many topics)
+			//Must Paginate the topics on the backend (Can be too many topics)
 			f.Topics = TopicsServiceClient.GetByForum(f.Id, page * Config.Forums.TopicsPerPage, Config.Forums.TopicsPerPage);
 
 			ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.Forums.TagsCloudCount);
@@ -148,6 +144,21 @@ namespace NearForums.Web.Controllers
 			return View("Edit", f);
 		} 
 		#endregion
+		#endregion
+
+		#region Tag detail
+		public ActionResult TagDetail(string forum, string tag, int page)
+		{
+			Forum f = ForumsServiceClient.Get(forum);
+			if (f == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+			f.Topics = TopicsServiceClient.GetByTag(tag, f.Id);
+			ViewData["Page"] = page;
+			ViewData["Tag"] = tag;
+			return View(f);
+		}
 		#endregion
 	}
 }

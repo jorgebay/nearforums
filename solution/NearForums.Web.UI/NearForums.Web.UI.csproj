@@ -308,6 +308,8 @@
     <Content Include="Views\Admin\AddTemplate.aspx" />
     <Content Include="Views\Admin\Dashboard.aspx" />
     <Content Include="Views\Admin\ListTemplates.aspx" />
+    <Content Include="Views\Errors\404.aspx" />
+    <Content Include="Views\Forums\TagDetail.aspx" />
     <Content Include="Views\Forums\Edit.aspx" />
     <Content Include="Views\Forums\LatestTopicsHtml.aspx" />
     <Content Include="Views\Forums\LatestAllTopics.aspx" />

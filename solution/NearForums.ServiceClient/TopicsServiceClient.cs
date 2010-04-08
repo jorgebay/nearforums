@@ -14,6 +14,16 @@ namespace NearForums.ServiceClient
 			return da.GetByForum(forumId, startIndex, length);
 		}
 
+		/// <summary>
+		/// Gets the topics tagged in a certain forum
+		/// </summary>
+		/// <returns></returns>
+		public static List<Topic> GetByTag(string tag, int forumId)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			return da.GetByTag(tag, forumId);
+		}
+
 		public static Topic Get(int topicId)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();
