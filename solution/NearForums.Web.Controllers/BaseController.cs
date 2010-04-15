@@ -84,7 +84,7 @@ namespace NearForums.Web.Controllers
 
 			if (Session.User == null)
 			{
-				SecurityHelper.TryLoginFromProviders(this.Session);
+				SecurityHelper.TryLoginFromProviders(this.Session, this.Request, this.Response);
 			}
 		} 
 		#endregion
