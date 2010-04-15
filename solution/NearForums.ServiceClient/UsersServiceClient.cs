@@ -26,5 +26,47 @@ namespace NearForums.ServiceClient
 			UsersDataAccess da = new UsersDataAccess();
 			return da.AddUserFromFacebook(uid, firstName, lastName, profileUrl, about, birthDate, locale, pic, timeZone, website);
 		}
+
+		public static List<User> GetAll()
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			return da.GetAll();
+		}
+
+		public static List<User> GetByName(string userName)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			return da.GetByName(userName);
+		}
+
+		public static void Delete(int id)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			da.Delete(id);
+		}
+
+		/// <summary>
+		/// Assigns the next (up) user group to the user
+		/// </summary>
+		public static void Promote(int id)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			da.Promote(id);
+		}
+
+		/// <summary>
+		/// Assigns the previous (down) user group to the user
+		/// </summary>
+		public static void Demote(int id)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			da.Demote(id);
+		}
+
+		public static User Get(int userId)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			return da.Get(userId);
+		}
 	}
 }

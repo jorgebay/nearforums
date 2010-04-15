@@ -26,7 +26,7 @@ namespace NearForums.Web.Controllers
 				if (group == null || User.Group >= group)
 				{
 					return Redirect(HttpUtility.UrlDecode(returnUrl));
-				}
+				} 
 			}
 			return View();
 		}

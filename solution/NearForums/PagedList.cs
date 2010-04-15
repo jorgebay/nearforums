@@ -7,6 +7,12 @@ namespace NearForums
 {
 	public class PagedList<T> : List<T>, IPagedList
 	{
+		/// <summary>
+		/// Constructor for the paged list
+		/// </summary>
+		/// <param name="source"></param>
+		/// <param name="index">Current page index</param>
+		/// <param name="pageSize"></param>
 		public PagedList(IEnumerable<T> source, int index, int pageSize)
 			: this(source, index, pageSize, null)
 		{

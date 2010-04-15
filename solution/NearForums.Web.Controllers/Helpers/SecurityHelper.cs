@@ -10,7 +10,7 @@ using System.Web.SessionState;
 using System.Web;
 using NearForums.Configuration;
 
-namespace NearForums.Web.Controllers.Extensions
+namespace NearForums.Web.Controllers.Helpers
 {
 	public static class SecurityHelper
 	{

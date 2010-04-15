@@ -211,6 +211,13 @@ namespace NearForums.Web.Extensions
 			values.Remove("action");
 			values.Remove("controller");
 			values["page"] = pageIndex;
+			foreach (KeyValuePair<string, object> keyPair in this.linkWithoutPageValuesDictionary)
+			{
+				if (!values.ContainsKey(keyPair.Key))
+				{
+					values.Add(keyPair.Key, keyPair.Value);
+				}
+			}
 
 			return this._htmlHelper.ActionLink(linkText, this._htmlHelper.ViewContext.RouteData.Values["action"].ToString(), this._htmlHelper.ViewContext.RouteData.Values["controller"].ToString(), values, new RouteValueDictionary(htmlAttributes));
 		}

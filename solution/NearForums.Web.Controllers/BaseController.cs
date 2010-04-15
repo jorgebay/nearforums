@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using NearForums.Web.Controllers.Extensions;
+using NearForums.Web.Controllers.Helpers;
 using NearForums.Web.State;
 using NearForums.Configuration;
 using NearForums.Validation;

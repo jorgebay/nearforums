@@ -19,6 +19,10 @@
 			<h3><%=Html.ActionLink("Manage templates", "ListTemplates", "Admin") %></h3>
 			<p>Manage the site templates for the forum.</p>
 		</li>
+		<li>
+			<h3><%=Html.ActionLink("Manage users", "List", "Users") %></h3>
+			<p>Promote, demote and delete forum users.</p>
+		</li>
 	</ul>
 </asp:Content>
 

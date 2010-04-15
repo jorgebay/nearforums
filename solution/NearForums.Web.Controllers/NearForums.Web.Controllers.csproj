@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagsController.cs" />
     <Compile Include="TopicsController.cs" />
+    <Compile Include="UsersController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NearForums.ServiceClient\NearForums.ServiceClient.csproj">

@@ -54,6 +54,22 @@ namespace NearForums.DataAccess
 			return user;
 		}
 
+		protected virtual User ParseUserInfo(DataRow dr)
+		{
+			User user = new User();
+			user.Id = dr.Get<int>("UserId");
+			user.UserName = dr.GetString("UserName");
+			user.Group = dr.Get<UserGroup>("UserGroupId");
+			user.GroupName = dr.GetString("UserGroupName");
+			user.RegistrationDate = dr.GetDate("UserRegistrationDate");
+
+			decimal offSet = dr.Get<decimal>("UserTimeZone");
+			user.TimeZone = new TimeSpan((long)(offSet * (decimal)TimeSpan.TicksPerHour));
+
+			return user;
+		}
+
+
 		public User AddUserFromFacebook(long uid, string firstName, string lastName, string profileUrl, string about, string birthDate, string locale, string pic, decimal? timeZone, string website)
 		{
 			User user = null;
@@ -92,6 +108,81 @@ namespace NearForums.DataAccess
 			DataRow dr = GetFirstRow(comm);
 			user = ParseUserLoginInfo(dr);
 
+			return user;
+		}
+
+		public List<User> GetByName(string userName)
+		{
+			DbCommand comm = GetCommand("SPUsersGetByName");
+			comm.AddParameter<string>(this.Factory, "UserName", userName);
+			DataTable dt = GetTable(comm);
+
+			List<User> users = new List<User>();
+			foreach (DataRow dr in dt.Rows)
+			{
+				User u = ParseUserInfo(dr);
+				users.Add(u);
+			}
+			return users;
+		}
+
+		public List<User> GetAll()
+		{
+			DbCommand comm = GetCommand("SPUsersGetAll");
+			DataTable dt = GetTable(comm);
+
+			List<User> users = new List<User>();
+			foreach (DataRow dr in dt.Rows)
+			{
+				User u = ParseUserInfo(dr);
+				users.Add(u);
+			} 
+			return users;
+		}
+
+		public void Delete(int id)
+		{
+			DbCommand comm = GetCommand("SPUsersDelete");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+
+			comm.SafeExecuteNonQuery();
+		}
+
+		/// <summary>
+		/// Assigns the next (up) user group to the user
+		/// </summary>
+		/// <param name="id"></param>
+		public void Promote(int id)
+		{
+			DbCommand comm = GetCommand("SPUsersPromote");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+
+			comm.SafeExecuteNonQuery();
+		}
+
+		/// <summary>
+		/// Assigns the previous (down) user group to the user
+		/// </summary>
+		/// <param name="id"></param>
+		public void Demote(int id)
+		{
+			DbCommand comm = GetCommand("SPUsersDemote");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+
+			comm.SafeExecuteNonQuery();
+		}
+
+		public User Get(int userId)
+		{
+			User user = null;
+			DbCommand comm = GetCommand("SPUsersGet");
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+
+			DataRow dr = GetFirstRow(comm);
+			if (dr != null)
+			{
+				user = ParseUserInfo(dr);
+			}
 			return user;
 		}
 	}

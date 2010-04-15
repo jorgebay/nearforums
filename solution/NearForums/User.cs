@@ -48,6 +48,12 @@ namespace NearForums
 			set;
 		}
 
+		public DateTime RegistrationDate
+		{
+			get;
+			set;
+		}
+
 		public Guid Guid
 		{
 			get;

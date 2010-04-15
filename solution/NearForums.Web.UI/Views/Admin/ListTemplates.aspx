@@ -3,6 +3,9 @@
 	Templates
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<ul class="path floatContainer">
+		<li class="first"><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
+	</ul>
     <h1>Templates</h1>
     <table cellpadding="0" cellspacing="0">
 		<thead>
