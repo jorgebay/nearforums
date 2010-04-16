@@ -14,6 +14,12 @@ namespace NearForums
 			this.Messages = new List<Message>();
 		}
 
+		public Topic(int id)
+			: this()
+		{
+			this.Id = id;
+		}
+
 		public int Id
 		{
 			get;

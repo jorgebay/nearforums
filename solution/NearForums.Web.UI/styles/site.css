@@ -233,6 +233,22 @@ div.overTip
 	width:300px;
 	z-index:10;
 }
+div.overTip div.msgOptions
+{
+	display: none;
+}
+div.overTip div.msgHeader
+{
+	font-weight: bold;
+}
+div.overTip span.dateSep, div.overTip span.date
+{
+	display: none;
+}
+div.overTip div.msgBody
+{
+	padding: 5px 10px;
+}
 div.pager
 {
 	margin-top:20px;
@@ -358,11 +374,16 @@ ul#messages
 }
 ul#messages li
 {
-	margin-bottom: 15px;
+	margin-bottom: 10px;
+	padding: 0 10px 5px 5px;
 }
 ul#messages div.msgBody
 {
 	padding: 10px 0 0 8px;
+}
+ul#messages div.msgBody p.removed
+{
+	font-style: italic;
 }
 ul#messages div.msgHeader
 {
@@ -377,6 +398,22 @@ ul#messages div.msgHeader a.msgId
 {
 	font-size: 22px;
 	font-weight: normal;
+}
+ul#messages div.msgOptions
+{
+	text-align: right;
+}
+ul#messages div.msgOptions a
+{
+	text-decoration: none;
+}
+ul#messages div.msgOptions a:hover
+{
+	text-decoration: underline;
+}
+ul#messages li.over
+{
+	background-color: #DDDDDD;
 }
 div.toolbar
 {

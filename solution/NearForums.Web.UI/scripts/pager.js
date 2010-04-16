@@ -103,4 +103,22 @@
 		pager.showCurrentStatus();
 		$(document).trigger("dataLoaded");
 	}
+	,
+	showAll : function()
+	{
+		pager.loadingStart();
+		var lastMsg = 1000;
+		var firstMsg = $("#messages li:last").attr("id").substring(3);
+		$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages li").length}, pager.showAllCallback);
+		return false;
+	}
+	,
+	showAllCallback : function(htmlText)
+	{
+		$("#messages").append(htmlText);
+		pager.lastItem = $("#messages li").length;
+		pager.loadingEnd();
+		pager.showCurrentStatus();
+		$(document).trigger("dataLoaded");
+	}
 }	

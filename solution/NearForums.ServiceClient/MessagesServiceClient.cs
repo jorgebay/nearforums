@@ -11,7 +11,7 @@ namespace NearForums.ServiceClient
 		public static List<Message> GetByTopic(int topicId)
 		{
 			MessagesDataAccess da = new MessagesDataAccess();
-			return da.GetByTopic(topicId);
+			return da.GetByTopic(topicId); 
 		}
 
 		/// <summary>
@@ -39,6 +39,12 @@ namespace NearForums.ServiceClient
 		{
 			MessagesDataAccess da = new MessagesDataAccess();
 			da.Add(message, ip);
+		}
+
+		public static void Delete(int messageId, int userId)
+		{
+			MessagesDataAccess da = new MessagesDataAccess();
+			da.Delete(messageId, userId);
 		}
 	}
 }

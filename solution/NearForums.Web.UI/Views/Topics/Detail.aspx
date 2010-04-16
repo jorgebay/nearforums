@@ -43,7 +43,8 @@
 			<ul>
 				<li class="reply"><%=Html.ActionLink("Reply", "Reply", null, new{rel="nofollow"}) %></li>
 				<li><a href="#" onclick="window.print();return false;">Print</a></li>
-				<li><a href="#" onclick="return false;">Show all messages</a></li>
+				<li><a href="#" onclick="return pager.showAll();">Show all messages</a></li>
+				<li class="edit"><%=Html.ActionLink("Edit", "Edit") %></li>
 			</ul>
 		</div>
 		<h2>Related topics</h2>
@@ -78,6 +79,21 @@
 		});
 		$(document).ready(function(){
 			$(document).trigger("dataLoaded");
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("div.msgOptions a").hover(
+				function()
+				{
+					$(this).parents("li").addClass("over");
+				}
+				,
+				function()
+				{
+					$(this).parents("li").removeClass("over");
+				}
+			);
 		});
 	</script>
 </asp:Content>

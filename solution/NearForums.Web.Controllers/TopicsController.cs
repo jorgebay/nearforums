@@ -117,6 +117,12 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
+			#region Check if user can edit
+			if (this.User.Group < UserGroup.Moderator && this.User.Id != topic.User.Id)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			#endregion
 			ViewData["IsEdit"] = true;
 
 			return View(topic);
@@ -133,6 +139,17 @@ namespace NearForums.Web.Controllers
 				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
+				#region Check if user can edit
+				if (this.User.Group < UserGroup.Moderator)
+				{
+					//Check if the user that created of the topic is the same as the logged user
+					Topic originalTopic = TopicsServiceClient.Get(id);
+					if (this.User.Id != originalTopic.User.Id)
+					{
+						return ResultHelper.ForbiddenResult(this);
+					}
+				}
+				#endregion
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
 
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
@@ -142,6 +159,7 @@ namespace NearForums.Web.Controllers
 				this.AddErrors(this.ModelState, ex);
 			}
 			topic.Forum = ForumsServiceClient.Get(forum);
+			ViewData["IsEdit"] = true;
 
 			return View(topic);
 		}
@@ -227,6 +245,23 @@ namespace NearForums.Web.Controllers
 
 			message.Topic = TopicsServiceClient.Get(id);
 			return View(message);
+		}
+		#endregion
+
+		#region Delete message
+		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail=true)]
+		public ActionResult DeleteMessage(int mid, int id, string forum, string name)
+		{
+			MessagesServiceClient.Delete(mid, this.User.Id);
+
+			if (Request.UrlReferrer != null)
+			{
+				return Redirect(Request.UrlReferrer.PathAndQuery);
+			}
+			else
+			{
+				return RedirectToAction("Detail", new{id=id, name=name, forum=forum});
+			}
 		}
 		#endregion
 	}

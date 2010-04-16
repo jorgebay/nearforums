@@ -14,7 +14,7 @@
 				<% Html.RenderPartial("LoginSmall", this.ViewData); %>
 			</asp:Panel>
 			<asp:Panel runat="server" ID="pnlLogged" runat="server" Visible="false">
-				User: <%=User.UserName %>
+				User: <%=User.UserName %> | <%=Html.ActionLink("Logout", "Logout", "Home") %>
 			</asp:Panel>
         </div>
         <div id="content">

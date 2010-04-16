@@ -59,6 +59,8 @@ namespace NearForums.DataAccess
 			m.User.Signature = dr.GetNullableString("UserSignature");
 			m.User.Group = dr.Get<UserGroup>("UserGroupId");
 			m.User.GroupName = dr.GetString("UserGroupName");
+			m.Topic = new Topic(dr.Get<int>("TopicId"));
+			m.Active = dr.Get<bool>("Active");
 
 			return m;
 		}
@@ -121,6 +123,15 @@ namespace NearForums.DataAccess
 			{
 				message.Id = Convert.ToInt32(idParameter.Value);
 			}
+		}
+
+		public void Delete(int messageId, int userId)
+		{
+			DbCommand comm = this.GetCommand("SPMessagesDelete");
+			comm.AddParameter<int>(this.Factory, "MessageId", messageId);
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+
+			comm.SafeExecuteNonQuery();
 		}
 	}
 }

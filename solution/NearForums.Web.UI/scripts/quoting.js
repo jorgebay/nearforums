@@ -16,7 +16,7 @@
 		if ($("#msg" + quotedId).length != 0)
 		{
 			var content = $("#msg" + quotedId).html();
-			overTip.show(e, "overTip" + quotedId, content, "250px", true);
+			overTip.show(e, "overTip" + quotedId, content, null, true);
 		}
 	}
 	,

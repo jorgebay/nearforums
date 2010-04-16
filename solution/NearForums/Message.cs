@@ -8,16 +8,12 @@ namespace NearForums
 {
 	public class Message : Entity
 	{
-		public int Id
+		public Message()
 		{
-			get;
-			set;
+
 		}
 
-		/// <summary>
-		/// Message index (number) relative to the topic. 1 based.
-		/// </summary>
-		public int Index
+		public int Id
 		{
 			get;
 			set;
@@ -50,6 +46,15 @@ namespace NearForums
 		/// Topic to which the message belong
 		/// </summary>
 		public Topic Topic
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Determines if the message can be shown.
+		/// </summary>
+		public bool Active
 		{
 			get;
 			set;
