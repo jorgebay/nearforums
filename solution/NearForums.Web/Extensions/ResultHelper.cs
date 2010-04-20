@@ -52,9 +52,9 @@ namespace NearForums.Web.Extensions
 			return viewResult;
 		}
 
-		//public static ActionResult MovedPermanentlyResult(ControllerBase controller, object routeValues)
-		//{
-		//    return new MovedPermanentlyResult(routeValues);
-		//}
+		public static ActionResult MovedPermanentlyResult(ControllerBase controller, object routeValues)
+		{
+			return new MovedPermanentlyResult(routeValues);
+		}
 	}
 }

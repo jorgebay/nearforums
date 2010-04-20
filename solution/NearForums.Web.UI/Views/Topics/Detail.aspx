@@ -36,7 +36,14 @@
 <%
 		}
 %>
-		<div class="pagerSummary"><span class="firstItem"><%=(this.PageIndex)*Config.Topics.MessagesPerPage + 1 %></span> to <span class="lastItem"><%=(this.PageIndex)*Config.Topics.MessagesPerPage + messages.Count %></span> of <span class="totalItems"><%=messages.TotalItemCount %></span> messages</div>
+		<div class="pagerSummary">
+			<span class="firstItem"><%=(this.PageIndex)*Config.Topics.MessagesPerPage + 1 %></span>
+			to
+			<span class="lastItem"><%=(this.PageIndex)*Config.Topics.MessagesPerPage + messages.Count %></span>
+			of
+			<span class="totalItems"><%=messages.TotalItemCount %></span>
+			messages
+		</div>
 		<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">More</a></div>
 		<%=Html.Pager(messages)%>
 		<div class="toolbar floatContainer">
@@ -44,27 +51,28 @@
 				<li class="reply"><%=Html.ActionLink("Reply", "Reply", null, new{rel="nofollow"}) %></li>
 				<li><a href="#" onclick="window.print();return false;">Print</a></li>
 				<li><a href="#" onclick="return pager.showAll();">Show all messages</a></li>
+<%
+				if (this.User!= null && (this.User.Group >= UserGroup.Moderator || this.User.Id == Model.User.Id))
+				{
+%>
 				<li class="edit"><%=Html.ActionLink("Edit", "Edit") %></li>
+				<li class="move"><%=Html.ActionLink("Move topic to another forum", "Move", new{forumName=Model.Forum.ShortName}) %></li>
+				<li class="close"><%=Html.ActionLink("Close", "Close") %></li>
+<%
+				}
+%>
 			</ul>
 		</div>
-		<h2>Related topics</h2>
 <%
 		if (this.Model.Related.Count > 0)
 		{
 %>
-		<ul class="related">
-<%
-			foreach (Topic t in this.Model.Related)
-			{
-%>
-			<li class="<%=t.IsClosed ? "isClosed" : "" %>"><%=Html.ActionLink(t.Title, "Detail", "Topics", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}, null) %></li>
-<%
-			}
-%>
-		</ul>
+		<h2>Related topics</h2>
+		<% Html.RenderPartial("Related", this.Model); %>
 <%
 		}
 %>
+
 	</div>
 	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/overtip.js"></script>

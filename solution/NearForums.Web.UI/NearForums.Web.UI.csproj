@@ -319,6 +319,8 @@
     <Content Include="Views\Shared\Templated.Master" />
     <Content Include="Views\Topics\Edit.aspx" />
     <Content Include="Views\Topics\LatestMessages.aspx" />
+    <Content Include="Views\Topics\Move.aspx" />
+    <Content Include="Views\Topics\Related.ascx" />
     <Content Include="Views\Users\List.aspx" />
   </ItemGroup>
   <ItemGroup>

@@ -191,5 +191,26 @@ namespace NearForums.DataAccess
 
 			this.SafeExecuteNonQuery(comm);
 		}
+
+		public void Move(int id, int forumId, int userId, string ip)
+		{
+			DbCommand comm = this.GetCommand("SPTopicsMove");
+			comm.AddParameter<int>(this.Factory, "TopicId", id);
+			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
+
+			this.SafeExecuteNonQuery(comm);
+		}
+
+		public void Close(int id, int userId, string ip)
+		{
+			DbCommand comm = this.GetCommand("SPTopicsClose");
+			comm.AddParameter<int>(this.Factory, "TopicId", id);
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
+
+			this.SafeExecuteNonQuery(comm);
+		}
 	}
 }

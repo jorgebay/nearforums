@@ -15,14 +15,23 @@ namespace NearForums.Web.Controllers
 	{
 		#region Detail
 		[AddVisit]
-		public ActionResult Detail(int id, string name, int page)
+		public ActionResult Detail(int id, string name, string forum, int page)
 		{
 			Topic topic = TopicsServiceClient.Get(id);
 
 			#region The shortname must match
-			if (topic != null && topic.ShortName.ToUpper() != name.ToUpper())
+			if (topic != null)
 			{
-				topic = null;
+				if (topic.ShortName != name)
+				{
+					topic = null;
+				}
+				else if(topic.Forum.ShortName != forum)
+				{
+					//The topic could have been moved to another forum
+					//Move permanently to the other forum's topic
+					return ResultHelper.MovedPermanentlyResult(this, new{action="Detail", controller="Topics", id=id, name=name, forum=topic.Forum.ShortName});
+				}
 			}
 			#endregion
 
@@ -245,6 +254,61 @@ namespace NearForums.Web.Controllers
 
 			message.Topic = TopicsServiceClient.Get(id);
 			return View(message);
+		}
+		#endregion
+
+		#region Move topic
+		[AcceptVerbs(HttpVerbs.Get)]
+		[RequireAuthorization(UserGroup.Moderator)]
+		public ActionResult Move(int id, string name)
+		{
+			Topic topic = TopicsServiceClient.Get(id);
+			#region Shortname must match
+			if (topic != null && topic.ShortName.ToUpper() != name.ToUpper())
+			{
+				topic = null;
+			} 
+			#endregion
+
+			if (topic == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+
+			ViewData["Categories"] = ForumsServiceClient.GetList();
+
+			return View(topic);
+		}
+
+		[AcceptVerbs(HttpVerbs.Post)]
+		[RequireAuthorization(UserGroup.Moderator)]
+		public ActionResult Move(int id, string name, [Bind(Prefix = "", Exclude = "Id")] Topic t)
+		{
+			Topic savedTopic = TopicsServiceClient.Move(id, t.Forum.Id, this.User.Id, Request.UserHostAddress);
+			return RedirectToAction("Detail", new
+			{
+				forum = savedTopic.Forum.ShortName
+			});
+		}
+
+		[RequireAuthorization]
+		public ActionResult Close(int id, string name)
+		{
+			#region Check if user can edit
+			if (this.User.Group < UserGroup.Moderator)
+			{
+				//Check if the user that created of the topic is the same as the logged user
+				Topic originalTopic = TopicsServiceClient.Get(id);
+				if (this.User.Id != originalTopic.User.Id)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+			}
+			#endregion
+
+			TopicsServiceClient.Close(id, this.User.Id, Request.UserHostAddress);
+
+			return RedirectToAction("Detail");
 		}
 		#endregion
 

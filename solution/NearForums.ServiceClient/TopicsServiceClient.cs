@@ -79,5 +79,24 @@ namespace NearForums.ServiceClient
 			TopicsDataAccess da = new TopicsDataAccess();
 			return da.GetLatest();
 		}
+
+		/// <summary>
+		/// Moves a topic from a forum to another.
+		/// </summary>
+		public static Topic Move(int id, int forumId, int userId, string ip)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			da.Move(id, forumId, userId, ip);
+			return da.Get(id);
+		}
+
+		/// <summary>
+		/// Close a topic to disallow further replies.
+		/// </summary>
+		public static void Close(int id, int userId, string ip)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			da.Close(id, userId, ip);
+		}
 	}
 }

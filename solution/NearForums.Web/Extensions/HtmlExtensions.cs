@@ -9,6 +9,7 @@ using System.Web.Mvc.Html;
 using System.Text.RegularExpressions;
 using System.Security;
 using NearForums.Configuration;
+using System.Collections;
 
 namespace NearForums.Web.Extensions
 {
@@ -75,6 +76,21 @@ namespace NearForums.Web.Extensions
 			item.Value = defaultValue.ToString();
 			list.Insert(0, item);
 			return htmlHelper.DropDownList(name, list);
+		}
+
+		public static T GetStateValue<T>(this HtmlHelper htmlHelper, string key)
+		{
+			T value = default(T);
+			ModelState state;
+			if (htmlHelper.ViewData.ModelState.TryGetValue(key, out state))
+			{
+				value = (T)state.Value.ConvertTo(typeof(T), null);
+			}
+			else
+			{
+				value = (T)htmlHelper.ViewData.Eval(key);
+			}
+			return value;
 		}
 
 		public static string Date(this HtmlHelper htmlHelper, DateTime date)
