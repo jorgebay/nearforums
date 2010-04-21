@@ -68,5 +68,11 @@ namespace NearForums.ServiceClient
 			UsersDataAccess da = new UsersDataAccess();
 			return da.Get(userId);
 		}
+
+		public static string GetGroupName(UserGroup userGroup)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			return da.GetGroupName(userGroup);
+		}
 	}
 }

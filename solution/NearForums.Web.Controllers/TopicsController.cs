@@ -222,13 +222,21 @@ namespace NearForums.Web.Controllers
 			if (message.Topic != null && message.Topic.ShortName.ToUpper() != name.ToUpper())
 			{
 				message.Topic = null;
-			} 
+			}
 			#endregion
 
 			if (message.Topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
+
+			#region Check if topic is closed for replies
+			if (message.Topic.IsClosed)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			#endregion
+
 
 			return View(message);
 		}
@@ -240,7 +248,18 @@ namespace NearForums.Web.Controllers
 		{
 			try
 			{
-				message.Topic = new Topic(){Id=id};
+				message.Topic = TopicsServiceClient.Get(id);
+
+				#region Check topic
+				if (message.Topic == null)
+				{
+					return ResultHelper.NotFoundResult(this);
+				}
+				if (message.Topic.IsClosed)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+				#endregion
 				message.Body = message.Body.ReplaceValues();
 				message.User = Session.User.ToUser();
 				TopicsServiceClient.AddReply(message, Request.UserHostAddress);
@@ -290,9 +309,15 @@ namespace NearForums.Web.Controllers
 				forum = savedTopic.Forum.ShortName
 			});
 		}
+		#endregion
 
+		#region Close
+
+		/// <summary>
+		/// Disallow replies on the topic
+		/// </summary>
 		[RequireAuthorization]
-		public ActionResult Close(int id, string name)
+		public ActionResult CloseReplies(int id, string name)
 		{
 			#region Check if user can edit
 			if (this.User.Group < UserGroup.Moderator)
@@ -307,6 +332,29 @@ namespace NearForums.Web.Controllers
 			#endregion
 
 			TopicsServiceClient.Close(id, this.User.Id, Request.UserHostAddress);
+
+			return RedirectToAction("Detail");
+		}
+
+		/// <summary>
+		/// Allow replies on the topic
+		/// </summary>
+		[RequireAuthorization]
+		public ActionResult OpenReplies(int id, string name)
+		{
+			#region Check if user can edit
+			if (this.User.Group < UserGroup.Moderator)
+			{
+				//Check if the user that created of the topic is the same as the logged user
+				Topic originalTopic = TopicsServiceClient.Get(id);
+				if (this.User.Id != originalTopic.User.Id)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+			}
+			#endregion
+
+			TopicsServiceClient.Open(id, this.User.Id, Request.UserHostAddress);
 
 			return RedirectToAction("Detail");
 		}

@@ -30,13 +30,7 @@
 		<div class="formItem textarea floatContainer">
 			<label for="description">Message</label>
 			<%=Html.TextArea("description") %>
-			<script type="text/javascript" src="/scripts/ckeditor/ckeditor.js"></script>
-			<script type="text/javascript">
-				//<![CDATA[
-				CKEDITOR.replace("description", 
-					{toolbar : 'Full'});
-				//]]>
-			</script>
+			<% Html.RenderPartial("EditorScripts", CreateViewData(new{Name="description"})); %>
 		</div>
 		<div class="formItem buttons">
 			<input type="submit" value="Send" />

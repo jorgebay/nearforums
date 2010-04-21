@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using NearForums.Web.State;
 using System.Web;
 using NearForums.Configuration;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.UI
 {
@@ -106,6 +107,11 @@ namespace NearForums.Web.UI
 		protected virtual T Eval<T>()
 		{
 			return (T)this.Page.GetDataItem();
+		}
+
+		protected ViewDataDictionary CreateViewData(object values)
+		{
+			return ViewDataExtensions.CreateViewData(values);
 		}
 	}
 

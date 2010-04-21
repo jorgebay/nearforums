@@ -3,4 +3,17 @@
 <script type="text/javascript">
 	FB.init("<%= Config.Facebook.ApiKey %>", "<%=Url.Action("Static", "Base", new{key="FacebookXDReceiver"}) %>");
 </script>
-<p><a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;" href="#">Connect</a></p>
+<%
+	if (this.User == null)
+	{
+%>
+		<p><a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;" href="#"><img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_short.gif" alt="Login using facebook" /></a></p>
+<%
+	}
+	else
+	{
+%>
+		<p>User: <%=User.UserName %> | <a href="#" onclick="FB.Connect.logoutAndRedirect('<%=Url.Action("Logout", "Home", new{returnUrl=Request.Url.PathAndQuery}) %>');return false;">Logout</a></p>
+<%
+	}
+%>

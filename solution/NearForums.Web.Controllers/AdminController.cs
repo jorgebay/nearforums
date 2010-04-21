@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using NearForums.Validation;
 using NearForums.ServiceClient;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
@@ -262,6 +263,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Dashboard
+		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Dashboard()
 		{
 			return View();

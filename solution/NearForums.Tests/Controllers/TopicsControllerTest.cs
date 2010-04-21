@@ -175,5 +175,44 @@ namespace NearForums.Tests.Controllers
 
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 		}
+
+		[TestMethod]
+		public void Topic_OpenClose()
+		{
+			TopicsController controller = new TopicsController();
+			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+
+			#region Get necessary data
+			List<ForumCategory> forumList = ForumsServiceClient.GetList();
+			User user = UsersServiceClient.GetTestUser();
+
+			if (forumList.Count == 0 || user == null)
+			{
+				Assert.Inconclusive("No necessary data in the db to execute this test.");
+			}
+			Forum forum = forumList[0].Forums[0];
+			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
+
+			if (topicList.Count == 0)
+			{
+				Assert.Inconclusive("No necessary data in the db to execute this test.");
+			}
+			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
+			sessionItems["User"] = new UserState(user);
+			#endregion
+
+			controller.CloseReplies(topic.Id, topic.ShortName);
+
+			topic = TopicsServiceClient.Get(topic.Id);
+
+			Assert.IsTrue(topic.IsClosed);
+
+			controller.OpenReplies(topic.Id, topic.ShortName);
+
+			topic = TopicsServiceClient.Get(topic.Id);
+
+			Assert.IsFalse(topic.IsClosed);
+		}
 	}
 }

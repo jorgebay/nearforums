@@ -185,5 +185,19 @@ namespace NearForums.DataAccess
 			}
 			return user;
 		}
+
+		public string GetGroupName(UserGroup userGroup)
+		{
+			string result = null;
+			DbCommand comm = GetCommand("SPUsersGroupsGet");
+			comm.AddParameter<short>(this.Factory, "UserGroupId", (short) userGroup);
+
+			DataRow dr = GetFirstRow(comm);
+			if (dr != null)
+			{
+				result = dr.GetString("UserGroupName");
+			}
+			return result;
+		}
 	}
 }

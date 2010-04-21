@@ -10,12 +10,7 @@
 <body>
     <div id="container">
         <div id="header">
-			<asp:Panel runat="server" ID="pnlLogin">
-				<% Html.RenderPartial("LoginSmall", this.ViewData); %>
-			</asp:Panel>
-			<asp:Panel runat="server" ID="pnlLogged" runat="server" Visible="false">
-				User: <%=User.UserName %> | <%=Html.ActionLink("Logout", "Logout", "Home") %>
-			</asp:Panel>
+			<% Html.RenderPartial("LoginSmall", this.ViewData); %>
         </div>
         <div id="content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />

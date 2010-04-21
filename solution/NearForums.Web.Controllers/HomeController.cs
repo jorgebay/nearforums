@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Helpers;
+using NearForums.ServiceClient;
 
 namespace NearForums.Web.Controllers
 {
@@ -26,10 +27,23 @@ namespace NearForums.Web.Controllers
 			{
 				if (group == null || User.Group >= group)
 				{
-					return Redirect(HttpUtility.UrlDecode(returnUrl));
-				} 
+					return Redirect(HttpUtility.UrlDecode(returnUrl ?? "/"));
+				}
+				ViewData["UserGroup"] = group;
+				ViewData["UserGroupName"] = UsersServiceClient.GetGroupName(group.Value);
 			}
+
 			return View();
+		}
+
+		public ActionResult Logout(string returnUrl)
+		{
+			Session.User = null;
+			if (String.IsNullOrEmpty(returnUrl))
+			{
+				returnUrl = "/";
+			}
+			return Redirect(HttpUtility.UrlDecode(returnUrl));
 		}
 	}
 }

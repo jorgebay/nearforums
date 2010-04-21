@@ -91,12 +91,21 @@ namespace NearForums.ServiceClient
 		}
 
 		/// <summary>
-		/// Close a topic to disallow further replies.
+		/// Closes a topic to disallow further replies.
 		/// </summary>
 		public static void Close(int id, int userId, string ip)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();
 			da.Close(id, userId, ip);
+		}
+
+		/// <summary>
+		/// Opens a topic to allow replies.
+		/// </summary>
+		public static void Open(int id, int userId, string ip)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			da.Open(id, userId, ip);
 		}
 	}
 }

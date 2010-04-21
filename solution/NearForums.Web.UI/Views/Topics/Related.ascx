@@ -1,4 +1,5 @@
 <%@ Control Language="C#" Inherits="NearForums.Web.UI.BaseViewUserControl<Topic>" %>
+	<h2>Related topics</h2>
 	<ul class="related">
 <%
 		foreach (Topic t in this.Model.Related)

@@ -212,5 +212,15 @@ namespace NearForums.DataAccess
 
 			this.SafeExecuteNonQuery(comm);
 		}
+
+		public void Open(int id, int userId, string ip)
+		{
+			DbCommand comm = this.GetCommand("SPTopicsOpen");
+			comm.AddParameter<int>(this.Factory, "TopicId", id);
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
+
+			this.SafeExecuteNonQuery(comm);
+		}
 	}
 }

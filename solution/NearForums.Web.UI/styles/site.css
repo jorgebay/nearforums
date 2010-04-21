@@ -527,3 +527,11 @@ p.warning
 	font-style: italic;
 	padding-top: 20px;
 }
+#login p.button
+{
+	padding: 10px 0 0 150px;
+}
+#login div.connectMessage
+{
+	padding-top: 30px;
+}

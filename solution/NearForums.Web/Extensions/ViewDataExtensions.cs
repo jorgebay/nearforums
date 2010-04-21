@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using System.ComponentModel;
 
 namespace NearForums.Web.Extensions
 {
@@ -41,6 +42,26 @@ namespace NearForums.Web.Extensions
 			{
 				return textIfFalse;
 			}
+		}
+
+		public static ViewDataDictionary CreateViewData(object values)
+		{
+			ViewDataDictionary viewData = new ViewDataDictionary();
+			viewData.Append(values);
+			return viewData;
+		}
+
+		public static ViewDataDictionary Append(this ViewDataDictionary viewData, object values)
+		{
+			if (values != null)
+			{
+				foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(values))
+				{
+					object value = descriptor.GetValue(values);
+					viewData.Add(descriptor.Name, value);
+				}
+			}
+			return viewData;
 		}
 	}
 }

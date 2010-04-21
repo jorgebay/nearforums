@@ -13,16 +13,8 @@ namespace NearForums.Web.UI.Views.Shared
 {
 	public class Site : BaseViewMasterPage
 	{
-		protected Panel pnlLogin;
-		protected Panel pnlLogged;
-
 		protected override void OnLoad(EventArgs e)
 		{
-			if (User != null)
-			{
-				pnlLogin.Visible = false;
-				pnlLogged.Visible = true;
-			}
 			base.OnLoad(e);
 		}
 	}
