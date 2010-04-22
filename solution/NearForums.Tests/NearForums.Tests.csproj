@@ -59,6 +59,7 @@
     <Compile Include="Fakes\FakeHttpSessionState.cs" />
     <Compile Include="Fakes\FakeIdentity.cs" />
     <Compile Include="Fakes\FakePrincipal.cs" />
+    <Compile Include="Controllers\ForumsControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\RoutingModule.cs" />
     <Compile Include="Routing\StrictRouteTest.cs" />

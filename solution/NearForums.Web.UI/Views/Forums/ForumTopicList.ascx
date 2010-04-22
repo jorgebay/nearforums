@@ -4,7 +4,8 @@
 	foreach (Topic topic in Model)
 	{
 %>
-	<li>
+	<li class="<%= topic.IsSticky ? "sticky" : "" %>">
+
 		<%= Html.ActionLink(topic.Title, "Detail", "Topics", new{name=topic.ShortName,id=topic.Id,page=0}, null) %>
 		<span class="details"><%= topic.Replies %> replies / <%= topic.Views%> views</span>
 	</li>

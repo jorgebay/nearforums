@@ -12,6 +12,9 @@
 	</ul>
 	<div class="topicDetail">
 		<h1><%=Model.Title %></h1>
+		<div class="options">
+			<a rel="nofollow" href="<%=Url.Action("LatestMessages") %>"><img src="/images/iconrss.gif" alt="rss" /></a>
+		</div>
 		<p class="info">
 			Topic by <strong class="userName"><%= Html.ActionLink(Model.User.UserName, "Detail", "Users", new{id=Model.User.Id}, new{rel="nofollow"}) %></strong>
 			at 
@@ -37,6 +40,7 @@
 		}
 %>
 		<div class="pagerSummary">
+			Displaying
 			<span class="firstItem"><%=(this.PageIndex)*Config.Topics.MessagesPerPage + 1 %></span>
 			to
 			<span class="lastItem"><%=(this.PageIndex)*Config.Topics.MessagesPerPage + messages.Count %></span>
@@ -44,17 +48,10 @@
 			<span class="totalItems"><%=messages.TotalItemCount %></span>
 			messages
 		</div>
-		<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">More</a></div>
+		<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;"><img src="/images/loadingMini.gif" alt="" style="" />Show more messages</a></div>
 		<%=Html.Pager(messages)%>
-		
 		<% Html.RenderPartial("Toolbar", this.Model); %>
-<%
-		if (this.Model.Related.Count > 0)
-		{
-			Html.RenderPartial("Related", this.Model);
-		}
-%>
-
+		<% Html.RenderPartial("Related", this.Model); %>
 	</div>
 	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/overtip.js"></script>
@@ -65,10 +62,7 @@
 			quoting.init();
 		});
 		$(document).ready(function(){
-			pager.init("<%=Url.Action("PageMore", "Topics", new{id=Model.Id}) %>", "<%=Url.Action("PageUntil", "Topics", new{id=Model.Id}) %>");
-		});
-		$(document).ready(function(){
-			$(document).trigger("dataLoaded");
+			pager.init('<%=Url.Action("PageMore", "Topics", new{id=Model.Id}) %>', '<%=Url.Action("PageUntil", "Topics", new{id=Model.Id}) %>');
 		});
 	</script>
 	<script type="text/javascript">

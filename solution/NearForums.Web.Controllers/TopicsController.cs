@@ -175,7 +175,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Client Paging
-		//[AcceptVerbs(HttpVerbs.Post)]
+		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult PageMore(int id, int from, int initIndex)
 		{
 			//load messages
@@ -312,7 +312,6 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Close
-
 		/// <summary>
 		/// Disallow replies on the topic
 		/// </summary>

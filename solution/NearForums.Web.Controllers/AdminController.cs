@@ -17,12 +17,15 @@ namespace NearForums.Web.Controllers
 	{
 		#region Templates
 		#region Add template
+		[RequireAuthorization(UserGroup.Admin)]
 		[AcceptVerbs(HttpVerbs.Get)]
 		public ActionResult AddTemplate()
 		{
 			return View();
 		}
 
+
+		[RequireAuthorization(UserGroup.Admin)]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult AddTemplate([Bind(Prefix = "")] Template template, HttpPostedFileBase postedFile)
 		{
@@ -158,7 +161,7 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Replaces the paths from template-contents/ to /Content/Templates/{NameOfTheTemplate}/contents/ in the files .html and css
 		/// </summary>
-		public void ReplaceFilePaths(string filePath, string newPath)
+		private void ReplaceFilePaths(string filePath, string newPath)
 		{
 			System.IO.File.WriteAllText(filePath, Regex.Replace(System.IO.File.ReadAllText(filePath), "template-contents/", newPath + "contents/"));
 		}
@@ -243,6 +246,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region List template
+		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult ListTemplates()
 		{
 			List<Template> list = TemplatesServiceClient.GetAll();
@@ -251,6 +255,7 @@ namespace NearForums.Web.Controllers
 		#endregion 
 
 		#region Set current
+		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult TemplateSetCurrent(int id)
 		{
 			TemplatesServiceClient.SetCurrent(id);

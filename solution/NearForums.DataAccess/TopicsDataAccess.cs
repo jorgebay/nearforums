@@ -142,6 +142,7 @@ namespace NearForums.DataAccess
 			t.Replies = dr.Get<int>("TopicReplies");
 			t.Views = dr.Get<int>("TopicViews");
 			t.IsClosed = dr.Get<bool>("TopicIsClose");
+			t.IsSticky = dr.GetNullable<int?>("TopicOrder") >= 0;
 
 			return t;
 		}
@@ -221,6 +222,23 @@ namespace NearForums.DataAccess
 			comm.AddParameter<string>(this.Factory, "Ip", ip);
 
 			this.SafeExecuteNonQuery(comm);
+		}
+
+		public List<Topic> GetUnanswered(int forumId)
+		{
+			List<Topic> list = new List<Topic>();
+			DbCommand comm = this.GetCommand("SPTopicsGetByForumUnanswered");
+			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+
+			DataTable dt = this.GetTable(comm);
+			foreach (DataRow dr in dt.Rows)
+			{
+				Topic t = ParseBasicTopicDataRow(dr);
+				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
+
+				list.Add(t);
+			}
+			return list;
 		}
 	}
 }

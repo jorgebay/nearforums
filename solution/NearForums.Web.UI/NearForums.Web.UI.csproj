@@ -310,6 +310,8 @@
     <Content Include="Views\Admin\ListTemplates.aspx" />
     <Content Include="Views\Errors\403.aspx" />
     <Content Include="Views\Errors\404.aspx" />
+    <Content Include="Views\Forums\ForumOptions.ascx" />
+    <Content Include="Views\Forums\ListUnansweredTopics.aspx" />
     <Content Include="Views\Forums\TagDetail.aspx" />
     <Content Include="Views\Forums\Edit.aspx" />
     <Content Include="Views\Forums\LatestTopicsHtml.aspx" />

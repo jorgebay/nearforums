@@ -32,18 +32,19 @@
 				pager.navigateToId();
 			}
 		}
+		$(document).trigger("dataLoaded");
 	}
 	,
 	loadingStart : function()
 	{
 		//loading
 		pager.enabled = false;
-		$("#pagerClient a").toggleClass("loading");
+		$("#pagerClient").toggleClass("loading");
 	}
 	,
 	loadingEnd : function()
 	{
-		$("#pagerClient a").toggleClass("loading");
+		$("#pagerClient").toggleClass("loading");
 		pager.enabled = true;
 	}
 	,
@@ -78,7 +79,7 @@
 	,
 	navigateToId : function()
 	{
-		if ($(window.location.hash).length == 0)
+		if (pager.enabled && $(window.location.hash).length == 0)
 		{
 			//Load messages until that id
 			if (window.location.hash.indexOf("msg") == 1)
@@ -106,10 +107,13 @@
 	,
 	showAll : function()
 	{
-		pager.loadingStart();
-		var lastMsg = 1000;
-		var firstMsg = $("#messages li:last").attr("id").substring(3);
-		$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages li").length}, pager.showAllCallback);
+		if (pager.enabled)
+		{
+			pager.loadingStart();
+			var lastMsg = 1000;
+			var firstMsg = $("#messages li:last").attr("id").substring(3);
+			$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages li").length}, pager.showAllCallback);
+		}
 		return false;
 	}
 	,

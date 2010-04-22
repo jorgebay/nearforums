@@ -102,6 +102,27 @@ namespace NearForums.Web.UI
 			}
 		}
 		#endregion
+
+		/// <summary>
+		/// Gets the current action name
+		/// </summary>
+		public string ActionName
+		{
+			get
+			{
+				return ViewContext.RouteData.Values["action"].ToString();
+			}
+		}
+
+		/// <summary>
+		/// Determines if it is the current actionName
+		/// </summary>
+		/// <param name="actionName"></param>
+		/// <returns></returns>
+		public bool IsAction(string actionName)
+		{
+			return this.ActionName.ToUpper() == actionName.ToUpper();
+		}
 		#endregion
 
 		protected virtual T Eval<T>()

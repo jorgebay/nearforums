@@ -323,29 +323,29 @@ div.forumList h1
 {
 	border-bottom: none;
 }
-div.ordering
+div.options
 {
 	font-weight: 14px;
 	float:right;
 	position:relative;
 	top:-38px;
 }
-div.ordering a
+div.options a
 {
 	font-weight: normal;
 	text-decoration: none;
 	color: #666666;
 }
-div.ordering a.selected
+div.options a.selected
 {
 	font-weight: bold;
 	color: #0372A0;
 }
-div.ordering img
+div.options img
 {
 	vertical-align: top;
 }
-div.ordering span
+div.options span
 {
 	padding: 0 5px 0 5px;
 }
@@ -445,17 +445,29 @@ div.toolbar ul li a:hover
 {
 	text-decoration: underline;
 }
+#pagerClient
+{
+	background: #DCECF4 url(/images/temp/next-big.gif) no-repeat scroll 98% 50%;
+	border-top: 1px solid #00418F;
+}
+#pagerClient img
+{
+	visibility: hidden;
+	padding-right: 10px;
+}
 #pagerClient a
 {
-	font-size: 20px;
-	line-height: 35px;
-	border-bottom: solid 2px #5A93D2;
+	font-size: 14px;
+	line-height: 20px;
+	padding: 15px 15px 15px 15px;
+	display: block;
+	text-align: center;
 	text-decoration: none;
-	font-weight: normal;
-	padding: 0 50px 0 0;
-	background-image: url(/images/temp/next-big.gif);
-	background-repeat: no-repeat;
-	background-position: right center;
+	background: transparent url(/images/temp/next-big.gif) no-repeat scroll 2% 50%;
+}
+#pagerClient.loading img
+{
+	visibility: visible;
 }
 div.pagerSummary
 {

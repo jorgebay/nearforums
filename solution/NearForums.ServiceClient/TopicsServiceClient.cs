@@ -107,5 +107,16 @@ namespace NearForums.ServiceClient
 			TopicsDataAccess da = new TopicsDataAccess();
 			da.Open(id, userId, ip);
 		}
+
+		/// <summary>
+		/// Gets a list of unanswered topics
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		public static List<Topic> GetUnanswered(int forumId)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			return da.GetUnanswered(forumId);
+		}
 	}
 }

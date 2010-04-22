@@ -14,7 +14,7 @@
 		<p>Sign in with your Facebook Account by clicking the button below.</p>
 		<p class="button"><a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;" href="#"><img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_large_long.gif" alt="Login using facebook" /></a></p>
 		<div class="connectMessage">
-			<p>There is no need You should be entering the same email address and password that you would use to log into Facebook homepage.</p>
+			<p>You should be entering the same email address and password that you would use to log into Facebook homepage.</p>
 			<p>If you have any doubt, you can visit the <a href="http://www.facebook.com/help/?page=730" target="_blank">Facebook Connect Help Center</a>.</p>
 		</div>
 <%

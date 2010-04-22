@@ -124,5 +124,11 @@ namespace NearForums
 			get;
 			set;
 		}
+
+		public bool IsSticky
+		{
+			get;
+			set;
+		}
 	}
 }

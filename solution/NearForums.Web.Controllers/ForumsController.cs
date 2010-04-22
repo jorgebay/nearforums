@@ -76,6 +76,16 @@ namespace NearForums.Web.Controllers
 		} 
 		#endregion
 
+		#region Unanswered topics
+		public ActionResult ListUnansweredTopics(string forum)
+		{
+			Forum f = ForumsServiceClient.Get(forum);
+			f.Topics = TopicsServiceClient.GetUnanswered(f.Id);
+
+			return View(f);
+		}
+		#endregion
+
 		#region Add / Edit
 		#region Add
 		[AcceptVerbs(HttpVerbs.Get)]

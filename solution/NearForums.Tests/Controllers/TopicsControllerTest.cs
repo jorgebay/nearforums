@@ -65,31 +65,26 @@ namespace NearForums.Tests.Controllers
 		//
 		#endregion
 
-		[TestMethod]
-		public void TagList_Test()
+		public static Topic GetATopic(Forum forum)
 		{
-			TagList tags = new TagList("hola    mundo  sin");
+			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
+
+			if (topicList.Count == 0)
+			{
+				Assert.Inconclusive("There is no topic in the db to perform this test.");
+			}
+			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
+			return topic;
 		}
 
 		[TestMethod]
 		public void AddTopic_Test()
 		{
 			TopicsController controller = new TopicsController();
-			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			ActionResult result = null;
 
-			#region Get necessary data
-			List<ForumCategory> forumList = ForumsServiceClient.GetList();
-			User user = UsersServiceClient.GetTestUser();
-
-			if (forumList.Count == 0 || user == null)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Forum forum = forumList[0].Forums[0];
-			sessionItems["User"] = new UserState(user);
-			#endregion
+			Forum forum = ForumsControllerTest.GetAForum();
 
 			result = controller.Add(forum.ShortName, new Topic());
 			Assert.IsTrue(result is ViewResult);
@@ -100,7 +95,7 @@ namespace NearForums.Tests.Controllers
 			t.Description = "This is a sample topic from unit testing project.";
 			t.Tags = new TagList("test");
 			t.ShortName = Utils.ToUrlFragment(t.Title, 64);
-			t.User = user;
+			t.User = controller.User.ToUser();
 			t.Forum = forum;
 
 			result = controller.Add(forum.ShortName, t);
@@ -108,31 +103,22 @@ namespace NearForums.Tests.Controllers
 		}
 
 		[TestMethod]
+		public void TagList_Test()
+		{
+			TagList tags = new TagList("hola    mundo  sin");
+			Assert.IsTrue(tags.Count == 3);
+		}
+
+		[TestMethod]
 		public void EditTopic_Test()
 		{
 			TopicsController controller = new TopicsController();
-			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			ActionResult result = null;
 
-			#region Get necessary data
-			List<ForumCategory> forumList = ForumsServiceClient.GetList();
-			User user = UsersServiceClient.GetTestUser();
+			Forum forum = ForumsControllerTest.GetAForum();
+			Topic topic = TopicsControllerTest.GetATopic(forum);
 
-			if (forumList.Count == 0 || user == null)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Forum forum = forumList[0].Forums[0];
-			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
-
-			if (topicList.Count == 0)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
-			sessionItems["User"] = new UserState(user);
-			#endregion
 
 			result = controller.Edit(topic.Id, topic.ShortName, forum.ShortName, topic);
 
@@ -143,28 +129,11 @@ namespace NearForums.Tests.Controllers
 		public void Topic_Reply_Test()
 		{
 			TopicsController controller = new TopicsController();
-			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			ActionResult result = null;
 
-			#region Get necessary data
-			List<ForumCategory> forumList = ForumsServiceClient.GetList();
-			User user = UsersServiceClient.GetTestUser();
-
-			if (forumList.Count == 0 || user == null)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Forum forum = forumList[0].Forums[0];
-			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
-
-			if (topicList.Count == 0)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
-			sessionItems["User"] = new UserState(user);
-			#endregion
+			Forum forum = ForumsControllerTest.GetAForum();
+			Topic topic = TopicsControllerTest.GetATopic(forum);
 
 			Message message = new Message()
 			{
@@ -180,27 +149,10 @@ namespace NearForums.Tests.Controllers
 		public void Topic_OpenClose()
 		{
 			TopicsController controller = new TopicsController();
-			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
-			#region Get necessary data
-			List<ForumCategory> forumList = ForumsServiceClient.GetList();
-			User user = UsersServiceClient.GetTestUser();
-
-			if (forumList.Count == 0 || user == null)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Forum forum = forumList[0].Forums[0];
-			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
-
-			if (topicList.Count == 0)
-			{
-				Assert.Inconclusive("No necessary data in the db to execute this test.");
-			}
-			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
-			sessionItems["User"] = new UserState(user);
-			#endregion
+			Forum forum = ForumsControllerTest.GetAForum();
+			Topic topic = TopicsControllerTest.GetATopic(forum);
 
 			controller.CloseReplies(topic.Id, topic.ShortName);
 
@@ -213,6 +165,19 @@ namespace NearForums.Tests.Controllers
 			topic = TopicsServiceClient.Get(topic.Id);
 
 			Assert.IsFalse(topic.IsClosed);
+		}
+
+		[TestMethod]
+		public void Topic_LatestMessages()
+		{
+			TopicsController controller = new TopicsController();
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+
+			Forum forum = ForumsControllerTest.GetAForum();
+			Topic topic = TopicsControllerTest.GetATopic(forum);
+
+			ActionResult result = controller.LatestMessages(topic.Id, topic.ShortName);
+			Assert.IsTrue(controller.ViewData.Model is Topic);
 		}
 	}
 }
