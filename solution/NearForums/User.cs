@@ -65,5 +65,11 @@ namespace NearForums
 			get;
 			set;
 		}
+
+		public string ExternalProfileUrl
+		{
+			get;
+			set;
+		}
 	}
 }

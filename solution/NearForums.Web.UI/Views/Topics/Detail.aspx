@@ -38,6 +38,8 @@
 			</ul>
 <%
 		}
+		if (messages.TotalItemCount > 0)
+		{
 %>
 		<div class="pagerSummary">
 			Displaying
@@ -48,6 +50,9 @@
 			<span class="totalItems"><%=messages.TotalItemCount %></span>
 			messages
 		</div>
+<%
+		}
+%>
 		<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;"><img src="/images/loadingMini.gif" alt="" style="" />Show more messages</a></div>
 		<%=Html.Pager(messages)%>
 		<% Html.RenderPartial("Toolbar", this.Model); %>
@@ -66,8 +71,8 @@
 		});
 	</script>
 	<script type="text/javascript">
-		$(document).ready(function(){
-			$("div.msgOptions a").hover(
+		$(document).bind("dataLoaded", function(){
+			$("div.msgOptions a").unbind("mouseenter mouseleave").hover(
 				function()
 				{
 					$(this).parents("li").addClass("over");

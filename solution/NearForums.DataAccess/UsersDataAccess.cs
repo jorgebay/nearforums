@@ -182,6 +182,7 @@ namespace NearForums.DataAccess
 			if (dr != null)
 			{
 				user = ParseUserInfo(dr);
+				user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
 			}
 			return user;
 		}

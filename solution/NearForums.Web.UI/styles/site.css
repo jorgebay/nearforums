@@ -523,10 +523,20 @@ form div.formItem input
 	padding: 4px;
 	float:left;
 }
+form div.buttons
+{
+	padding: 20px 0;
+}
 form div.buttons input
 {
 	width: auto;
 	padding:4px 8px;
+}
+form div.checkbox input, form div.checkbox label
+{
+	float:none;
+	width:auto;
+	padding-right: 20px;
 }
 p.highlight
 {

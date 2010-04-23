@@ -2,7 +2,7 @@
 <div class="toolbar floatContainer">
 	<ul>
 <%
-		if (this.User != null && !this.Model.IsClosed)
+		if (!this.Model.IsClosed)
 		{
 %>
 		<li class="reply"><%=Html.ActionLink("Reply", "Reply", null, new{rel="nofollow"}) %></li>
@@ -16,12 +16,13 @@
 		{
 %>
 		<li class="edit"><%=Html.ActionLink("Edit", "Edit") %></li>
-		<li class="move"><%=Html.ActionLink("Move topic to another forum", "Move", new{forumName=Model.Forum.ShortName}) %></li>
+		<li class="move"><%=Html.ActionLink("Move topic", "Move", new{forumName=Model.Forum.ShortName}) %></li>
+		<li class="edit"><%=Html.ActionLink("Delete", "Delete", null, new{@onclick="return confirm('Are you sure you want to DELETE this topic?');"}) %></li>
 <%
 			if (!this.Model.IsClosed)
 			{
 %>
-			<li class="close"><%=Html.ActionLink("Close", "CloseReplies") %></li>
+			<li class="close"><%=Html.ActionLink("Close", "CloseReplies", null, new{@onclick="return confirm('Are you sure you want to CLOSE this topic for further replies?');"}) %></li>
 		
 <%
 			}

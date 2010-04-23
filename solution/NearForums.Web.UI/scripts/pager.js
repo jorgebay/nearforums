@@ -16,20 +16,23 @@
 	,
 	init : function(postUrl,postUrlToId)
 	{
-		pager.firstItem = parseInt($(".firstItem").text(), 10);
-		pager.lastItem = parseInt($(".lastItem").text(), 10);
-		pager.totalItems = parseInt($(".totalItems").text(), 10);
-		pager.enabled = true;
-		
-		pager.postUrl = postUrl;
-		pager.postUrlToId = postUrlToId;
-		if (pager.firstItem == 1)
+		if ($(".firstItem").length > 0)
 		{
-			$("div.pager").hide();
-			$("#pagerClient").slideDown();
-			if (window.location.hash)
+			pager.firstItem = parseInt($(".firstItem").text(), 10);
+			pager.lastItem = parseInt($(".lastItem").text(), 10);
+			pager.totalItems = parseInt($(".totalItems").text(), 10);
+			pager.enabled = true;
+			
+			pager.postUrl = postUrl;
+			pager.postUrlToId = postUrlToId;
+			if (pager.firstItem == 1)
 			{
-				pager.navigateToId();
+				$("div.pager").hide();
+				pager.showCurrentStatus();
+				if (window.location.hash)
+				{
+					pager.navigateToId();
+				}
 			}
 		}
 		$(document).trigger("dataLoaded");
@@ -51,10 +54,14 @@
 	showCurrentStatus : function()
 	{
 		$(".lastItem").text(pager.lastItem.toString());
-		if (parseInt(pager.lastItem, 10) == parseInt(pager.totalItems, 10))
+		if (pager.lastItem == pager.totalItems)
 		{
 			//Don't hide it, just disable it
 			$("#pagerClient").hide();
+		}
+		else
+		{
+			$("#pagerClient").slideDown();
 		}
 	}
 	,

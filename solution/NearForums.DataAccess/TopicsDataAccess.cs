@@ -150,13 +150,14 @@ namespace NearForums.DataAccess
 		public void Add(Topic topic, string ip)
 		{
 			DbCommand comm = this.GetCommand("SPTopicsInsert");
-			comm.AddParameter(this.Factory, "TopicTitle", DbType.String, topic.Title);
-			comm.AddParameter(this.Factory, "TopicShortName", DbType.String, topic.ShortName);
-			comm.AddParameter(this.Factory, "TopicDescription", DbType.String, topic.Description);
-			comm.AddParameter(this.Factory, "UserId", DbType.Int32, topic.User.Id);
-			comm.AddParameter(this.Factory, "TopicTags", DbType.String, topic.Tags.ToString());
-			comm.AddParameter(this.Factory, "Forum", DbType.String, topic.Forum.ShortName);
-			comm.AddParameter(this.Factory, "Ip", DbType.String, ip);
+			comm.AddParameter<string>(this.Factory, "TopicTitle", topic.Title);
+			comm.AddParameter<string>(this.Factory, "TopicShortName", topic.ShortName);
+			comm.AddParameter<string>(this.Factory, "TopicDescription", topic.Description);
+			comm.AddParameter<int>(this.Factory, "UserId", topic.User.Id);
+			comm.AddParameter<string>(this.Factory, "TopicTags", topic.Tags.ToString());
+			comm.AddParameter<string>(this.Factory, "Forum", topic.Forum.ShortName);
+			comm.AddParameter(this.Factory, "TopicOrder", DbType.Int32, topic.IsSticky ? 1 : (int?)null);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
 
 			DbParameter idParameter = comm.AddParameter(this.Factory, "TopicId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;
@@ -175,12 +176,13 @@ namespace NearForums.DataAccess
 		public void Edit(Topic topic, string ip)
 		{
 			DbCommand comm = this.GetCommand("SPTopicsUpdate");
-			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topic.Id);
-			comm.AddParameter(this.Factory, "TopicTitle", DbType.String, topic.Title);
-			comm.AddParameter(this.Factory, "TopicDescription", DbType.String, topic.Description);
-			comm.AddParameter(this.Factory, "UserId", DbType.Int32, topic.User.Id);
-			comm.AddParameter(this.Factory, "TopicTags", DbType.String, topic.Tags.ToString());
-			comm.AddParameter(this.Factory, "Ip", DbType.String, ip);
+			comm.AddParameter<int>(this.Factory, "TopicId", topic.Id);
+			comm.AddParameter<string>(this.Factory, "TopicTitle", topic.Title);
+			comm.AddParameter<string>(this.Factory, "TopicDescription", topic.Description);
+			comm.AddParameter<int>(this.Factory, "UserId", topic.User.Id);
+			comm.AddParameter<string>(this.Factory, "TopicTags", topic.Tags.ToString());
+			comm.AddParameter(this.Factory, "TopicOrder", DbType.Int32, topic.IsSticky ? 1 : (int?) null);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
 
 			this.SafeExecuteNonQuery(comm);
 		}
@@ -198,6 +200,16 @@ namespace NearForums.DataAccess
 			DbCommand comm = this.GetCommand("SPTopicsMove");
 			comm.AddParameter<int>(this.Factory, "TopicId", id);
 			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
+
+			this.SafeExecuteNonQuery(comm);
+		}
+
+		public void Delete(int id, int userId, string ip)
+		{
+			DbCommand comm = this.GetCommand("SPTopicsDelete");
+			comm.AddParameter<int>(this.Factory, "TopicId", id);
 			comm.AddParameter<int>(this.Factory, "UserId", userId);
 			comm.AddParameter<string>(this.Factory, "Ip", ip);
 

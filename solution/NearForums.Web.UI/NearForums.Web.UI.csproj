@@ -326,6 +326,7 @@
     <Content Include="Views\Topics\Move.aspx" />
     <Content Include="Views\Topics\Related.ascx" />
     <Content Include="Views\Topics\Toolbar.ascx" />
+    <Content Include="Views\Users\Detail.aspx" />
     <Content Include="Views\Users\List.aspx" />
   </ItemGroup>
   <ItemGroup>

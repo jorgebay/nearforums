@@ -10,9 +10,9 @@ namespace NearForums.Web.Controllers
 {
 	public class UsersController : BaseController
 	{
-		public ActionResult Detail(int userId)
+		public ActionResult Detail(int id)
 		{
-			User user = UsersServiceClient.Get(userId);
+			User user = UsersServiceClient.Get(id);
 			return View(user);
 		}
 

@@ -127,8 +127,7 @@ namespace NearForums.DataAccess
 
 		public static string GetString(this DataRow dr, string columnName)
 		{
-			object value = dr[columnName];
-			return value.ToString();
+			return dr.GetNullable<string>(columnName);
 		}
 
 		public static T GetNullable<T>(this DataRow dr, string columnName)

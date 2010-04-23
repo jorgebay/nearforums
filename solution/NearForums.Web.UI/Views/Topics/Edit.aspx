@@ -32,6 +32,10 @@
 			<%=Html.TextArea("description") %>
 			<% Html.RenderPartial("EditorScripts", CreateViewData(new{Name="description"})); %>
 		</div>
+		<div class="formItem checkbox">
+			<label for="isSticky">Sticky topic?</label>
+			<%=Html.CheckBox("isSticky") %>
+		</div>
 		<div class="formItem buttons">
 			<input type="submit" value="Send" />
 		</div>

@@ -21,5 +21,21 @@ namespace NearForums.Web.Extensions
 			}
 			return value;
 		}
+
+		public static string FirstUpperCase(this string value)
+		{
+			if (!String.IsNullOrEmpty(value))
+			{
+				string result = value.Substring(0, 1);
+				result = result.ToUpper();
+
+				if (value.Length > 1)
+				{
+					result += value.Substring(1);
+				}
+				return result;
+			}
+			return value;
+		}
 	}
 }

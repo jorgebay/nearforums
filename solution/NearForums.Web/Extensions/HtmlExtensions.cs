@@ -93,14 +93,34 @@ namespace NearForums.Web.Extensions
 			return value;
 		}
 
-		public static string Date(this HtmlHelper htmlHelper, DateTime date)
+		public static string Date(this HtmlHelper htmlHelper, DateTime date, string format)
 		{
 			DateTime appDate = date.ToApplicationDateTime();
 			TagBuilder builder = new TagBuilder("span");
 			builder.AddCssClass("date");
 			builder.AddCssClass("d" + appDate.Year + "-" + appDate.Month + "-" + appDate.Day + "-" + appDate.Hour + "-" + appDate.Minute);
-			builder.InnerHtml = appDate.ToString(SiteConfiguration.Current.DateFormat);
+			builder.InnerHtml = appDate.ToString(format);
 			return builder.ToString();
+		}
+
+		public static string Date(this HtmlHelper htmlHelper, DateTime date)
+		{
+			return htmlHelper.Date(date, SiteConfiguration.Current.DateFormat);
+		}
+
+		public static string Link(this HtmlHelper htmlHelper, string url)
+		{
+			return htmlHelper.Link(url, null);
+		}
+
+		public static string Link(this HtmlHelper htmlHelper, string url, object htmlAttributes)
+		{
+			IDictionary<string, object> htmlAttributesDictionay = ((IDictionary<string, object>) new RouteValueDictionary(htmlAttributes));
+			TagBuilder builder = new TagBuilder("a");
+			builder.MergeAttributes<string, object>(htmlAttributesDictionay);
+			builder.InnerHtml = url.Replace("http://", "");
+			builder.Attributes.Add("href", url);
+			return builder.ToString(TagRenderMode.Normal);
 		}
 	}
 }

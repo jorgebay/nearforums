@@ -78,7 +78,7 @@ namespace NearForums.Tests.Controllers
 		}
 
 		[TestMethod]
-		public void AddTopic_Test()
+		public void Topic_Add_Delete_Test()
 		{
 			TopicsController controller = new TopicsController();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
@@ -99,7 +99,18 @@ namespace NearForums.Tests.Controllers
 			t.Forum = forum;
 
 			result = controller.Add(forum.ShortName, t);
-			Assert.IsTrue(t.Id > 0);
+			int topicId = t.Id;
+
+			Assert.IsTrue(topicId > 0);
+
+			result = controller.Delete(topicId, t.ShortName, t.Forum.ShortName);
+
+			Assert.IsTrue(result is RedirectToRouteResult);
+
+			t = TopicsServiceClient.Get(topicId);
+
+			Assert.IsNull(t);
+			
 		}
 
 		[TestMethod]
@@ -146,7 +157,7 @@ namespace NearForums.Tests.Controllers
 		}
 
 		[TestMethod]
-		public void Topic_OpenClose()
+		public void Topic_OpenClose_Test()
 		{
 			TopicsController controller = new TopicsController();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
@@ -168,7 +179,7 @@ namespace NearForums.Tests.Controllers
 		}
 
 		[TestMethod]
-		public void Topic_LatestMessages()
+		public void Topic_LatestMessages_Test()
 		{
 			TopicsController controller = new TopicsController();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());

@@ -125,6 +125,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Determines if the topic is fixed ordered
+		/// </summary>
 		public bool IsSticky
 		{
 			get;

@@ -118,5 +118,11 @@ namespace NearForums.ServiceClient
 			TopicsDataAccess da = new TopicsDataAccess();
 			return da.GetUnanswered(forumId);
 		}
+
+		public static void Delete(int id, int userId, string ip)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			da.Delete(id, userId, ip);
+		}
 	}
 }

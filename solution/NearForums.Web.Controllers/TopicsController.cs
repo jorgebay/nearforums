@@ -174,9 +174,31 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
+		#region Delete
+		[RequireAuthorization]
+		public ActionResult Delete(int id, string name, string forum)
+		{
+			#region Check if user can edit
+			if (this.User.Group < UserGroup.Moderator)
+			{
+				//Check if the user that created of the topic is the same as the logged user
+				Topic originalTopic = TopicsServiceClient.Get(id);
+				if (this.User.Id != originalTopic.User.Id)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+			}
+			#endregion
+
+			TopicsServiceClient.Delete(id, this.User.Id, Request.UserHostAddress);
+
+			return RedirectToAction("Detail", "Forums", new{forum=forum});
+		}
+		#endregion
+
 		#region Client Paging
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult PageMore(int id, int from, int initIndex)
+		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
 		{
 			//load messages
 			List<Message> messages = MessagesServiceClient.GetByTopicFrom(id, from, Config.Topics.MessagesPerPage, initIndex);
@@ -187,7 +209,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult PageUntil(int id, int firstMsg, int lastMsg, int initIndex)
+		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg, int initIndex)
 		{
 			//load messages
 			List<Message> messages = MessagesServiceClient.GetByTopic(id, firstMsg, lastMsg, initIndex);
