@@ -34,4 +34,13 @@
 		</tbody>
 	</table>
 	<p class=""><%=Html.ActionLink("Upload a new template", "AddTemplate") %></p>
+	<p style="padding-top: 50px;">
+		In order to enable templating in the site you must configure the template element on your Site.config file.
+		<br />
+		For example: 
+	</p>
+	<code>
+		&lt;template path="/content/templates/" master="Templated" /&gt;
+	</code>
+	<p style="font-family: Courier;"></p>
 </asp:Content>

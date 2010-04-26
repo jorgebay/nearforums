@@ -16,10 +16,24 @@ namespace NearForums
 
 		[RequireField]
 		[Length(16)]
+		private string _key;
 		public string Key
 		{
-			get;
-			set;
+			get
+			{
+				return _key;
+			}
+			set
+			{
+				if (value != null)
+				{
+					_key = value.ToLower();
+				}
+				else
+				{
+					_key = null;
+				}
+			}
 		}
 
 		public string Description

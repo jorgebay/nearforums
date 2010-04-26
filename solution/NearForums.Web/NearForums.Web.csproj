@@ -62,6 +62,8 @@
     <Compile Include="Extensions\ResultHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewDataExtensions.cs" />
+    <Compile Include="Handlers\StaticFileHandler.cs" />
+    <Compile Include="Modules\CompressionModule.cs" />
     <Compile Include="Modules\ModelBinderModule.cs" />
     <Compile Include="Modules\RouteMappingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,9 +92,6 @@
       <Project>{8039364C-28D8-4AE9-9684-628671C0FF86}</Project>
       <Name>NearForums</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

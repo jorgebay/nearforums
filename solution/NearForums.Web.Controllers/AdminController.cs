@@ -4,7 +4,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using ICSharpCode.SharpZipLib.Zip;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Text;
 using NearForums.Validation;
@@ -44,7 +43,7 @@ namespace NearForums.Web.Controllers
 				}
 				#endregion
 
-				if (Path.GetExtension(postedFile.FileName).ToUpper() == ".ZIP")
+				if (SafeIO.Path_GetExtension(postedFile.FileName) == ".zip")
 				{
 					//Validate max length
 					if (postedFile.ContentLength > 1024 * 1024 * 3)
@@ -61,8 +60,8 @@ namespace NearForums.Web.Controllers
 				{
 					baseDirectory = Server.MapPath(Config.Template.Path + template.Key);
 					#region Create directories
-					Directory.CreateDirectory(baseDirectory);
-					Directory.CreateDirectory(baseDirectory + "\\contents");
+					SafeIO.Directory_CreateDirectory(baseDirectory);
+					SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
 					#endregion
 					//Open the zip file.
 					#region Save the files in the zip file
@@ -77,14 +76,14 @@ namespace NearForums.Web.Controllers
 							{
 								string fileName = baseDirectory;
 
-								if (Path.GetDirectoryName(entry.Name).ToUpper() == "TEMPLATE-CONTENTS")
+								if (SafeIO.Path_GetDirectoryName(entry.Name).ToUpper() == "TEMPLATE-CONTENTS")
 								{
 									fileName += "\\contents";
 								}
-								fileName += "\\" + Path.GetFileName(entry.Name);
+								fileName += "\\" + SafeIO.Path_GetFileName(entry.Name);
 
 								#region Save file
-								using (FileStream streamWriter = System.IO.File.Create(fileName))
+								using (System.IO.FileStream streamWriter = SafeIO.File_Create(fileName))
 								{
 									int size = 2048;
 									byte[] data = new byte[2048];
@@ -135,7 +134,7 @@ namespace NearForums.Web.Controllers
 				{
 					if (baseDirectory != null)
 					{
-						Directory.Delete(baseDirectory, true);
+						SafeIO.Directory_Delete(baseDirectory, true);
 					}
 				}
 				catch
@@ -178,9 +177,9 @@ namespace NearForums.Web.Controllers
 			List<StringBuilder> partsList = new List<StringBuilder>();
 
 			string currentLine = null;
-			using (FileStream inputStream = System.IO.File.OpenRead(fileName))
+			using (System.IO.FileStream inputStream = SafeIO.File_OpenRead(fileName))
 			{
-				using (StreamReader inputReader = new StreamReader(inputStream))
+				using (System.IO.StreamReader inputReader = new System.IO.StreamReader(inputStream))
 				{
 					StringBuilder part = new StringBuilder();
 					partsList.Add(part);
@@ -234,8 +233,8 @@ namespace NearForums.Web.Controllers
 				if (part.Length > 0)
 				{
 					//template.part.1.html
-					string directoryName = Path.GetDirectoryName(fileName);
-					System.IO.File.WriteAllText(directoryName + "\\template.part." + partNumber + ".html", part.ToString(), Encoding.UTF8);
+					string directoryName = SafeIO.Path_GetDirectoryName(fileName);
+					SafeIO.File_WriteAllText(directoryName + "\\template.part." + partNumber + ".html", part.ToString(), Encoding.UTF8);
 					partNumber++;
 				}
 			}
