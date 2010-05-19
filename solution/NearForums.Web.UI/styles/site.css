@@ -149,7 +149,43 @@ strong a
 #header
 {
 	height: 117px;
-	padding-bottom: 20px;
+	padding: 0 0 20px 0;
+}
+#userMenu
+{
+	float: right;
+	background-color: #ffffff;
+	list-style-type: none;
+	padding: 8px 10px 6px 0;
+	margin: 0;
+	font-size: 13px;
+	height:16px;
+}
+#userMenu li
+{
+	float: left;
+	padding: 0 0 0 10px;
+	margin: 0 0 0 10px;
+	border-left: solid 1px #cccccc;
+}
+#userMenu li.toContent
+{
+	border: none;
+	margin: 0;
+}
+#userMenu li a
+{
+	text-decoration: none;
+	color: #444444;
+}
+#userMenu a img
+{
+	position: relative;
+	top: -3px;
+}
+#userMenu li a:hover
+{
+	text-decoration: underline;
 }
 #footer
 {
@@ -440,23 +476,68 @@ div.toolbar ul
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
 }
-div.toolbar ul li
+div.toolbar li
 {
 	float: left;
 	margin-right: 35px;
 }
-div.toolbar ul li a
+div.toolbar li a
 {
 	display: block;
 	text-decoration: none;
 	font-weight: bold;
 	padding: 5px 0 5px 25px;
 	background-repeat: no-repeat;
+	background-position: left center;
 	color: #444444;
 }
 div.toolbar ul li a:hover
 {
 	text-decoration: underline;
+}
+div.toolbar li.reply a
+{
+	padding-left: 25px;
+	background-image: url(/images/temp/icon-reply.gif);
+}
+div.toolbar li.showAll
+{
+	display: none;
+}
+div.toolbar li.showAll a
+{
+	padding-left: 17px;
+	background-image: url(/images/temp/icon-show-all.gif);
+}
+div.toolbar li.print a
+{
+	padding-left: 27px;
+	background-image: url(/images/temp/icon-print.gif);
+}
+div.toolbar li.edit a
+{
+	padding-left: 25px;
+	background-image: url(/images/temp/icon-edit.gif);
+}
+div.toolbar li.move a
+{
+	padding-left: 20px;
+	background-image: url(/images/temp/icon-move.gif);
+}
+div.toolbar li.delete a
+{
+	padding-left: 22px;
+	background-image: url(/images/temp/icon-delete.gif);
+}
+div.toolbar li.close a
+{
+	padding-left: 22px;
+	background-image: url(/images/temp/icon-close.gif);
+}
+div.toolbar li.open a
+{
+	padding-left: 20px;
+	background-image: url(/images/temp/icon-open.gif);
 }
 #pagerClient
 {

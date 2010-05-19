@@ -3,6 +3,9 @@
 	About
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<ul class="path floatContainer">
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+	</ul>
 	<h1>About the forum</h1>
 	<!-- Add your about text here -->
 	<!-- Leave this paragraph -->

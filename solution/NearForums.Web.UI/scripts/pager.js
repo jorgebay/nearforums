@@ -58,10 +58,12 @@
 		{
 			//Don't hide it, just disable it
 			$("#pagerClient").hide();
+			$("div.toolbar li.showAll").hide();
 		}
 		else
 		{
 			$("#pagerClient").slideDown();
+			$("div.toolbar li.showAll").show();
 		}
 	}
 	,

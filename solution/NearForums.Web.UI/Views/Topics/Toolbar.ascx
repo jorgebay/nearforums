@@ -17,7 +17,7 @@
 %>
 		<li class="edit"><%=Html.ActionLink("Edit", "Edit") %></li>
 		<li class="move"><%=Html.ActionLink("Move topic", "Move", new{forumName=Model.Forum.ShortName}) %></li>
-		<li class="edit"><%=Html.ActionLink("Delete", "Delete", null, new{@onclick="return confirm('Are you sure you want to DELETE this topic?');"}) %></li>
+		<li class="delete"><%=Html.ActionLink("Delete", "Delete", null, new{@onclick="return confirm('Are you sure you want to DELETE this topic?');"}) %></li>
 <%
 			if (!this.Model.IsClosed)
 			{
@@ -29,7 +29,7 @@
 			else
 			{
 %>
-			<li class="close"><%=Html.ActionLink("Open to replies", "OpenReplies") %></li>
+			<li class="open"><%=Html.ActionLink("Open to replies", "OpenReplies") %></li>
 <%	
 			}
 		}

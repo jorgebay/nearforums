@@ -299,6 +299,14 @@
     <Content Include="images\temp\arrow-right.gif" />
     <Content Include="images\temp\body-bg.gif" />
     <Content Include="images\temp\content-top.gif" />
+    <Content Include="images\temp\icon-close.gif" />
+    <Content Include="images\temp\icon-delete.gif" />
+    <Content Include="images\temp\icon-edit.gif" />
+    <Content Include="images\temp\icon-move.gif" />
+    <Content Include="images\temp\icon-open.gif" />
+    <Content Include="images\temp\icon-print.gif" />
+    <Content Include="images\temp\icon-reply.gif" />
+    <Content Include="images\temp\icon-show-all.gif" />
     <Content Include="images\temp\next-big.gif" />
     <Content Include="scripts\overtip.js" />
     <Content Include="scripts\pager.js" />

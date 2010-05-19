@@ -115,10 +115,27 @@ namespace NearForums.Web.Extensions
 
 		public static string Link(this HtmlHelper htmlHelper, string url, object htmlAttributes)
 		{
+			return htmlHelper.Link(null, url, htmlAttributes);
+		}
+
+		public static string Link(this HtmlHelper htmlHelper, string innerHtml, string url)
+		{
+			return htmlHelper.Link(innerHtml, url, null);
+		}
+
+		public static string Link(this HtmlHelper htmlHelper, string innerHtml, string url, object htmlAttributes)
+		{
 			IDictionary<string, object> htmlAttributesDictionay = ((IDictionary<string, object>) new RouteValueDictionary(htmlAttributes));
 			TagBuilder builder = new TagBuilder("a");
 			builder.MergeAttributes<string, object>(htmlAttributesDictionay);
-			builder.InnerHtml = url.Replace("http://", "");
+			if (innerHtml == null)
+			{
+				builder.InnerHtml = url.Replace("http://", "");
+			}
+			else
+			{
+				builder.InnerHtml = innerHtml;
+			}
 			builder.Attributes.Add("href", url);
 			return builder.ToString(TagRenderMode.Normal);
 		}

@@ -14,6 +14,7 @@ namespace NearForums.Web.State
 			this.Group = user.Group;
 			this.Guid = user.Guid;
 			this.TimeZone = user.TimeZone;
+			this.ExternalProfileUrl = user.ExternalProfileUrl;
 		}
 
 		public int Id
@@ -41,6 +42,12 @@ namespace NearForums.Web.State
 		}
 
 		public Guid Guid
+		{
+			get;
+			set;
+		}
+
+		public string ExternalProfileUrl
 		{
 			get;
 			set;

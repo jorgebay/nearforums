@@ -1,8 +1,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="NearForums.Web.UI.BaseViewPage<Topic>" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server"><%=Model.Title %></asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
+	<%=Model.Title %>
+</asp:Content>
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
 	<%=Html.MetaDescription(Utils.Summarize(Utils.RemoveTags(Model.Description), 160, ""))%>
+	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -58,7 +61,6 @@
 		<% Html.RenderPartial("Toolbar", this.Model); %>
 		<% Html.RenderPartial("Related", this.Model); %>
 	</div>
-	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="/scripts/overtip.js"></script>
 	<script type="text/javascript" src="/scripts/pager.js"></script>
 	<script type="text/javascript" src="/scripts/quoting.js"></script>
