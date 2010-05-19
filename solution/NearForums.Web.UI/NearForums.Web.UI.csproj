@@ -72,7 +72,6 @@
     <Content Include="scripts\jquery-1.3.2.min.js" />
     <Content Include="scripts\jquery-1.3.2-vsdoc.js" />
     <Content Include="scripts\jquery-1.3.2.min-vsdoc.js" />
-    <Content Include="Views\Home\About.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\Site.Master" />
@@ -321,6 +320,7 @@
     <Content Include="Views\Shared\EditorScripts.ascx" />
     <Content Include="Views\Shared\TagCloud.ascx" />
     <Content Include="Views\Shared\Templated.Master" />
+    <Content Include="Views\Static\About.aspx" />
     <Content Include="Views\Topics\Edit.aspx" />
     <Content Include="Views\Topics\LatestMessages.aspx" />
     <Content Include="Views\Topics\Move.aspx" />

@@ -12,7 +12,7 @@
     <%=Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 		{
 			{"Description", "Topic message must not be blank."}
-			,{"Tags", "Tags must not be blank, separated by a space and must not contain special characters."}
+			,{"Tags", "Tags must not be blank, separated by spaces and must not contain special characters."}
 			,{"Title", "Subject must not be blank."}
 			,{"ShortName", ""}
 		}, null)%>
@@ -24,8 +24,9 @@
 			<%=Html.TextBox("title", null, new{@class="text"}) %>
 		</div>
 		<div class="formItem floatContainer">
-			<label for="tags">Tags</label>
+			<label for="tags">Tags </label>
 			<%=Html.TextBox("tags", null, new{@class="text"}) %>
+			<span class="note">Separated by spaces</span>
 		</div>
 		<div class="formItem textarea floatContainer">
 			<label for="description">Message</label>

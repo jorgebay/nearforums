@@ -44,10 +44,37 @@ namespace NearForums
 			return Directory.CreateDirectory(path);
 		}
 
+		/// <summary>
+		/// Deletes the directory.
+		/// Ignores if the directory does not exist. 
+		/// </summary>
+		/// <param name="path"></param>
+		/// <param name="recursive"></param>
 		public static void Directory_Delete(string path, bool recursive)
 		{
+			try
+			{
+				path = path.ToLower();
+				Directory.Delete(path, recursive);
+			}
+			catch (DirectoryNotFoundException)
+			{
+				//if the directory is not found: Ignore.
+			}
+		}
+
+		/// <summary>
+		/// Returns the names of files in the specified directory that match the specified search pattern
+		/// </summary>
+		/// <returns></returns>
+		public static string[] Directory_GetFiles(string path, string searchPattern)
+		{
+			if (path == null)
+			{
+				throw new ArgumentNullException("path");
+			}
 			path = path.ToLower();
-			Directory.Delete(path, recursive);
+			return Directory.GetFiles(path, searchPattern);
 		}
 		#endregion
 
@@ -68,6 +95,19 @@ namespace NearForums
 		{
 			fileName = fileName.ToLower();
 			return File.Create(fileName);
+		}
+
+		/// <summary>
+		/// Opens a text file, reads all lines of the file, and then closes the file.
+		/// </summary>
+		public static string File_ReadAllText(string fileName)
+		{
+			if (fileName == null)
+			{
+				throw new ArgumentNullException("fileName");
+			}
+			fileName = fileName.ToLower();
+			return File.ReadAllText(fileName);
 		}
 		#endregion
 	}

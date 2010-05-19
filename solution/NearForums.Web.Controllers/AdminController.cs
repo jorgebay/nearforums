@@ -33,15 +33,12 @@ namespace NearForums.Web.Controllers
 
 			try
 			{
-				TemplatesServiceClient.Add(template);
-
-				#region Check access rights
-				UserFileAccessRights fileAccessRights = new UserFileAccessRights(Server.MapPath(Config.Template.Path));
-				if (!(fileAccessRights.canWrite() && fileAccessRights.canModify() && fileAccessRights.canDelete()))
+				if (postedFile == null)
 				{
-					throw new ValidationError("postedFile", ValidationErrorType.AccessRights);
+					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.NullOrEmpty));
 				}
-				#endregion
+
+				TemplatesServiceClient.Add(template);
 
 				if (SafeIO.Path_GetExtension(postedFile.FileName) == ".zip")
 				{
@@ -60,8 +57,15 @@ namespace NearForums.Web.Controllers
 				{
 					baseDirectory = Server.MapPath(Config.Template.Path + template.Key);
 					#region Create directories
-					SafeIO.Directory_CreateDirectory(baseDirectory);
-					SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
+					try
+					{
+						SafeIO.Directory_CreateDirectory(baseDirectory);
+						SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
+					}
+					catch (UnauthorizedAccessException)
+					{
+						throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.AccessRights));
+					}
 					#endregion
 					//Open the zip file.
 					#region Save the files in the zip file
@@ -120,8 +124,6 @@ namespace NearForums.Web.Controllers
 				}
 				else
 				{
-					TemplatesServiceClient.Delete(template.Id);
-
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
 				}
 			}
@@ -130,15 +132,20 @@ namespace NearForums.Web.Controllers
 				this.AddErrors(this.ModelState, ex);
 
 				//Delete the folder
-				try
+				if (baseDirectory != null)
 				{
-					if (baseDirectory != null)
+					try
 					{
 						SafeIO.Directory_Delete(baseDirectory, true);
 					}
+					catch (UnauthorizedAccessException)
+					{
+
+					}
 				}
-				catch
+				if (template.Id > 0)
 				{
+					TemplatesServiceClient.Delete(template.Id);
 				}
 			}
 			return View();
@@ -244,12 +251,26 @@ namespace NearForums.Web.Controllers
 		#endregion
 		#endregion
 
-		#region List template
+		#region List templates
 		[RequireAuthorization(UserGroup.Admin)]
-		public ActionResult ListTemplates()
+		public ActionResult ListTemplates(TemplateActionError? error)
 		{
 			List<Template> list = TemplatesServiceClient.GetAll();
+			if (error == TemplateActionError.DeleteCurrent)
+			{
+				ViewData["DeleteCurrent"] = true;
+			}
+			else if (error == TemplateActionError.UnauthorizedAccess)
+			{
+				ViewData["Access"] = true;
+			}
 			return View(list);
+		}
+
+		public enum TemplateActionError
+		{
+			DeleteCurrent=0,
+			UnauthorizedAccess=1
 		}
 		#endregion 
 
@@ -262,6 +283,39 @@ namespace NearForums.Web.Controllers
 			this.Cache.Template = null;
 
 			return RedirectToAction("ListTemplates", "Admin");
+		}
+		#endregion
+
+		#region Delete Template
+		[RequireAuthorization(UserGroup.Admin)]
+		public ActionResult DeleteTemplate(int id)
+		{
+			TemplateActionError? error = null;
+
+			Template t = TemplatesServiceClient.Get(id);
+			if (t != null)
+			{
+				if (t.IsCurrent)
+				{
+					error = TemplateActionError.DeleteCurrent;
+				}
+				else
+				{
+
+					string baseDirectory = Server.MapPath(Config.Template.Path + t.Key);
+					try
+					{
+						SafeIO.Directory_Delete(baseDirectory, true);
+						TemplatesServiceClient.Delete(id);
+					}
+					catch (UnauthorizedAccessException)
+					{
+						error = TemplateActionError.UnauthorizedAccess;
+					}
+				}
+				
+			}
+			return RedirectToAction("ListTemplates", new{error=error});
 		}
 		#endregion
 		#endregion

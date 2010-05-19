@@ -7,6 +7,10 @@
 		<li class="first"><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
 	</ul>
     <h1>Templates</h1>
+	<p class="error">
+		<%=ViewData.WriteIf("DeleteCurrent", "You cannot delete the current template.", "") %>
+		<%=ViewData.WriteIf("Access", "The application does not have the necessary file read/write access.", "") %>
+	</p> 
     <table cellpadding="0" cellspacing="0">
 		<thead>
 			<tr>
@@ -23,7 +27,7 @@
 	{
 %>
 		<tr>
-			<td><%=Html.ActionLink("Set", "TemplateSetCurrent", new{id=t.Id}) %></td>
+			<td><%=Html.ActionLink("Set", "TemplateSetCurrent", new{id=t.Id}) %>, <%=Html.ActionLink("Delete", "DeleteTemplate", new{id=t.Id}, new{onclick="return confirm('Are you sure you want to DELETE this template?\\nThis action is not reversible.');"}) %></td>
 			<td><%=t.Key %></td>
 			<td><%=t.Description %></td>
 			<td><%=t.IsCurrent ? "Current" : "" %></td>

@@ -15,12 +15,18 @@
 			{"postedFile", new Dictionary<ValidationErrorType, string>()
 						{ 
 							{ValidationErrorType.AccessRights, "The application does not file Write access on the server's template folder."}
-							,{ValidationErrorType.FileFormat, "File format is invalid. Please include only the allowed files."},
+							,{ValidationErrorType.FileFormat, "File format is invalid. Please include only the allowed files."}
+							,{ValidationErrorType.NullOrEmpty, "File format must not be blank."}
 						}}
+			, {"Key", "Key format is not valid. Include a-z 0-9 and up to 16 characters."}
 		}, null)%>
+		
 	<% Html.BeginForm(null, null, FormMethod.Post, new{enctype="multipart/form-data"}); %>
 	<div class="formItem floatContainer">
-		<label for="txtKey">Key</label><input type="text" name="key" id="txtKey" value="demo1" />
+		<label for="key">Key</label><%=Html.TextBox("key")%>
+	</div>
+	<div class="formItem floatContainer">
+		<label for="description">Description</label><%=Html.TextBox("description") %>
 	</div>
 	<div class="formItem floatContainer">
 		<label for="txtPostedFile">Template File (.zip)</label><input type="file" name="postedFile" id="txtPostedFile" />

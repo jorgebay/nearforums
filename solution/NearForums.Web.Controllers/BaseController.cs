@@ -7,7 +7,6 @@ using NearForums.Web.Controllers.Helpers;
 using NearForums.Web.State;
 using NearForums.Configuration;
 using NearForums.Validation;
-using System.IO;
 using System.Web;
 using NearForums.ServiceClient;
 
@@ -89,13 +88,6 @@ namespace NearForums.Web.Controllers
 		} 
 		#endregion
 
-		#region Actions
-		public ActionResult Static(string key)
-		{
-			return View("~/Views/Static/" + key + ".aspx", "", null);
-		}
-		#endregion
-
 		#region Model state errors
 		/// <summary>
 		/// Add the errors to the model state.
@@ -126,22 +118,23 @@ namespace NearForums.Web.Controllers
 		#region Templates
 		public void LoadTemplate()
 		{
-			//TODO: Get the current template code from db
-			string key = TemplatesServiceClient.GetCurrent().Key;
+			//Gets the current template code from db
+			Template t = TemplatesServiceClient.GetCurrent();
+
 
 			//Get all the files in the directory
-			TemplateState template = new TemplateState(key);
-			string[] fileNameList = Directory.GetFiles(Server.MapPath(template.Path), "*.part.*.html");
+			TemplateState template = new TemplateState(t.Key);
+			string[] fileNameList = SafeIO.Directory_GetFiles(Server.MapPath(template.Path), "*.part.*.html");
 			foreach (string fileName in fileNameList)
 			{
-				template.Items.Add(new TemplateState.TemplateItem(System.IO.File.ReadAllText(fileName)));
+				template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));
 			}
 
 			this.Cache.Template = template;
 		}
 		#endregion
 
-		#region View
+		#region ViewResults
 		protected override ViewResult View(string viewName, string masterName, object model)
 		{
 			if (masterName == null && Config != null)
@@ -163,6 +156,11 @@ namespace NearForums.Web.Controllers
 				return View(viewName, "", model);
 			}
 			return View(viewName, model);
+		}
+
+		protected virtual ActionResult Static(string key, bool useMaster)
+		{
+			return View(useMaster, "~/Views/Static/" + key + ".aspx", null);
 		}
 		#endregion
 	}

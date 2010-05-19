@@ -16,6 +16,7 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
         </div>
         <div id="footer">
+			<p><%=Html.ActionLink("About", "About", "Home") %> | Powered by <a href="http://www.nearforums.com">nearforums</a></p>
         </div>
     </div>
 </body>

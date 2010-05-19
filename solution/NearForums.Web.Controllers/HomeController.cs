@@ -16,11 +16,6 @@ namespace NearForums.Web.Controllers
 			return View(null, "Site", null);
 		}
 
-		public ActionResult About()
-		{
-			return View(null, "Site", null);
-		}
-
 		public ActionResult Login(string returnUrl, UserGroup? group)
 		{
 			if (User != null)
@@ -44,6 +39,16 @@ namespace NearForums.Web.Controllers
 				returnUrl = "/";
 			}
 			return Redirect(HttpUtility.UrlDecode(returnUrl));
+		}
+
+		public ActionResult About()
+		{
+			return Static("About", true);
+		}
+
+		public ActionResult FacebookReceiver()
+		{
+			return Static("FacebookXDReceiver", false);
 		}
 	}
 }

@@ -50,6 +50,7 @@ namespace NearForums.DataAccess
 			if (dr != null)
 			{
 				t = ParseTemplateDataRow(dr);
+				t.IsCurrent = dr.Get<bool>("TemplateIsCurrent");
 			}
 
 			return t;
@@ -78,14 +79,13 @@ namespace NearForums.DataAccess
 		public void Add(Template t)
 		{
 			DbCommand comm = this.GetCommand("SPTemplatesInsert");
-			comm.AddParameter(this.Factory, "TemplateKey", DbType.String, t.Key);
-			comm.AddParameter(this.Factory, "TemplateDescription", DbType.String, t.Description);
+			comm.AddParameter<string>(this.Factory, "TemplateKey", t.Key);
+			comm.AddParameter<string>(this.Factory, "TemplateDescription", t.Description);
 
 			DbParameter idParameter = comm.AddParameter(this.Factory, "TemplateId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;
 
 			this.SafeExecuteNonQuery(comm);
-
 
 			if (idParameter.Value == null)
 			{
