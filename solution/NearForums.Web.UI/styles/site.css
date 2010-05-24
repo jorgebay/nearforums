@@ -160,6 +160,7 @@ strong a
 	margin: 0;
 	font-size: 13px;
 	height:16px;
+	overflow: hidden;
 }
 #userMenu li
 {

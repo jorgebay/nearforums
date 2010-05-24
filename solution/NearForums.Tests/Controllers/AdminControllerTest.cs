@@ -117,9 +117,6 @@ namespace NearForums.Tests.Controllers
 			//}
 
 			//Assert.IsTrue(canWrite);
-
-			UserFileAccessRights fileAccessRights = new UserFileAccessRights(context.Server.MapPath("/content/templates/"));
-			Assert.IsTrue(fileAccessRights.canWrite());
 		}
 	}
 }
