@@ -334,6 +334,7 @@
     <Content Include="Views\Shared\EditorScripts.ascx" />
     <Content Include="Views\Shared\TagCloud.ascx" />
     <Content Include="Views\Shared\Templated.Master" />
+    <Content Include="Views\Shared\UserMenu.ascx" />
     <Content Include="Views\Static\About.aspx" />
     <Content Include="Views\Topics\Edit.aspx" />
     <Content Include="Views\Topics\LatestMessages.aspx" />

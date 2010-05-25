@@ -21,16 +21,30 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("master", IsRequired = true)]
+		/// <summary>
+		/// Gets the current master name.
+		/// </summary>
 		public string Master
 		{
 			get
 			{
-				return (string)this["master"];
+				return this.UseTemplates ? "Templated" : "Site";
+			}
+		}
+
+		/// <summary>
+		/// Determines if the application uses templates
+		/// </summary>
+		[ConfigurationProperty("useTemplates", IsRequired = true)]
+		public bool UseTemplates
+		{
+			get
+			{
+				return (bool)this["useTemplates"];
 			}
 			set
 			{
-				this["master"] = value;
+				this["useTemplates"] = value;
 			}
 		}
 	}

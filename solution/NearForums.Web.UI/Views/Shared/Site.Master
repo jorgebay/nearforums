@@ -6,11 +6,10 @@
     <link href="/styles/site.css" rel="stylesheet" type="text/css" />
     <asp:ContentPlaceHolder Id="HeadContent" runat="server" />
 </head>
-
 <body>
     <div id="container">
         <div id="header">
-			<% Html.RenderPartial("LoginSmall", this.ViewData); %>
+			<% Html.RenderPartial("UserMenu", this.ViewData); %>
         </div>
         <div id="content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />

@@ -73,50 +73,37 @@ namespace NearForums.Tests.Controllers
 		#endregion
 
 
-		[TestMethod]
-		public void AdminController_TestFakes()
-		{
-			//AdminController controller = new AdminController();
-			//controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
-			//controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
-			//controller.AddTemplate();
-			//string test = controller.ViewData["SampleUrl"].ToString();
-			//Assert.IsNotNull(test);
-			FakeHttpContext context = new FakeHttpContext("http://localhost/forums/");
-			string physicalPath = context.Server.MapPath("~/Content/Templates/Sample/Template.html");
-			Assert.IsTrue(File.Exists(physicalPath));
+		//[TestMethod]
+		//public void AdminController_TestFakes()
+		//{
+		//    //AdminController controller = new AdminController();
+		//    //controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
+		//    //controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
+		//    //controller.AddTemplate();
+		//    //string test = controller.ViewData["SampleUrl"].ToString();
+		//    //Assert.IsNotNull(test);
+		//    FakeHttpContext context = new FakeHttpContext("http://localhost/forums/");
+		//    string physicalPath = context.Server.MapPath("~/Content/Templates/Sample/Template.html");
+		//    Assert.IsTrue(File.Exists(physicalPath));
 
-		}
+		//}
 
-		[TestMethod]
-		public void AdminController_ChopTemplate_Test()
-		{
-			AdminController controller = new AdminController();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
-			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
+		//[TestMethod]
+		//public void AdminController_ChopTemplate_Test()
+		//{
+		//    AdminController controller = new AdminController();
+		//    controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
+		//    controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
 
-			int parts = controller.ChopTemplateFile(controller.ControllerContext.HttpContext.Server.MapPath("~/Content/Templates/Sample/Template.html"));
-			Assert.IsTrue(parts > 1);
-		}
+		//    int parts = controller.ChopTemplateFile(controller.ControllerContext.HttpContext.Server.MapPath("~/Content/Templates/Sample/Template.html"));
+		//    Assert.IsTrue(parts > 1);
+		//}
 
-		[TestMethod]
-		public void AdminController_TestAccessWrites()
-		{
-			FakeHttpContext context = new FakeHttpContext("http://localhost/");
-			DirectoryInfo directory = new DirectoryInfo(context.Server.MapPath("/content/templates/"));
-			//AuthorizationRuleCollection ruleCollection = directory.GetAccessControl().GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
-
-			//bool canWrite = false;
-			//foreach (FileSystemAccessRule rule in ruleCollection)
-			//{
-			//    if ((rule.FileSystemRights & FileSystemRights.FullControl) == FileSystemRights.FullControl)
-			//    {
-			//        canWrite = true;
-			//        break;
-			//    }
-			//}
-
-			//Assert.IsTrue(canWrite);
-		}
+		//[TestMethod]
+		//public void AdminController_TestAccessWrites()
+		//{
+		//    FakeHttpContext context = new FakeHttpContext("http://localhost/");
+		//    DirectoryInfo directory = new DirectoryInfo(context.Server.MapPath("/content/templates/"));
+		//}
 	}
 }
