@@ -5,6 +5,9 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<ul class="path floatContainer">
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+	</ul>
     <h1><%=Model.UserName %> profile</h1>
     <p><strong>Group</strong>: <%=Model.GroupName %></p>
     <p><strong>Member since</strong>: <%=Html.Date(Model.RegistrationDate, "d") %></p>

@@ -8,10 +8,9 @@
 		<li><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
 	</ul>
     <h1>Templates</h1>
-	<p class="error">
-		<%=ViewData.WriteIf("DeleteCurrent", "You cannot delete the current template.", "") %>
-		<%=ViewData.WriteIf("Access", "The application does not have the necessary file read/write access.", "") %>
-	</p> 
+	<%=ViewData.WriteIf("DeleteCurrent", "<p class='error'>You cannot delete the current template.</p>", "")%>
+	<%=ViewData.WriteIf("Access", "<p class='error'>The application does not have the necessary file read/write access.</p>", "")%>
+	 
     <table cellpadding="0" cellspacing="0">
 		<thead>
 			<tr>
@@ -39,13 +38,21 @@
 		</tbody>
 	</table>
 	<p class=""><%=Html.ActionLink("Upload a new template", "AddTemplate") %></p>
+<%
+	if (!Config.Template.UseTemplates)
+	{
+%>
 	<p style="padding-top: 50px;">
+		Templating feature is <strong>disabled</strong> by configuration.
+		<br />
 		In order to enable templating in the site you must configure the template element on your Site.config file.
 		<br />
 		For example: 
 	</p>
 	<code>
-		&lt;template path="/content/templates/" master="Templated" /&gt;
+		&lt;template useTemplates="true" path="/content/templates/" /&gt;
 	</code>
-	<p style="font-family: Courier;"></p>
+<%
+	}
+%>
 </asp:Content>

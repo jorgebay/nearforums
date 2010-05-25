@@ -39,7 +39,7 @@
 	<h2 style="padding-top: 30px;">File format</h2>
 	<p>Compressed zip file with the following allowed files and folders.</p>
 	<ul>
-		<li><strong>template.html</strong>: html file. The html file must contain the following place holders: {-TitleContent-}, {-HeadContent-}, {-LoginSmall-}, {-MainContent-}. Please mantain the footer links to the Nearforums website.</li>
+		<li><strong>template.html</strong>: html file. The html file must contain the following place holders: {-TitleContent-}, {-HeadContent-}, {-UserMenu-}, {-MainContent-}. Please mantain the footer links to the Nearforums website.</li>
 		<li>
 			<strong>template-contents</strong>: folder that contains any css, png, jpg or gif files.
 			<ul>

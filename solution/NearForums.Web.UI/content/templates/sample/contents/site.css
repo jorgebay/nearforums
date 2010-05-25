@@ -1,0 +1,669 @@
+﻿/*************** Fixes y Bugs *******************/
+.floatContainer:after{
+content: "."; 
+display: block; 
+height: 0; 
+font-size:0;	
+clear: both; 
+visibility:hidden;
+}
+.floatContainer{display: inline-block;} 
+
+/* Hides from IE Mac \*/
+* html .floatContainer {height: 1%;}
+   .floatContainer{display:block;}
+/* End Hack */ 
+/*********END Fixes y Bugs ****************/
+body
+{
+	background-color: #ffffff;
+	color: #333333;
+	margin: 0 0 0 0;
+	padding:0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	background-image: url(/images/temp/body-bg.gif);
+	background-repeat: repeat-x;
+}
+img
+{
+	border: 0;
+	vertical-align: middle;
+}
+table
+{
+	border: none;
+	padding: 20px 0 20px 0;
+}
+table td
+{
+	padding: 2px 10px 2px 2px;
+}
+table th
+{
+	padding: 4px 10px 4px 0px;
+	font-size: 1.1em;
+	text-align: left;
+	border-bottom: solid 1px #666666;
+}
+p
+{
+	margin-top: 0px;
+	margin-bottom: 8px;
+	line-height: 15px;
+}
+ul
+{
+	margin: 0 0 10px 15px;
+	padding: 5px 0 5px 0;
+}
+li
+{
+	margin: 0;
+	padding: 0 0 4px 0;
+}
+a
+{
+	font-weight: bold;
+	color: #0372A0;
+	text-decoration: underline;
+}
+h1
+{
+	font-family: georgia,serif;
+	font-size: 28px;
+	font-weight: normal;
+	color: #333333;
+	margin: 0px 0px 20px 0px;
+	padding: 0px;
+	border-bottom: 1px solid #666666;
+}
+h2
+{
+	font-size: 20px;
+	font-weight: normal;
+	margin: 0 0 10px 0;
+	padding: 0;
+	border-bottom: solid 1px #666666;
+	color: #222222;
+}
+h3
+{
+	font-size: 16px;
+	font-weight: bold;
+	margin: 3px 0px 0px 0px;
+}
+h4
+{
+	font-size: 14px;
+	font-weight: bold;
+	margin: 4px 0px 12px 13px;
+}
+form
+{
+	margin: 0px 0px 0px 0px;
+}
+textarea
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	border: solid 1px #A3A3A5;
+	width: 300px;
+	height: 80px;
+	overflow: auto;
+	padding: 4px;
+}
+input
+{
+	vertical-align: middle;
+	font-family: Arial;
+	margin: 0px;
+	padding: 2px;
+}
+select
+{
+	vertical-align: middle; 
+	font-size: 13px;
+}
+fieldset
+{
+	border: none;
+	padding: 0px 10px 10px 10px;
+	
+}
+abbr
+{
+	text-decoration: none;
+	border-bottom: none;
+}
+strong a
+{
+	font-weight: bold;
+}
+#container
+{
+	width: 950px;
+	overflow: hidden;
+	margin: 0 auto 0 auto;
+}
+#header
+{
+	height: 117px;
+	padding: 0 0 20px 0;
+}
+#userMenu
+{
+	float: right;
+	background-color: #ffffff;
+	list-style-type: none;
+	padding: 8px 10px 6px 0;
+	margin: 0;
+	font-size: 13px;
+	height:16px;
+	overflow: hidden;
+}
+#userMenu li
+{
+	float: left;
+	padding: 0 0 0 10px;
+	margin: 0 0 0 10px;
+	border-left: solid 1px #cccccc;
+}
+#userMenu li.toContent
+{
+	border: none;
+	margin: 0;
+}
+#userMenu li a
+{
+	text-decoration: none;
+	color: #444444;
+}
+#userMenu a img
+{
+	position: relative;
+	top: -3px;
+}
+#userMenu li a:hover
+{
+	text-decoration: underline;
+}
+#footer
+{
+	background-color: #EBEBEB;
+	padding: 10px 10px 2px 10px;
+}
+#footer p
+{
+	text-align: center;
+}
+#footer a
+{
+	text-decoration: none;
+	color: #111111;
+}
+#footer a:hover
+{
+	text-decoration: underline;
+}
+#content
+{
+	background-image: url(/images/temp/content-top.gif);
+	background-repeat: no-repeat;
+	background-color: #ffffff;
+	padding: 17px 25px 50px 25px;
+}
+ul.items
+{
+	margin: 0 0 10px 0;
+	padding: 5px 0 5px 0;
+}
+ul.items li
+{
+	list-style-type: none;
+	background-image: url(/images/temp/arrow-right.gif);
+	background-position: 2px 8px;
+	background-repeat: no-repeat;
+	margin: 0;
+	padding: 0px 0px 4px 15px;
+}
+ul.items h3
+{
+	padding-bottom: 10px;
+}
+ul.items a
+{
+	font-size:16px;
+}
+ul.items span.details
+{
+	font-weight: normal;
+	font-size: 12px;
+	padding-left: 15px;
+}
+div.forumList ul.items p
+{
+	font-size: 14px;
+	color: #696969;
+}
+ul.path
+{
+	list-style-type: none;
+	margin: 0;
+	height: 20px;
+}
+ul.path li
+{
+	float: left;
+	padding-left: 8px;
+}
+ul.path li.first
+{
+	float: left;
+	padding-left: 0;
+}
+ul.path a
+{
+	text-decoration: none;
+	display: block;
+	padding-right: 10px;
+	background-image: url(/images/temp/arrow-right.gif);
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+div.overTip 
+{
+	background-color:#FFFFFF;
+	border-color:#AAAAAA;
+	border-style:solid;
+	border-width:1px 2px 2px 1px;
+	color:#333333;
+	padding:5px;
+	position:absolute;
+	width:300px;
+	z-index:10;
+}
+div.overTip div.msgOptions
+{
+	display: none;
+}
+div.overTip div.msgHeader
+{
+	font-weight: bold;
+}
+div.overTip span.dateSep, div.overTip span.date
+{
+	display: none;
+}
+div.overTip div.msgBody
+{
+	padding: 5px 10px;
+}
+div.pager
+{
+	margin-top:20px;
+	height: 30px;
+	font-size: 11px;
+}
+div.pager a, div.pager span, div.pager a
+{
+	display: block;
+	float: left;
+	margin-right: 3px;
+	padding: 3px 6px 3px 6px;
+	border-bottom:3px solid #5A93D2;
+	text-decoration:none;
+}
+div.pager span
+{
+	border-bottom:3px solid #EEEEEE;
+	color: #666666;
+}
+div.pager a:hover
+{
+	background-color: #5A93D2;
+	color: #FFFFFF;
+}
+div.tagCloud
+{
+	width: 500px;
+}
+div.tagCloud ul
+{
+	list-style-type: none;
+	padding: 10px 0 10px 0;
+	margin: 0;
+}
+div.tagCloud li
+{
+	padding: 0 10px 10px 0;
+	height: 30px;
+	float: left;
+}
+div.tagCloud li a
+{
+	text-decoration: none;
+	font-weight: normal;
+}
+div.tagCloud li a:hover
+{
+	text-decoration: underline;
+}
+div.tagCloud li.weight1
+{
+	font-size: 14px;
+}
+div.tagCloud li.weight2
+{
+	font-size: 16px;
+}
+div.tagCloud li.weight3
+{
+	font-size: 18px;
+}
+div.tagCloud li.weight4
+{
+	font-size: 20px;
+}
+div.tagCloud li.weight5
+{
+	font-size: 24px;
+}
+div.forumList h1
+{
+	border-bottom: none;
+}
+div.options
+{
+	font-weight: 14px;
+	float:right;
+	position:relative;
+	top:-38px;
+}
+div.options a
+{
+	font-weight: normal;
+	text-decoration: none;
+	color: #666666;
+}
+div.options a.selected
+{
+	font-weight: bold;
+	color: #0372A0;
+}
+div.options img
+{
+	vertical-align: top;
+}
+div.options span
+{
+	padding: 0 5px 0 5px;
+}
+div.forumDetail h2
+{
+	padding-top: 40px;
+}
+div.topicDetail .info
+{
+	font-size: 16px;
+	position: relative;
+	top: -17px;
+}
+div.topicDetail .info a
+{
+	text-decoration: none;
+}
+div.topicDetail .description
+{
+	padding-left: 10px;
+}
+ul#messages
+{
+	margin: 0;
+	list-style-type: none;
+}
+ul#messages li
+{
+	margin-bottom: 10px;
+	padding: 0 10px 5px 5px;
+}
+ul#messages div.msgBody
+{
+	padding: 10px 0 0 8px;
+}
+ul#messages div.msgBody p.removed
+{
+	font-style: italic;
+}
+ul#messages div.msgHeader
+{
+	font-size: 16px;
+	color: #666666;
+}
+ul#messages div.msgHeader a
+{
+	text-decoration: none;
+}
+ul#messages div.msgHeader a.msgId
+{
+	font-size: 22px;
+	font-weight: normal;
+}
+ul#messages div.msgOptions
+{
+	text-align: right;
+}
+ul#messages div.msgOptions a
+{
+	text-decoration: none;
+}
+ul#messages div.msgOptions a:hover
+{
+	text-decoration: underline;
+}
+ul#messages li.over
+{
+	background-color: #DDDDDD;
+}
+div.toolbar
+{
+	margin: 20px 0 30px 0;
+	border-top: dotted 1px #BBBBBB;
+	border-bottom: dotted 1px #BBBBBB;
+}
+div.toolbar ul
+{
+	list-style-type: none;
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+}
+div.toolbar li
+{
+	float: left;
+	margin-right: 35px;
+}
+div.toolbar li a
+{
+	display: block;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 5px 0 5px 25px;
+	background-repeat: no-repeat;
+	background-position: left center;
+	color: #444444;
+}
+div.toolbar ul li a:hover
+{
+	text-decoration: underline;
+}
+div.toolbar li.reply a
+{
+	padding-left: 25px;
+	background-image: url(/images/temp/icon-reply.gif);
+}
+div.toolbar li.showAll
+{
+	display: none;
+}
+div.toolbar li.showAll a
+{
+	padding-left: 17px;
+	background-image: url(/images/temp/icon-show-all.gif);
+}
+div.toolbar li.print a
+{
+	padding-left: 27px;
+	background-image: url(/images/temp/icon-print.gif);
+}
+div.toolbar li.edit a
+{
+	padding-left: 25px;
+	background-image: url(/images/temp/icon-edit.gif);
+}
+div.toolbar li.move a
+{
+	padding-left: 20px;
+	background-image: url(/images/temp/icon-move.gif);
+}
+div.toolbar li.delete a
+{
+	padding-left: 22px;
+	background-image: url(/images/temp/icon-delete.gif);
+}
+div.toolbar li.close a
+{
+	padding-left: 22px;
+	background-image: url(/images/temp/icon-close.gif);
+}
+div.toolbar li.open a
+{
+	padding-left: 20px;
+	background-image: url(/images/temp/icon-open.gif);
+}
+#pagerClient
+{
+	background: #DCECF4 url(/images/temp/next-big.gif) no-repeat scroll 98% 50%;
+	border-top: 1px solid #00418F;
+}
+#pagerClient img
+{
+	visibility: hidden;
+	padding-right: 10px;
+}
+#pagerClient a
+{
+	font-size: 14px;
+	line-height: 20px;
+	padding: 15px 15px 15px 15px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background: transparent url(/images/temp/next-big.gif) no-repeat scroll 2% 50%;
+}
+#pagerClient.loading img
+{
+	visibility: visible;
+}
+div.pagerSummary
+{
+	font-size: 13px;
+	font-style: italic;
+	padding-top: 20px;
+}
+p.action
+{
+	padding: 40px 0 0 0;
+	font-size: 14px;
+}
+ul.validation-summary-errors
+{
+	color:#DD3333;
+	font-weight:bold;
+	padding:10px 0 20px 30px;
+}
+p.error
+{
+	color:#DD3333;
+	font-weight:bold;
+	padding:10px 0;
+}
+form legend
+{
+	padding: 0 0 10px 0;
+	font-size: 13px;
+}
+form div.formItem
+{
+	font-size: 13px;
+	padding:3px 0;
+}
+form div.formItem label
+{
+	font-weight: bold;
+	float: left;
+	width: 150px;
+	padding:5px 0;
+	color:#555555;
+}
+form div.formItem span.note
+{
+	font-weight: normal;
+	float: left;
+	width: 150px;
+	padding:5px 10px;
+	font-style: italic;
+	color: #666666;
+}
+form div.textarea label
+{
+	float: none;
+	display: block;
+}
+form div.formItem select
+{
+	width: 160px;
+	float: left;
+	margin-top:3px;
+	border: solid 1px #A3A3A5;
+}
+form div.formItem input
+{
+	border:1px solid #A3A3A5;
+	width:150px;
+	padding: 4px;
+	float:left;
+}
+form div.buttons
+{
+	padding: 20px 0;
+}
+form div.buttons input
+{
+	width: auto;
+	padding:4px 8px;
+}
+form div.checkbox input, form div.checkbox label
+{
+	float:none;
+	width:auto;
+	padding-right: 20px;
+}
+p.highlight
+{
+	font-weight: bold;
+	font-size: 14px;
+}
+p.warning
+{
+	font-size: 14px;
+	font-style: italic;
+	padding-top: 20px;
+}
+#login p.button
+{
+	padding: 10px 0 0 150px;
+}
+#login div.connectMessage
+{
+	padding-top: 30px;
+}

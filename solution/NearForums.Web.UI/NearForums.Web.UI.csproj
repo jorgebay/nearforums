@@ -299,8 +299,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Site.config" />
+    <None Include="content\templates\sample.zip" />
     <None Include="scripts\ckeditor\.htaccess" />
     <None Include="scripts\ckeditor\ckeditor.pack" />
+    <Content Include="content\templates\sample\contents\arrow-right.gif" />
+    <Content Include="content\templates\sample\contents\body-bg.gif" />
+    <Content Include="content\templates\sample\contents\logo.gif" />
+    <Content Include="content\templates\sample\contents\next-big.gif" />
+    <Content Include="content\templates\sample\contents\site.css" />
+    <Content Include="content\templates\sample\contents\template.css" />
+    <Content Include="content\templates\sample\template.html" />
+    <Content Include="content\templates\sample\template.part.0.html" />
+    <Content Include="content\templates\sample\template.part.1.html" />
+    <Content Include="content\templates\sample\template.part.2.html" />
+    <Content Include="content\templates\sample\template.part.3.html" />
+    <Content Include="content\templates\sample\template.part.4.html" />
+    <Content Include="content\templates\sample\template.part.5.html" />
+    <Content Include="content\templates\sample\template.part.6.html" />
+    <Content Include="content\templates\sample\template.part.7.html" />
+    <Content Include="content\templates\sample\template.part.8.html" />
     <Content Include="images\iconrss.gif" />
     <Content Include="images\temp\arrow-right.gif" />
     <Content Include="images\temp\body-bg.gif" />
@@ -343,9 +360,6 @@
     <Content Include="Views\Topics\Toolbar.ascx" />
     <Content Include="Views\Users\Detail.aspx" />
     <Content Include="Views\Users\List.aspx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="content\templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
