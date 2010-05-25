@@ -7,7 +7,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<ul class="path floatContainer">
-		<li class="first"><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+		<li><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
 	</ul>
     <h1>Manage users</h1>
     <% Html.BeginForm(null, null, FormMethod.Get); %>

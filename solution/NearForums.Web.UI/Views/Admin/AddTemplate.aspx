@@ -6,7 +6,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<ul class="path floatContainer">
-		<li class="first"><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+		<li><%=Html.ActionLink("Admin", "Dashboard", "Admin") %></li>
 		<li><%=Html.ActionLink("Templates", "ListTemplates", "Admin")%></li>
 	</ul>
     <h1>Add Template</h1>
