@@ -21,7 +21,7 @@
 		else
 		{
 %>
-			<p class="warning">No topics for this forum.</p>
+			<p class="warning">No threads for this forum.</p>
 <%		
 		}
 %>
@@ -29,6 +29,6 @@
 		
 		<% Html.RenderPartial("TagCloud", ViewData.Get<List<WeightTag>>("Tags")); %>
 		
-		<p class="action"><%= Html.ActionLink("Post a topic >>", "Add", "Topics", new{forum=this.Model.ShortName}, null) %></p>
+		<p class="action"><%= Html.ActionLink("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null) %></p>
 	</div>
 </asp:Content>

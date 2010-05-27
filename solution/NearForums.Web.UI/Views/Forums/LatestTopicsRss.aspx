@@ -1,7 +1,7 @@
 <%@ Page Language="C#" Inherits="NearForums.Web.UI.BaseViewPage<Forum>" %><?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
 	<channel>
-		<title>Latest topics on &apos;<%=this.Model.Name %>&apos; forum</title>
+		<title>Latest threads on &apos;<%=this.Model.Name %>&apos; forum</title>
 		<link><%= this.Domain + Url.Action("Detail", new{forum=Model.ShortName}) %></link>
 		<description>Forum description: <%=SecurityElement.Escape(Utils.RemoveTags(this.Model.Description))%></description>
 <%

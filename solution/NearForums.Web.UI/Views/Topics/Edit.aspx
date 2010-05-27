@@ -1,6 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="NearForums.Web.UI.BaseViewPage<Topic>" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	<%= ViewData.WriteIf("IsEdit", "Edit topic", "Post new topic") %>
+	<%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new topic") %>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -8,10 +8,10 @@
 		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
 		<li><%=Html.ActionLink(Model.Forum.Name, "Detail", "Forums", new{forum=Model.Forum.ShortName}, null) %></li>
 	</ul>
-    <h1><%= ViewData.WriteIf("IsEdit", "Edit topic", "Post new topic") %></h1>
+    <h1><%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new topic") %></h1>
     <%=Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 		{
-			{"Description", "Topic message must not be blank."}
+			{"Description", "Thread message must not be blank."}
 			,{"Tags", "Tags must not be blank, separated by spaces and must not contain special characters."}
 			,{"Title", "Subject must not be blank."}
 			,{"ShortName", ""}
@@ -34,7 +34,7 @@
 			<% Html.RenderPartial("EditorScripts", CreateViewData(new{Name="description"})); %>
 		</div>
 		<div class="formItem checkbox">
-			<label for="isSticky">Sticky topic?</label>
+			<label for="isSticky">Sticky thread?</label>
 			<%=Html.CheckBox("isSticky") %>
 		</div>
 		<div class="formItem buttons">

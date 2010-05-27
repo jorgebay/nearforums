@@ -16,13 +16,13 @@
 		{
 %>
 		<li class="edit"><%=Html.ActionLink("Edit", "Edit") %></li>
-		<li class="move"><%=Html.ActionLink("Move topic", "Move", new{forumName=Model.Forum.ShortName}) %></li>
-		<li class="delete"><%=Html.ActionLink("Delete", "Delete", null, new{@onclick="return confirm('Are you sure you want to DELETE this topic?');"}) %></li>
+		<li class="move"><%=Html.ActionLink("Move thread", "Move", new{forumName=Model.Forum.ShortName}) %></li>
+		<li class="delete"><%=Html.ActionLink("Delete", "Delete", null, new{@onclick="return confirm('Are you sure you want to DELETE this thread?');"}) %></li>
 <%
 			if (!this.Model.IsClosed)
 			{
 %>
-			<li class="close"><%=Html.ActionLink("Close", "CloseReplies", null, new{@onclick="return confirm('Are you sure you want to CLOSE this topic for further replies?');"}) %></li>
+			<li class="close"><%=Html.ActionLink("Close", "CloseReplies", null, new{@onclick="return confirm('Are you sure you want to CLOSE this thread for further replies?');"}) %></li>
 		
 <%
 			}

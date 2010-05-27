@@ -1,9 +1,9 @@
 <%@ Page Language="C#" Inherits="NearForums.Web.UI.BaseViewPage<List<Topic>>" %><?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
 	<channel>
-		<title>Latest topics on all forums</title>
+		<title>Latest threads on all forums</title>
 		<link><%= this.Domain %></link>
-		<description>Latest topics on all forums at <%= this.Domain %></description>
+		<description>Latest threads on all forums at <%= this.Domain %></description>
 <%
 		foreach (Topic t in this.Model)
 		{

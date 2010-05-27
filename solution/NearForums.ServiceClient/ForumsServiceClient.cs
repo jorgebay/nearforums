@@ -9,10 +9,22 @@ namespace NearForums.ServiceClient
 {
 	public static class ForumsServiceClient
 	{
+		/// <summary>
+		/// Gets a list of ForumCategories with the list forums.
+		/// </summary>
 		public static List<ForumCategory> GetList()
 		{
 			ForumsDataAccess da = new ForumsDataAccess();
 			return da.GetList();
+		}
+
+		/// <summary>
+		/// Get all categories (without the forums in it).
+		/// </summary>
+		public static List<ForumCategory> GetCategories()
+		{
+			ForumsDataAccess da = new ForumsDataAccess();
+			return da.GetCategories();
 		}
 
 		public static Forum Get(string shortName)

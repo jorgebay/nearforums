@@ -10,6 +10,10 @@ namespace NearForums.DataAccess
 {
 	public class ForumsDataAccess : BaseDataAccess
 	{
+		/// <summary>
+		/// Gets a list of ForumCategories with the list forums.
+		/// </summary>
+		/// <returns></returns>
 		public List<ForumCategory> GetList()
 		{
 			DbCommand comm = GetCommand("SPForumsGetByCategory");
@@ -28,6 +32,26 @@ namespace NearForums.DataAccess
 				Forum f = ParseForumDataRow(dr);
 				f.Category = category;
 				category.Forums.Add(f);
+			}
+
+			return categoryList;
+		}
+
+		/// <summary>
+		/// Get all categories (without the forums in it).
+		/// </summary>
+		/// <returns></returns>
+		public List<ForumCategory> GetCategories()
+		{
+			DbCommand comm = GetCommand("SPForumsCategoriesGetAll");
+			DataTable dt = GetTable(comm);
+
+			List<ForumCategory> categoryList = new List<ForumCategory>();
+			foreach (DataRow dr in dt.Rows)
+			{
+				ForumCategory category = new ForumCategory(dr.Get<int>("CategoryId"), dr.GetString("CategoryName"));
+				category.Forums = new List<Forum>();
+				categoryList.Add(category);
 			}
 
 			return categoryList;

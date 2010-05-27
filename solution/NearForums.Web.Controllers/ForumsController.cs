@@ -92,7 +92,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Add()
 		{
-			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			ViewData["Categories"] = categories;
 			return View("Edit");
 		}
@@ -114,7 +114,7 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			ViewData["Categories"] = categories;
 			return View("Edit", forum);
 		} 
@@ -125,7 +125,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Edit(string forum)
 		{
-			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			ViewData["Categories"] = categories;
 			Forum f = ForumsServiceClient.Get(forum);
 			ViewData["IsEdit"] = true;
@@ -148,7 +148,7 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			SelectList categories = new SelectList(ForumsServiceClient.GetList(), "Id", "Name");
+			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			ViewData["Categories"] = categories;
 			ViewData["IsEdit"] = true;
 			return View("Edit", f);

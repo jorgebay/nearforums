@@ -1,7 +1,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="NearForums.Web.UI.BaseViewPage<Topic>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Move topic &quot;<%=Model.Title %>&quot;
+	Move thread &quot;<%=Model.Title %>&quot;
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -9,7 +9,7 @@
 		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
 		<li><%=Html.ActionLink(Model.Forum.Name, "Detail", "Forums", new{forum=Model.Forum.ShortName}, null) %></li>
 	</ul>
-	<h1>Move topic &quot;<%=Model.Title %>&quot; to another forum</h1>
+	<h1>Move thread &quot;<%=Model.Title %>&quot; to another forum</h1>
 	<% Html.BeginForm(); %>
 	<fieldset>
 		<legend>Select the destination forum</legend>
