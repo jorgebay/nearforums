@@ -1,4 +1,7 @@
 <%@ Control Language="C#" Inherits="NearForums.Web.UI.BaseViewUserControl<Topic>" %>
+<% if (this.Model.Related.Count > 0)
+   { 
+%>
 	<h2>Related thread</h2>
 	<ul class="related">
 <%
@@ -10,3 +13,6 @@
 		}
 %>
 	</ul>
+<%
+	}
+%>

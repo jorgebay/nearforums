@@ -1,6 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="NearForums.Web.UI.BaseViewPage<Topic>" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	<%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new topic") %>
+	<%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new thread") %>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -8,7 +8,7 @@
 		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
 		<li><%=Html.ActionLink(Model.Forum.Name, "Detail", "Forums", new{forum=Model.Forum.ShortName}, null) %></li>
 	</ul>
-    <h1><%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new topic") %></h1>
+    <h1><%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new thread") %></h1>
     <%=Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 		{
 			{"Description", "Thread message must not be blank."}

@@ -40,7 +40,8 @@ namespace NearForums.Web.Controllers
 			UsersServiceClient.Delete(id);
 			return RedirectToAction("List", new
 			{
-				userName = searched
+				userName = searched,
+				page = 0
 			});
 		}
 
@@ -50,7 +51,8 @@ namespace NearForums.Web.Controllers
 			UsersServiceClient.Promote(id);
 			return RedirectToAction("List", new
 			{
-				userName = searched
+				userName = searched,
+				page = 0
 			});
 		}
 
@@ -60,7 +62,8 @@ namespace NearForums.Web.Controllers
 			UsersServiceClient.Demote(id);
 			return RedirectToAction("List", new
 			{
-				userName = searched
+				userName = searched,
+				page=0
 			});
 		}
 	}
