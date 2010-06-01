@@ -22,6 +22,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Manage
+		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Manage()
 		{
 			List<ForumCategory> list = ForumsServiceClient.GetList();

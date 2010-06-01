@@ -96,6 +96,8 @@ namespace NearForums.Web.Controllers
 				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = Utils.ToUrlFragment(topic.Title, 64);
+				topic.IsSticky = (topic.IsSticky && this.User.Group >= UserGroup.Moderator);
+
 				TopicsServiceClient.Create(topic, Request.UserHostAddress);
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
 			}
@@ -151,12 +153,15 @@ namespace NearForums.Web.Controllers
 				#region Check if user can edit
 				if (this.User.Group < UserGroup.Moderator)
 				{
+					//The user is not moderator or admin
 					//Check if the user that created of the topic is the same as the logged user
 					Topic originalTopic = TopicsServiceClient.Get(id);
 					if (this.User.Id != originalTopic.User.Id)
 					{
 						return ResultHelper.ForbiddenResult(this);
 					}
+					//The user can not edit the sticky property
+					topic.IsSticky = originalTopic.IsSticky;
 				}
 				#endregion
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
