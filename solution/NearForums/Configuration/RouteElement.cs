@@ -8,7 +8,7 @@ namespace NearForums.Configuration
 {
 	public class RouteElement : ConfigurationElement
 	{
-		//Url
+
 		[ConfigurationProperty("url", IsRequired = true)]
 		public string Url
 		{
@@ -21,7 +21,7 @@ namespace NearForums.Configuration
 				this["url"] = value;
 			}
 		}
-		//Controller
+
 		[ConfigurationProperty("controller", IsRequired = true)]
 		public string Controller
 		{
@@ -34,7 +34,7 @@ namespace NearForums.Configuration
 				this["controller"] = value;
 			}
 		}
-		//Action
+
 		[ConfigurationProperty("action", IsRequired = true)]
 		public string Action
 		{
@@ -45,6 +45,19 @@ namespace NearForums.Configuration
 			set
 			{
 				this["action"] = value;
+			}
+		}
+
+		[ConfigurationProperty("namespace", IsRequired = false)]
+		public string Namespace
+		{
+			get
+			{
+				return (string)this["namespace"];
+			}
+			set
+			{
+				this["namespace"] = value; 
 			}
 		}
 

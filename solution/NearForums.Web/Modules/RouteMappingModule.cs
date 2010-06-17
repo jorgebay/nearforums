@@ -46,7 +46,7 @@ namespace NearForums.Web.Modules
 		#region Register routes
 		public static void RegisterRoutes(RouteCollection routes, RouteMappingConfiguration config)
 		{
-			if (config == null)
+			if (config == null) 
 			{
 				throw new NullReferenceException("Route mapping configuration not defined.");
 			}
@@ -60,10 +60,10 @@ namespace NearForums.Web.Modules
 			{
 				StrictRoute route = new StrictRoute(item.Url, new MvcRouteHandler());
 				route.Defaults = new RouteValueDictionary();
-				route.Defaults.Add("Controller", item.Controller);
+				route.Defaults.Add("Controller", item.Controller); 
 				route.Defaults.Add("Action", item.Action);
 				if (item.Defaults != null)
-				{
+				{ 
 					foreach (string key in item.Defaults.AllKeys)
 					{
 						route.Defaults.Add(key, item.Defaults[key].Value);
@@ -76,6 +76,15 @@ namespace NearForums.Web.Modules
 					{
 						route.Constraints.Add(key, item.Constraints[key].Value);
 					}
+				}
+				if (item.Namespace != null)
+				{
+					if (route.DataTokens == null)
+					{
+						route.DataTokens = new RouteValueDictionary();
+					}
+					route.DataTokens["Namespaces"] = new string[]{item.Namespace};
+
 				}
 				routes.Add(route);
 			}
