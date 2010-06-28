@@ -303,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Site.config" />
+    <Content Include="Config\Redirector.config" />
     <None Include="content\templates\sample.zip" />
     <None Include="scripts\ckeditor\.htaccess" />
     <None Include="scripts\ckeditor\ckeditor.pack" />
