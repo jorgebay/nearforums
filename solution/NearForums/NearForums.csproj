@@ -49,6 +49,11 @@
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\FacebookElement.cs" />
     <Compile Include="Configuration\ForumElement.cs" />
+    <Compile Include="Configuration\RedirectorConfiguration.cs" />
+    <Compile Include="Configuration\RedirectorUrl.cs" />
+    <Compile Include="Configuration\RedirectorUrlCollection.cs" />
+    <Compile Include="Configuration\RedirectorUrlGroup.cs" />
+    <Compile Include="Configuration\RedirectorUrlGroupCollection.cs" />
     <Compile Include="Configuration\ReplacementCollection.cs" />
     <Compile Include="Configuration\ReplacementItem.cs" />
     <Compile Include="Configuration\RouteElement.cs" />
