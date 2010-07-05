@@ -5,7 +5,6 @@ using System.Text;
 using System.Data.Common;
 using System.Data;
 using System.Configuration;
-using System.Data.Common;
 
 namespace NearForums.DataAccess
 {
