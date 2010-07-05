@@ -14,12 +14,32 @@
 		{
 			{"Body", "Body must not be blank."}
 		}, null)%>
-	<% Html.BeginForm(); %>
+	<% Html.BeginForm(null, null, null, FormMethod.Post, new{@id="topicReplyForm"}); %>
 	<div class="formItem textarea">
 		<label for="body">Description</label>
 		<%=Html.TextArea("body") %>
 		<% Html.RenderPartial("EditorScripts", CreateViewData(new{Name="body"})); %>
 	</div>
-	<input type="submit" value="Send" />
+	<div class="formItem buttons">
+		<input type="submit" value="Send" />
+	</div>
 	<% Html.EndForm(); %>
+	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript">
+		var submitted = false;
+		$(document).ready(function(){
+			//prevent multiple posts
+			$("form#topicReplyForm").submit(function(){
+				if (!submitted)
+				{
+					submitted = true;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		});
+	</script>
 </asp:Content>

@@ -26,5 +26,13 @@ namespace NearForums.Web.Controllers.Filters
 			}
 			base.OnActionExecuted(filterContext);
 		}
+
+		//protected virtual string GetActionIdentifier(ActionDescriptor descriptor, HttpContextBase httpContext)
+		//{
+		//    return
+		//        httpContext.Request.HttpMethod + " "
+		//        + descriptor.ControllerDescriptor.ControllerType.FullName + "."
+		//        + descriptor.ActionName;
+		//}
 	}
 }

@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicTests.cs" />
+    <Compile Include="Controllers\ActionFiltersTests.cs" />
     <Compile Include="Controllers\AdminControllerTest.cs" />
     <Compile Include="Controllers\TopicsControllerTest.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />

@@ -18,7 +18,7 @@
 			,{"ShortName", ""}
 			,{"Category.Id", "Category must not be blank."}
 		}, null)%>
-	<% Html.BeginForm(); %>
+	<% Html.BeginForm(null, null, this.Model == null ? null : new{forum=this.Model.ShortName}, FormMethod.Post, new{@id="forumEditForm"}); %>
 	<fieldset>
 		<legend>Fill in the fields and submit</legend>
 		<div class="formItem floatContainer">
@@ -38,4 +38,22 @@
 		</div>
 	</fieldset>
 	<% Html.EndForm(); %>
+	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript">
+		var submitted = false;
+		$(document).ready(function(){
+			//prevent multiple posts
+			$("form#forumEditForm").submit(function(){
+				if (!submitted)
+				{
+					submitted = true;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		});
+	</script>
 </asp:Content>

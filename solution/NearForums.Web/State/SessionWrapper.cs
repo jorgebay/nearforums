@@ -72,7 +72,22 @@ namespace NearForums.Web.State
 			{
 				SetItem<UserState>("User", value);
 			}
-		} 
+		}
+
+		/// <summary>
+		/// Gets or sets the current executing action (When used).
+		/// </summary>
+		public string CurrentAction
+		{
+			get
+			{
+				return GetItem<string>("CurrentAction");
+			}
+			set
+			{
+				SetItem<string>("CurrentAction", value);
+			}
+		}
 		#endregion
 	}
 }
