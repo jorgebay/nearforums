@@ -20,5 +20,21 @@ namespace NearForums.Configuration
 				this["facebook"] = value;
 			}
 		}
+
+		/// <summary>
+		/// Determines if a provider is faked by the application, in order to enable registration/login without real connectivity to a provider.
+		/// </summary>
+		[ConfigurationProperty("fakeProvider", IsRequired = false, DefaultValue=false)]
+		public bool FakeProvider
+		{
+			get
+			{
+				return (bool)this["fakeProvider"];
+			}
+			set
+			{
+				this["fakeProvider"] = value;
+			}
+		}
 	}
 }

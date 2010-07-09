@@ -23,7 +23,42 @@ namespace NearForums.Web.Controllers.Helpers
 		/// </summary>
 		public static bool TryLoginFromProviders(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
 		{
-			return TryLoginFromFacebook(session, request, response);
+			bool logged = false;
+
+			if (TryLoginFromFake(session))
+			{
+				logged = true;
+			}
+			else if (TryLoginFromFacebook(session, request, response))
+			{
+				logged = true;
+			}
+			return logged;
+		}
+
+		/// <summary>
+		/// Register/login (if the user exists or not) from a fake user of facebook
+		/// </summary>
+		/// <param name="session"></param>
+		/// <returns></returns>
+		private static bool TryLoginFromFake(SessionWrapper session)
+		{
+			if (SiteConfiguration.Current.AuthorizationProviders.FakeProvider)
+			{
+				//Fake facebook id
+				const int fakeFacebookUserId = -1000;
+
+				User user = UsersServiceClient.GetByFacebookId(fakeFacebookUserId);
+				if (user == null)
+				{
+					//Autoregister
+					user = UsersServiceClient.AddUserFromFacebook(fakeFacebookUserId, "Dummy", "Contoso", "http://www.facebook.com/fake", null, null, "en-US", null, 0, null);
+				}
+				//Log in
+				session.User = new UserState(user);
+			}
+			
+			return SiteConfiguration.Current.AuthorizationProviders.FakeProvider;
 		}
 
 		private static bool TryLoginFromFacebook(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
