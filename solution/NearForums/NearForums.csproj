@@ -46,8 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
-    <Compile Include="Configuration\FacebookElement.cs" />
+    <Compile Include="Configuration\AuthorizationProviderDetailElement.cs" />
     <Compile Include="Configuration\ForumElement.cs" />
     <Compile Include="Configuration\RedirectorConfiguration.cs" />
     <Compile Include="Configuration\RedirectorUrl.cs" />

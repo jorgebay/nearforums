@@ -29,8 +29,8 @@ namespace NearForums.Web.Controllers.Helpers
 		private static bool TryLoginFromFacebook(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
 		{
 			bool logged = false;
-			string apiKey = SiteConfiguration.Current.Facebook.ApiKey;
-			string secretKey = SiteConfiguration.Current.Facebook.SecretKey;
+			string apiKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.ApiKey;
+			string secretKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.SecretKey;
 			ConnectSession connectSession = new ConnectSession(apiKey, secretKey);
 			//Checks facebook cookies
 			if (connectSession.IsConnected())
@@ -120,7 +120,7 @@ namespace NearForums.Web.Controllers.Helpers
 			string[] cookieKeys = requestCookies.AllKeys;
 			foreach (string key in cookieKeys)
 			{
-				if (key.Contains(SiteConfiguration.Current.Facebook.ApiKey))
+				if (key.Contains(SiteConfiguration.Current.AuthorizationProviders.Facebook.ApiKey))
 				{
 					HttpCookie cookie = requestCookies[key];
 

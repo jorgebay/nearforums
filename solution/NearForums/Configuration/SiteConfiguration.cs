@@ -49,16 +49,16 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("facebook", IsRequired = true)]
-		public FacebookElement Facebook
+		[ConfigurationProperty("authorizationProviders", IsRequired = true)]
+		public AuthorizationProvidersElement AuthorizationProviders
 		{
 			get
 			{
-				return (FacebookElement)this["facebook"];
+				return (AuthorizationProvidersElement)this["authorizationProviders"];
 			}
 			set
 			{
-				this["facebook"] = value;
+				this["authorizationProviders"] = value;
 			}
 		}
 

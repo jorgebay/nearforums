@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace NearForums.Configuration
 {
-	public class FacebookElement : ConfigurationElement
+	public class AuthorizationProviderDetailElement : ConfigurationElement
 	{
 		[ConfigurationProperty("apiKey", IsRequired = true)]
 		public string ApiKey
