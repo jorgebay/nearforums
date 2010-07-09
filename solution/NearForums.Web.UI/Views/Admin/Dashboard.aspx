@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="NearForums.Web.UI.BaseViewPage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Dashboard
 </asp:Content>
