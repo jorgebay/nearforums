@@ -8,10 +8,10 @@ namespace NearForums.ServiceClient
 {
 	public static class UsersServiceClient
 	{
-		public static User GetByFacebookId(long uid)
+		public static User GetByProviderId(AuthenticationProvider provider, string providerId)
 		{
 			UsersDataAccess da = new UsersDataAccess();
-			return da.GetByFacebookId(uid);
+			return da.GetByProviderId(provider, providerId);
 		}
 
 		public static User GetTestUser()
@@ -20,11 +20,10 @@ namespace NearForums.ServiceClient
 			return da.GetTestUser();
 		}
 
-		public static User AddUserFromFacebook(long uid, string firstName, string lastName, string profileUrl, string about, string birthDate, string locale, string pic, decimal? timeZone, string website)
+		public static User Add(User user, AuthenticationProvider provider, string providerId)
 		{
-
 			UsersDataAccess da = new UsersDataAccess();
-			return da.AddUserFromFacebook(uid, firstName, lastName, profileUrl, about, birthDate, locale, pic, timeZone, website);
+			return da.AddUser(user, provider, providerId);
 		}
 
 		public static List<User> GetAll()

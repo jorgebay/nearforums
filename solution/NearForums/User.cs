@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NearForums.Validation;
 
 namespace NearForums
 {
@@ -9,10 +10,10 @@ namespace NearForums
 	{
 		public User()
 		{
-
+			this.Group = UserGroup.Level1;
 		}
 
-		public User(int id, string userName)
+		public User(int id, string userName) : this()
 		{
 			this.Id = id;
 			this.UserName = userName;
@@ -24,6 +25,7 @@ namespace NearForums
 			set;
 		}
 
+		[RequireField]
 		public string UserName
 		{
 			get;
@@ -67,6 +69,39 @@ namespace NearForums
 		}
 
 		public string ExternalProfileUrl
+		{
+			get;
+			set;
+		}
+
+		public string Profile
+		{
+			get;
+			set;
+		}
+
+		public DateTime? BirthDate
+		{
+			get;
+			set;
+		}
+
+		public string Website
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Photo absolut url
+		/// </summary>
+		public string Photo
+		{
+			get;
+			set;
+		}
+
+		public DateTime UserProviderLastCall
 		{
 			get;
 			set;

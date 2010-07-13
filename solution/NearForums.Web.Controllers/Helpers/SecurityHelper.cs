@@ -48,11 +48,12 @@ namespace NearForums.Web.Controllers.Helpers
 				//Fake facebook id
 				const int fakeFacebookUserId = -1000;
 
-				User user = UsersServiceClient.GetByFacebookId(fakeFacebookUserId);
+				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, fakeFacebookUserId.ToString());
 				if (user == null)
 				{
 					//Autoregister
-					user = UsersServiceClient.AddUserFromFacebook(fakeFacebookUserId, "Dummy", "Contoso", "http://www.facebook.com/fake", null, null, "en-US", null, 0, null);
+					user = new User(0, "fake user");
+					user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, fakeFacebookUserId.ToString());
 				}
 				//Log in
 				session.User = new UserState(user);
@@ -71,7 +72,7 @@ namespace NearForums.Web.Controllers.Helpers
 			if (connectSession.IsConnected())
 			{
 				Api facebookApi = new Api(connectSession);
-				User user = UsersServiceClient.GetByFacebookId(connectSession.UserId);
+				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, connectSession.UserId.ToString());
 				//Check if exist user from facebook
 				if (user != null)
 				{
@@ -92,7 +93,37 @@ namespace NearForums.Web.Controllers.Helpers
 						Facebook.Schema.user facebookUser = facebookApi.Users.GetInfo();
 
 						//Autoregister
-						user = UsersServiceClient.AddUserFromFacebook(facebookUser.uid.Value, facebookUser.first_name, facebookUser.last_name, facebookUser.profile_url, facebookUser.about_me, facebookUser.birthday, facebookUser.locale, facebookUser.pic, facebookUser.timezone, null);
+						#region Create user
+						//Pending field: facebookUser.locale
+						user = new User();
+						user.UserName = facebookUser.first_name + " " + facebookUser.last_name;
+						user.ExternalProfileUrl = facebookUser.profile_url;
+						user.Profile = facebookUser.about_me;
+						#region Birthdate
+						DateTime? birthDate = null;
+						if (birthDate != null)
+						{
+							DateTime parsedBirthDate = DateTime.MinValue;
+							if (DateTime.TryParse(facebookUser.birthday, new CultureInfo("en-US"), DateTimeStyles.AdjustToUniversal, out parsedBirthDate))
+							{
+								birthDate = parsedBirthDate;
+							}
+						}
+						user.BirthDate = birthDate; 
+						#endregion
+						user.Photo = facebookUser.pic;
+						#region Timezone
+						if (facebookUser.timezone != null)
+						{
+							user.TimeZone = TimeSpan.FromHours((double)facebookUser.timezone.Value);
+						}
+						else
+						{
+							user.TimeZone = new TimeSpan();
+						} 
+						#endregion
+						#endregion
+						user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.uid.Value.ToString());
 
 						//Log in
 						session.User = new UserState(user);
