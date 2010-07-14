@@ -68,6 +68,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Profile url at the provider
+		/// </summary>
 		public string ExternalProfileUrl
 		{
 			get;
@@ -101,7 +104,10 @@ namespace NearForums
 			set;
 		}
 
-		public DateTime UserProviderLastCall
+		/// <summary>
+		/// Determines the date of latest call to the provider.
+		/// </summary>
+		public DateTime ProviderLastCall
 		{
 			get;
 			set;

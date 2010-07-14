@@ -24,7 +24,6 @@ namespace NearForums.DataAccess
 			if (dr != null)
 			{
 				user = ParseUserLoginInfo(dr);
-				user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
 			}
 			return user;
 		} 
@@ -52,6 +51,8 @@ namespace NearForums.DataAccess
 			user.UserName = dr.GetString("UserName");
 			user.Group = dr.Get<UserGroup>("UserGroupId");
 			user.Guid = new Guid(dr.GetString("UserGuid"));
+			user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
+			user.ProviderLastCall = dr.GetDate("UserProviderLastCall");
 
 			decimal offSet = dr.Get<decimal>("UserTimeZone");
 			user.TimeZone = new TimeSpan((long)(offSet * (decimal)TimeSpan.TicksPerHour));

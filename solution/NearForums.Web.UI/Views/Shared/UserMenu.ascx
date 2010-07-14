@@ -15,7 +15,7 @@
 	else
 	{
 %>
-		<li class="logged"><%=Html.Link("Profile", User.ExternalProfileUrl, new{target="_blank"}) %></li>
+		<li class="logged"><%=Html.ActionLink("Profile", "Detail", "Users", new{id=User.Id}, null) %></li>
 		<li class="logout"><a href="#" onclick="FB.Connect.logoutAndRedirect('<%=Url.Action("Logout", "Home", new{returnUrl=Request.Url.PathAndQuery}) %>');return false;">Logout</a></li>
 <%
 	}
