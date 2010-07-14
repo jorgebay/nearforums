@@ -68,17 +68,6 @@ namespace NearForums.Tests
 		public void Connectivity_Test()
 		{
 			WebRequest webRequest = HttpWebRequest.Create("http://www.facebook.com");
-			if (ConfigurationManager.AppSettings["Proxy"] != null)
-			{
-				string[] proxyParams = ConfigurationManager.AppSettings["Proxy"].Split('|');
-				if (proxyParams.Length != 5)
-				{
-					throw new ConfigurationErrorsException("The Proxy configuration must have 5 params separated by | char. v3");
-				}
-				webRequest.Proxy = new WebProxy(proxyParams[0], Convert.ToInt32(proxyParams[1]));
-				webRequest.Proxy.Credentials = new NetworkCredential(proxyParams[2], proxyParams[3], proxyParams[4]);
-
-			}
 			webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
 
 			webRequest.GetResponse();

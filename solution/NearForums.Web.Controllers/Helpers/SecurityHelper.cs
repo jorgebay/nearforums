@@ -13,15 +13,20 @@ using Facebook.Utility;
 using System.Configuration;
 using System.Globalization;
 using System.Security.Cryptography;
+using NearForums.Web.Controllers.Helpers.OAuth;
+using DotNetOpenAuth.OAuth.ChannelElements;
 
 namespace NearForums.Web.Controllers.Helpers
 {
+	/// <summary>
+	/// Helper for providers authentication. Required HttpContext.
+	/// </summary>
 	public static class SecurityHelper
 	{
 		/// <summary>
 		/// Checks if a external provider is trying to post a login on this website.
 		/// </summary>
-		public static bool TryLoginFromProviders(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
+		public static bool TryLoginFromProviders(SessionWrapper session, CacheWrapper cache, HttpRequestBase request, HttpResponseBase response)
 		{
 			bool logged = false;
 
@@ -33,9 +38,14 @@ namespace NearForums.Web.Controllers.Helpers
 			{
 				logged = true;
 			}
+			else if (TryFinishLoginFromTwitter(session, cache))
+			{
+
+			}
 			return logged;
 		}
 
+		#region Fake login
 		/// <summary>
 		/// Register/login (if the user exists or not) from a fake user of facebook
 		/// </summary>
@@ -60,84 +70,98 @@ namespace NearForums.Web.Controllers.Helpers
 			}
 			
 			return SiteConfiguration.Current.AuthorizationProviders.FakeProvider;
-		}
+		} 
+	#endregion
 
+		#region Facebook
 		private static bool TryLoginFromFacebook(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
 		{
 			bool logged = false;
-			string apiKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.ApiKey;
-			string secretKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.SecretKey;
-			ConnectSession connectSession = new ConnectSession(apiKey, secretKey);
-			//Checks facebook cookies
-			if (connectSession.IsConnected())
+			if (SiteConfiguration.Current.AuthorizationProviders.Facebook != null)
 			{
-				Api facebookApi = new Api(connectSession);
-				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, connectSession.UserId.ToString());
-				//Check if exist user from facebook
-				if (user != null)
+				string apiKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.ApiKey;
+				string secretKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.SecretKey;
+				ConnectSession connectSession = new ConnectSession(apiKey, secretKey);
+				//Checks facebook cookies
+				if (connectSession.IsConnected())
 				{
-					if (IsValidFacebookSignature(apiKey, secretKey, request))
+					Api facebookApi = new Api(connectSession);
+					User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, connectSession.UserId.ToString());
+					//Check if exist user from facebook
+					if (user != null)
 					{
-						session.User = new UserState(user);
-						logged = true;
-					}
-					else
-					{
-						ClearFacebookCookies(request.Cookies, response.Cookies);
-					}
-				}
-				else
-				{
-					try
-					{
-						Facebook.Schema.user facebookUser = facebookApi.Users.GetInfo();
-
-						//Autoregister
-						#region Create user
-						//Pending field: facebookUser.locale
-						user = new User();
-						user.UserName = facebookUser.first_name + " " + facebookUser.last_name;
-						user.ExternalProfileUrl = facebookUser.profile_url;
-						user.Profile = facebookUser.about_me;
-						#region Birthdate
-						DateTime? birthDate = null;
-						if (birthDate != null)
+						if (IsValidFacebookSignature(apiKey, secretKey, request))
 						{
-							DateTime parsedBirthDate = DateTime.MinValue;
-							if (DateTime.TryParse(facebookUser.birthday, new CultureInfo("en-US"), DateTimeStyles.AdjustToUniversal, out parsedBirthDate))
-							{
-								birthDate = parsedBirthDate;
-							}
-						}
-						user.BirthDate = birthDate; 
-						#endregion
-						user.Photo = facebookUser.pic;
-						#region Timezone
-						if (facebookUser.timezone != null)
-						{
-							user.TimeZone = TimeSpan.FromHours((double)facebookUser.timezone.Value);
+							session.User = new UserState(user);
+							logged = true;
 						}
 						else
 						{
-							user.TimeZone = new TimeSpan();
-						} 
-						#endregion
-						#endregion
-						user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.uid.Value.ToString());
-
-						//Log in
-						session.User = new UserState(user);
-						logged = true;
+							ClearFacebookCookies(request.Cookies, response.Cookies);
+						}
 					}
-					catch (FacebookException)
+					else
 					{
-						//The session is not valid / has expired.
-						ClearFacebookCookies(request.Cookies, response.Cookies);
+						try
+						{
+							Facebook.Schema.user facebookUser = facebookApi.Users.GetInfo();
+
+							//Autoregister
+
+							user = CreateUser(facebookUser);
+
+							user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.uid.Value.ToString());
+
+							//Log in
+							session.User = new UserState(user);
+							logged = true;
+						}
+						catch (FacebookException)
+						{
+							//The session is not valid / has expired.
+							ClearFacebookCookies(request.Cookies, response.Cookies);
+						}
 					}
 				}
 			}
 			return logged;
 		}
+
+		#region Create user
+		private static User CreateUser(Facebook.Schema.user facebookUser)
+		{
+			//Pending field: facebookUser.locale
+			User user = new User();
+			user.UserName = facebookUser.first_name + " " + facebookUser.last_name;
+			user.ExternalProfileUrl = facebookUser.profile_url;
+			user.Profile = facebookUser.about_me;
+			#region Birthdate
+			DateTime? birthDate = null;
+			if (birthDate != null)
+			{
+				DateTime parsedBirthDate = DateTime.MinValue;
+				if (DateTime.TryParse(facebookUser.birthday, new CultureInfo("en-US"), DateTimeStyles.AdjustToUniversal, out parsedBirthDate))
+				{
+					birthDate = parsedBirthDate;
+				}
+			}
+			user.BirthDate = birthDate;
+			#endregion
+			user.Photo = facebookUser.pic;
+			#region Timezone
+			if (facebookUser.timezone != null)
+			{
+				user.TimeZone = TimeSpan.FromHours((double)facebookUser.timezone.Value);
+			}
+			else
+			{
+				user.TimeZone = new TimeSpan();
+			}
+			#endregion
+
+			return user;
+		} 
+		#endregion
 
 		#region Validate facebook signature
 		/// <summary>
@@ -154,7 +178,7 @@ namespace NearForums.Web.Controllers.Helpers
 				signature += string.Format("{0}={1}", key, GetFacebookCookie(apiKey, key, request));
 			}
 
-			signature += secretKey; 
+			signature += secretKey;
 
 			MD5 md5 = MD5.Create();
 			byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(signature.Trim()));
@@ -174,7 +198,7 @@ namespace NearForums.Web.Controllers.Helpers
 			string fullCookie = string.IsNullOrEmpty(cookieName) ? apiKey : apiKey + "_" + cookieName;
 
 			return request.Cookies[fullCookie].Value;
-		} 
+		}
 		#endregion
 
 		/// <summary>
@@ -194,6 +218,70 @@ namespace NearForums.Web.Controllers.Helpers
 					responseCookies.Add(cookie);
 				}
 			}
+		} 
+		#endregion
+
+		#region OAuth
+		#region Token manager
+		private static InMemoryTokenManager GetTokenManager(CacheWrapper cache, AuthenticationProvider provider, AuthorizationProviderDetailElement providerConfiguration)
+		{
+			var tokenManager = (InMemoryTokenManager)cache.Cache[provider.ToString() + "TokenManager"];
+			if (tokenManager == null)
+			{
+				tokenManager = new InMemoryTokenManager(providerConfiguration.ApiKey, providerConfiguration.SecretKey);
+				cache.Cache[provider.ToString() + "TokenManager"] = tokenManager;
+			}
+
+			return tokenManager;
+		} 
+		#endregion
+
+		#region Twitter
+		public static void TwitterStartLogin(CacheWrapper cache)
+		{
+			IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthorizationProviders.Twitter);
+			TwitterConsumer.StartOAuthFlow(tokenManager);
 		}
+
+		private static bool TryFinishLoginFromTwitter(SessionWrapper session, CacheWrapper cache)
+		{
+			bool logged = false;
+			if (SiteConfiguration.Current.AuthorizationProviders.Twitter != null)
+			{
+				IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthorizationProviders.Twitter);
+				long twitterUserId;
+				string accessToken;
+				if (TwitterConsumer.TryFinishOAuthFlow(tokenManager, true, out twitterUserId, out accessToken))
+				{
+					User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Twitter, twitterUserId.ToString());
+
+					if (user == null)
+					{
+						TwitterConsumer.TwitterUser twitterUser = TwitterConsumer.GetUserFromCredentials(tokenManager, accessToken);
+						user = CreateUser(twitterUser);
+
+						UsersServiceClient.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
+					}
+
+					
+					session.User = new UserState(user);
+					logged = true;
+					//Redirect to the same page without oauth params.
+					//Response.Redirect(Request.Url.StripQueryArgumentsWithPrefix("oauth_").ToString());
+				}
+			}
+			return logged;
+		}
+
+		private static User CreateUser(TwitterConsumer.TwitterUser twitterUser)
+		{
+			#warning TODO:parse twitter user
+			User user = new User();
+			user.UserName = twitterUser.Name;
+
+			throw new NotImplementedException();
+		}
+		#endregion
+		#endregion
 	}
 }

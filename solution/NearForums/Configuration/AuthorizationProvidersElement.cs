@@ -21,6 +21,19 @@ namespace NearForums.Configuration
 			}
 		}
 
+		[ConfigurationProperty("twitter", IsRequired = false)]
+		public AuthorizationProviderDetailElement Twitter
+		{
+			get
+			{
+				return (AuthorizationProviderDetailElement)this["twitter"];
+			}
+			set
+			{
+				this["twitter"] = value;
+			}
+		}
+
 		/// <summary>
 		/// Determines if a provider is faked by the application, in order to enable registration/login without real connectivity to a provider.
 		/// </summary>

@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetOpenAuth, Version=3.4.4.10162, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Downloads\DotNetOpenAuth-3.4.4.10162\DotNetOpenAuth-3.4.4.10162\Bin\DotNetOpenAuth.dll</HintPath>
+    </Reference>
     <Reference Include="Facebook, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\references\Facebook.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -67,6 +71,8 @@
     <Compile Include="Filters\AddVisitAttribute.cs" />
     <Compile Include="Filters\RequireAuthorizationAttribute.cs" />
     <Compile Include="ForumsController.cs" />
+    <Compile Include="Helpers\OAuth\InMemoryTokenManager.cs" />
+    <Compile Include="Helpers\OAuth\TwitterConsumer.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
