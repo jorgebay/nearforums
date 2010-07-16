@@ -40,7 +40,7 @@ namespace NearForums.Web.Controllers.Helpers
 			}
 			else if (TryFinishLoginFromTwitter(session, cache))
 			{
-
+				logged = true;
 			}
 			return logged;
 		}
@@ -66,7 +66,7 @@ namespace NearForums.Web.Controllers.Helpers
 					user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, fakeFacebookUserId.ToString());
 				}
 				//Log in
-				session.User = new UserState(user);
+				session.User = new UserState(user, AuthenticationProvider.Facebook);
 			}
 			
 			return SiteConfiguration.Current.AuthorizationProviders.FakeProvider;
@@ -92,7 +92,7 @@ namespace NearForums.Web.Controllers.Helpers
 					{
 						if (IsValidFacebookSignature(apiKey, secretKey, request))
 						{
-							session.User = new UserState(user);
+							session.User = new UserState(user, AuthenticationProvider.Facebook);
 							logged = true;
 						}
 						else
@@ -113,7 +113,7 @@ namespace NearForums.Web.Controllers.Helpers
 							user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.uid.Value.ToString());
 
 							//Log in
-							session.User = new UserState(user);
+							session.User = new UserState(user, AuthenticationProvider.Facebook);
 							logged = true;
 						}
 						catch (FacebookException)
@@ -246,7 +246,7 @@ namespace NearForums.Web.Controllers.Helpers
 		private static bool TryFinishLoginFromTwitter(SessionWrapper session, CacheWrapper cache)
 		{
 			bool logged = false;
-			if (SiteConfiguration.Current.AuthorizationProviders.Twitter != null)
+			if (SiteConfiguration.Current.AuthorizationProviders.Twitter.IsDefined)
 			{
 				IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthorizationProviders.Twitter);
 				long twitterUserId;
@@ -264,7 +264,7 @@ namespace NearForums.Web.Controllers.Helpers
 					}
 
 					
-					session.User = new UserState(user);
+					session.User = new UserState(user, AuthenticationProvider.Twitter);
 					logged = true;
 					//Redirect to the same page without oauth params.
 					//Response.Redirect(Request.Url.StripQueryArgumentsWithPrefix("oauth_").ToString());
@@ -275,11 +275,14 @@ namespace NearForums.Web.Controllers.Helpers
 
 		private static User CreateUser(TwitterConsumer.TwitterUser twitterUser)
 		{
-			#warning TODO:parse twitter user
 			User user = new User();
 			user.UserName = twitterUser.Name;
+			user.ExternalProfileUrl = twitterUser.ProfileUrl;
+			user.Photo = twitterUser.ProfileImageUrl;
+			user.Profile = twitterUser.Description;
+			user.TimeZone = TimeSpan.FromHours((double)twitterUser.TimeZone);
 
-			throw new NotImplementedException();
+			return user;
 		}
 		#endregion
 		#endregion

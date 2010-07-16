@@ -21,7 +21,7 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("twitter", IsRequired = false)]
+		[ConfigurationProperty("twitter", IsRequired = false, DefaultValue=null)]
 		public AuthorizationProviderDetailElement Twitter
 		{
 			get

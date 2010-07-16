@@ -33,5 +33,16 @@ namespace NearForums.Configuration
 				this["secretKey"] = value;
 			}
 		}
+
+		/// <summary>
+		/// Determines if the provider required data has been defined.
+		/// </summary>
+		public bool IsDefined
+		{
+			get
+			{
+				return (!String.IsNullOrEmpty(this.ApiKey)) && (!String.IsNullOrEmpty(this.SecretKey));
+			}
+		}
 	}
 }

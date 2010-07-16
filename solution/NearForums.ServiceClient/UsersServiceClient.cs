@@ -22,6 +22,7 @@ namespace NearForums.ServiceClient
 
 		public static User Add(User user, AuthenticationProvider provider, string providerId)
 		{
+			//TODO: Validate (but user are imported from external providers)
 			UsersDataAccess da = new UsersDataAccess();
 			return da.AddUser(user, provider, providerId);
 		}

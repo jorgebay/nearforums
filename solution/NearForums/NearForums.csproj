@@ -49,6 +49,7 @@
     <Compile Include="AuthenticationProvider.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AuthenticationProviderException.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\AuthorizationProviderDetailElement.cs" />

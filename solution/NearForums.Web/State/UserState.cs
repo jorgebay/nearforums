@@ -7,7 +7,7 @@ namespace NearForums.Web.State
 {
 	public class UserState
 	{
-		public UserState(User user)
+		public UserState(User user, AuthenticationProvider provider)
 		{
 			this.Id = user.Id;
 			this.UserName = user.UserName;
@@ -15,6 +15,7 @@ namespace NearForums.Web.State
 			this.Guid = user.Guid;
 			this.TimeZone = user.TimeZone;
 			this.ExternalProfileUrl = user.ExternalProfileUrl;
+			this.Provider = provider;
 		}
 
 		public int Id
@@ -48,6 +49,15 @@ namespace NearForums.Web.State
 		}
 
 		public string ExternalProfileUrl
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Determines the authentication provider used by the user
+		/// </summary>
+		public AuthenticationProvider Provider
 		{
 			get;
 			set;

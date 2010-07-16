@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Helpers;
 using NearForums.ServiceClient;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
@@ -39,6 +40,25 @@ namespace NearForums.Web.Controllers
 				returnUrl = "/";
 			}
 			return Redirect(HttpUtility.UrlDecode(returnUrl));
+		}
+
+		public ActionResult TwitterStartLogin(string returnUrl)
+		{
+			if (this.User != null)
+			{
+				return Redirect(returnUrl);
+			}
+			if (!this.Config.AuthorizationProviders.Twitter.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			//Will redirect to twitter
+			SecurityHelper.TwitterStartLogin(this.Cache);
+
+			//Normally the twitter consumer will redirect and end execution.
+			//But if it didn't:
+			throw new AuthenticationProviderException("Unexpected behaviour on dotnetopenauth Twitter consumer.");
 		}
 
 		public ActionResult About()

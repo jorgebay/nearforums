@@ -106,7 +106,7 @@ namespace NearForums.Tests
 			{
 				Assert.Inconclusive("There is no user in the db.");
 			}
-			sessionItems["User"] = new UserState(user);
+			sessionItems["User"] = new UserState(user, AuthenticationProvider.Facebook);
 			return sessionItems;
 		}
 
