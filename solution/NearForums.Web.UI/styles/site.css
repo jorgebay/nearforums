@@ -664,13 +664,18 @@ p.warning
 	font-style: italic;
 	padding-top: 20px;
 }
+#login h2
+{
+	border: none;
+}
 #login p.button
 {
-	padding: 10px 0 0 150px;
+	padding: 10px 0 0 80px;
 }
 #login div.connectMessage
 {
-	padding-top: 30px;
+	padding: 20px 300px 50px 80px;
+	font-style: italic;
 }
 div.forumDetail h1
 {

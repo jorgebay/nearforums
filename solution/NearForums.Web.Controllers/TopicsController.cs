@@ -97,6 +97,7 @@ namespace NearForums.Web.Controllers
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = Utils.ToUrlFragment(topic.Title, 64);
 				topic.IsSticky = (topic.IsSticky && this.User.Group >= UserGroup.Moderator);
+				topic.Description = topic.Description.ReplaceValues();
 
 				TopicsServiceClient.Create(topic, Request.UserHostAddress);
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
@@ -147,9 +148,6 @@ namespace NearForums.Web.Controllers
 			topic.Id = id;
 			try
 			{
-				topic.Forum = new Forum(){ShortName=forum};
-				topic.User = new User(User.Id, User.UserName);
-				topic.ShortName = name;
 				#region Check if user can edit
 				if (this.User.Group < UserGroup.Moderator)
 				{
@@ -164,6 +162,10 @@ namespace NearForums.Web.Controllers
 					topic.IsSticky = originalTopic.IsSticky;
 				}
 				#endregion
+				topic.Forum = new Forum(){ShortName=forum};
+				topic.User = new User(User.Id, User.UserName);
+				topic.ShortName = name;
+				topic.Description = topic.Description.ReplaceValues();
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
 
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});

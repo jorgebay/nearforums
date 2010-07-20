@@ -9,6 +9,9 @@ namespace NearForums.Web.Extensions
 {
 	public static class StringExtensions
 	{
+		/// <summary>
+		/// Replace pattern (determined by the configuration files) of in the text
+		/// </summary>
 		public static string ReplaceValues(this string value)
 		{
 			if (SiteConfiguration.Current != null)

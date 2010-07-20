@@ -72,5 +72,11 @@ namespace NearForums.Tests
 
 			webRequest.GetResponse();
 		}
+
+		//[TestMethod]
+		//public void Replacement_Test()
+		//{
+
+		//}
 	}
 }
