@@ -9,9 +9,11 @@ using NearForums.Configuration;
 using NearForums.Validation;
 using System.Web;
 using NearForums.ServiceClient;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
+	[HandleErrorLog(View = "/Views/Errors/500.aspx")]
 	public class BaseController : Controller
 	{
 		#region Props

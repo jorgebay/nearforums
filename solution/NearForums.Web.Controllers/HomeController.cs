@@ -9,7 +9,6 @@ using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
-	[HandleError]
 	public class HomeController : BaseController
 	{
 		public ActionResult Index()

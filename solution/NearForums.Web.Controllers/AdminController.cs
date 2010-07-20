@@ -26,6 +26,7 @@ namespace NearForums.Web.Controllers
 
 		[RequireAuthorization(UserGroup.Admin)]
 		[AcceptVerbs(HttpVerbs.Post)]
+		[ValidateInput(true)]
 		public ActionResult AddTemplate([Bind(Prefix = "")] Template template, HttpPostedFileBase postedFile)
 		{
 			bool fileValid = true;
