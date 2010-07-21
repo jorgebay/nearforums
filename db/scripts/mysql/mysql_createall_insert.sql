@@ -15,14 +15,6 @@
 
 
 --
--- Create schema forums_dbo
---
-
-/*
-CREATE DATABASE IF NOT EXISTS forums_dbo;
-USE forums_dbo;
-*/
---
 -- Temporary table structure for view `messagescomplete`
 --
 DROP TABLE IF EXISTS `messagescomplete`;
@@ -235,6 +227,9 @@ CREATE TABLE `users` (
   `userphoto` varchar(1024) DEFAULT NULL,
   `userregistrationdate` datetime NOT NULL,
   `userexternalprofileurl` varchar(255) DEFAULT NULL,
+  `UserProvider` varchar(32) NOT NULL,
+  `UserProviderId` varchar(64) NOT NULL,
+  `UserProviderLastCall` datetime NOT NULL,
   PRIMARY KEY (`userid`),
   KEY `fk_users_usersgroups` (`usergroupid`),
   CONSTRAINT `fk_users_usersgroups` FOREIGN KEY (`usergroupid`) REFERENCES `usersgroups` (`usergroupid`)
@@ -242,31 +237,6 @@ CREATE TABLE `users` (
 
 --
 -- Dumping data for table `users`
---
-
---
--- Definition of table `usersfacebook`
---
-
-DROP TABLE IF EXISTS `usersfacebook`;
-CREATE TABLE `usersfacebook` (
-  `userid` int(11) NOT NULL,
-  `facebookuserid` bigint(20) NOT NULL,
-  `facebookfirstname` varchar(255) NOT NULL,
-  `facebooklastname` varchar(255) NOT NULL,
-  `facebookprofileurl` varchar(1024) NOT NULL,
-  `facebookabout` longtext,
-  `facebookbirthdate` datetime DEFAULT NULL,
-  `facebooklocale` varchar(5) DEFAULT NULL,
-  `facebookpic` varchar(1024) DEFAULT NULL,
-  `facebooktimezone` decimal(9,2) DEFAULT NULL,
-  `facebookwebsite` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`userid`),
-  CONSTRAINT `fk_usersfacebook_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `usersfacebook`
 --
 
 --
@@ -305,6 +275,29 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `FNSplit`(
 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
        delim, '') $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPCleanDb`
+--
+
+DROP PROCEDURE IF EXISTS `SPCleanDb`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPCleanDb`()
+BEGIN
+  TRUNCATE TABLE Tags;
+  TRUNCATE TABLE Messages;
+  TRUNCATE TABLE Topics;
+  TRUNCATE TABLE Templates;
+  TRUNCATE TABLE Forums;
+  TRUNCATE TABLE Users;
+
+END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;
@@ -1961,40 +1954,10 @@ SELECT
 FROM
 	Users U
 	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.Active = 1
 ORDER BY
 	U.UserName;
-
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
-
---
--- Definition of procedure `SPUsersGetByFacebookId`
---
-
-DROP PROCEDURE IF EXISTS `SPUsersGetByFacebookId`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetByFacebookId`(param_uid bigint)
-BEGIN
-
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-FROM
-	UsersFacebook UF
-	INNER JOIN Users U ON U.UserId = UF.UserId
-WHERE
-	FacebookUserId = param_uid
-	AND
-	U.Active = 1;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
@@ -2044,6 +2007,41 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `SPUsersGetByProvider`
+--
+
+DROP PROCEDURE IF EXISTS `SPUsersGetByProvider`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetByProvider`(
+	param_Provider varchar(32)
+	,param_ProviderId varchar(64)
+)
+BEGIN
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+FROM
+	Users U
+WHERE
+	UserProvider = param_Provider
+	AND
+	UserProviderId = param_ProviderId
+	AND
+	U.Active = 1;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `SPUsersGetTestUser`
 --
 
@@ -2060,9 +2058,10 @@ SELECT
 	,U.UserGroupId
 	,U.UserGuid
 	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
 FROM
-	UsersFacebook UF
-	INNER JOIN Users U ON U.UserId = UF.UserId
+	Users U
 WHERE
 	U.Active = 1
 ORDER BY
@@ -2099,127 +2098,93 @@ END $$
 DELIMITER ;
 
 --
--- Definition of procedure `SPUsersInsertFromFacebook`
+-- Definition of procedure `SPUsersInsertFromProvider`
 --
 
-DROP PROCEDURE IF EXISTS `SPUsersInsertFromFacebook`;
+DROP PROCEDURE IF EXISTS `SPUsersInsertFromProvider`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersInsertFromFacebook`(
-	param_FacebookUserId	bigint
-	,param_FacebookFirstName	varchar(255)
-	,param_FacebookLastName	varchar(255)
-	,param_FacebookProfileUrl	varchar(1024)
-	,param_FacebookAbout	longtext
-	,param_FacebookBirthDate	datetime
-	,param_FacebookLocale	varchar(5)
-	,param_FacebookPic	varchar(1024)
-	,param_FacebookTimeZone	decimal(9,2)
-	,param_FacebookWebsite	varchar(255)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersInsertFromProvider`(
+  param_UserName varchar(50)
+	,param_UserProfile longtext
+	,param_UserSignature longtext
+	,param_UserGroupId smallint
+	,param_UserBirthDate datetime
+	,param_UserWebsite varchar(255)
 	,param_UserGuid char(32)
-)
+	,param_UserTimezone decimal(9,2)
+	,param_UserEmail varchar(100)
+	,param_UserEmailPolicy int
+	,param_UserPhoto varchar(1024)
+	,param_UserExternalProfileUrl varchar(255)
+	,param_UserProvider varchar(32)
+	,param_UserProviderId varchar(64)
+ )
 BEGIN
 
--- Creates a user from user data
--- Inserts into users and usersfacebook
--- returns a select with the userid
 -- If it is the first active user -> make it an admin
-
-DECLARE var_UserGroupId int;
 DECLARE var_UserCount int;
 DECLARE var_UserId int;
+SELECT COUNT(UserId) INTO var_UserCount FROM Users WHERE Active = 1;
+IF IFNULL(var_UserCount, 0) > 0 THEN
+ SET param_UserGroupId = 1;
+ELSE
+  SELECT MAX(UserGroupId) INTO param_UserGroupId FROM UsersGroups;
+END IF;
 
-
-
-DECLARE EXIT HANDLER FOR SQLEXCEPTION
-BEGIN
-  ROLLBACK;
-END;
-START TRANSACTION;
-  /*procedure body from mssql*/
-
-  SELECT COUNT(UserId) INTO var_UserCount FROM Users WHERE Active = 1;
-  IF IFNULL(var_UserCount, 0) > 0 THEN
-	  SET var_UserGroupId = 1;
-  ELSE
-	  SELECT MAX(UserGroupId) INTO var_UserGroupId FROM UsersGroups;
-  END IF;
-
-  INSERT INTO Users
-	(
-	UserName
-	,UserProfile
-	,UserBirthDate
-	,UserWebsite
-	,UserGuid
-	,UserTimezone
-	,UserPhoto
-	,UserRegistrationDate
-	,UserGroupId
-	,Active
-	,UserExternalProfileUrl
-	)
-	VALUES
-	(
-	CONCAT(param_FacebookFirstName, ' ', param_FacebookLastName)
-	,param_FacebookAbout
-	,param_FacebookBirthDate
-	,param_FacebookWebsite
-	,param_UserGuid
-	,param_FacebookTimeZone
-	,param_FacebookPic
-	,UTC_TIMESTAMP()
-	,var_UserGroupId
-	,1--Active
-	,param_FacebookProfileUrl
+INSERT INTO Users
+   (UserName
+   ,UserProfile
+   ,UserSignature
+   ,UserGroupId
+   ,Active
+   ,UserBirthDate
+   ,UserWebsite
+   ,UserGuid
+   ,UserTimezone
+   ,UserEmail
+   ,UserEmailPolicy
+   ,UserPhoto
+   ,UserRegistrationDate
+   ,UserExternalProfileUrl
+   ,UserProvider
+   ,UserProviderId
+   ,UserProviderLastCall)
+VALUES
+	(param_UserName
+   ,param_UserProfile
+   ,param_UserSignature
+   ,param_UserGroupId
+   ,1 -- Active
+   ,param_UserBirthDate
+   ,param_UserWebsite
+   ,param_UserGuid
+   ,param_UserTimezone
+   ,param_UserEmail
+   ,param_UserEmailPolicy
+   ,param_UserPhoto
+   ,UTC_TIMESTAMP() -- RegitrationDate
+   ,param_UserExternalProfileUrl
+   ,param_UserProvider
+   ,param_UserProviderId
+   ,UTC_TIMESTAMP() -- UserProviderLastCall
 	);
 
-	select LAST_INSERT_ID() INTO var_UserId;
-	INSERT INTO UsersFacebook
-	(
-		UserId
-		,FacebookUserId
-		,FacebookFirstName	
-		,FacebookLastName
-		,FacebookProfileUrl	
-		,FacebookAbout
-		,FacebookBirthDate
-		,FacebookLocale
-		,FacebookPic	
-		,FacebookTimeZone
-		,FacebookWebsite
-	)
-	VALUES
-	(
-		var_UserId
-		,param_FacebookUserId
-		,param_FacebookFirstName
-		,param_FacebookLastName
-		,param_FacebookProfileUrl
-		,param_FacebookAbout
-		,param_FacebookBirthDate
-		,param_FacebookLocale
-		,param_FacebookPic
-		,param_FacebookTimeZone
-		,param_FacebookWebsite
-	);
-
-	COMMIT;
-
-	SELECT
-		U.UserId
-		,U.UserName
-		,U.UserGroupId
-		,U.UserGuid
-		,U.UserTimeZone
-	FROM
-		Users U
-	WHERE
-		U.UserId = var_UserId;
-COMMIT;
-
+select LAST_INSERT_ID() INTO var_UserId;
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+FROM
+	Users U
+WHERE
+	U.UserId = var_UserId;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
