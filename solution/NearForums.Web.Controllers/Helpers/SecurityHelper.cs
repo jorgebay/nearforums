@@ -260,7 +260,7 @@ namespace NearForums.Web.Controllers.Helpers
 						TwitterConsumer.TwitterUser twitterUser = TwitterConsumer.GetUserFromCredentials(tokenManager, accessToken);
 						user = CreateUser(twitterUser);
 
-						UsersServiceClient.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
+						user = UsersServiceClient.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
 					}
 
 					

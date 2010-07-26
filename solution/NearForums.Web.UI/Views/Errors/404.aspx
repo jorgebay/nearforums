@@ -5,7 +5,9 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
+	<ul class="path floatContainer">
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+	</ul>
     <h1>Page not found</h1>
 	<p>The page you requested was not found.</p>
 	<p><a href="/">Home &gt;&gt;</a></p>

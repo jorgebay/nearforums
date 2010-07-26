@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
 using NearForums.ServiceClient;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
@@ -13,6 +14,10 @@ namespace NearForums.Web.Controllers
 		public ActionResult Detail(int id)
 		{
 			User user = UsersServiceClient.Get(id);
+			if (user == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			return View(user);
 		}
 

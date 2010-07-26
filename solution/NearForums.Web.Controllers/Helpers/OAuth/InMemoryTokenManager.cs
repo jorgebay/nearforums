@@ -113,6 +113,11 @@
 			throw new NotImplementedException();
 		}
 
+		public bool IsRequestTokenAuthorized(string requestToken)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 
 		#region IOpenIdOAuthTokenManager Members

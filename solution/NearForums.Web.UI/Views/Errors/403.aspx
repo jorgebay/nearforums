@@ -3,6 +3,9 @@
 	Forbidden
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<ul class="path floatContainer">
+		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
+	</ul>
     <h1>Forbidden</h1>
     <p>The page you requested is forbidden.</p>
     <p>Go to <a href="/">Homepage&gt;&gt;</a></p>

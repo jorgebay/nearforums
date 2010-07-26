@@ -1,4 +1,6 @@
-﻿-- MySQL Administrator dump 1.4
+﻿-- Init options
+SET GLOBAL log_bin_trust_function_creators = 1;
+-- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
 -- Server version	5.1.46-community

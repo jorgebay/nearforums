@@ -76,35 +76,35 @@
 			return XDocument.Load(XmlReader.Create(response.GetResponseReader()));
 		}
 
-		public static XDocument UpdateProfileBackgroundImage(ConsumerBase twitter, string accessToken, string image, bool tile)
-		{
-			var parts = new[] {
-				MultipartPostPart.CreateFormFilePart("image", image, "image/" + Path.GetExtension(image).Substring(1).ToLowerInvariant()),
-				MultipartPostPart.CreateFormPart("tile", tile.ToString().ToLowerInvariant()),
-			};
-			HttpWebRequest request = twitter.PrepareAuthorizedRequest(UpdateProfileBackgroundImageEndpoint, accessToken, parts);
-			request.ServicePoint.Expect100Continue = false;
-			IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
-			string responseString = response.GetResponseReader().ReadToEnd();
-			return XDocument.Parse(responseString);
-		}
+		//public static XDocument UpdateProfileBackgroundImage(ConsumerBase twitter, string accessToken, string image, bool tile)
+		//{
+		//    var parts = new[] {
+		//        MultipartPostPart.CreateFormFilePart("image", image, "image/" + Path.GetExtension(image).Substring(1).ToLowerInvariant()),
+		//        MultipartPostPart.CreateFormPart("tile", tile.ToString().ToLowerInvariant()),
+		//    };
+		//    HttpWebRequest request = twitter.PrepareAuthorizedRequest(UpdateProfileBackgroundImageEndpoint, accessToken, parts);
+		//    request.ServicePoint.Expect100Continue = false;
+		//    IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
+		//    string responseString = response.GetResponseReader().ReadToEnd();
+		//    return XDocument.Parse(responseString);
+		//}
 
-		public static XDocument UpdateProfileImage(ConsumerBase twitter, string accessToken, string pathToImage)
-		{
-			string contentType = "image/" + Path.GetExtension(pathToImage).Substring(1).ToLowerInvariant();
-			return UpdateProfileImage(twitter, accessToken, File.OpenRead(pathToImage), contentType);
-		}
+		//public static XDocument UpdateProfileImage(ConsumerBase twitter, string accessToken, string pathToImage)
+		//{
+		//    string contentType = "image/" + Path.GetExtension(pathToImage).Substring(1).ToLowerInvariant();
+		//    return UpdateProfileImage(twitter, accessToken, File.OpenRead(pathToImage), contentType);
+		//}
 
-		public static XDocument UpdateProfileImage(ConsumerBase twitter, string accessToken, Stream image, string contentType)
-		{
-			var parts = new[] {
-				MultipartPostPart.CreateFormFilePart("image", "twitterPhoto", contentType, image),
-			};
-			HttpWebRequest request = twitter.PrepareAuthorizedRequest(UpdateProfileImageEndpoint, accessToken, parts);
-			IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
-			string responseString = response.GetResponseReader().ReadToEnd();
-			return XDocument.Parse(responseString);
-		}
+		//public static XDocument UpdateProfileImage(ConsumerBase twitter, string accessToken, Stream image, string contentType)
+		//{
+		//    var parts = new[] {
+		//        MultipartPostPart.CreateFormFilePart("image", "twitterPhoto", contentType, image),
+		//    };
+		//    HttpWebRequest request = twitter.PrepareAuthorizedRequest(UpdateProfileImageEndpoint, accessToken, parts);
+		//    IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
+		//    string responseString = response.GetResponseReader().ReadToEnd();
+		//    return XDocument.Parse(responseString);
+		//}
 
 		public static XDocument VerifyCredentials(ConsumerBase twitter, string accessToken)
 		{
