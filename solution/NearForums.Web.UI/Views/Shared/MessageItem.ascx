@@ -11,7 +11,7 @@
 		</span>
 		<strong class="userName"><%= Html.ActionLink(Model.User.UserName, "Detail", "Users", new{id=Model.User.Id}, new{rel="nofollow"}) %></strong>
 		<span class="dateSep">
-		at
+		 
 		</span>
 		<%= Html.Date(Model.Date) %>
 	</div>

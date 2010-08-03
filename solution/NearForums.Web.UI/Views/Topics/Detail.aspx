@@ -24,7 +24,7 @@
 			<%=Html.Date(Model.Date) %>
 		</p>
 		<div class="description">
-			<p><%=Model.Description %></p>
+			<%=Model.Description %>
 		</div>
 <% 
 		PagedList<Message> messages = new PagedList<Message>(Model.Messages, this.PageIndex, Config.Topics.MessagesPerPage);

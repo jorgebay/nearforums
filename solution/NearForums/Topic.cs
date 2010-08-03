@@ -42,6 +42,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Html description of the thread
+		/// </summary>
 		[RequireField]
 		public string Description
 		{
