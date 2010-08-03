@@ -67,6 +67,15 @@ namespace NearForums.Web.UI
 			this.Cache = new CacheWrapper(this.ViewContext.HttpContext.Cache);
 			base.OnInit(e);
 		}
+
+		/// <summary>
+		/// Shortcut to Response.Write
+		/// </summary>
+		/// <param name="text"></param>
+		protected virtual void W(object value)
+		{
+			Response.Write(value);
+		}
 	}
 
 	public class BaseViewUserControl : BaseViewUserControl<object>

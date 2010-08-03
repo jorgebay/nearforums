@@ -358,6 +358,7 @@
     <Content Include="Views\Forums\LatestTopicsRss.aspx" />
     <Content Include="Views\Forums\Manage.aspx" />
     <Content Include="Views\Shared\EditorScripts.ascx" />
+    <Content Include="Views\Shared\SinceDate.ascx" />
     <Content Include="Views\Shared\TagCloud.ascx" />
     <Content Include="Views\Shared\Templated.Master" />
     <Content Include="Views\Shared\UserMenu.ascx" />

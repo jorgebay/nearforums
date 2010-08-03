@@ -10,7 +10,9 @@
 	</ul>
     <h1><%=Model.UserName %> profile</h1>
     <p><strong>Group</strong>: <%=Model.GroupName %></p>
-    <p><strong>Member since</strong>: <%=Html.Date(Model.RegistrationDate, "d") %></p>
+    <p>
+		<strong>Member for</strong>: <% Html.RenderPartial("SinceDate", Model.RegistrationDate); %>
+	</p>
 <%
 	if (Model.ExternalProfileUrl != null)
 	{
@@ -19,4 +21,7 @@
 <%
 	}
 %>
+	<h2>Threads posted by <%=Model.UserName %></h2>
+	<h2>Messages posted by <%=Model.UserName %></h2>
+	
 </asp:Content>
