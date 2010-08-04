@@ -7,6 +7,7 @@ using System.Web.SessionState;
 using NearForums.Web.State;
 using NearForums.Web.Controllers;
 using System.Web.Mvc;
+using System.Collections;
 
 namespace NearForums.Tests.Controllers
 {
@@ -74,6 +75,19 @@ namespace NearForums.Tests.Controllers
 
 			User user = (User)controller.ViewData.Model;
 			Assert.IsNotNull(user);
+		}
+
+		[TestMethod]
+		public void User_Get_MessagesByUser()
+		{
+			SessionStateItemCollection session = ForumsControllerTest.GetSessionWithTestUser();
+			UserState userState = (UserState)session["User"];
+
+			UsersController controller = new UsersController();
+			ActionResult result = controller.MessagesByUser(userState.Id);
+
+			IList topics = (IList)controller.ViewData.Model;
+			Assert.IsNotNull(topics);
 		}
 	}
 }

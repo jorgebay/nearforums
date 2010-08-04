@@ -18,7 +18,22 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
+			//Get posted topics
+			ViewData["Topics"] = TopicsServiceClient.GetByUser(id);
+
 			return View(user);
+		}
+
+		public ActionResult MessagesByUser(int id)
+		{
+			User user = UsersServiceClient.Get(id);
+			if (user == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+			//Get posted messages (ordered 
+			List<Topic> topics = TopicsServiceClient.GetTopicsAndMessagesByUser(id);
+			return View(topics);
 		}
 
 		[RequireAuthorization(UserGroup.Admin)]

@@ -20,8 +20,42 @@
     <p><strong><%=new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase() %> profile</strong>: <%=Html.Link(Model.ExternalProfileUrl, new{@target="_blank"})%></p>
 <%
 	}
+	if (ViewData.Get<IList>("Topics").Count > 0)
+	{
 %>
-	<h2>Threads posted by <%=Model.UserName %></h2>
-	<h2>Messages posted by <%=Model.UserName %></h2>
-	
+		<h2>Threads posted by <%=Model.UserName%></h2>
+		<ul>
+<%
+		foreach (Topic t in (IList)ViewData["Topics"])
+		{
+%>
+			<li><%=t.Title %></li>	
+<%
+		}
+%>
+		</ul>
+<%
+	}
+%>
+	<h2>Messages posted by <%=Model.UserName%></h2>
+	<p class="messageButton"><a href="#" onclick="return getMessages()">Get all messages posted by <%=Model.UserName%></a></p>
+	<p class="loading" style="display:none;"><img src="/images/loadingMini.gif" alt="" style="" /> Loading...</p>
+	<div id="messagesResult" style="display:none;"></div>
+	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript">
+	function getMessages()
+	{
+		$("p.messageButton").hide();
+		$("p.loading").fadeIn();
+		$.ajax({
+			url: '<%=Url.Action("MessagesByUser") %>',
+			cache: true,
+			success: function(html){
+				$("p.loading").hide();
+				$("#messagesResult").append(html).slideDown();
+			}
+		});
+		return false;
+	}
+	</script>
 </asp:Content>

@@ -119,10 +119,31 @@ namespace NearForums.ServiceClient
 			return da.GetUnanswered(forumId);
 		}
 
+		/// <summary>
+		/// Deletes (inactive) a user from the application
+		/// </summary>
 		public static void Delete(int id, int userId, string ip)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();
 			da.Delete(id, userId, ip);
+		}
+
+		/// <summary>
+		/// Gets a list of topics posted by the user
+		/// </summary>
+		public static List<Topic> GetByUser(int userId)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			return da.GetByUser(userId);
+		}
+
+		/// <summary>
+		/// Gets a list of topics with the messages posted by the user
+		/// </summary>
+		public static List<Topic> GetTopicsAndMessagesByUser(int userId)
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			return da.GetTopicsAndMessagesByUser(userId);
 		}
 	}
 }

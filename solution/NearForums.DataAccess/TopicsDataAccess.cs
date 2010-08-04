@@ -252,5 +252,46 @@ namespace NearForums.DataAccess
 			}
 			return list;
 		}
+
+		/// <summary>
+		/// Gets a list of topics posted by the user
+		/// </summary>
+		public List<Topic> GetByUser(int userId)
+		{
+			List<Topic> list = new List<Topic>();
+			DbCommand comm = this.GetCommand("SPTopicsGetByUser");
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+
+			DataTable dt = this.GetTable(comm);
+			foreach (DataRow dr in dt.Rows)
+			{
+				Topic t = ParseBasicTopicDataRow(dr);
+				list.Add(t);
+			}
+			return list;
+		}
+
+		/// <summary>
+		/// Gets the messages posted by the user grouped by topic
+		/// </summary>
+		public List<Topic> GetTopicsAndMessagesByUser(int userId)
+		{
+			List<Topic> list = new List<Topic>();
+			DbCommand comm = this.GetCommand("SPTopicsGetMessagesByUser");
+			comm.AddParameter<int>(this.Factory, "UserId", userId);
+
+			DataTable dt = this.GetTable(comm);
+			Topic t = null;
+			foreach (DataRow dr in dt.Rows)
+			{
+				if (t == null || t.Id != Convert.ToInt32(dr["TopicId"]))
+				{
+					t = ParseBasicTopicDataRow(dr);
+					list.Add(t);
+				}
+				t.Messages.Add(new Message(dr.Get<int>("MessageId"), dr.GetDate("MessageCreationDate")));
+			}
+			return list;
+		}
 	}
 }

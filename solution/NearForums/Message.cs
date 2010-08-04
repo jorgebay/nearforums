@@ -13,6 +13,12 @@ namespace NearForums
 
 		}
 
+		public Message(int id, DateTime date)
+		{
+			this.Id = id;
+			this.Date = date;
+		}
+
 		public int Id
 		{
 			get;
