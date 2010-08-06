@@ -295,7 +295,7 @@
     <Content Include="Views\Forums\Detail.aspx" />
     <Content Include="Views\Forums\ForumTopicList.ascx" />
     <Content Include="Views\Forums\List.aspx" />
-    <Content Include="Views\Home\Login.aspx" />
+    <Content Include="Views\Authentication\Login.aspx" />
     <Content Include="Views\Shared\LoginSmall.ascx" />
     <Content Include="Views\Shared\MessageItem.ascx" />
     <Content Include="Views\Static\FacebookXDReceiver.aspx" />
