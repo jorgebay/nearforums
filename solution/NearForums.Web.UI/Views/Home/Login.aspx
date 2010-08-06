@@ -30,7 +30,7 @@
 			{
 %>
 				<h2>Sign in with your Twitter account</h2>
-				<p class="button"><a href="<%=Url.Action("TwitterStartLogin", "Home", new{returnUrl=this.Request.Url.PathAndQuery}) %>"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l.png" alt="Login using twitter" /></a></p>
+				<p class="button"><a href="<%=Url.Action("TwitterStartLogin", "Authentication", new{returnUrl=this.Request.Url.PathAndQuery}) %>"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l.png" alt="Login using twitter" /></a></p>
 				<div class="connectMessage">
 					<p>You should be entering your twitter username and password at twitter.com website to login at the forums. Twitter will not share your password with us.</p>
 					<p>If you have any doubt, visit the <a href="http://support.twitter.com/groups/31-twitter-basics/topics/113-online-safety/articles/76052-how-to-connect-to-third-party-applications" target="_blank">Twitter Help Center</a>.</p>

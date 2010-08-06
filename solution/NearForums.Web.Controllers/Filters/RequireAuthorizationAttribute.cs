@@ -77,10 +77,10 @@ namespace NearForums.Web.Controllers.Filters
 					return;
 				}
 				string redirectOnSuccess = HttpUtility.UrlEncode(filterContext.HttpContext.Request.Url.PathAndQuery);
-				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new{controller="Home",action="Login",returnUrl=redirectOnSuccess,group=this.UserGroup}));
+				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new{controller="Authentication",action="Login",returnUrl=redirectOnSuccess,group=this.UserGroup}));
 				if (path == null)
 				{
-					throw new ArgumentException("Route for Home>Login not found.");
+					throw new ArgumentException("Route for Authentication>Login not found.");
 				}
 				string loginUrl = path.VirtualPath;
 				filterContext.HttpContext.Response.Redirect(loginUrl, true);

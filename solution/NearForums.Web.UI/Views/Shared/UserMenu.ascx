@@ -5,7 +5,7 @@ if (Config.AuthorizationProviders.Facebook.IsDefined)
 %>
 	<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<%=System.Threading.Thread.CurrentThread.CurrentUICulture %>" type="text/javascript"></script>
 	<script type="text/javascript">
-		FB.init('<%= Config.AuthorizationProviders.Facebook.ApiKey %>', '<%=Url.Action("FacebookReceiver", "Home") %>');
+		FB.init('<%= Config.AuthorizationProviders.Facebook.ApiKey %>', '<%=Url.Action("FacebookReceiver", "Authentication") %>');
 	</script>
 <%
 }
@@ -26,7 +26,7 @@ if (Config.AuthorizationProviders.Facebook.IsDefined)
 		if (Config.AuthorizationProviders.Twitter.IsDefined)
 		{
 %>
-		<li class="login"><a href="<%=Url.Action("TwitterStartLogin", "Home", new{returnUrl=this.Request.Url.PathAndQuery}) %>"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
+		<li class="login"><a href="<%=Url.Action("TwitterStartLogin", "Authentication", new{returnUrl=this.Request.Url.PathAndQuery}) %>"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
 <%
 		}
 	}
@@ -38,13 +38,13 @@ if (Config.AuthorizationProviders.Facebook.IsDefined)
 		if (this.User.Provider == AuthenticationProvider.Facebook)
 		{		
 %>
-			<li class="logout"><a href="#" onclick="FB.Connect.logoutAndRedirect('<%=Url.Action("Logout", "Home", new{returnUrl=Request.Url.PathAndQuery}) %>');return false;">Logout</a></li>
+			<li class="logout"><a href="#" onclick="FB.Connect.logoutAndRedirect('<%=Url.Action("Logout", "Authentication", new{returnUrl=Request.Url.PathAndQuery}) %>');return false;">Logout</a></li>
 <%
 		}
 		else
 		{
 %>
-			<li class="logout"><%=Html.ActionLink("Logout", "Logout", "Home") %></li>
+			<li class="logout"><%=Html.ActionLink("Logout", "Logout", "Authentication")%></li>
 <%		
 		}
 	}
