@@ -9,11 +9,11 @@ namespace NearForums.Configuration
 	public class AuthorizationProvidersElement : ConfigurationElement
 	{
 		[ConfigurationProperty("facebook", IsRequired = false)]
-		public AuthorizationProviderDetailElement Facebook
+		public KeySecretElement Facebook
 		{
 			get
 			{
-				return (AuthorizationProviderDetailElement)this["facebook"];
+				return (KeySecretElement)this["facebook"];
 			}
 			set
 			{
@@ -21,16 +21,29 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("twitter", IsRequired = false, DefaultValue=null)]
-		public AuthorizationProviderDetailElement Twitter
+		[ConfigurationProperty("twitter", IsRequired = false)]
+		public KeySecretElement Twitter
 		{
 			get
 			{
-				return (AuthorizationProviderDetailElement)this["twitter"];
+				return (KeySecretElement)this["twitter"];
 			}
 			set
 			{
 				this["twitter"] = value;
+			}
+		}
+
+		[ConfigurationProperty("ssoOpenid", IsRequired = false)]
+		public SSOOpenIdElement SSOOpenId
+		{
+			get
+			{
+				return (SSOOpenIdElement)this["ssoOpenid"];
+			}
+			set
+			{
+				this["ssoOpenid"] = value;
 			}
 		}
 

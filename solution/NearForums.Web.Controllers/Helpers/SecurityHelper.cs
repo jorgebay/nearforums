@@ -15,6 +15,9 @@ using System.Globalization;
 using System.Security.Cryptography;
 using NearForums.Web.Controllers.Helpers.OAuth;
 using DotNetOpenAuth.OAuth.ChannelElements;
+using DotNetOpenAuth.Messaging;
+using DotNetOpenAuth.OpenId.RelyingParty;
+using DotNetOpenAuth.OpenId;
 
 namespace NearForums.Web.Controllers.Helpers
 {
@@ -223,7 +226,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 		#region OAuth
 		#region Token manager
-		private static InMemoryTokenManager GetTokenManager(CacheWrapper cache, AuthenticationProvider provider, AuthorizationProviderDetailElement providerConfiguration)
+		private static InMemoryTokenManager GetTokenManager(CacheWrapper cache, AuthenticationProvider provider, KeySecretElement providerConfiguration)
 		{
 			var tokenManager = (InMemoryTokenManager)cache.Cache[provider.ToString() + "TokenManager"];
 			if (tokenManager == null)
@@ -285,6 +288,29 @@ namespace NearForums.Web.Controllers.Helpers
 			return user;
 		}
 		#endregion
+		#endregion
+
+		#region OpenId
+		/// <summary>
+		/// Logs the user in or creates the user account if the user does not exist.
+		/// Sets the logged user in the session.
+		/// </summary>
+		public static bool OpenIdFinishLogin(IAuthenticationResponse response, SessionWrapper session)
+		{
+			string externalId = response.ClaimedIdentifier.ToString();
+			string name = response.FriendlyIdentifierForDisplay;
+			User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.OpenId, externalId);
+
+			if (user == null)
+			{
+				user = new User(0, name);
+				user = UsersServiceClient.Add(user, AuthenticationProvider.OpenId, externalId);
+			}
+			
+			session.User = new UserState(user, AuthenticationProvider.OpenId);
+
+			return true;
+		} 
 		#endregion
 	}
 }

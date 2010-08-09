@@ -8,6 +8,7 @@ namespace NearForums
 	public enum AuthenticationProvider
 	{
 		Facebook,
-		Twitter
+		Twitter,
+		OpenId
 	}
 }

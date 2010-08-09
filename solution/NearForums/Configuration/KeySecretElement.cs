@@ -6,7 +6,10 @@ using System.Configuration;
 
 namespace NearForums.Configuration
 {
-	public class AuthorizationProviderDetailElement : ConfigurationElement
+	/// <summary>
+	/// Represents a configuration element for an authorization provider based on Key and Secret
+	/// </summary>
+	public class KeySecretElement : ConfigurationElement
 	{
 		[ConfigurationProperty("apiKey", IsRequired = true)]
 		public string ApiKey

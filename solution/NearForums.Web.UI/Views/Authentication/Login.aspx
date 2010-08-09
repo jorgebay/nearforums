@@ -38,6 +38,13 @@
 
 <%
 			}
+%>
+			<h2>Sign in using open id</h2>
+			<div></div>
+			<div class="connectMessage">
+				<p>Sign in using Open Id.</p>
+			</div>
+<%
 		}
 		else
 		{

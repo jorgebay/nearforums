@@ -6,6 +6,11 @@ using System.Web.Mvc;
 using NearForums.Web.Controllers.Helpers;
 using NearForums.ServiceClient;
 using NearForums.Web.Extensions;
+using DotNetOpenAuth.OpenId;
+using System.Net;
+using DotNetOpenAuth.OpenId.RelyingParty;
+using DotNetOpenAuth.Messaging;
+using System.Web.Security;
 
 namespace NearForums.Web.Controllers
 {
@@ -36,6 +41,7 @@ namespace NearForums.Web.Controllers
 			return Redirect(HttpUtility.UrlDecode(returnUrl));
 		}
 
+		#region Twitter
 		public ActionResult TwitterStartLogin(string returnUrl)
 		{
 			if (this.User != null)
@@ -53,11 +59,86 @@ namespace NearForums.Web.Controllers
 			//Normally the twitter consumer will redirect and end execution.
 			//But if it didn't:
 			throw new AuthenticationProviderException("Unexpected behaviour on dotnetopenauth Twitter consumer.");
-		}
+		} 
+		#endregion
 
+		#region Facebook
 		public ActionResult FacebookReceiver()
 		{
 			return Static("FacebookXDReceiver", false);
+		} 
+		#endregion
+
+		#region OpenId
+		public ActionResult OpenIdStartLogin(string openidIdentifier, string returnUrl)
+		{
+			if (!this.Config.AuthorizationProviders.SSOOpenId.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			if (!String.IsNullOrEmpty(this.Config.AuthorizationProviders.SSOOpenId.Identifier))
+			{
+				openidIdentifier = this.Config.AuthorizationProviders.SSOOpenId.Identifier;
+			}
+
+			Identifier id;
+			if (Identifier.TryParse(openidIdentifier, out id))
+			{
+				#region Build openid return urls
+				var returnAbsoluteUrl = new Uri(Request.Url, Url.Action("OpenIdFinishLogin", new
+				{
+					returnUrl = returnUrl
+				}));
+
+				var realmUrl = new Uri(Request.Url, "/");
+				#endregion
+
+				OpenIdRelyingParty openid = new OpenIdRelyingParty();
+				var authenticationRequest = openid.CreateRequest(id, realmUrl, returnAbsoluteUrl);
+
+				return authenticationRequest.RedirectingResponse.AsActionResult();
+			}
+			throw new FormatException("openid identifier not valid");
+			//TODO: User Friendly error
 		}
+
+		public ActionResult OpenIdFinishLogin(string returnUrl)
+		{
+			if (!this.Config.AuthorizationProviders.SSOOpenId.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			if (String.IsNullOrEmpty(returnUrl))
+			{
+				returnUrl = "/";
+			}
+
+			OpenIdRelyingParty openid = new OpenIdRelyingParty();
+			var response = openid.GetResponse();
+			if (response == null)
+			{
+				throw new AuthenticationProviderException("Open Id provider didn't send an assertive response. response null.");
+			}
+			// OpenID Provider sending assertion response
+			switch (response.Status)
+			{
+				case AuthenticationStatus.Authenticated:
+					SecurityHelper.OpenIdFinishLogin(response, Session);
+
+					return Redirect(returnUrl);
+				case AuthenticationStatus.Canceled:
+					//Canceled at provider
+
+					//Return to previous url without logged
+					return View("Login");
+				case AuthenticationStatus.Failed:
+					
+					return View("Login");
+			}
+
+			return new EmptyResult();
+		}
+		#endregion
 	}
 }
