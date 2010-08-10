@@ -13,12 +13,19 @@ namespace NearForums
 
 		}
 
-		public Message(int id, DateTime date)
+		public Message(int id)
 		{
 			this.Id = id;
+		}
+
+		public Message(int id, DateTime date) : this(id)
+		{
 			this.Date = date;
 		}
 
+		/// <summary>
+		/// Message identifier. 1 based index inside the thread.
+		/// </summary>
 		public int Id
 		{
 			get;
@@ -52,6 +59,15 @@ namespace NearForums
 		/// Topic to which the message belong
 		/// </summary>
 		public Topic Topic
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Message being replyied.
+		/// </summary>
+		public Message InReplyOf
 		{
 			get;
 			set;

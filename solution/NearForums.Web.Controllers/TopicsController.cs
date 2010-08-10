@@ -247,12 +247,21 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Reply
+		/// <summary>
+		/// Loads the reply form
+		/// </summary>
+		/// <param name="id">thread id</param>
+		/// <param name="msg">Message id of the message being quoted.</param>
 		[AcceptVerbs(HttpVerbs.Get)]
 		[RequireAuthorization]
-		public ActionResult Reply(int id, string name)
+		public ActionResult Reply(int id, string name, int? msg)
 		{
 			Message message = new Message();
 			message.Topic = TopicsServiceClient.Get(id);
+			if (msg != null)
+			{
+				message.InReplyOf = new Message(msg.Value);
+			}
 			#region Shortname must match
 			if (message.Topic != null && message.Topic.ShortName.ToUpper() != name.ToUpper())
 			{
@@ -276,10 +285,15 @@ namespace NearForums.Web.Controllers
 			return View(message);
 		}
 
+		/// <summary>
+		/// Saves the message or Loads the reply form to allow the user to clear error messages
+		/// </summary>
+		/// <param name="id">thread id</param>
+		/// <param name="msg">Message id of the message being quoted.</param>
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		public ActionResult Reply([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum)
+		public ActionResult Reply([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg)
 		{
 			try
 			{
@@ -297,6 +311,10 @@ namespace NearForums.Web.Controllers
 				#endregion
 				message.Body = message.Body.ReplaceValues();
 				message.User = Session.User.ToUser();
+				if (msg != null)
+				{
+					message.InReplyOf = new Message(msg.Value);
+				}
 				TopicsServiceClient.AddReply(message, Request.UserHostAddress);
 
 				return new RedirectToRouteExtraResult(new{action="Detail",controller="Topics",id=id,name=name,forum=forum}, "#msg" + message.Id);
@@ -306,7 +324,6 @@ namespace NearForums.Web.Controllers
 				this.AddErrors(ModelState, ex);
 			}
 
-			message.Topic = TopicsServiceClient.Get(id);
 			return View(message);
 		}
 		#endregion

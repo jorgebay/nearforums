@@ -32,13 +32,23 @@
 %>
 	</div>
 	<div class="msgOptions">
+		<%=Html.Link("link", (ViewData.Get<bool>("FullUrl", false) ? Url.Action(null, null, new{page=0}) : "") + "#msg" + Model.Id, new{@class="first"}) %>
+		<%=Html.ActionLink("reply", "Reply", new{msg=Model.Id}, new{rel="nofollow"}) %>
 <%
-	if (this.User != null && this.User.Group >= UserGroup.Moderator && Model.Active)
-	{
+		if (this.User != null && this.User.Group >= UserGroup.Moderator && Model.Active)
+		{
 %>
-		<%=Html.ActionLink("remove", "DeleteMessage", new{mid=Model.Id}, new{onclick="return confirm('Are you sure you want to hide this message?');"})%>
+			<%=Html.ActionLink("remove", "DeleteMessage", new{mid=Model.Id}, new{onclick="return confirmDelete();"})%>
 <%
-	}
+		}
 %>
 	</div>
+<%
+	if (Model.Id == 1)
+	{
+%>
+		<script type="text/javascript">function confirmDelete(){return confirm('Are you sure you want to hide this message?');}</script>
+<%
+	}
+%>	
 </li>

@@ -73,18 +73,21 @@
 		});
 	</script>
 	<script type="text/javascript">
+//		$(document).bind("dataLoaded", function(){
+//			$("div.msgOptions a").unbind("mouseenter mouseleave").hover(
+//				function()
+//				{
+//					$(this).parents("li").addClass("over");
+//				}
+//				,
+//				function()
+//				{
+//					$(this).parents("li").removeClass("over");
+//				}
+//			);
+//		});
 		$(document).bind("dataLoaded", function(){
-			$("div.msgOptions a").unbind("mouseenter mouseleave").hover(
-				function()
-				{
-					$(this).parents("li").addClass("over");
-				}
-				,
-				function()
-				{
-					$(this).parents("li").removeClass("over");
-				}
-			);
+			$("#messages li").unbind("mouseenter mouseleave").hover(function(){$(this).addClass("over");},function(){$(this).removeClass("over");});
 		});
 	</script>
 </asp:Content>

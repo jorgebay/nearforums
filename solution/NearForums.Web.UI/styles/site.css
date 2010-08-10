@@ -424,8 +424,8 @@ ul#messages
 }
 ul#messages li
 {
-	margin-bottom: 10px;
-	padding: 0 10px 5px 5px;
+	margin-bottom: 2px;
+	padding: 0 10px 10px 5px;
 }
 ul#messages div.msgBody
 {
@@ -452,18 +452,33 @@ ul#messages div.msgHeader a.msgId
 ul#messages div.msgOptions
 {
 	text-align: right;
+	visibility: hidden;
+	position: relative;
+	top: 2px;
+	line-height: 11px;
 }
 ul#messages div.msgOptions a
 {
 	text-decoration: none;
+	font-weight: normal;
+	border-left: solid 1px #666666;
+	padding-left: 3px;
 }
 ul#messages div.msgOptions a:hover
 {
 	text-decoration: underline;
 }
+ul#messages div.msgOptions a.first
+{
+	border: none;
+}
 ul#messages li.over
 {
-	background-color: #DDDDDD;
+	background-color: #F0F0F0;
+}
+ul#messages li.over div.msgOptions
+{
+	visibility: visible;
 }
 div.toolbar
 {

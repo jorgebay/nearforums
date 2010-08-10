@@ -110,6 +110,7 @@ namespace NearForums.DataAccess
 			comm.AddParameter(this.Factory, "MessageBody", DbType.String, message.Body);
 			comm.AddParameter(this.Factory, "UserId", DbType.Int32, message.User.Id);
 			comm.AddParameter(this.Factory, "Ip", DbType.String, ip);
+			comm.AddParameter(this.Factory, "ParentId", DbType.Int32, message.InReplyOf != null ? (object)message.InReplyOf.Id : null);
 
 			DbParameter idParameter = comm.AddParameter(this.Factory, "MessageId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;

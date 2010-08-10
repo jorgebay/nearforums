@@ -146,12 +146,13 @@ namespace NearForums.Tests.Controllers
 			Forum forum = ForumsControllerTest.GetAForum();
 			Topic topic = TopicsControllerTest.GetATopic(forum);
 
-			Message message = new Message()
-			{
-				Body = "<p>Unit testing....</p>"
-			};
+			result = controller.Reply(topic.Id, topic.ShortName, null);
+			Assert.IsTrue(result is ViewResult);
 
-			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName);
+			Message message = (Message)controller.ViewData.Model;
+			message.Body = "<p>Unit testing....</p>";
+
+			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null);
 
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 		}

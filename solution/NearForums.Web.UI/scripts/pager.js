@@ -56,7 +56,7 @@
 		$(".lastItem").text(pager.lastItem.toString());
 		if (pager.lastItem == pager.totalItems)
 		{
-			//Don't hide it, just disable it
+			//TODO: Don't hide it, just disable it
 			$("#pagerClient").hide();
 			$("div.toolbar li.showAll").hide();
 		}
