@@ -681,3 +681,9 @@ div.forumDetail h1
 {
 	padding-right: 375px;
 }
+input.button
+{
+	border:1px solid #A3A3A5;
+	width: auto;
+	padding:4px 8px;
+}

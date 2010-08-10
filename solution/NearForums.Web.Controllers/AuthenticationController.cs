@@ -100,7 +100,6 @@ namespace NearForums.Web.Controllers
 				return authenticationRequest.RedirectingResponse.AsActionResult();
 			}
 			throw new FormatException("openid identifier not valid");
-			//TODO: User Friendly error
 		}
 
 		public ActionResult OpenIdFinishLogin(string returnUrl)
@@ -131,13 +130,10 @@ namespace NearForums.Web.Controllers
 					//Canceled at provider
 
 					//Return to previous url without logged
-					return View("Login");
-				case AuthenticationStatus.Failed:
-					
-					return View("Login");
+					return Redirect(returnUrl);
+				default:
+					throw new AuthenticationProviderException("Authentication Failed. Status = " + response.Status.ToString());
 			}
-
-			return new EmptyResult();
 		}
 		#endregion
 	}

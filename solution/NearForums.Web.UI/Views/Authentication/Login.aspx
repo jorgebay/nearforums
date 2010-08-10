@@ -38,12 +38,17 @@
 
 <%
 			}
+			if (Config.AuthorizationProviders.SSOOpenId.IsDefined)
+			{
 %>
-			<h2>Sign in using open id</h2>
-			<div></div>
-			<div class="connectMessage">
-				<p>Sign in using Open Id.</p>
-			</div>
+				<h2>Sign in with <em title="replace with your site name">your site</em> credentials</h2>
+				<p class="button"><input type="button" class="button" value="Login" onclick="window.location.href='<%=Url.Action("OpenIdStartLogin", "Authentication", new{returnUrl=this.Request.Url.PathAndQuery}) %>';" /></p>
+				<div class="connectMessage">
+					<p>Sign in using the same username and password information as in the main site.</p>
+				</div>
+<%
+			}
+%>
 <%
 		}
 		else
