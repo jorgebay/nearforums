@@ -29,7 +29,7 @@
 		foreach (Topic t in (IList)ViewData["Topics"])
 		{
 %>
-			<li><%=t.Title %></li>	
+			<li><%=Html.ActionLink(t.Title, "ShortUrl", "Topics", new{id=t.Id}, null) %></li>	
 <%
 		}
 %>
@@ -39,7 +39,7 @@
 %>
 	<h2>Messages posted by <%=Model.UserName%></h2>
 	<p class="messageButton"><a href="#" onclick="return getMessages()">Get all messages posted by <%=Model.UserName%></a></p>
-	<p class="loading" style="display:none;"><img src="/images/loadingMini.gif" alt="" style="" /> Loading...</p>
+	<p class="loading" style="display:none;font-style: italic;"><img src="/images/loadingMini.gif" alt="" style="" /> Loading...</p>
 	<div id="messagesResult" style="display:none;"></div>
 	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript">
@@ -51,8 +51,17 @@
 			url: '<%=Url.Action("MessagesByUser") %>',
 			cache: true,
 			success: function(html){
-				$("p.loading").hide();
-				$("#messagesResult").append(html).slideDown();
+				if ($.trim(html) != "")
+				{
+					$("p.loading").hide();
+					$("#messagesResult").append(html).slideDown();
+				}
+				else
+				{
+					$("p.loading").fadeOut(function(){
+						$("p.loading").html("No messages found posted by this user.").fadeIn();
+					});
+				}
 			}
 		});
 		return false;
