@@ -41,10 +41,10 @@ namespace NearForums.ServiceClient
 			da.Add(message, ip);
 		}
 
-		public static void Delete(int messageId, int userId)
+		public static void Delete(int topicId, int messageId, int userId)
 		{
 			MessagesDataAccess da = new MessagesDataAccess();
-			da.Delete(messageId, userId);
+			da.Delete(topicId, messageId, userId);
 		}
 	}
 }

@@ -126,9 +126,10 @@ namespace NearForums.DataAccess
 			}
 		}
 
-		public void Delete(int messageId, int userId)
+		public void Delete(int topicId, int messageId, int userId)
 		{
 			DbCommand comm = this.GetCommand("SPMessagesDelete");
+			comm.AddParameter<int>(this.Factory, "TopicId", topicId);
 			comm.AddParameter<int>(this.Factory, "MessageId", messageId);
 			comm.AddParameter<int>(this.Factory, "UserId", userId);
 

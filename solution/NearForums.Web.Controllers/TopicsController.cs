@@ -415,7 +415,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail=true)]
 		public ActionResult DeleteMessage(int mid, int id, string forum, string name)
 		{
-			MessagesServiceClient.Delete(mid, this.User.Id);
+			MessagesServiceClient.Delete(id, mid, this.User.Id);
 
 			if (Request.UrlReferrer != null)
 			{
