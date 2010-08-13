@@ -102,6 +102,26 @@ namespace NearForums.DataAccess
 		} 
 		#endregion
 
+		#region Edit
+		public void Edit(User user)
+		{
+			DbCommand comm = GetCommand("SPUsersUpdate");
+			comm.AddParameter<int>(this.Factory, "UserId", user.Id);
+			comm.AddParameter<string>(this.Factory, "UserName", user.UserName);
+			comm.AddParameter<string>(this.Factory, "UserProfile", user.Profile);
+			comm.AddParameter<string>(this.Factory, "UserSignature", user.Signature);
+			comm.AddParameter(this.Factory, "UserBirthDate", DbType.DateTime, user.BirthDate);
+			comm.AddParameter<string>(this.Factory, "UserWebsite", user.Website);
+			comm.AddParameter<decimal>(this.Factory, "UserTimezone", (decimal)user.TimeZone.TotalHours);
+			comm.AddParameter(this.Factory, "UserEmail", DbType.String, user.Email);
+			comm.AddParameter(this.Factory, "UserEmailPolicy", DbType.Int32, (int) user.EmailPolicy);
+			comm.AddParameter<string>(this.Factory, "UserPhoto", user.Photo);
+			comm.AddParameter<string>(this.Factory, "UserExternalProfileUrl", user.ExternalProfileUrl);
+
+			comm.SafeExecuteNonQuery();
+		} 
+		#endregion
+
 		#region Get list
 		public List<User> GetByName(string userName)
 		{
@@ -133,6 +153,7 @@ namespace NearForums.DataAccess
 		} 
 		#endregion
 
+		#region Promote / Demote / Delete
 		public void Delete(int id)
 		{
 			DbCommand comm = GetCommand("SPUsersDelete");
@@ -163,7 +184,8 @@ namespace NearForums.DataAccess
 			comm.AddParameter<int>(this.Factory, "UserId", id);
 
 			comm.SafeExecuteNonQuery();
-		}
+		} 
+		#endregion
 
 		public User Get(int userId)
 		{
@@ -176,6 +198,11 @@ namespace NearForums.DataAccess
 			{
 				user = ParseUserInfo(dr);
 				user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
+				user.Email = dr.GetString("UserEmail");
+				user.EmailPolicy = (EmailPolicy)(dr.GetNullable<int?>("UserEmailPolicy") ?? (int)EmailPolicy.None);
+				user.Photo = dr.GetString("UserPhoto");
+				user.Website = dr.GetString("UserWebsite");
+				user.BirthDate = dr.GetNullable<DateTime?>("UserBirthDate");
 			}
 			return user;
 		}

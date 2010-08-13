@@ -369,6 +369,7 @@
     <Content Include="Views\Topics\Related.ascx" />
     <Content Include="Views\Topics\Toolbar.ascx" />
     <Content Include="Views\Users\Detail.aspx" />
+    <Content Include="Views\Users\Edit.aspx" />
     <Content Include="Views\Users\List.aspx" />
     <Content Include="Views\Users\MessagesByUser.aspx" />
   </ItemGroup>

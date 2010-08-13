@@ -139,5 +139,15 @@ namespace NearForums.Web.Extensions
 			builder.Attributes.Add("href", url);
 			return builder.ToString(TagRenderMode.Normal);
 		}
+
+		public static string CheckBoxBit<T>(this HtmlHelper htmlHelper, string name, T value, T expectedBit) where T : struct, IConvertible
+		{
+			if (!typeof(T).IsEnum) 
+			{
+				throw new ArgumentException("T must be an enumerated type");
+			}
+
+			return htmlHelper.CheckBox(name, (Convert.ToInt32(value) & Convert.ToInt32(expectedBit)) > 0, new{value = Convert.ToInt32(expectedBit)});
+		}
 	}
 }

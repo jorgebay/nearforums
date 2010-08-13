@@ -68,6 +68,7 @@
     <Compile Include="Configuration\SiteConfiguration.cs" />
     <Compile Include="Configuration\TemplateElement.cs" />
     <Compile Include="Configuration\TopicElement.cs" />
+    <Compile Include="EmailPolicy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumCategory.cs" />

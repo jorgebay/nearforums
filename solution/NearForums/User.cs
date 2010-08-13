@@ -6,7 +6,7 @@ using NearForums.Validation;
 
 namespace NearForums
 {
-	public class User
+	public class User : Entity
 	{
 		public User()
 		{
@@ -89,12 +89,14 @@ namespace NearForums
 			set;
 		}
 
+		[UrlFormat]
 		public string Website
 		{
 			get;
 			set;
 		}
 
+		[UrlFormat]
 		/// <summary>
 		/// Photo absolut url
 		/// </summary>
@@ -108,6 +110,22 @@ namespace NearForums
 		/// Determines the date of latest call to the provider.
 		/// </summary>
 		public DateTime ProviderLastCall
+		{
+			get;
+			set;
+		}
+
+		[EmailFormat]
+		/// <summary>
+		/// User email
+		/// </summary>
+		public string Email
+		{
+			get;
+			set;
+		}
+
+		public EmailPolicy EmailPolicy
 		{
 			get;
 			set;

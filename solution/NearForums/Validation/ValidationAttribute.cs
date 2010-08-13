@@ -96,7 +96,16 @@ namespace NearForums.Validation
 	public class EmailFormatAttribute : RegexFormatAttribute
 	{
 		public EmailFormatAttribute()
-			: base(@"^[\w\.=-]+@[\w\.-]+\.[\w]{2,3}$")
+			: base(@"^[\w\.=-]+@[\w\.-]+\.[\w]{2,3}$", RegexOptions.IgnoreCase)
+		{
+
+		}
+	}
+
+	public class UrlFormatAttribute : RegexFormatAttribute
+	{
+		public UrlFormatAttribute()
+			: base(@"^https?://[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|]$", RegexOptions.IgnoreCase)
 		{
 
 		}
