@@ -53,6 +53,9 @@ namespace NearForums.DataAccess
 			return comm;
 		}
 
+		/// <summary>
+		/// Gets a datatable filled with the results of executing the command.
+		/// </summary>
 		protected DataTable GetTable(DbCommand command)
 		{
 			DataTable dt = new DataTable();
@@ -63,6 +66,9 @@ namespace NearForums.DataAccess
 			return dt;
 		}
 
+		/// <summary>
+		/// Gets a datatable filled with the first result of executing the command.
+		/// </summary>
 		protected DataRow GetFirstRow(DbCommand command)
 		{
 			DataRow dr = null;

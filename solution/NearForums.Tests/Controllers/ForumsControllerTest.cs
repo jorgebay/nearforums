@@ -101,11 +101,7 @@ namespace NearForums.Tests
 		public static SessionStateItemCollection GetSessionWithTestUser()
 		{
 			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
-			User user = UsersServiceClient.GetTestUser();
-			if (user == null)
-			{
-				Assert.Inconclusive("There is no user in the db.");
-			}
+			User user = ServicesTests.GetTestUser();
 			sessionItems["User"] = new UserState(user, AuthenticationProvider.Facebook);
 			return sessionItems;
 		}

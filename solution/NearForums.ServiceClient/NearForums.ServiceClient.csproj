@@ -55,6 +55,7 @@
     <Compile Include="TagsServiceClient.cs" />
     <Compile Include="TemplatesServiceClient.cs" />
     <Compile Include="TopicsServiceClient.cs" />
+    <Compile Include="TopicsSubscriptionsServiceClient.cs" />
     <Compile Include="UsersServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -54,6 +54,7 @@
     <Compile Include="TagsDataAccess.cs" />
     <Compile Include="TemplatesDataAccess.cs" />
     <Compile Include="TopicsDataAccess.cs" />
+    <Compile Include="TopicsSubscriptionsDataAccess.cs" />
     <Compile Include="UsersDataAccess.cs" />
   </ItemGroup>
   <ItemGroup>

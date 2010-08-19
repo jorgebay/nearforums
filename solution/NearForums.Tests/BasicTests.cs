@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
 using System.Configuration;
+using System.Net.Mail;
 
 namespace NearForums.Tests
 {
@@ -65,18 +66,35 @@ namespace NearForums.Tests
 		/// In order to determine if a webrequest to facebook or any http host can be made.
 		/// </summary>
 		[TestMethod]
-		public void Connectivity_Test()
+		public void WebRequest_Test()
 		{
-			WebRequest webRequest = HttpWebRequest.Create("http://www.facebook.com");
-			webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
+			try
+			{
+				WebRequest webRequest = HttpWebRequest.Create("http://www.facebook.com");
+				webRequest.Headers.Add("Accept-Encoding", "gzip, deflate");
 
-			webRequest.GetResponse();
+				webRequest.GetResponse();
+			}
+			catch
+			{
+				Assert.Fail("Web request to a website failed. You probably are behind a proxy / firewall preventing. Place special network configuration in system.net/defaultProxy section in app.config or machine.config. http://msdn.microsoft.com/en-us/library/6484zdc1.aspx");
+			}
 		}
 
-		//[TestMethod]
-		//public void Replacement_Test()
-		//{
-
-		//}
+		[TestMethod]
+		public void SmtpSend_Test()
+		{
+			try
+			{
+				SmtpClient smtp = new SmtpClient();
+				MailMessage message = new MailMessage("someone@someone.com", "somebody@somebody.com");
+				message.Subject = message.Body = "Testing";
+				smtp.Send(message);
+			}
+			catch
+			{
+				Assert.Fail("Sending a test mail failed. You should configure the smtp in system.net/mailSettings section in app.config or machine.config. http://msdn.microsoft.com/en-us/library/6484zdc1.aspx");
+			}
+		}
 	}
 }
