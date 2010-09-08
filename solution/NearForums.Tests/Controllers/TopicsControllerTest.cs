@@ -152,7 +152,8 @@ namespace NearForums.Tests.Controllers
 			Message message = (Message)controller.ViewData.Model;
 			message.Body = "<p>Unit testing....</p>";
 
-			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null, false);
+			throw new NotImplementedException();
+			//result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null, false);
 
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 		}
