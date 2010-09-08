@@ -58,7 +58,7 @@ var pager =
 		if (pager.lastItem == pager.totalItems)
 		{
 			//TODO: Don't hide it, just disable it
-			$("#pagerClient").hide();
+			$("#pagerClient").stop().hide();
 			$("div.toolbar li.showAll").hide();
 		}
 		else
@@ -73,7 +73,7 @@ var pager =
 		if (pager.enabled && pager.lastItem < pager.totalItems)
 		{
 			var fromId = $("#messages li:last").attr("id").substring(3);
-			$.post(pager.postUrl, {from:fromId, initIndex:$("#messages li").length}, pager.moreCallback);
+			$.post(pager.postUrl, {from:fromId, initIndex:$("#messages > li").length}, pager.moreCallback);
 			pager.loadingStart();
 		}
 	}
@@ -81,7 +81,7 @@ var pager =
 	moreCallback : function(htmlText)
 	{
 		$("#messages").append(htmlText);
-		pager.lastItem = $("#messages li").length;
+		pager.lastItem = $("#messages > li").length;
 		pager.loadingEnd();
 		pager.showCurrentStatus();
 		$(document).trigger("dataLoaded");
@@ -96,8 +96,8 @@ var pager =
 			{
 				pager.loadingStart();
 				var lastMsg = window.location.hash.substring(4);
-				var firstMsg = $("#messages li:last").attr("id").substring(3);
-				$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages li").length}, pager.navigateToIdCallback);
+				var firstMsg = $("#messages > li:last").attr("id").substring(3);
+				$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.navigateToIdCallback);
 			}
 		}
 		else if ($(window.location.hash).length == 1)
@@ -109,8 +109,8 @@ var pager =
 	navigateToIdCallback : function(htmlText)
 	{
 		$("#messages").append(htmlText);
-		pager.lastItem = $("#messages li").length;
-		$("#messages li:last").addClass("highlight");
+		pager.lastItem = $("#messages > li").length;
+		$("#messages > li:last").addClass("highlight");
 		var temp = window.location.hash;
 		window.location.hash = "#";
 		window.location.hash = temp;
@@ -136,8 +136,8 @@ var pager =
 		{
 			pager.loadingStart();
 			var lastMsg = 1000;
-			var firstMsg = $("#messages li:last").attr("id").substring(3);
-			$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages li").length}, pager.showAllCallback);
+			var firstMsg = $("#messages > li:last").attr("id").substring(3);
+			$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.showAllCallback);
 		}
 		return false;
 	}
@@ -145,7 +145,7 @@ var pager =
 	showAllCallback : function(htmlText)
 	{
 		$("#messages").append(htmlText);
-		pager.lastItem = $("#messages li").length;
+		pager.lastItem = $("#messages > li").length;
 		pager.loadingEnd();
 		pager.showCurrentStatus();
 		$(document).trigger("dataLoaded");
