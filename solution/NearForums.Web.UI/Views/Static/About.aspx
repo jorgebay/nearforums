@@ -14,4 +14,5 @@
 		<br />
 		Get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.
 	</p>
+	<!-- About page: Add whatever you want -->
 </asp:Content>
