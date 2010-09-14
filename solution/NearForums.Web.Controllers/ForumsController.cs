@@ -85,6 +85,13 @@ namespace NearForums.Web.Controllers
 
 			return View(f);
 		}
+
+		[RequireAuthorization(UserGroup.Moderator)]
+		public ActionResult ListAllUnansweredTopics()
+		{
+			List<Topic> topics = TopicsServiceClient.GetUnanswered();
+			return View(topics);
+		}
 		#endregion
 
 		#region Add / Edit

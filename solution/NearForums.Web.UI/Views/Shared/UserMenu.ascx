@@ -32,8 +32,15 @@ if (Config.AuthorizationProviders.Facebook.IsDefined)
 	}
 	else
 	{
+		if (this.User.Group >= UserGroup.Moderator)
+		{
 %>
-		<li class="logged"><%=Html.ActionLink("Profile", "Detail", "Users", new{id=User.Id}, null) %></li>
+		<li class="admin"><%=Html.ActionLink("Admin dashboard", "Dashboard", "Admin")%></li>
+<%
+		}
+%>
+		<li class="userName"><%=Html.ActionLink(this.User.UserName, "Detail", "Users", new{id=User.Id}, null) %></li>
+		<li class="logged"><%=Html.ActionLink("Edit Profile", "Edit", "Users", new{id=User.Id}, null) %></li>
 <% 
 		if (this.User.Provider == AuthenticationProvider.Facebook)
 		{		

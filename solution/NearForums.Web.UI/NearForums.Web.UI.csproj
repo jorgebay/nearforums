@@ -350,6 +350,7 @@
     <Content Include="Views\Errors\404.aspx" />
     <Content Include="Views\Errors\500.aspx" />
     <Content Include="Views\Forums\ForumOptions.ascx" />
+    <Content Include="Views\Forums\ListAllUnansweredTopics.aspx" />
     <Content Include="Views\Forums\ListUnansweredTopics.aspx" />
     <Content Include="Views\Forums\TagDetail.aspx" />
     <Content Include="Views\Forums\Edit.aspx" />

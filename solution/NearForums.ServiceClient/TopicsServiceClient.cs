@@ -120,6 +120,16 @@ namespace NearForums.ServiceClient
 		}
 
 		/// <summary>
+		/// Gets a list of unanswered topics from all forums
+		/// </summary>
+		/// <returns></returns>
+		public static List<Topic> GetUnanswered()
+		{
+			TopicsDataAccess da = new TopicsDataAccess();
+			return da.GetUnanswered();
+		}
+
+		/// <summary>
 		/// Deletes (inactive) a user from the application
 		/// </summary>
 		public static void Delete(int id, int userId, string ip)

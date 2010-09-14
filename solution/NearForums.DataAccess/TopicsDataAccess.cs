@@ -253,6 +253,26 @@ namespace NearForums.DataAccess
 			return list;
 		}
 
+		public List<Topic> GetUnanswered()
+		{
+			List<Topic> list = new List<Topic>();
+			DbCommand comm = this.GetCommand("SPTopicsGetUnanswered");
+
+			DataTable dt = this.GetTable(comm);
+			foreach (DataRow dr in dt.Rows)
+			{
+				Topic t = ParseBasicTopicDataRow(dr);
+				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
+				t.Forum = new Forum();
+				t.Forum.Id = dr.Get<int>("ForumId");
+				t.Forum.Name = dr.GetString("ForumName");
+				t.Forum.ShortName = dr.GetString("ForumShortName");
+
+				list.Add(t);
+			}
+			return list;
+		}
+
 		/// <summary>
 		/// Gets a list of topics posted by the user
 		/// </summary>

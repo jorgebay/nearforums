@@ -123,6 +123,21 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
+		public void Forums_Unanswered()
+		{
+			ForumsController controller = new ForumsController();
+			controller.ViewData = new ViewDataDictionary();
+
+			Forum forum = GetAForum();
+
+			controller.ListAllUnansweredTopics();
+			Assert.IsNotNull(controller.ViewData.Model);
+
+			controller.ListUnansweredTopics(forum.ShortName);
+			Assert.IsNotNull(controller.ViewData.Model);
+		}
+
+		[TestMethod]
 		public void Forum_Edit()
 		{
 			Forum forum = GetAForum();

@@ -93,6 +93,9 @@ namespace NearForums.Web.Extensions
 			return value;
 		}
 
+		/// <summary>
+		/// Converts date to app datetime and applies the format
+		/// </summary>
 		public static string Date(this HtmlHelper htmlHelper, DateTime date, string format)
 		{
 			DateTime appDate = date.ToApplicationDateTime();
@@ -103,6 +106,9 @@ namespace NearForums.Web.Extensions
 			return builder.ToString();
 		}
 
+		/// <summary>
+		/// Converts date to app datetime and applies configuration defined date format
+		/// </summary>
 		public static string Date(this HtmlHelper htmlHelper, DateTime date)
 		{
 			return htmlHelper.Date(date, SiteConfiguration.Current.DateFormat);
