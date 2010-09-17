@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
 using System.Configuration;
 using System.Net.Mail;
+using NearForums.Configuration;
 
 namespace NearForums.Tests
 {
@@ -95,6 +96,12 @@ namespace NearForums.Tests
 			{
 				Assert.Fail("Sending a test mail failed. You should configure the smtp in system.net/mailSettings section in app.config or machine.config. http://msdn.microsoft.com/en-us/library/6484zdc1.aspx");
 			}
+		}
+
+		[TestMethod]
+		public void NotificationsConfiguration_Test()
+		{
+			string value = SiteConfiguration.Current.Notifications.Subscription.Body.Value;
 		}
 	}
 }

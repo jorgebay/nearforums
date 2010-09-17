@@ -66,6 +66,23 @@ namespace NearForums.Web.Controllers
 				return Request.Url;
 			}
 		}
+
+		#region Domain
+		/// <summary>
+		/// Gets the application current domain (Host) including Protocol and delimiter. Example: http://www.contoso.com (without slash).
+		/// </summary>
+		public string Domain
+		{
+			get
+			{
+				if (this.HttpContext == null)
+				{
+					return "http://www.contoso.com";
+				}
+				return this.Request.Url.Scheme + Uri.SchemeDelimiter + this.Request.Url.Host;
+			}
+		}
+		#endregion
 		#endregion
 
 		#region Init

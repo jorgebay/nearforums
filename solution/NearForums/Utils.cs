@@ -199,7 +199,7 @@ namespace NearForums
 				//replace all the template values with the object values.
 				foreach (KeyValuePair<string, string> pair in values)
 				{
-					body = body.Replace("<!--!" + pair.Key + "!-->", pair.Value);
+					body = body.Replace("<!--!" + pair.Key.ToUpper() + "!-->", pair.Value);
 				}
 			}
 			return body;

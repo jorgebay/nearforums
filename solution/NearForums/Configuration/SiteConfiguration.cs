@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using NearForums.Configuration.Notifications;
 
 namespace NearForums.Configuration
 {
@@ -111,6 +112,19 @@ namespace NearForums.Configuration
 			set
 			{
 				this["dateFormat"] = value;
+			}
+		}
+
+		[ConfigurationProperty("notifications", IsRequired = false)]
+		public NotificationsContainerElement Notifications
+		{
+			get
+			{
+				return (NotificationsContainerElement)this["notifications"];
+			}
+			set
+			{
+				this["notifications"] = value;
 			}
 		}
 

@@ -317,6 +317,12 @@ namespace NearForums.Web.Controllers
 				}
 				TopicsServiceClient.AddReply(message, Request.UserHostAddress);
 
+				#region Notifications
+				string threadUrl = this.Domain + this.Url.RouteUrl(new{controller="Topics", action="ShortUrl", id=id});
+				string unsubscribeUrl = this.Domain + this.Url.RouteUrl(new RouteValueDictionary());
+				TopicsSubscriptionsServiceClient.SendNotifications(message.Topic, this.User.Id, threadUrl, unsubscribeUrl);
+				#endregion
+
 				return new RedirectToRouteExtraResult(new{action="Detail",controller="Topics",id=id,name=name,forum=forum}, "#msg" + message.Id);
 			}
 			catch (ValidationException ex)

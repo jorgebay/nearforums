@@ -63,17 +63,22 @@ namespace NearForums.ServiceClient
 			return da.GetTopicsByUser(userId);
 		}
 
-		public static void SendNotifications(Topic topic, int userId, string body)
+		public static void SendNotifications(Topic topic, int userId, string url, string unsubscribeUrl)
 		{
-			//SiteConfiguration.Current
+			if (SiteConfiguration.Current.Notifications != null && SiteConfiguration.Current.Notifications.Subscription != null)
+			{
+				string body = SiteConfiguration.Current.Notifications.Subscription.Body.ToString();
+				SendNotificationsHandler handler = new SendNotificationsHandler(SendNotificationsSync);
+				handler.BeginInvoke(topic, userId, body, url, unsubscribeUrl, true, null, null);
+			}
 		}
 
 		/// <summary>
 		/// Sync Sends a notification to every user subscribed to a topic, except the one provided in the userId
 		/// </summary>
 		/// <param name="topic"></param>
-		/// <param name="userId"></param>
-		internal static int SendNotificationsSync(Topic topic, int userId, string body, bool handleExceptions)
+		/// <param name="userId">userId of the last poster</param>
+		internal static int SendNotificationsSync(Topic topic, int userId, string body, string url, string unsubscribeUrl, bool handleExceptions)
 		{
 			int sentMailsCount = 0;
 			var users = GetSubscribed(topic.Id);
@@ -85,7 +90,7 @@ namespace NearForums.ServiceClient
 				{
 					try
 					{
-						SendEmail(topic, u, body);
+						SendEmail(topic, u, body, url, unsubscribeUrl);
 						sentMailsCount++;
 					}
 					catch (Exception ex)
@@ -104,7 +109,7 @@ namespace NearForums.ServiceClient
 			return sentMailsCount;
 		}
 
-		private static void SendEmail(Topic topic, User user, string body)
+		private static void SendEmail(Topic topic, User user, string body, string url, string unsubscribeUrl)
 		{
 			MailMessage message = new MailMessage();
 			message.To.Add(new MailAddress(user.Email, user.UserName));
@@ -112,6 +117,7 @@ namespace NearForums.ServiceClient
 			#region Replace body values
 			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName"});
 			body = Utils.ReplaceBodyValues(body, topic, new[] { "Title", "Id" });
+			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>(){{"unsubscribeUrl", unsubscribeUrl}, {"url", url}});
 			#endregion
 			message.Body = body;
 			message.Subject = "Re: " + topic.Title;
@@ -120,4 +126,6 @@ namespace NearForums.ServiceClient
 			client.Send(message);
 		}
 	}
+
+	public delegate int SendNotificationsHandler(Topic topic, int userId, string body, string url, string unsubscribeUrl, bool handleExceptions);
 }

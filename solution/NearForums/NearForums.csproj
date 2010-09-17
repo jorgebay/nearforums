@@ -50,10 +50,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AuthenticationProviderException.cs" />
+    <Compile Include="Configuration\CDataBaseConfigurationElement.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
+    <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\KeySecretElement.cs" />
     <Compile Include="Configuration\ForumElement.cs" />
+    <Compile Include="Configuration\CDataElement.cs" />
+    <Compile Include="Configuration\Notifications\NotificationElement.cs" />
+    <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
     <Compile Include="Configuration\SSOOpenIdElement.cs" />
     <Compile Include="Configuration\RedirectorConfiguration.cs" />
     <Compile Include="Configuration\RedirectorUrl.cs" />
