@@ -162,7 +162,7 @@ namespace NearForums.Tests.Controllers
 			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null, true, "admin@admin.com");
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 
-			subscriptionsController.UnSubscribe(controller.User.Id, controller.User.Guid.ToString("N"), topic.Id);
+			subscriptionsController.Unsubscribe(controller.User.Id, controller.User.Guid.ToString("N"), topic.Id);
 
 			Assert.IsNotNull(subscriptionsController.ViewData.Model);
 		}

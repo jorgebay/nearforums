@@ -30,21 +30,6 @@ namespace NearForums.ServiceClient
 		}
 
 		/// <summary>
-		/// Subscribes or unsubscribes a user to a topic
-		/// </summary>
-		public static void Manage(bool subscribe, int topicId, int userId, Guid userGuid)
-		{
-			if (subscribe)
-			{
-				Add(topicId, userId);
-			}
-			else
-			{
-				Remove(topicId, userId, userGuid);
-			}
-		}
-
-		/// <summary>
 		/// Gets users subscribed to a topic
 		/// </summary>
 		public static List<User> GetSubscribed(int topicId)
@@ -110,6 +95,11 @@ namespace NearForums.ServiceClient
 
 		private static void SendEmail(Topic topic, User user, string body, string url, string unsubscribeUrl)
 		{
+			if (user.Guid == Guid.Empty)
+			{
+				throw new ArgumentException("User.Guid cannot be empty.");
+			}
+			unsubscribeUrl = String.Format(unsubscribeUrl, user.Id, user.Guid.ToString("N"));
 			MailMessage message = new MailMessage();
 			message.To.Add(new MailAddress(user.Email, user.UserName));
 			message.IsBodyHtml = true;

@@ -18,10 +18,11 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		/// <param name="guid">user guid</param>
 		/// <param name="id">topic id</param>
-		public ActionResult UnSubscribe(int uid, string guid, int id)
+		public ActionResult Unsubscribe(int uid, string guid, int tid)
 		{
 			Guid parsedGuid = Guid.Empty;
-			User user = null;
+			Topic topic = null;
+			#region Parse guid
 			try
 			{
 				parsedGuid = new Guid(guid);
@@ -29,15 +30,17 @@ namespace NearForums.Web.Controllers
 			catch
 			{
 				ResultHelper.ForbiddenResult(this);
-			}
-			int removedSubscription = TopicsSubscriptionsServiceClient.Remove(id, uid, parsedGuid);
+			} 
+			#endregion
+			int removedSubscription = TopicsSubscriptionsServiceClient.Remove(tid, uid, parsedGuid);
 
 			if (removedSubscription > 0)
 			{
 				//Load the user data
-				user = UsersServiceClient.Get(uid);
+				ViewData["User"] = UsersServiceClient.Get(uid);
 			}
-			return View(user);
+			topic = TopicsServiceClient.Get(tid);
+			return View(topic);
 		}
 	}
 }

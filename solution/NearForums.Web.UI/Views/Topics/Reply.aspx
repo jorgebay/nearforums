@@ -53,6 +53,10 @@
 		<%=Html.TextArea("body") %>
 		<% Html.RenderPartial("EditorScripts", CreateViewData(new{Name="body"})); %>
 	</div>
+<%
+	if (this.Config.Notifications.Subscription.IsDefined)
+	{
+%>
 	<div class="formItem floatContainer">
 		<div class="checkbox">
 			<%= Html.CheckBox("notify", new{onclick = "toggleEmail();"})%>
@@ -60,6 +64,15 @@
 			<%= this.User.Email == null ? Html.TextBox("email", null, new{@class="notifyEmail", @style="display:none;"}) : "" %>
 		</div>
 	</div>
+<%
+	}
+	else
+	{
+%>
+		<%=Html.Hidden("notify", false) %>
+<%	
+	}
+%>
 	<div class="formItem buttons">
 		<div class="checkbox">
 		<input type="submit" value="Send" />

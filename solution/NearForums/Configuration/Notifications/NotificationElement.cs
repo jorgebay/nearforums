@@ -20,5 +20,16 @@ namespace NearForums.Configuration.Notifications
 				this["body"] = value;
 			}
 		}
+
+		/// <summary>
+		/// Determines if the provider required data has been defined.
+		/// </summary>
+		public bool IsDefined
+		{
+			get
+			{
+				return (!String.IsNullOrEmpty(this.Body.ToString()));
+			}
+		}
 	}
 }

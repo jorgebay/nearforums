@@ -47,6 +47,7 @@ namespace NearForums.DataAccess
 				var u = new User(dr.Get<int>("UserId"), dr.GetString("UserName"));
 				u.Email = dr.GetString("UserEmail");
 				u.EmailPolicy = (EmailPolicy)(dr.GetNullable<int?>("UserEmailPolicy") ?? (int)EmailPolicy.None);
+				u.Guid = dr.Get<Guid>("UserGuid");
 				users.Add(u);
 			}
 

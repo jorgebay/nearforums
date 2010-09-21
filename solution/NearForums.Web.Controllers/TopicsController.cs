@@ -8,6 +8,7 @@ using NearForums.Web.Extensions;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
 using System.Web.Routing;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers
 {
@@ -259,8 +260,7 @@ namespace NearForums.Web.Controllers
 			}
 			#endregion
 
-			var usersSubscribed = TopicsSubscriptionsServiceClient.GetSubscribed(id);
-			ViewData["notify"] = usersSubscribed.Any(x => x.Id == this.User.Id);
+			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
 
 			return View(message);
 		}
@@ -287,8 +287,7 @@ namespace NearForums.Web.Controllers
 					}
 				}
 
-				TopicsSubscriptionsServiceClient.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid);
-
+				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config);
 
 				#region Check topic
 				if (message.Topic == null)
@@ -308,11 +307,7 @@ namespace NearForums.Web.Controllers
 				}
 				TopicsServiceClient.AddReply(message, Request.UserHostAddress);
 
-				#region Notifications
-				string threadUrl = this.Domain + this.Url.RouteUrl(new{controller="Topics", action="ShortUrl", id=id});
-				string unsubscribeUrl = this.Domain + this.Url.RouteUrl(new RouteValueDictionary());
-				TopicsSubscriptionsServiceClient.SendNotifications(message.Topic, this.User.Id, threadUrl, unsubscribeUrl);
-				#endregion
+				SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
 
 				return new RedirectToRouteExtraResult(new{action="Detail",controller="Topics",id=id,name=name,forum=forum}, "#msg" + message.Id);
 			}
