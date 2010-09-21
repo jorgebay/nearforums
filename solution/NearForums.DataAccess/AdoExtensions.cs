@@ -45,6 +45,7 @@ namespace NearForums.DataAccess
 		{
 			Type type = typeof(T);
 			DbType dbType;
+			object parameterValue = value;
 			switch (type.FullName)
 			{
 				case "System.String":
@@ -71,10 +72,14 @@ namespace NearForums.DataAccess
 				case "System.Boolean":
 					dbType = DbType.Boolean;
 					break;
+				case "System.Guid":
+					dbType = DbType.String;
+					parameterValue = ((Guid)(object)value).ToString("N");
+					break;
 				default:
 					throw new System.Data.DataException("Type not supported for implicit DbType mapping.");
 			}
-			return AddParameter(comm, factory, parameterName, dbType, value);
+			return AddParameter(comm, factory, parameterName, dbType, parameterValue);
 		}
 
 		public static string GetNullableString(this DbDataReader reader, string columnName)
@@ -163,6 +168,10 @@ namespace NearForums.DataAccess
 				else if (typeof(T) == typeof(DateTime))
 				{
 					throw new ArgumentException("Date time not supported.");
+				}
+				else if (typeof(T) == typeof(Guid))
+				{
+					return (T)(object) new Guid(dr[columnName].ToString());
 				}
 				return (T)dr[columnName];
 			}

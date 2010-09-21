@@ -187,28 +187,6 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region Delete
-		[RequireAuthorization]
-		public ActionResult Delete(int id, string name, string forum)
-		{
-			#region Check if user can edit
-			if (this.User.Group < UserGroup.Moderator)
-			{
-				//Check if the user that created of the topic is the same as the logged user
-				Topic originalTopic = TopicsServiceClient.Get(id);
-				if (this.User.Id != originalTopic.User.Id)
-				{
-					return ResultHelper.ForbiddenResult(this);
-				}
-			}
-			#endregion
-
-			TopicsServiceClient.Delete(id, this.User.Id, Request.UserHostAddress);
-
-			return RedirectToAction("Detail", "Forums", new{forum=forum});
-		}
-		#endregion
-
 		#region Client Paging
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
@@ -309,7 +287,7 @@ namespace NearForums.Web.Controllers
 					}
 				}
 
-				TopicsSubscriptionsServiceClient.Manage(notify, message.Topic.Id, this.User.Id);
+				TopicsSubscriptionsServiceClient.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid);
 
 
 				#region Check topic
@@ -344,6 +322,32 @@ namespace NearForums.Web.Controllers
 			}
 
 			return View(message);
+		}
+		#endregion
+
+		#region Move / Close / Delete
+		#region Delete
+		[RequireAuthorization]
+		public ActionResult Delete(int id, string name, string forum)
+		{
+			#region Check if user can edit
+			if (this.User.Group < UserGroup.Moderator)
+			{
+				//Check if the user that created of the topic is the same as the logged user
+				Topic originalTopic = TopicsServiceClient.Get(id);
+				if (this.User.Id != originalTopic.User.Id)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+			}
+			#endregion
+
+			TopicsServiceClient.Delete(id, this.User.Id, Request.UserHostAddress);
+
+			return RedirectToAction("Detail", "Forums", new
+			{
+				forum = forum
+			});
 		}
 		#endregion
 
@@ -428,6 +432,7 @@ namespace NearForums.Web.Controllers
 
 			return RedirectToAction("Detail");
 		}
+		#endregion
 		#endregion
 
 		#region Delete message

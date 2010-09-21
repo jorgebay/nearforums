@@ -50,7 +50,7 @@ namespace NearForums.DataAccess
 			user.Id = dr.Get<int>("UserId");
 			user.UserName = dr.GetString("UserName");
 			user.Group = dr.Get<UserGroup>("UserGroupId");
-			user.Guid = new Guid(dr.GetString("UserGuid"));
+			user.Guid = dr.Get<Guid>("UserGuid");
 			user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
 			user.ProviderLastCall = dr.GetDate("UserProviderLastCall");
 			user.Email = dr.GetString("UserEmail");
@@ -87,7 +87,7 @@ namespace NearForums.DataAccess
 			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)user.Group);
 			comm.AddParameter(this.Factory, "UserBirthDate", DbType.DateTime, user.BirthDate);
 			comm.AddParameter<string>(this.Factory, "UserWebsite", user.Website);
-			comm.AddParameter<string>(this.Factory, "UserGuid", Guid.NewGuid().ToString("N"));
+			comm.AddParameter<Guid>(this.Factory, "UserGuid", Guid.NewGuid());
 			comm.AddParameter<decimal>(this.Factory, "UserTimezone", (decimal)user.TimeZone.TotalHours);
 			comm.AddParameter(this.Factory, "UserEmail", DbType.String, null);
 			comm.AddParameter(this.Factory, "UserEmailPolicy", DbType.Int32, null);

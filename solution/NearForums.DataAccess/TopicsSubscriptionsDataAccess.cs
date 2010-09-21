@@ -21,13 +21,14 @@ namespace NearForums.DataAccess
 			comm.SafeExecuteNonQuery();
 		}
 
-		public void Remove(int topicId, int userId)
+		public int Remove(int topicId, int userId, Guid guid)
 		{
 			var comm = this.GetCommand("SPTopicsSubscriptionsDelete");
 			comm.AddParameter<int>(this.Factory, "TopicId", topicId);
 			comm.AddParameter<int>(this.Factory, "UserId", userId);
+			comm.AddParameter<Guid>(this.Factory, "UserGuid", guid);
 
-			comm.SafeExecuteNonQuery();
+			return comm.SafeExecuteNonQuery();
 		}
 
 		/// <summary>

@@ -20,20 +20,19 @@ namespace NearForums.ServiceClient
 		}
 
 		/// <summary>
-		/// Unsubscribes a user to a topic. If the user is not subscribed it does nothing.
+		/// Unsubscribes a user to a topic. If the user is not subscribed it does nothing. Returns the records affected.
 		/// </summary>
-		/// <param name="topicId"></param>
-		/// <param name="userId"></param>
-		public static void Remove(int topicId, int userId)
+		/// <param name="userGuid">User global uid</param>
+		public static int Remove(int topicId, int userId, Guid userGuid)
 		{
 			TopicsSubscriptionsDataAccess da = new TopicsSubscriptionsDataAccess();
-			da.Remove(topicId, userId);
+			return da.Remove(topicId, userId, userGuid);
 		}
 
 		/// <summary>
 		/// Subscribes or unsubscribes a user to a topic
 		/// </summary>
-		public static void Manage(bool subscribe, int topicId, int userId)
+		public static void Manage(bool subscribe, int topicId, int userId, Guid userGuid)
 		{
 			if (subscribe)
 			{
@@ -41,7 +40,7 @@ namespace NearForums.ServiceClient
 			}
 			else
 			{
-				Remove(topicId, userId);
+				Remove(topicId, userId, userGuid);
 			}
 		}
 

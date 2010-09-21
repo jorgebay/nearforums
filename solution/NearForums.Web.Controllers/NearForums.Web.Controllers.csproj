@@ -88,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagsController.cs" />
     <Compile Include="TopicsController.cs" />
+    <Compile Include="TopicsSubscriptionsController.cs" />
     <Compile Include="UsersController.cs" />
   </ItemGroup>
   <ItemGroup>

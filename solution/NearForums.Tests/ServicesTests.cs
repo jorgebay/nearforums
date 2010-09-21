@@ -115,7 +115,7 @@ namespace NearForums.Tests
 
 			TopicsSubscriptionsServiceClient.SendNotificationsSync(topic, -1, "Unit test email from " + TestContext.TestName, "http://url", "http://unsubscribeUrl", false);
 
-			TopicsSubscriptionsServiceClient.Remove(topic.Id, user.Id);
+			TopicsSubscriptionsServiceClient.Remove(topic.Id, user.Id, user.Guid);
 
 			subscribedTopics = TopicsSubscriptionsServiceClient.GetTopics(user.Id);
 
