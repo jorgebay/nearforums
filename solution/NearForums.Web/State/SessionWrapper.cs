@@ -15,6 +15,7 @@ namespace NearForums.Web.State
 			set;
 		}
 
+		#region Get / Set to session
 		public T GetItem<T>(string key)
 		{
 			return (T)Session[key];
@@ -52,10 +53,12 @@ namespace NearForums.Web.State
 			Session = session;
 		}
 
-		public SessionWrapper(HttpContextBase context) : this(context.Session)
+		public SessionWrapper(HttpContextBase context)
+			: this(context.Session)
 		{
 
-		}
+		} 
+		#endregion
 
 		#region Props
 		/// <summary>
