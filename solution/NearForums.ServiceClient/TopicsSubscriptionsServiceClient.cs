@@ -48,7 +48,7 @@ namespace NearForums.ServiceClient
 		/// <summary>
 		/// Gets users subscribed to a topic
 		/// </summary>
-		internal static List<User> GetSubscribed(int topicId)
+		public static List<User> GetSubscribed(int topicId)
 		{
 			TopicsSubscriptionsDataAccess da = new TopicsSubscriptionsDataAccess();
 			return da.GetUsersByTopic(topicId);
@@ -95,7 +95,7 @@ namespace NearForums.ServiceClient
 					}
 					catch (Exception ex)
 					{
-						if (!handleExceptions)
+						if (handleExceptions)
 						{
 							LoggerServiceClient.LogError(ex);
 						}

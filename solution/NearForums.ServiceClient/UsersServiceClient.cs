@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NearForums.DataAccess;
+using NearForums.Validation;
+using System.Text.RegularExpressions;
 
 namespace NearForums.ServiceClient
 {
@@ -82,6 +84,26 @@ namespace NearForums.ServiceClient
 			UsersDataAccess da = new UsersDataAccess();
 
 			da.Edit(user);
+		}
+
+		/// <summary>
+		/// Add the email address to the user profile.
+		/// </summary>
+		public static void AddEmail(int id, string email, EmailPolicy policy)
+		{
+			#region Validate Email
+			var regexAttribute = new EmailFormatAttribute(); //To get the same regex used in all the site.
+			if (String.IsNullOrEmpty(email))
+			{
+				throw new ValidationException(new ValidationError("email", ValidationErrorType.NullOrEmpty));
+			}
+			else if (!Regex.IsMatch(email, regexAttribute.Regex, regexAttribute.RegexOptions))
+			{
+				throw new ValidationException(new ValidationError("email", ValidationErrorType.Format));
+			} 
+			#endregion
+			UsersDataAccess da = new UsersDataAccess();
+			da.AddEmail(id, email, policy);
 		}
 	}
 }

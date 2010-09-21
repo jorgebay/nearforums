@@ -16,6 +16,7 @@ namespace NearForums.Web.State
 			this.TimeZone = user.TimeZone;
 			this.ExternalProfileUrl = user.ExternalProfileUrl;
 			this.Provider = provider;
+			this.Email = user.Email;
 		}
 
 		public int Id
@@ -31,6 +32,12 @@ namespace NearForums.Web.State
 		}
 
 		public UserGroup Group
+		{
+			get;
+			set;
+		}
+
+		public string Email
 		{
 			get;
 			set;

@@ -75,13 +75,17 @@ namespace NearForums.Web.Controllers
 		{
 			if (this.User.Id != id)
 			{
-				//Maybe handle a moderator/admin users
+				//Future: Maybe handle a moderator/admin users
 				return ResultHelper.ForbiddenResult(this);
 			}
 			try
 			{
 				user.Id = id;
 				UsersServiceClient.Edit(user);
+				#region Adapt values
+				this.User.UserName = user.UserName;
+				this.User.Email = Utils.EmptyToNull(user.Email);
+				#endregion
 				return RedirectToAction("Detail", new{id=id});
 			}
 			catch (ValidationException ex)

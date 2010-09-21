@@ -281,6 +281,8 @@ namespace NearForums.Web.Controllers
 			}
 			#endregion
 
+			var usersSubscribed = TopicsSubscriptionsServiceClient.GetSubscribed(id);
+			ViewData["notify"] = usersSubscribed.Any(x => x.Id == this.User.Id);
 
 			return View(message);
 		}
@@ -293,11 +295,22 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		public ActionResult Reply([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg)
+		public ActionResult Reply([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
 		{
+			message.Topic = TopicsServiceClient.Get(id);
 			try
 			{
-				message.Topic = TopicsServiceClient.Get(id);
+				if (notify)
+				{
+					if (this.User.Email == null)
+					{
+						UsersServiceClient.AddEmail(this.User.Id, email, EmailPolicy.SendFromSubscriptions);
+						this.User.Email = email;
+					}
+				}
+
+				TopicsSubscriptionsServiceClient.Manage(notify, message.Topic.Id, this.User.Id);
+
 
 				#region Check topic
 				if (message.Topic == null)

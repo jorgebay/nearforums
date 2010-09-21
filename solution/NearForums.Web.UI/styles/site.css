@@ -702,3 +702,7 @@ input.button
 	width: auto;
 	padding:4px 8px;
 }
+form div.checkbox input.notifyEmail
+{
+	border:1px solid #A3A3A5;
+}

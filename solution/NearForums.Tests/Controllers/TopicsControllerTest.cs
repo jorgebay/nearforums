@@ -141,6 +141,7 @@ namespace NearForums.Tests.Controllers
 		{
 			TopicsController controller = new TopicsController();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
 			ActionResult result = null;
 
 			Forum forum = ForumsControllerTest.GetAForum();
@@ -152,7 +153,7 @@ namespace NearForums.Tests.Controllers
 			Message message = (Message)controller.ViewData.Model;
 			message.Body = "<p>Unit testing....</p>";
 
-			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null);
+			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null, true, "admin@admin.com");
 
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 		}

@@ -147,6 +147,15 @@ namespace NearForums
 			return value;
 		}
 
+		public static string EmptyToNull(string value)
+		{
+			if (value != null && value.Trim() == "")
+			{
+				return null;
+			}
+			return value;
+		}
+
 		public static bool IsNullOrEmpty(string value)
 		{
 			if (value == null)

@@ -53,6 +53,7 @@ namespace NearForums.DataAccess
 			user.Guid = new Guid(dr.GetString("UserGuid"));
 			user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
 			user.ProviderLastCall = dr.GetDate("UserProviderLastCall");
+			user.Email = dr.GetString("UserEmail");
 
 			decimal offSet = dr.Get<decimal>("UserTimeZone");
 			user.TimeZone = new TimeSpan((long)(offSet * (decimal)TimeSpan.TicksPerHour));
@@ -187,6 +188,7 @@ namespace NearForums.DataAccess
 		} 
 		#endregion
 
+		#region Get
 		public User Get(int userId)
 		{
 			User user = null;
@@ -205,13 +207,15 @@ namespace NearForums.DataAccess
 				user.BirthDate = dr.GetNullable<DateTime?>("UserBirthDate");
 			}
 			return user;
-		}
+		} 
+		#endregion
 
+		#region Get Group
 		public string GetGroupName(UserGroup userGroup)
 		{
 			string result = null;
 			DbCommand comm = GetCommand("SPUsersGroupsGet");
-			comm.AddParameter<short>(this.Factory, "UserGroupId", (short) userGroup);
+			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)userGroup);
 
 			DataRow dr = GetFirstRow(comm);
 			if (dr != null)
@@ -219,6 +223,19 @@ namespace NearForums.DataAccess
 				result = dr.GetString("UserGroupName");
 			}
 			return result;
-		}
+		} 
+		#endregion
+
+		#region Add email
+		public void AddEmail(int id, string email, EmailPolicy policy)
+		{
+			DbCommand comm = GetCommand("SPUsersUpdateEmail");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+			comm.AddParameter<string>(this.Factory, "UserEmail", email);
+			comm.AddParameter(this.Factory, "UserEmailPolicy", DbType.Int32, (int)policy);
+
+			comm.SafeExecuteNonQuery();
+		} 
+		#endregion
 	}
 }
