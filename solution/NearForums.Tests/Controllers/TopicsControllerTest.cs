@@ -86,8 +86,8 @@ namespace NearForums.Tests.Controllers
 
 			Forum forum = ForumsControllerTest.GetAForum();
 
-			result = controller.Add(forum.ShortName, new Topic());
-			Assert.IsTrue(result is ViewResult);
+			result = controller.Add(forum.ShortName, new Topic(), true, "admin@admin.com");
+			Assert.IsFalse(result is RedirectToRouteResult); //controller should display the same page to correct error.
 
 			//Create a valid topic
 			Topic t = new Topic();
@@ -98,7 +98,7 @@ namespace NearForums.Tests.Controllers
 			t.User = controller.User.ToUser();
 			t.Forum = forum;
 
-			result = controller.Add(forum.ShortName, t);
+			result = controller.Add(forum.ShortName, t, true, "admin@admin.com");
 			int topicId = t.Id;
 
 			Assert.IsTrue(topicId > 0);

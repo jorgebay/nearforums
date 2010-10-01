@@ -22,6 +22,7 @@ namespace NearForums.ServiceClient
 			return da.GetTestUser();
 		}
 
+		/// <exception cref="ValidationException"></exception>
 		public static User Add(User user, AuthenticationProvider provider, string providerId)
 		{
 			user.ValidateFields();
@@ -78,6 +79,7 @@ namespace NearForums.ServiceClient
 			return da.GetGroupName(userGroup);
 		}
 
+		/// <exception cref="ValidationException"></exception>
 		public static void Edit(User user)
 		{
 			user.ValidateFields();
@@ -89,6 +91,7 @@ namespace NearForums.ServiceClient
 		/// <summary>
 		/// Add the email address to the user profile.
 		/// </summary>
+		/// <exception cref="ValidationException"></exception>
 		public static void AddEmail(int id, string email, EmailPolicy policy)
 		{
 			#region Validate Email

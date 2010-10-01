@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.ServiceClient;
 using NearForums.Configuration;
+using NearForums.Web.State;
 
 namespace NearForums.Web.Controllers.Helpers
 {
@@ -52,6 +53,24 @@ namespace NearForums.Web.Controllers.Helpers
 			else
 			{
 				TopicsSubscriptionsServiceClient.Remove(topicId, userId, userGuid);
+			}
+		}
+
+		/// <summary>
+		/// Ensure that an email is set if the user wants notifications.
+		/// </summary>
+		/// <param name="email"></param>
+		/// <param name="session"></param>
+		/// <exception cref="ValidationException"></exception>
+		public static void SetNotificationEmail(bool notify, string email, SessionWrapper session, SiteConfiguration config)
+		{
+			if (notify && config.Notifications.Subscription.IsDefined)
+			{
+				if (session.User.Email == null)
+				{
+					UsersServiceClient.AddEmail(session.User.Id, email, EmailPolicy.SendFromSubscriptions);
+					session.User.Email = email;
+				}
 			}
 		}
 

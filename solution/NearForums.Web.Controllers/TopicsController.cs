@@ -90,10 +90,13 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id")] Topic topic)
+		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id")] Topic topic, bool notify, string email)
 		{
 			try
 			{
+
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+
 				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = Utils.ToUrlFragment(topic.Title, 64);
@@ -104,6 +107,8 @@ namespace NearForums.Web.Controllers
 				}
 
 				TopicsServiceClient.Create(topic, Request.UserHostAddress);
+				SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
 			}
 			catch (ValidationException ex)
@@ -278,16 +283,8 @@ namespace NearForums.Web.Controllers
 			message.Topic = TopicsServiceClient.Get(id);
 			try
 			{
-				if (notify)
-				{
-					if (this.User.Email == null)
-					{
-						UsersServiceClient.AddEmail(this.User.Id, email, EmailPolicy.SendFromSubscriptions);
-						this.User.Email = email;
-					}
-				}
-
-				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config); 
 
 				#region Check topic
 				if (message.Topic == null)

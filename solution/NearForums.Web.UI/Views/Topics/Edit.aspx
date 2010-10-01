@@ -15,6 +15,9 @@
 			,{"Tags", "Tags must not be blank, separated by spaces and must not contain special characters."}
 			,{"Title", "Subject must not be blank."}
 			,{"ShortName", ""}
+			,{"email", new Dictionary<ValidationErrorType, string>(){
+				{ValidationErrorType.NullOrEmpty, "Email must not be blank in order to notify of new posts."}
+				,{ValidationErrorType.Format, "Email format is not valid."}}}
 		}, null)%>
 	<% Html.BeginForm(null, null, null, FormMethod.Post, new{@id="topicEditForm"}); %>
 	<fieldset>
@@ -42,6 +45,24 @@
 			<%=Html.CheckBox("isSticky") %>
 		</div>
 <%
+		}
+		if (this.Config.Notifications.Subscription.IsDefined)
+		{
+%>
+		<div class="formItem floatContainer">
+			<div class="checkbox">
+				<%= Html.CheckBox("notify", new{onclick = "toggleEmail();"})%>
+				<label for="notify">Notify me of new posts on this thread via email</label>
+				<%= this.User.Email == null ? Html.TextBox("email", null, new{@class="notifyEmail", @style="display:none;"}) : "" %>
+			</div>
+		</div>
+<%
+		}
+		else
+		{
+%>
+			<%=Html.Hidden("notify", false) %>
+<%	
 		}
 %>
 		<div class="formItem buttons">
