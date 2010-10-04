@@ -146,13 +146,15 @@ namespace NearForums.Web.Controllers
 			#endregion
 			ViewData["IsEdit"] = true;
 
+			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+
 			return View(topic);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "")] Topic topic)
+		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "")] Topic topic, bool notify, string email)
 		{
 			topic.Id = id;
 			try
@@ -171,6 +173,9 @@ namespace NearForums.Web.Controllers
 					topic.IsSticky = originalTopic.IsSticky;
 				}
 				#endregion
+
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+
 				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
@@ -179,6 +184,8 @@ namespace NearForums.Web.Controllers
 					topic.Description = topic.Description.ReplaceValues();
 				}
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
+
+				SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
 
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
 			}

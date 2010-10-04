@@ -10,6 +10,10 @@ namespace NearForums
 {
 	public abstract class Entity : IEnsureValidation
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <exception cref="ValidationException"></exception>
 		protected List<ValidationError> ValidateFields(bool throwErrors)
 		{
 			List<ValidationError> errors = new List<ValidationError>();
@@ -115,6 +119,7 @@ namespace NearForums
 			return errors;
 		}
 
+		/// <exception cref="ValidationException"></exception>
 		public virtual void ValidateFields()
 		{
 			this.ValidateFields(true);

@@ -41,8 +41,8 @@
 		{
 %>
 		<div class="formItem checkbox">
-			<label for="isSticky">Sticky thread?</label>
 			<%=Html.CheckBox("isSticky") %>
+			<label for="isSticky">Sticky thread?</label>
 		</div>
 <%
 		}

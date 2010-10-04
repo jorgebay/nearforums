@@ -42,6 +42,7 @@ namespace NearForums.ServiceClient
 			MessagesServiceClient.Add(message, ip);
 		}
 
+		/// <exception cref="ValidationException"></exception>
 		public static void Create(Topic topic, string ip)
 		{
 			topic.ValidateFields();
@@ -49,6 +50,10 @@ namespace NearForums.ServiceClient
 			da.Add(topic, ip);
 		}
 
+		/// <summary>
+		/// Edits a topic
+		/// </summary>
+		/// <exception cref="ValidationException"></exception>
 		public static void Edit(Topic topic, string ip)
 		{
 			topic.ValidateFields();

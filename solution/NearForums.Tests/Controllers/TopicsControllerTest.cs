@@ -131,7 +131,7 @@ namespace NearForums.Tests.Controllers
 			Topic topic = TopicsControllerTest.GetATopic(forum);
 
 
-			result = controller.Edit(topic.Id, topic.ShortName, forum.ShortName, topic);
+			result = controller.Edit(topic.Id, topic.ShortName, forum.ShortName, topic, true, "admin@admin.com");
 
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 		}
