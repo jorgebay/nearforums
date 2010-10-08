@@ -87,5 +87,17 @@
 				}
 			});
 		});
+		function toggleEmail()
+		{
+			if ($("#notify").is(":checked"))
+			{
+				$('#email').show().focus();
+			}
+			else
+			{
+				$('#email').hide();
+			}
+		}
+		$(document).ready(toggleEmail);
 	</script>
 </asp:Content>

@@ -30,7 +30,7 @@
 	else
 	{
 %>
-		<p class="warning">No are no unanswered threads :)</p>
+		<p class="warning">No unanswered threads, for now :)</p>
 <%
 	}
 %>
