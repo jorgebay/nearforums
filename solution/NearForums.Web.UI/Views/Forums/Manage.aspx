@@ -20,7 +20,7 @@
 %>
 			<li>
 				<%=Html.ActionLink("Edit", "Edit", "Forums", new{forum=f.ShortName}, null) %>,
-				<%=Html.ActionLink("View", "Detail", "Forums", new{forum=f.ShortName}, new{target="_blank"}) %>
+				<%=Html.ActionLink("View", "Detail", "Forums", new{forum=f.ShortName}, null) %>
 				- 
 				<%=category.Name + " &gt; " + f.Name%></li>
 <%

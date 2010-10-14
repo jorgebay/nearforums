@@ -18,7 +18,7 @@
 				<li>
 					<h3>
 						<%=Html.ActionLink(forum.Name, "Detail", new{forum=forum.ShortName}) %>
-						<span class="details"><%=forum.TopicCount %> threads / <%=forum.MessageCount %> posts</span>
+						<span class="details"><%=forum.TopicCount %> thread<%=forum.TopicCount != 1 ? "s" : ""%> / <%=forum.MessageCount %> posts</span>
 					</h3>
 					<p><%=forum.Description %></p>
 				</li>

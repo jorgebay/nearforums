@@ -1,6 +1,4 @@
-﻿-- Init options
-SET GLOBAL log_bin_trust_function_creators = 1;
--- MySQL Administrator dump 1.4
+﻿-- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
 -- Server version	5.1.46-community
@@ -14,6 +12,7 @@ SET GLOBAL log_bin_trust_function_creators = 1;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
 
 
 --
@@ -209,6 +208,24 @@ CREATE TABLE `topics` (
 --
 
 --
+-- Definition of table `topicssubscriptions`
+--
+
+DROP TABLE IF EXISTS `topicssubscriptions`;
+CREATE TABLE `topicssubscriptions` (
+  `topicid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  PRIMARY KEY (`topicid`,`userid`) USING BTREE,
+  KEY `fk_topicssubscriptions_users` (`userid`),
+  CONSTRAINT `fk_topicssubscriptions_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
+  CONSTRAINT `fk_topicssubscriptions_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `topicssubscriptions`
+--
+
+--
 -- Definition of table `users`
 --
 
@@ -294,6 +311,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SPCleanDb`()
 BEGIN
   TRUNCATE TABLE Tags;
   TRUNCATE TABLE Messages;
+  TRUNCATE TABLE topicssubscriptions;
   TRUNCATE TABLE Topics;
   TRUNCATE TABLE Templates;
   TRUNCATE TABLE Forums;
@@ -604,7 +622,9 @@ INTO
 FROM
 	Topics
 WHERE
-	ForumId = param_ForumId;
+	ForumId = param_ForumId
+  AND
+	Active = 1;
 
 UPDATE Forums
 SET
@@ -628,7 +648,8 @@ DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesDelete`(
-	param_MessageId int
+	param_TopicId int
+	,param_MessageId int
 	,param_UserId int
 )
 BEGIN
@@ -639,6 +660,8 @@ SET
 	,MessageLastEditDate = UTC_TIMESTAMP()
 	,MessageLastEditUser = param_UserId
 WHERE
+	TopicId = param_TopicId
+	AND
 	MessageId = param_MessageId;
 
 END $$
@@ -834,6 +857,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesInsert`(
 	,param_UserId int
 	,OUT param_MessageId int
 	,param_Ip varchar(15)
+	,param_ParentId int
 )
 BEGIN
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -861,6 +885,7 @@ START TRANSACTION;
 	,UserId
 	,Active
 	,EditIp
+	,ParentId
 	)
 	VALUES
 	(
@@ -873,6 +898,7 @@ START TRANSACTION;
 	,param_UserId
 	,1 -- Active
 	,param_Ip
+	,param_ParentId
 	);
 
 
@@ -932,6 +958,8 @@ FROM
 		INNER JOIN Topics T ON Tags.TopicId = T.TopicId
 	WHERE
 		T.ForumId = ?
+		AND
+		T.Active = 1
 	GROUP BY
 		Tags.Tag
 	ORDER BY SUM(T.TopicViews) desc
@@ -1218,10 +1246,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsDelete`(
 	,param_Ip varchar(15)
 )
 BEGIN
-
 /*
-SETS THE TOPIC ACTIVE=0
+- SETS THE TOPIC ACTIVE=0
+- UPDATES RECOUNT ON FORUM
 */
+
+DECLARE var_ForumId int;
+SELECT ForumId INTO var_ForumId FROM Topics WHERE TopicId = param_TopicId;
+
+
 	UPDATE Topics
 	SET
 		Active = 0
@@ -1231,7 +1264,7 @@ SETS THE TOPIC ACTIVE=0
 	WHERE
 		TopicId = param_TopicId;
 
-
+  CALL SPForumsUpdateRecount (var_ForumId);
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
@@ -1421,7 +1454,7 @@ WHERE
 	AND
 	T.TopicOrder IS NULL -- Not sticky
 ORDER BY
-	TopicViews DESC;
+	TopicViews DESC, TopicId DESC;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
@@ -1551,6 +1584,47 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `SPTopicsGetByUser`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsGetByUser`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByUser`(
+	param_UserId int
+)
+BEGIN
+
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+	,T.LastMessageId
+	,T.UserName
+	,M.MessageCreationDate
+FROM
+	TopicsComplete T
+	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+WHERE
+	T.UserId = param_UserId
+ORDER BY T.TopicId desc;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `SPTopicsGetLatest`
 --
 
@@ -1584,6 +1658,91 @@ BEGIN
 	ORDER BY T.TopicId desc
   LIMIT 20;
 
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPTopicsGetMessagesByUser`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsGetMessagesByUser`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetMessagesByUser`(
+	param_UserId int
+)
+BEGIN
+/*
+Gets the messages posted by the user grouped by topic
+*/
+SELECT
+	T.TopicId
+	,M.MessageId
+	,M.MessageCreationDate
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+FROM
+	TopicsComplete T
+	INNER JOIN Messages M ON M.TopicId = T.TopicId
+WHERE
+	M.UserId = param_UserId
+ORDER BY T.TopicId desc, M.MessageId desc;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPTopicsGetUnanswered`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsGetUnanswered`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetUnanswered`()
+BEGIN
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+	,T.LastMessageId
+	,T.UserName
+	,M.MessageCreationDate
+	,T.ForumId
+	,T.ForumName
+	,T.ForumShortName
+FROM
+	TopicsComplete T
+	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+WHERE
+	T.TopicReplies = 0 -- Unanswered
+	AND
+	T.TopicOrder IS NULL -- Not sticky
+ORDER BY
+	TopicId DESC;
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
@@ -1676,7 +1835,7 @@ START TRANSACTION;
 	CALL SPTagsInsert (@Tags, @TopicId, null);
 
 	-- Update forums
-	CALL SPForumsUpdateLastTopic (@ForumId);
+	CALL SPForumsUpdateRecount (@ForumId);
 COMMIT;
 
 END $$
@@ -1754,6 +1913,132 @@ BEGIN
 		,TopicLastEditIp = param_Ip
 	WHERE
 		TopicId = param_TopicId;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPTopicsSubscriptionsDelete`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsDelete`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsDelete`(
+	param_TopicId int
+	,param_UserId int
+	,param_Userguid char(32)
+)
+BEGIN
+
+DELETE S
+FROM
+	TopicsSubscriptions S
+	INNER JOIN Users U
+WHERE
+  U.UserId = S.UserId
+  AND
+	S.TopicId = param_TopicId
+	AND
+	S.UserId = param_UserId
+	AND
+	U.UserGuid = param_UserGuid;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPTopicsSubscriptionsGetByTopic`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsGetByTopic`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsGetByTopic`(
+	param_TopicId int
+)
+BEGIN
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserEmail
+	,U.UserEmailPolicy
+	,U.UserGuid
+FROM
+	TopicsSubscriptions S
+	INNER JOIN Users U ON U.UserId = S.UserId
+WHERE
+	TopicId = param_TopicId
+	AND
+	U.Active = 1;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPTopicsSubscriptionsGetByUser`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsGetByUser`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsGetByUser`(
+  param_UserId int
+)
+BEGIN
+
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.ForumId
+	,T.ForumName
+	,T.ForumShortName
+FROM
+	TopicsSubscriptions S
+	INNER JOIN TopicsComplete T ON T.TopicId = S.TopicId
+WHERE
+	S.UserId = param_UserId
+ORDER BY
+	S.TopicId DESC;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPTopicsSubscriptionsInsert`
+--
+
+DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsInsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsInsert`(
+	param_TopicId int
+	,param_UserId int
+)
+BEGIN
+IF NOT EXISTS (SELECT TopicId FROM TopicsSubscriptions WHERE TopicId = param_TopicId AND UserID = param_UserId) THEN
+	INSERT INTO TopicsSubscriptions
+	(TopicId, UserId)
+	VALUES
+	(param_TopicId, param_UserId);
+END IF;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
@@ -1916,6 +2201,8 @@ SELECT
 	,U.UserPhoto
 	,U.UserRegistrationDate
 	,U.UserExternalProfileUrl
+	,U.UserEmail
+	,U.UserEmailPolicy
 	,UG.UserGroupId
 	,UG.UserGroupName
 FROM
@@ -2030,6 +2317,7 @@ SELECT
 	,U.UserTimeZone
 	,U.UserExternalProfileUrl
 	,U.UserProviderLastCall
+	,U.UserEmail
 FROM
 	Users U
 WHERE
@@ -2062,6 +2350,7 @@ SELECT
 	,U.UserTimeZone
 	,U.UserExternalProfileUrl
 	,U.UserProviderLastCall
+	,U.UserEmail
 FROM
 	Users U
 WHERE
@@ -2183,6 +2472,7 @@ SELECT
 	,U.UserTimeZone
 	,U.UserExternalProfileUrl
 	,U.UserProviderLastCall
+	,U.UserEmail
 FROM
 	Users U
 WHERE
@@ -2215,6 +2505,77 @@ IF var_UserGroupId IS NOT NULL THEN
 	WHERE
 		UserId = param_UserId;
 END IF;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPUsersUpdate`
+--
+
+DROP PROCEDURE IF EXISTS `SPUsersUpdate`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersUpdate`(
+	param_UserId int
+	,param_UserName varchar(50)
+	,param_UserProfile longtext
+	,param_UserSignature longtext
+	,param_UserBirthDate datetime
+	,param_UserWebsite varchar(255)
+	,param_UserTimezone decimal(9,2)
+	,param_UserEmail varchar(100)
+	,param_UserEmailPolicy int
+	,param_UserPhoto varchar(1024)
+	,param_UserExternalProfileUrl varchar(255)
+)
+BEGIN
+
+UPDATE Users
+SET
+UserName = param_UserName
+,UserProfile = param_UserProfile
+,UserSignature = param_UserSignature
+,UserBirthDate = param_UserBirthDate
+,UserWebsite = param_UserWebsite
+,UserTimezone = param_UserTimezone
+,UserEmail = param_UserEmail
+,UserEmailPolicy = param_UserEmailPolicy
+,UserPhoto = param_UserPhoto
+,UserExternalProfileUrl = param_UserExternalProfileUrl
+WHERE 
+	UserId = param_UserId;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPUsersUpdateEmail`
+--
+
+DROP PROCEDURE IF EXISTS `SPUsersUpdateEmail`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersUpdateEmail`(
+	param_UserId int
+	,param_UserEmail varchar(100)
+	,param_UserEmailPolicy int
+)
+BEGIN
+UPDATE Users
+SET
+	UserEmail = param_UserEmail
+	,UserEmailPolicy = param_UserEmailPolicy
+WHERE
+	UserId = param_UserId;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
