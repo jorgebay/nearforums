@@ -1,4 +1,7 @@
-﻿-- MySQL Administrator dump 1.4
+﻿-- Init options
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+-- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
 -- Server version	5.1.46-community
@@ -285,7 +288,7 @@ DROP FUNCTION IF EXISTS `FNSplit`;
 
 DELIMITER $$
 
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+DROP FUNCTION IF EXISTS `FNSplit` $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `FNSplit`(
   x VARCHAR(255),
   delim VARCHAR(12),
@@ -294,10 +297,8 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `FNSplit`(
 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
        delim, '') $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;
-
 --
 -- Definition of procedure `SPCleanDb`
 --
