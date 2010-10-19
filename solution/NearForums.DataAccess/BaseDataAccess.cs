@@ -18,7 +18,13 @@ namespace NearForums.DataAccess
 			{
 				throw new ConfigurationErrorsException("You must specify a SQL Connection string in the configuration, with the key 'Forums'.");
 			}
-			this.Factory = DbProviderFactories.GetFactory(ConfigurationManager.ConnectionStrings[_connectionKey].ProviderName);
+			//Default provider
+			var providerName = "System.Data.SqlClient";
+			if (!String.IsNullOrEmpty(ConfigurationManager.ConnectionStrings[_connectionKey].ProviderName))
+			{
+				providerName = ConfigurationManager.ConnectionStrings[_connectionKey].ProviderName;
+			}
+			this.Factory = DbProviderFactories.GetFactory(providerName);
 		}
 
 		/// <summary>
