@@ -2,7 +2,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	<%= ViewData.WriteIf("IsEdit", "Edit thread", "Post new thread") %>
 </asp:Content>
-
+<asp:Content ContentPlaceHolderID="HeadContent" runat="server">
+	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
+</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<ul class="path floatContainer">
 		<li class="first"><%=Html.ActionLink("Forums", "List", "Forums") %></li>
@@ -70,7 +72,6 @@
 		</div>
 	</fieldset>
 	<% Html.EndForm(); %>
-	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript">
 		var submitted = false;
 		$(document).ready(function(){
