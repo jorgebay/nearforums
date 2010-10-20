@@ -6,8 +6,6 @@
 		<script type="text/javascript">
 			var editorOptions = {
 				script_url : "/scripts/tinymce/tiny_mce.js",
-
-				// General options
 				theme : "advanced",
 				theme_advanced_toolbar_location : "top",
 				theme_advanced_toolbar_align : "left",
@@ -30,8 +28,6 @@
 		<script type="text/javascript">
 			var editorOptions = {
 				script_url : "/scripts/tinymce/tiny_mce.js",
-
-				// General options
 				theme : "advanced",
 				theme_advanced_toolbar_location : "top",
 				theme_advanced_toolbar_align : "left",
