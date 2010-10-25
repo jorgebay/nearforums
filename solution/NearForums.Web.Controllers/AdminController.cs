@@ -10,6 +10,10 @@ using NearForums.Validation;
 using NearForums.ServiceClient;
 using NearForums.Web.Controllers.Filters;
 
+using System.Configuration;
+using System.Web.Configuration;
+using System.Net.Configuration;
+
 namespace NearForums.Web.Controllers
 {
 	public class AdminController : BaseController
@@ -325,6 +329,59 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult Dashboard()
 		{
+			return View();
+		}
+		#endregion
+
+		#region Status
+		public ActionResult Status()
+		{
+			#region Server and Web.config
+			var systemWeb = (SystemWebSectionGroup)ConfigurationManager.GetSection("system.web");
+			var compilation = (CompilationSection)ConfigurationManager.GetSection("system.web/compilation");
+			var customErrors = (CustomErrorsSection)ConfigurationManager.GetSection("system.web/customErrors");
+			var smtp = (SmtpSection) ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+
+			ViewData["Debug"] = compilation.Debug;
+			ViewData["CustomErrors"] = customErrors.Mode;
+			ViewData["MachineName"] = Server.MachineName;
+			ViewData["Mail"] = (smtp != null && smtp.From != null) ? "Set" : "Not properly set";
+			#endregion
+
+			#region Database
+			ConnectionStringSettings connString = ConfigurationManager.ConnectionStrings["Forums"];
+			ViewData["ConnectionString"] = connString == null ? "Not set" : "Set";
+			ViewData["ConnectionStringProvider"] = connString != null ? connString.ProviderName : "";
+			try
+			{
+				UsersServiceClient.GetTestUser();
+				ViewData["DatabaseTest"] = "Success";
+			}
+			catch
+			{
+				ViewData["DatabaseTest"] = "Failure. Could not connect to database.";
+			}
+			#endregion
+
+			#region Logging
+			ViewData["LoggingEnabled"] = LoggerServiceClient.IsEnabled;
+			#endregion
+
+			#region Project
+			ViewData["Version"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			#endregion
+
+			#region Notifications
+			ViewData["Subscriptions"] = Config.Notifications.Subscription.IsDefined;
+			#endregion
+
+			#region Authorization providers
+			
+
+			#endregion
+
+			//System.Net.Mail
+			//Proxy
 			return View();
 		}
 		#endregion

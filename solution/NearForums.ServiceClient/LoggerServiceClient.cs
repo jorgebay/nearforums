@@ -30,5 +30,13 @@ namespace NearForums.ServiceClient
 
 			logger.Error(message.ToString());
 		}
+
+		public static bool IsEnabled
+		{
+			get
+			{
+				return logger.IsErrorEnabled;
+			}
+		}
 	}
 }

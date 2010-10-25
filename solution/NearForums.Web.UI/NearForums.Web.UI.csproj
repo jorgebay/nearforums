@@ -212,6 +212,7 @@
     <Content Include="Views\Admin\AddTemplate.aspx" />
     <Content Include="Views\Admin\Dashboard.aspx" />
     <Content Include="Views\Admin\ListTemplates.aspx" />
+    <Content Include="Views\Admin\Status.aspx" />
     <Content Include="Views\Errors\403.aspx" />
     <Content Include="Views\Errors\404.aspx" />
     <Content Include="Views\Errors\500.aspx" />
