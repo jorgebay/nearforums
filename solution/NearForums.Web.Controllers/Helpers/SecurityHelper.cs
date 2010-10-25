@@ -77,7 +77,7 @@ namespace NearForums.Web.Controllers.Helpers
 	#endregion
 
 		#region Facebook
-		private static bool TryLoginFromFacebook(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
+		public static bool TryLoginFromFacebook(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
 		{
 			bool logged = false;
 			if (SiteConfiguration.Current.AuthorizationProviders.Facebook != null)

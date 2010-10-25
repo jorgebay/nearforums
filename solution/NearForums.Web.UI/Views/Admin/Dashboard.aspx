@@ -31,6 +31,10 @@
 			<h3><%=Html.ActionLink("Manage users", "List", "Users") %></h3>
 			<p>Promote, demote and delete forum users.</p>
 		</li>
+		<li>
+			<h3><%=Html.ActionLink("Website status", "Status", "Admin") %></h3>
+			<p>View the status of the webserver/db/website/configuration...</p>
+		</li>
 <%
 		}
 %>

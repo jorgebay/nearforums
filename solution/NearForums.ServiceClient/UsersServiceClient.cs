@@ -78,7 +78,7 @@ namespace NearForums.ServiceClient
 			UsersDataAccess da = new UsersDataAccess();
 			return da.GetGroupName(userGroup);
 		}
-
+		
 		/// <exception cref="ValidationException"></exception>
 		public static void Edit(User user)
 		{

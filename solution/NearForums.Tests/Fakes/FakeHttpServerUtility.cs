@@ -18,6 +18,26 @@ namespace NearForums.Tests.Fakes
 
 		}
 
+		public override string MachineName
+		{
+			get
+			{
+				return "Fake-MachineName";
+			}
+		}
+
+		public override int ScriptTimeout
+		{
+			get
+			{
+				return 1000;
+			}
+			set
+			{
+				
+			}
+		}
+
 
 		//Assign a base path at appSettings (key=FakeApplicationRoot) of the app.config file
 		public override string MapPath(string path)
