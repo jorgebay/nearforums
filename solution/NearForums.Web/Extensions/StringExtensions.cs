@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NearForums.Configuration;
+using org.owasp.validator.html;
+using System.Configuration;
+using System.IO;
 
 namespace NearForums.Web.Extensions
 {
@@ -23,6 +26,14 @@ namespace NearForums.Web.Extensions
 				}
 			}
 			return value;
+		}
+
+		public static string SafeHtml(this string value)
+		{
+			//AppDomain.CurrentDomain.SetupInformation.ConfigurationFile
+			AntiSamy antiSamy = new AntiSamy();
+			var results = antiSamy.scan(value, Policy.getInstance(SiteConfiguration.Current.AntiSamyPolicyFile));
+			return results.getCleanHTML();
 		}
 
 		public static string FirstUpperCase(this string value)

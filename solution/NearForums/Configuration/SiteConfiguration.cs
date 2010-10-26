@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 using NearForums.Configuration.Notifications;
+using System.IO;
 
 namespace NearForums.Configuration
 {
@@ -151,6 +152,34 @@ namespace NearForums.Configuration
 				}
 				return new TimeSpan(0, Convert.ToInt32(this.TimeZoneOffsetHours * 60), 0);
 			}
+		}
+
+		[ConfigurationProperty("antiSamyPolicyFile", IsRequired = false)]
+		public string AntiSamyPolicyFile
+		{
+			get
+			{
+				var antiSamyPolicyFile = "Config\\AntiSamy.config";
+				if (!String.IsNullOrEmpty((string)this["antiSamyPolicyFile"]))
+				{
+					antiSamyPolicyFile = (string)this["antiSamyPolicyFile"];
+				}
+				return CombinePath(antiSamyPolicyFile);
+			}
+			set
+			{
+				this["antiSamyPolicyFile"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Combines the current application configuration path with the fileName given
+		/// </summary>
+		/// <param name="fileName"></param>
+		/// <returns></returns>
+		public string CombinePath(string fileName)
+		{
+			return Path.Combine(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, fileName);
 		}
 	}
 }

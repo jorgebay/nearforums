@@ -7,6 +7,7 @@ using System.Net;
 using System.Configuration;
 using System.Net.Mail;
 using NearForums.Configuration;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Tests
 {
@@ -96,6 +97,25 @@ namespace NearForums.Tests
 			{
 				Assert.Fail("Sending a test mail failed. You should configure the smtp in system.net/mailSettings section in app.config or machine.config. http://msdn.microsoft.com/en-us/library/6484zdc1.aspx");
 			}
+		}
+
+		[TestMethod]
+		public void ConfigurationPath_Test()
+		{
+			var configFilePath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+
+			Assert.IsTrue(configFilePath.EndsWith(".dll.config"));
+		}
+
+		[TestMethod]
+		public void SafeHtml_Test()
+		{
+			var html = "";
+			html = "<p>Hola Mundo<object></object><script></script><iframe></iframe></p>".SafeHtml();
+			Assert.AreEqual(html, "<p>Hola Mundo</p>");
+
+			html = "<p>Hola Mundo <a href=\"http://argo.com/1.html\">argo</a></p>".SafeHtml();
+			Assert.IsTrue(html.Contains("rel=\"nofollow\""));
 		}
 
 		[TestMethod]
