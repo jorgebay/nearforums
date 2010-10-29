@@ -117,7 +117,7 @@
     <Content Include="Config\Site.config" />
     <Content Include="Config\Redirector.config" />
     <Content Include="Config\Logging.config" />
-    <Content Include="Config\AllowedTags.config" />
+    <Content Include="Config\HtmlRules.config" />
     <None Include="content\templates\sample.zip" />
     <None Include="scripts\tinymce\plugins.zip" />
     <Content Include="content\templates\sample\contents\arrow-right.gif" />
