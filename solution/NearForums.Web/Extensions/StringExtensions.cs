@@ -28,9 +28,13 @@ namespace NearForums.Web.Extensions
 			return value;
 		}
 
+		/// <summary>
+		/// Parses HTML to avoid XSS attacks
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public static string SafeHtml(this string value)
 		{
-			//AppDomain.CurrentDomain.SetupInformation.ConfigurationFile
 			AntiSamy antiSamy = new AntiSamy();
 			var results = antiSamy.scan(value, Policy.getInstance(SiteConfiguration.Current.AntiSamyPolicyFile));
 			return results.getCleanHTML();

@@ -129,6 +129,10 @@ namespace NearForums.Tests
 
 			html = "<a href=\"something.aspx\" class=\"anotherClass\">Something</a>".SafeHtml();
 			Assert.IsTrue(!html.Contains("class="));
+
+			//Smiley
+			html = ":)".SafeHtml().ReplaceValues();
+			Assert.IsTrue(html.Contains("<img"));
 			
 			//Check interaction with replacements
 			//Safe + Replacements + SAfe + Replacements

@@ -83,9 +83,15 @@ namespace NearForums
 		/// <returns></returns>
 		public static string RemoveTags(string value)
 		{
-			value = CleanHtmlComments(value);
-			value = CleanHtmlBehaviour(value);
-			return Regex.Replace(value, @"</?[^>]+?>", "");
+			if (value != null)
+			{
+				value = CleanHtmlComments(value);
+				value = CleanHtmlBehaviour(value);
+				value = Regex.Replace(value, @"</[^>]+?>", " ");
+				value = Regex.Replace(value, @"<[^>]+?>", "");
+				value = value.Trim();
+			}
+			return value;
 		}
 
 		/// <summary>

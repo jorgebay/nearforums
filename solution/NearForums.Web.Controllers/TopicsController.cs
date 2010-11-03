@@ -103,7 +103,7 @@ namespace NearForums.Web.Controllers
 				topic.IsSticky = (topic.IsSticky && this.User.Group >= UserGroup.Moderator);
 				if (topic.Description != null)
 				{
-					topic.Description = topic.Description.ReplaceValues();
+					topic.Description = topic.Description.SafeHtml().ReplaceValues();
 				}
 
 				TopicsServiceClient.Create(topic, Request.UserHostAddress);
@@ -181,7 +181,7 @@ namespace NearForums.Web.Controllers
 				topic.ShortName = name;
 				if (topic.Description != null)
 				{
-					topic.Description = topic.Description.ReplaceValues();
+					topic.Description = topic.Description.SafeHtml().ReplaceValues();
 				}
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
 
@@ -303,7 +303,7 @@ namespace NearForums.Web.Controllers
 					return ResultHelper.ForbiddenResult(this);
 				}
 				#endregion
-				message.Body = message.Body.ReplaceValues();
+				message.Body = message.Body.SafeHtml().ReplaceValues();
 				message.User = Session.User.ToUser();
 				if (msg != null)
 				{

@@ -179,7 +179,7 @@ namespace NearForums.Configuration
 		/// <returns></returns>
 		public string CombinePath(string fileName)
 		{
-			return Path.Combine(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, fileName);
+			return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), fileName);
 		}
 	}
 }
