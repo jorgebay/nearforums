@@ -16,7 +16,20 @@ namespace NearForums.Web.Controllers
 		#region List
 		public ActionResult List()
 		{
-			List<ForumCategory> list = ForumsServiceClient.GetList();
+			List<ForumCategory> list = null;
+			try
+			{
+				list = ForumsServiceClient.GetList();
+				ViewData["IsSiteSet"] = IsSiteSet;
+			}
+			catch (Exception ex)
+			{
+				if (!this.IsSiteSet)
+				{
+					return RedirectToAction("StatusFirst", "Admin");
+				}
+				throw ex;
+			}
 			return View(list);
 		}
 		#endregion

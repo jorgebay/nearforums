@@ -34,6 +34,12 @@
 %>
 			<p>No forums found. Create <%=Html.ActionLink("a forum", "Add") %>.</p>
 <%
+			if (!ViewData.Get<bool>("IsSiteSet", true))
+			{
+%>
+				<p style="padding-top:20px;"><em>Recommended: <%=Html.ActionLink("Check the website status", "StatusFirst", "Admin")%></em></p>
+<%
+			}
 		}
 %>
 	</div>

@@ -17,6 +17,7 @@ namespace NearForums.Web.Controllers
 	public class BaseController : Controller
 	{
 		#region Props
+		#region State management
 		private SessionWrapper _session;
 		public new SessionWrapper Session
 		{
@@ -27,6 +28,10 @@ namespace NearForums.Web.Controllers
 					_session = new SessionWrapper(this.ControllerContext.HttpContext.Session);
 				}
 				return _session;
+			}
+			set
+			{
+				_session = value;
 			}
 		}
 
@@ -41,6 +46,10 @@ namespace NearForums.Web.Controllers
 				}
 				return _cache;
 			}
+			set
+			{
+				_cache = value;
+			}
 		}
 
 		public new UserState User
@@ -49,23 +58,28 @@ namespace NearForums.Web.Controllers
 			{
 				return Session.User;
 			}
-		}
+		} 
+		#endregion
 
+		#region Config
 		public SiteConfiguration Config
 		{
 			get
 			{
 				return SiteConfiguration.Current;
 			}
-		}
+		} 
+		#endregion
 
+		#region Uri
 		public Uri Uri
 		{
 			get
 			{
 				return Request.Url;
 			}
-		}
+		} 
+		#endregion
 
 		#region Domain
 		/// <summary>
@@ -80,6 +94,30 @@ namespace NearForums.Web.Controllers
 					return "http://www.contoso.com";
 				}
 				return this.Request.Url.Scheme + Uri.SchemeDelimiter + this.Request.Url.Host;
+			}
+		}
+		#endregion
+
+		#region Site Setup
+		/// <summary>
+		/// Determines if the site is correctly setup.
+		/// </summary>
+		public bool IsSiteSet
+		{
+			get
+			{
+				bool result = false;
+				try
+				{
+					if (UsersServiceClient.GetTestUser() != null)
+					{
+						result = true;
+					}
+				}
+				catch
+				{
+				}
+				return result;
 			}
 		}
 		#endregion

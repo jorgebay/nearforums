@@ -360,16 +360,11 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		public ActionResult StatusFirst()
 		{
-			try
+			if (IsSiteSet)
 			{
-				if (UsersServiceClient.GetTestUser() != null)
-				{
-					return RedirectToAction("Status");
-				}
+				return RedirectToAction("Status");
 			}
-			catch
-			{
-			}
+
 			this.StatusFill();
 			return View("Status");
 		}
