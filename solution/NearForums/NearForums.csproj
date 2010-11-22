@@ -54,6 +54,7 @@
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
+    <Compile Include="Configuration\IOptionalElement.cs" />
     <Compile Include="Configuration\KeySecretElement.cs" />
     <Compile Include="Configuration\ForumElement.cs" />
     <Compile Include="Configuration\CDataElement.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Configuration\RouteMappingConfiguration.cs" />
     <Compile Include="Configuration\SiteConfiguration.cs" />
     <Compile Include="Configuration\TemplateElement.cs" />
+    <Compile Include="Configuration\TemplateMobileElement.cs" />
     <Compile Include="Configuration\TopicElement.cs" />
     <Compile Include="EmailPolicy.cs" />
     <Compile Include="Entity.cs" />

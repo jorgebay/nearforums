@@ -47,5 +47,21 @@ namespace NearForums.Configuration
 				this["useTemplates"] = value;
 			}
 		}
+
+		/// <summary>
+		/// Determines if the application uses mobile templates
+		/// </summary>
+		[ConfigurationProperty("mobile", IsRequired = false)]
+		public TemplateMobileElement Mobile
+		{
+			get
+			{
+				return (TemplateMobileElement)this["mobile"];
+			}
+			set
+			{
+				this["mobile"] = value;
+			}
+		}
 	}
 }

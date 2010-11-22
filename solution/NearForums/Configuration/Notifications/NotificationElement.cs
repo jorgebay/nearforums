@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace NearForums.Configuration.Notifications
 {
-	public class NotificationElement : ConfigurationElement
+	public class NotificationElement : ConfigurationElement, IOptionalElement
 	{
 		[ConfigurationProperty("body", IsRequired = true)]
 		public CDataElement Body

@@ -100,11 +100,13 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
-		public void ConfigurationPath_Test()
+		public void Configuration_Test()
 		{
 			var configFilePath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
 			Assert.IsTrue(configFilePath.EndsWith(".dll.config"));
+
+			Assert.IsNotNull(SiteConfiguration.Current);
 		}
 
 		[TestMethod]

@@ -9,7 +9,7 @@ namespace NearForums.Configuration
 	/// <summary>
 	/// Represents a configuration element for an authorization provider based on Key and Secret
 	/// </summary>
-	public class KeySecretElement : ConfigurationElement
+	public class KeySecretElement : ConfigurationElement, IOptionalElement
 	{
 		[ConfigurationProperty("apiKey", IsRequired = true)]
 		public string ApiKey

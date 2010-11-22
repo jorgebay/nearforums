@@ -9,7 +9,7 @@ namespace NearForums.Configuration
 	/// <summary>
 	/// Represents a configuration element for Open Id relying party
 	/// </summary>
-	public class SSOOpenIdElement : ConfigurationElement
+	public class SSOOpenIdElement : ConfigurationElement, IOptionalElement
 	{
 		/// <summary>
 		/// Use this property for fixed identifiers for custom sso like login.yoursite.com
