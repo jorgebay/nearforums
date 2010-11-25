@@ -8,6 +8,9 @@ namespace NearForums.Configuration
 {
 	public class TemplateMobileElement : ConfigurationElement, IOptionalElement
 	{
+		/// <summary>
+		/// User agent regular expression
+		/// </summary>
 		[ConfigurationProperty("regex", IsRequired = false)]
 		public string Regex
 		{

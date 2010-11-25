@@ -26,7 +26,7 @@ if (Config.AuthorizationProviders.Facebook.IsDefined)
 		if (Config.AuthorizationProviders.Twitter.IsDefined)
 		{
 %>
-		<li class="login"><a href="<%=Url.Action("TwitterStartLogin", "Authentication", new{returnUrl=this.Request.Url.PathAndQuery}) %>"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
+		<li class="login"><a href="<%=Url.Action("TwitterStartLogin", "Authentication", new{returnUrl=this.Request.Url.PathAndQuery}) %>" rel="external"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
 <%
 		}
 	}

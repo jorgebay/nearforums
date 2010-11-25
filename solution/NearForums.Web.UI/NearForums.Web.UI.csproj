@@ -120,6 +120,9 @@
     <Content Include="Config\HtmlRules.config" />
     <None Include="content\templates\sample.zip" />
     <None Include="scripts\tinymce\plugins.zip" />
+    <Content Include="scripts\mobile.js" />
+    <Content Include="styles\mobile.css" />
+    <Content Include="Views\Shared\Mobile.Master" />
     <Content Include="content\templates\sample\contents\arrow-right.gif" />
     <Content Include="content\templates\sample\contents\body-bg.gif" />
     <Content Include="content\templates\sample\contents\logo.gif" />

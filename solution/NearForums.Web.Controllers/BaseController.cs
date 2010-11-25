@@ -10,6 +10,7 @@ using NearForums.Validation;
 using System.Web;
 using NearForums.ServiceClient;
 using NearForums.Web.Controllers.Filters;
+using System.Text.RegularExpressions;
 
 namespace NearForums.Web.Controllers
 {
@@ -121,6 +122,24 @@ namespace NearForums.Web.Controllers
 			}
 		}
 		#endregion
+
+		#region Is Mobile Request
+		/// <summary>
+		/// Check if the current request' user agent is a mobile device.
+		/// </summary>
+		public bool IsMobileRequest
+		{
+			get
+			{
+				bool isMobile = false;
+				if (Config.Template.Mobile.IsDefined)
+				{
+					isMobile = Regex.IsMatch(Request.UserAgent, Config.Template.Mobile.Regex, RegexOptions.IgnoreCase);
+				}
+				return isMobile;
+			}
+		}
+		#endregion
 		#endregion
 
 		#region Init
@@ -172,7 +191,7 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region Templates
+		#region Templates & Master
 		public void LoadTemplate()
 		{
 			//Gets the current template code from db
@@ -189,14 +208,26 @@ namespace NearForums.Web.Controllers
 
 			this.Cache.Template = template;
 		}
+
+		protected virtual string GetDefaultMasterName()
+		{
+			var masterName = Config.Template.Master;
+			//
+			if (IsMobileRequest)
+			{
+				masterName = Config.Template.MobileMaster;
+			}
+
+			return masterName;
+		}
 		#endregion
 
 		#region ViewResults
 		protected override ViewResult View(string viewName, string masterName, object model)
 		{
-			if (masterName == null && Config != null)
+			if (masterName == null)
 			{
-				masterName = Config.Template.Master;
+				masterName = GetDefaultMasterName();
 			}
 			return base.View(viewName, masterName, model);
 		}

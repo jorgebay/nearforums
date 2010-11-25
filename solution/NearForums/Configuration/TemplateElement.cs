@@ -33,6 +33,17 @@ namespace NearForums.Configuration
 		}
 
 		/// <summary>
+		/// Gets the current Mobile master name.
+		/// </summary>
+		public string MobileMaster
+		{
+			get
+			{
+				return "Mobile";
+			}
+		}
+
+		/// <summary>
 		/// Determines if the application uses templates
 		/// </summary>
 		[ConfigurationProperty("useTemplates", IsRequired = true)]
