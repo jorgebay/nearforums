@@ -8,7 +8,7 @@ namespace NearForums.Configuration.Notifications
 {
 	public class NotificationElement : ConfigurationElement, IOptionalElement
 	{
-		[ConfigurationProperty("body", IsRequired = true)]
+		[ConfigurationProperty("body", IsRequired = false)]
 		public CDataElement Body
 		{
 			get

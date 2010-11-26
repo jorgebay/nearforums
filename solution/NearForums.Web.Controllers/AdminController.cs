@@ -413,7 +413,7 @@ namespace NearForums.Web.Controllers
 				#endregion
 
 				#region Database
-				ConnectionStringSettings connString = ConfigurationManager.ConnectionStrings["Forums"];
+				ConnectionStringSettings connString = Config.DataAccess.ConnectionString;
 				ViewData["ConnectionString"] = connString == null ? "Not set" : "Set";
 				ViewData["ConnectionStringProvider"] = connString != null ? connString.ProviderName : "";
 				try

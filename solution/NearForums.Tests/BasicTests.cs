@@ -107,6 +107,12 @@ namespace NearForums.Tests
 			Assert.IsTrue(configFilePath.EndsWith(".dll.config"));
 
 			Assert.IsNotNull(SiteConfiguration.Current);
+
+			Assert.IsNotNull(SiteConfiguration.Current.DataAccess.ParameterPrefix);
+
+			Assert.IsNotNull(SiteConfiguration.Current.DataAccess.ConnectionString);
+
+			Assert.IsTrue(!String.IsNullOrEmpty(SiteConfiguration.Current.DataAccess.ConnectionString.ProviderName));
 		}
 
 		[TestMethod]

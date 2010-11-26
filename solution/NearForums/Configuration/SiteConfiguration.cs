@@ -90,7 +90,7 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("dataAccess", IsRequired = true)]
+		[ConfigurationProperty("dataAccess", IsRequired = false)]
 		public DataAccessElement DataAccess
 		{
 			get
@@ -180,6 +180,34 @@ namespace NearForums.Configuration
 		public string CombinePath(string fileName)
 		{
 			return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), fileName);
+		}
+
+		protected override void PostDeserialize()
+		{
+			ProcessMissingElements(this);
+			base.PostDeserialize();
+		}
+
+		private void ProcessMissingElements(ConfigurationElement element)
+		{
+
+			foreach (PropertyInformation propertyInformation in element.ElementInformation.Properties)
+			{
+
+				var complexProperty = propertyInformation.Value as ConfigurationElement;
+
+				if (complexProperty != null)
+				{
+					if (propertyInformation.IsRequired && !complexProperty.ElementInformation.IsPresent)
+					{
+						throw new ConfigurationErrorsException("Configuration element: [" + propertyInformation.Name + "] is required but not present");
+					}
+					else
+					{
+						ProcessMissingElements(complexProperty);
+					}
+				}
+			}
 		}
 	}
 }

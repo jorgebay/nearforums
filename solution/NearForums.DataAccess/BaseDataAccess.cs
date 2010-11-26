@@ -5,26 +5,23 @@ using System.Text;
 using System.Data.Common;
 using System.Data;
 using System.Configuration;
+using NearForums.Configuration;
 
 namespace NearForums.DataAccess
 {
 	public class BaseDataAccess
 	{
-		protected const string _connectionKey = "Forums";
+		protected virtual DataAccessElement Config
+		{
+			get
+			{
+				return SiteConfiguration.Current.DataAccess;
+			}
+		}
 
 		protected BaseDataAccess()
 		{
-			if (ConfigurationManager.ConnectionStrings[_connectionKey] == null)
-			{
-				throw new ConfigurationErrorsException("You must specify a SQL Connection string in the configuration, with the key 'Forums'.");
-			}
-			//Default provider
-			var providerName = "System.Data.SqlClient";
-			if (!String.IsNullOrEmpty(ConfigurationManager.ConnectionStrings[_connectionKey].ProviderName))
-			{
-				providerName = ConfigurationManager.ConnectionStrings[_connectionKey].ProviderName;
-			}
-			this.Factory = DbProviderFactories.GetFactory(providerName);
+			this.Factory = DbProviderFactories.GetFactory(Config.ConnectionString.ProviderName);
 		}
 
 		/// <summary>
@@ -34,7 +31,7 @@ namespace NearForums.DataAccess
 		protected DbConnection GetConnection()
 		{
 			DbConnection conn = this.Factory.CreateConnection();
-			conn.ConnectionString = ConfigurationManager.ConnectionStrings[_connectionKey].ConnectionString;
+			conn.ConnectionString = Config.ConnectionString.ConnectionString;
 			return conn;
 		}
 
