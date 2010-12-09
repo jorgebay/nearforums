@@ -61,5 +61,16 @@ namespace NearForums.ServiceClient
 			ForumsDataAccess da = new ForumsDataAccess();
 			da.Edit(forum, userId);
 		}
+
+		/// <summary>
+		/// Deletes a forum from the system (not a phisical delete).
+		/// </summary>
+		/// <param name="forum"></param>
+		/// <returns></returns>
+		public static bool Delete(string forum)
+		{
+			ForumsDataAccess da = new ForumsDataAccess();
+			return da.Delete(forum);
+		}
 	}
 }

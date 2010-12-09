@@ -67,6 +67,10 @@ namespace NearForums.Web.Controllers
 		public ActionResult LatestTopics(string forum, int page, ResultFormat format)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
+			if (f == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			//Get the topics of the forum
 			//Must Page the topics on the backend (Can be too many topics)
 			f.Topics = TopicsServiceClient.GetLatest(f.Id, page * Config.Forums.TopicsPerPage, Config.Forums.TopicsPerPage);
@@ -94,6 +98,10 @@ namespace NearForums.Web.Controllers
 		public ActionResult ListUnansweredTopics(string forum)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
+			if (f == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			f.Topics = TopicsServiceClient.GetUnanswered(f.Id);
 
 			return View(f);
@@ -107,7 +115,7 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region Add / Edit
+		#region Add / Edit / Delete
 		#region Add
 		[AcceptVerbs(HttpVerbs.Get)]
 		[RequireAuthorization(UserGroup.Moderator)]
@@ -174,6 +182,18 @@ namespace NearForums.Web.Controllers
 			ViewData["IsEdit"] = true;
 			return View("Edit", f);
 		} 
+		#endregion
+
+		#region Delete
+		[AcceptVerbs(HttpVerbs.Post)]
+		[RequireAuthorization(UserGroup.Moderator)]
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(string forum)
+		{
+			ForumsServiceClient.Delete(forum);
+
+			return RedirectToAction("Manage");
+		}
 		#endregion
 		#endregion
 

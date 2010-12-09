@@ -119,6 +119,7 @@ namespace NearForums.DataAccess
 		/// </summary>
 		public string GetAvailableShortName(string shortName)
 		{
+			//TODO: Make it recursive for large and repititive names
 			if (shortName == null)
 			{
 				throw new ArgumentNullException("shortName");
@@ -140,32 +141,11 @@ namespace NearForums.DataAccess
 			DataTable dt = this.GetTable(comm);
 			#region Find the highest number
 			int? number = null;
-			if (dt.Rows.Count == 1)
+			if (dt.Rows.Count > 0)
 			{
-				if (dt.Rows[0][0] != DBNull.Value)
-				{
-					number = 1;
-				}
+				number = dt.Rows.Count;
 			}
-			else
-			{
-				number = 1;
-				foreach (DataRow dr in dt.Rows)
-				{
-					string value = dr[0].ToString();
-					if (value.LastIndexOf("_") == value.Length - 2)
-					{
-						int current = 0;
-						if (Int32.TryParse(value.Substring(value.Length - 1, 1), out current))
-						{
-							if (current > number)
-							{
-								number = current;
-							}
-						}
-					}
-				}
-			} 
+
 			#endregion
 
 			if (number == null)
@@ -177,6 +157,15 @@ namespace NearForums.DataAccess
 				number++;
 				return searchShortName + number.Value.ToString();
 			}
+		}
+
+		public bool Delete(string forum)
+		{
+			DbCommand comm = this.GetCommand("SPForumsDelete");
+			comm.AddParameter(this.Factory, "ForumShortName", DbType.String, forum);
+
+			var result = comm.SafeExecuteNonQuery();
+			return result > 0;
 		}
 	}
 }

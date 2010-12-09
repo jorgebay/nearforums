@@ -98,6 +98,17 @@ namespace NearForums.Tests
 			return forum;
 		}
 
+
+		public static ForumCategory GetACategory()
+		{
+			var categories = ForumsServiceClient.GetCategories();
+			if (categories.Count == 0)
+			{
+				Assert.Inconclusive("There are no forum categories to perform this test.");
+			}
+			return categories[0];
+		}
+
 		public static SessionStateItemCollection GetSessionWithTestUser()
 		{
 			SessionStateItemCollection sessionItems = new SessionStateItemCollection();
@@ -146,9 +157,27 @@ namespace NearForums.Tests
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
 			controller.Edit(forum.ShortName);
-			forum = (Forum) controller.ViewData.Model;
+			forum = (Forum)controller.ViewData.Model;
 
 			ActionResult result = controller.Edit(forum.ShortName, forum);
+			Assert.IsTrue(result is RedirectToRouteResult);
+		}
+
+		[TestMethod]
+		public void Forum_Add_Delete()
+		{
+			Forum forum = new Forum();
+			ForumsController controller = new ForumsController();
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+
+			forum.Name = "Unit test forum";
+			forum.Description = forum.Name + "... description.";
+			forum.Category = GetACategory();
+
+			var result = controller.Add(forum);
+			Assert.IsTrue(result is RedirectToRouteResult);
+
+			result = controller.Delete(forum.ShortName);
 			Assert.IsTrue(result is RedirectToRouteResult);
 		}
 
