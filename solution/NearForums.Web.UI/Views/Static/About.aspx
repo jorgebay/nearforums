@@ -10,7 +10,7 @@
 	<!-- Add your about text here -->
 	<!-- Leave this paragraph -->
 	<p>
-		This forum is powered by <a href="http://www.nearforums.com">Near Forums</a>, an open source forum engine. Near forums is released under <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GNU General public licence</a>. 
+		This forum is powered by <a href="http://www.nearforums.com">Nearforums</a>, an open source forum engine. Nearforums is released under <a href="http://nearforums.codeplex.com/license" target="_blank">MIT License</a>. 
 		<br />
 		Get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.
 	</p>
