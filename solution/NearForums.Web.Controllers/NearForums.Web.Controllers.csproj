@@ -79,6 +79,7 @@
     <Compile Include="BaseController.cs" />
     <Compile Include="Filters\AddVisitAttribute.cs" />
     <Compile Include="Filters\HandleErrorLogAttribute.cs" />
+    <Compile Include="Filters\PreventFloodAttribute.cs" />
     <Compile Include="Filters\RequireAuthorizationAttribute.cs" />
     <Compile Include="ForumsController.cs" />
     <Compile Include="Helpers\OAuth\InMemoryTokenManager.cs" />

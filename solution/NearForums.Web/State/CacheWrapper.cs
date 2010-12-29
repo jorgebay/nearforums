@@ -9,7 +9,7 @@ namespace NearForums.Web.State
 {
 	public class CacheWrapper
 	{
-		#region Contructor and Methods
+		#region Contructor and Get and Set
 		public Cache Cache
 		{
 			get;
@@ -67,6 +67,41 @@ namespace NearForums.Web.State
 		}
 
 
+		#endregion
+
+		#region Props
+		public TemplateState Template
+		{
+			get
+			{
+				return this.GetItem<TemplateState>("Template");
+			}
+			set
+			{
+				this.SetItem<TemplateState>("Template", value);
+			}
+		}
+
+		private Dictionary<string,List<string>> VisitedActions
+		{
+			get
+			{
+				return this.GetItem<Dictionary<string, List<string>>>("VisitedActions", true);
+			}
+		}
+		#endregion
+
+		public void SetLatestPosting(string ip)
+		{
+			var usersPostings = GetItem<Dictionary<string, DateTime>>("UsersPostings", true);
+			if (!usersPostings.ContainsKey(ip))
+			{
+				usersPostings.Add(ip, DateTime.Now);
+			}
+			usersPostings[ip] = DateTime.Now;
+		}
+
+		#region VisitedActionAlready
 		/// <summary>
 		/// Determines if an IP already visited a method, and if not set as visited.
 		/// </summary>
@@ -91,29 +126,7 @@ namespace NearForums.Web.State
 			}
 
 			return alreadyVisited;
-		}
-		#endregion
-
-		#region Props
-		public TemplateState Template
-		{
-			get
-			{
-				return this.GetItem<TemplateState>("Template");
-			}
-			set
-			{
-				this.SetItem<TemplateState>("Template", value);
-			}
-		}
-
-		private Dictionary<string,List<string>> VisitedActions
-		{
-			get
-			{
-				return this.GetItem<Dictionary<string, List<string>>>("VisitedActions", true);
-			}
-		}
+		} 
 		#endregion
 	}
 }

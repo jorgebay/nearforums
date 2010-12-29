@@ -285,6 +285,7 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
+		//[PreventFlood(SuccessResultType=typeof(RedirectToRouteResult))]
 		public ActionResult Reply([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
 		{
 			message.Topic = TopicsServiceClient.Get(id);
