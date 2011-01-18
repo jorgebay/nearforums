@@ -1,2 +1,2 @@
-SQLScripter.exe (local) Forums "C:\Inetpub\wwwroot\Tagpoint\NearForums\src\db\objects"
+SQLScripter.exe (local) Forums "objects"
 PAUSE
