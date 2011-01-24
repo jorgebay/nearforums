@@ -7,6 +7,7 @@
 			var editorOptions = {
 				script_url : "/scripts/tinymce/tiny_mce.js",
 				theme : "advanced",
+				entities : "",
 				theme_advanced_toolbar_location : "top",
 				theme_advanced_toolbar_align : "left",
 				theme_advanced_statusbar_location : "bottom",
@@ -32,6 +33,7 @@
 			var editorOptions = {
 				script_url : "/scripts/tinymce/tiny_mce.js",
 				theme : "advanced",
+				entities : "",
 				theme_advanced_toolbar_location : "top",
 				theme_advanced_toolbar_align : "left",
 				theme_advanced_statusbar_location : "bottom",
