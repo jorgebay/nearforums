@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("NearForums.ServiceClient")]
-[assembly: AssemblyCopyright("GNU General Public License (GPL)")]
+[assembly: AssemblyCopyright("MIT License (MIT)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

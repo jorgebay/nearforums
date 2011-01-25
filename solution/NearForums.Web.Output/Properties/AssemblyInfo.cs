@@ -8,9 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NearForums.Web.Output")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OCU Ediciones S.A.")]
 [assembly: AssemblyProduct("NearForums.Web.Output")]
-[assembly: AssemblyCopyright("Copyright © OCU Ediciones S.A. 2011")]
+[assembly: AssemblyCopyright("MIT License (MIT)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
