@@ -1,5 +1,0 @@
-﻿<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Templated.master.cs" Inherits="NearForums.Web.UI.Views.Shared.Templated" %>
-<asp:ContentPlaceHolder ID="TitleContent" runat="server" />
-<asp:ContentPlaceHolder Id="HeadContent" runat="server" />
-<asp:ContentPlaceHolder ID="MainContent" runat="server" />
-<!-- For easy integration visual studio -->
