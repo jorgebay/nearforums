@@ -20,42 +20,42 @@ namespace NearForums.Web.Extensions
 	public static class PagerExtensions
 	{
 		#region HtmlHelper extensions
-		public static string Pager(this HtmlHelper htmlHelper, IPagedList list)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, IPagedList list)
 		{
 			return Pager(htmlHelper, list, null, null);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, IPagedList list, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, IPagedList list, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, list.PageSize, list.PageIndex, list.TotalItemCount, labelPrevious, labelNext);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, null, labelPrevious, labelNext);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, actionName, null, labelPrevious, labelNext);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, object values, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, object values, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, new RouteValueDictionary(values), labelPrevious, labelNext);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, object values, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, object values, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, actionName, new RouteValueDictionary(values), labelPrevious, labelNext);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, RouteValueDictionary valuesDictionary, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, RouteValueDictionary valuesDictionary, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, valuesDictionary, labelPrevious, labelNext);
 		}
 
-		public static string Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, RouteValueDictionary valuesDictionary, string labelPrevious, string labelNext)
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, RouteValueDictionary valuesDictionary, string labelPrevious, string labelNext)
 		{
 			if (valuesDictionary == null)
 			{
@@ -121,7 +121,7 @@ namespace NearForums.Web.Extensions
 			this.LabelPrevious = "<< Previous";
 		}
 
-		public string RenderHtml()
+		public MvcHtmlString RenderHtml()
 		{
 			int pageCount = (int)Math.Ceiling(this.totalItemCount / (double)this.pageSize);
 			if (pageCount <= 1)
@@ -202,10 +202,11 @@ namespace NearForums.Web.Extensions
 			}
 			sb.Insert(0, "<div class=\"pager\">");
 			sb.Append("</div>");
-			return sb.ToString();
+
+			return MvcHtmlString.Create(sb.ToString());
 		}
 
-		private string GeneratePageLink(string linkText, int pageIndex, object htmlAttributes)
+		private MvcHtmlString GeneratePageLink(string linkText, int pageIndex, object htmlAttributes)
 		{
 			RouteValueDictionary values = new RouteValueDictionary(this._htmlHelper.ViewContext.RouteData.Values);
 			values.Remove("action");

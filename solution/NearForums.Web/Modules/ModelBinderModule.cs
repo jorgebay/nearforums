@@ -30,10 +30,11 @@ namespace NearForums.Web.Modules
 	{
 		public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
 		{
-			if (bindingContext.ValueProvider[bindingContext.ModelName] != null)
+			var contextValue = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+			if (contextValue != null)
 			{
-				string attemptedValue = bindingContext.ValueProvider[bindingContext.ModelName].AttemptedValue;
-				bindingContext.ModelState.SetModelValue(bindingContext.ModelName, new ValueProviderResult(bindingContext.ValueProvider[bindingContext.ModelName].RawValue, attemptedValue, System.Globalization.CultureInfo.CurrentCulture));
+				string attemptedValue = contextValue.AttemptedValue;
+				bindingContext.ModelState.SetModelValue(bindingContext.ModelName, new ValueProviderResult(contextValue.RawValue, attemptedValue, System.Globalization.CultureInfo.CurrentCulture));
 				if (attemptedValue.Trim() != "")
 				{
 					return new TagList(attemptedValue.Trim());

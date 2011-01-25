@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 
 namespace NearForums.Web.Controllers
 {
-	[HandleErrorLog(View = "/Views/Errors/500.aspx")]
+	[HandleErrorLog(View = "Errors/500")]
 	public class BaseController : Controller
 	{
 		#region Props
@@ -248,7 +248,7 @@ namespace NearForums.Web.Controllers
 
 		protected virtual ActionResult Static(string key, bool useMaster)
 		{
-			return View(useMaster, "~/Views/Static/" + key + ".aspx", null);
+			return View(useMaster, "~/Views/Static/" + key + ".cshtml", null);
 		}
 		#endregion
 	}

@@ -52,13 +52,11 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
-
 			//Will redirect to twitter
 			SecurityHelper.TwitterStartLogin(this.Cache);
 
-			//Normally the twitter consumer will redirect and end execution.
-			//But if it didn't:
-			throw new AuthenticationProviderException("Unexpected behaviour on dotnetopenauth Twitter consumer.");
+			//Normally the twitter consumer will redirect but it does not end execution.
+			return new EmptyResult();
 		} 
 		#endregion
 

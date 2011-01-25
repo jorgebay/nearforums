@@ -20,5 +20,17 @@ namespace NearForums.Web.Controllers
 		{
 			return Static("About", true);
 		}
+
+		/// <summary>
+		/// This action throws an exception. Use this action to test the logging
+		/// </summary>
+		public ActionResult Error()
+		{
+			if (this.User != null && this.User.Group == UserGroup.Admin)
+			{
+				throw new Exception("This is a dummy exception thrown by the nearforums application.");
+			}
+			return ResultHelper.NotFoundResult(this);
+		}
 	}
 }

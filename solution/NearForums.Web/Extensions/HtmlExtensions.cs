@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Globalization;
 using System.Web.Routing;
 using System.Web.Mvc.Html;
+using System.Web.Mvc.ExpressionUtil;
 using System.Text.RegularExpressions;
 using System.Security;
 using NearForums.Configuration;
@@ -50,7 +51,7 @@ namespace NearForums.Web.Extensions
 			return Convert.ToString(htmlHelper.ViewData.Eval(key), CultureInfo.CurrentCulture);
 		}
 
-		public static string MetaDescription(this HtmlHelper htmlHelper, string content)
+		public static MvcHtmlString MetaDescription(this HtmlHelper htmlHelper, string content)
 		{
 			if (content != null)
 			{
@@ -59,8 +60,7 @@ namespace NearForums.Web.Extensions
 				content = Regex.Replace(content, "\r|\n", "");
 				content = Regex.Replace(content, "(&nbsp;)+|(\t+)", " ");
 				builder.Attributes.Add("content", SecurityElement.Escape(content));
-
-				return builder.ToString(TagRenderMode.SelfClosing);
+				return MvcHtmlString.Create(builder.ToString(TagRenderMode.SelfClosing));
 			}
 			else
 			{
@@ -68,7 +68,7 @@ namespace NearForums.Web.Extensions
 			}
 		}
 
-		public static string DropDownListDefault(this HtmlHelper htmlHelper, string name, IEnumerable<SelectListItem> selectList, object defaultValue, string defaultText)
+		public static MvcHtmlString DropDownListDefault(this HtmlHelper htmlHelper, string name, IEnumerable<SelectListItem> selectList, object defaultValue, string defaultText)
 		{
 			List<SelectListItem> list = new List<SelectListItem>(selectList);
 			SelectListItem item = new SelectListItem();
@@ -96,40 +96,40 @@ namespace NearForums.Web.Extensions
 		/// <summary>
 		/// Converts date to app datetime and applies the format
 		/// </summary>
-		public static string Date(this HtmlHelper htmlHelper, DateTime date, string format)
+		public static MvcHtmlString Date(this HtmlHelper htmlHelper, DateTime date, string format)
 		{
 			DateTime appDate = date.ToApplicationDateTime();
 			TagBuilder builder = new TagBuilder("span");
 			builder.AddCssClass("date");
 			builder.AddCssClass("d" + appDate.Year + "-" + appDate.Month + "-" + appDate.Day + "-" + appDate.Hour + "-" + appDate.Minute);
 			builder.InnerHtml = appDate.ToString(format);
-			return builder.ToString();
+			return MvcHtmlString.Create(builder.ToString());
 		}
 
 		/// <summary>
 		/// Converts date to app datetime and applies configuration defined date format
 		/// </summary>
-		public static string Date(this HtmlHelper htmlHelper, DateTime date)
+		public static MvcHtmlString Date(this HtmlHelper htmlHelper, DateTime date)
 		{
 			return htmlHelper.Date(date, SiteConfiguration.Current.DateFormat);
 		}
 
-		public static string Link(this HtmlHelper htmlHelper, string url)
+		public static MvcHtmlString Link(this HtmlHelper htmlHelper, string url)
 		{
 			return htmlHelper.Link(url, null);
 		}
 
-		public static string Link(this HtmlHelper htmlHelper, string url, object htmlAttributes)
+		public static MvcHtmlString Link(this HtmlHelper htmlHelper, string url, object htmlAttributes)
 		{
 			return htmlHelper.Link(null, url, htmlAttributes);
 		}
 
-		public static string Link(this HtmlHelper htmlHelper, string innerHtml, string url)
+		public static MvcHtmlString Link(this HtmlHelper htmlHelper, string innerHtml, string url)
 		{
 			return htmlHelper.Link(innerHtml, url, null);
 		}
 
-		public static string Link(this HtmlHelper htmlHelper, string innerHtml, string url, object htmlAttributes)
+		public static MvcHtmlString Link(this HtmlHelper htmlHelper, string innerHtml, string url, object htmlAttributes)
 		{
 			IDictionary<string, object> htmlAttributesDictionay = ((IDictionary<string, object>) new RouteValueDictionary(htmlAttributes));
 			TagBuilder builder = new TagBuilder("a");
@@ -143,10 +143,10 @@ namespace NearForums.Web.Extensions
 				builder.InnerHtml = innerHtml;
 			}
 			builder.Attributes.Add("href", url);
-			return builder.ToString(TagRenderMode.Normal);
+			return MvcHtmlString.Create(builder.ToString(TagRenderMode.Normal));
 		}
 
-		public static string CheckBoxBit<T>(this HtmlHelper htmlHelper, string name, T value, T expectedBit) where T : struct, IConvertible
+		public static MvcHtmlString CheckBoxBit<T>(this HtmlHelper htmlHelper, string name, T value, T expectedBit) where T : struct, IConvertible
 		{
 			if (!typeof(T).IsEnum) 
 			{

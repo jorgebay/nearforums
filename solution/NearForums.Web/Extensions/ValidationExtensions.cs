@@ -11,13 +11,13 @@ namespace NearForums.Web.Extensions
 {
 	public static class ValidationExtensions
 	{
-		public static string ValidationSummary(this HtmlHelper htmlHelper, Dictionary<string, object> errorMessages, object htmlAttributes)
+		public static MvcHtmlString ValidationSummary(this HtmlHelper htmlHelper, Dictionary<string, object> errorMessages, object htmlAttributes)
 		{
 			return htmlHelper.ValidationSummary(null, errorMessages, htmlAttributes);
 
 		}
 
-		public static string ValidationSummary(this HtmlHelper htmlHelper, string title, Dictionary<string, object> errorMessages, object htmlAttributes)
+		public static MvcHtmlString ValidationSummary(this HtmlHelper htmlHelper, string title, Dictionary<string, object> errorMessages, object htmlAttributes)
 		{
 			if (htmlHelper.ViewData.ModelState.IsValid)
 			{
@@ -59,7 +59,7 @@ namespace NearForums.Web.Extensions
 			}
 			result.AppendLine(ulTag.ToString(TagRenderMode.Normal));
 
-			return result.ToString();
+			return MvcHtmlString.Create(result.ToString());
 		}
 
 		public static string GetMessage(Dictionary<string, object> errorMessages, string key, Exception ex)

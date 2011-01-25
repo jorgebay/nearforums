@@ -209,7 +209,7 @@ namespace NearForums.Web.Controllers
 			//Defines that the message url just be the anchor name
 			ViewData["FullUrl"] = false;
 
-			return View(messages);
+			return View(false, messages);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
@@ -220,7 +220,7 @@ namespace NearForums.Web.Controllers
 			//Defines that the message url just be the anchor name
 			ViewData["FullUrl"] = false;
 
-			return View("PageMore", messages);
+			return View(false, "PageMore", messages);
 		} 
 		#endregion
 

@@ -52,7 +52,7 @@ namespace NearForums.Web.Controllers
 			}
 			//Get posted messages (ordered 
 			List<Topic> topics = TopicsServiceClient.GetTopicsAndMessagesByUser(id);
-			return View(topics);
+			return View(false, topics);
 		}
 
 		#region Edit

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using NearForums.Web.State;
 using System.Web;
 using NearForums.Configuration;
@@ -10,29 +11,20 @@ using NearForums.Web.Extensions;
 
 namespace NearForums.Web.UI
 {
-	public class BaseViewPage<TModel> : ViewPage<TModel> where TModel : class
+	public class BaseViewPage<TModel> : WebViewPage<TModel> where TModel : class
 	{
 		#region Initialization
 		public BaseViewPage()
 		{
-			this.AllowMaster = true;
+
 		}
 
-		protected override void OnPreInit(EventArgs e)
-		{
-			if (!this.AllowMaster)
-			{
-				this.MasterLocation = null;
-			}
-			base.OnPreInit(e);
-		}
-
-		protected override void OnInit(EventArgs e)
+		protected override void InitializePage()
 		{
 			this.Session = new SessionWrapper(this.ViewContext.HttpContext.Session);
 			this.Cache = new CacheWrapper(this.ViewContext.HttpContext.Cache);
-			base.OnInit(e);
-		} 
+			base.InitializePage();
+		}
 		#endregion
 
 		#region Properties
@@ -80,12 +72,6 @@ namespace NearForums.Web.UI
 			}
 		}
 
-		public bool AllowMaster
-		{
-			get;
-			set;
-		}
-
 		#region Domain
 		/// <summary>
 		/// Gets the application current domain (Host) including Protocol and delimiter. Example: http://www.contoso.com (without slash).
@@ -125,15 +111,17 @@ namespace NearForums.Web.UI
 		}
 		#endregion
 
-		protected virtual T Eval<T>()
-		{
-			return (T)this.Page.GetDataItem();
-		}
-
+		#region Methods
 		protected ViewDataDictionary CreateViewData(object values)
 		{
 			return ViewDataExtensions.CreateViewData(values);
 		}
+
+		public override void Execute()
+		{
+
+		}
+		#endregion
 	}
 
 	public class BaseViewPage : BaseViewPage<object>

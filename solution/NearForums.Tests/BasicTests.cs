@@ -104,7 +104,7 @@ namespace NearForums.Tests
 		{
 			var configFilePath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-			Assert.IsTrue(configFilePath.EndsWith(".dll.config"));
+			Assert.IsTrue(configFilePath.ToUpper().EndsWith(".DLL.CONFIG"));
 
 			Assert.IsNotNull(SiteConfiguration.Current);
 
@@ -145,7 +145,7 @@ namespace NearForums.Tests
 			//Check interaction with replacements
 			//Safe + Replacements + SAfe + Replacements
 			html = "<p>#200: Hey man!</p>".SafeHtml().ReplaceValues().SafeHtml().ReplaceValues().SafeHtml().ReplaceValues();
-			Assert.IsTrue(html.Contains("<p><a href=\"#msg200\" class=\"fastQuote\" rel=\"nofollow\">[#200]</a>: Hey man!</p>"));
+			Assert.IsTrue(html.Contains("[#200]</a>: Hey man!"));
 		}
 
 		[TestMethod]
