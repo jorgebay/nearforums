@@ -1,0 +1,37 @@
+﻿body
+{
+}
+li.toContent
+{
+	display: none;
+}
+ul.path
+{
+	display: none;
+}
+#pagerClient img
+{
+	display: none;
+}
+form div.textarea span input
+{
+	display: none;
+}
+div.toolbar li
+{
+	display: inline;
+}
+div.pager span.current, div.pager span.disabled
+{
+	cursor: default;
+	color: #999999;
+	font-weight: bold;
+}
+div.ui-content ul.items
+{
+	margin: 10px 0 10px 0;
+}
+ul.items span.details
+{
+	display: none;
+}

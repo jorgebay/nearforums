@@ -1,0 +1,20 @@
+﻿@model Forum
+@{
+    ViewBag.Title = Model.Name + " - Unanswered threads";
+}	
+<div class="forumDetail">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	</ul>
+	<h1>@ViewBag.Title</h1>
+	@Html.Partial("ForumOptions")
+	@if (this.Model.Topics.Count > 0)
+	{
+		Html.RenderPartial("ForumTopicList", this.Model.Topics);
+	}
+	else
+	{
+		<p class="warning">No unanswered threads for this forum.</p>
+	}
+
+</div>

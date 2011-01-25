@@ -1,0 +1,22 @@
+﻿@model Forum
+@{
+    Layout = null;
+}
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+	<channel>
+		<title>@("Latest threads on '" + this.Model.Name + "' forum")</title>
+		<link>@(this.Domain + Url.Action("Detail", new{forum=Model.ShortName}))</link>
+		<description>@Utils.RemoveTags(this.Model.Description)</description>
+		@foreach (Topic t in this.Model.Topics)
+		{
+		<item>
+			<title>@t.Title</title>
+			<link>@(this.Domain + Url.Action("ShortUrl", "Topics", new{id=t.Id}))</link>
+			<guid>@(this.Domain + Url.Action("ShortUrl", "Topics", new{id=t.Id}))</guid>
+			<description>@Utils.RemoveTags(t.Description)</description>
+			<pubDate>@t.Date.ToApplicationDateTime().ToString("r", new System.Globalization.CultureInfo("en-US"))</pubDate>
+		</item>
+		}
+	</channel>
+</rss>

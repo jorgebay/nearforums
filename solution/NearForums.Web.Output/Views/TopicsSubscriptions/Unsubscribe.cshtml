@@ -1,0 +1,12 @@
+﻿@model Topic
+@{
+    ViewBag.Title = "Unsubscribe";
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+</ul>
+<h1>Unsubscribed from the thread</h1>
+<p>You have been unsubscribed from the thread @Html.ActionLink(Model.Title, "ShortUrl", "Topics", new{id=Model.Id}, null).</p>
+@(ViewData["User"] != null ? MvcHtmlString.Create("<p>Thank you.</p>") : MvcHtmlString.Empty)
+
+<p style="padding-top: 50px;"><a href="/">Continue &gt;&gt;</a></p>

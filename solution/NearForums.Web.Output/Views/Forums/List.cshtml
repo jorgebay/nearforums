@@ -1,0 +1,35 @@
+﻿@model List<ForumCategory>
+@{
+	ViewBag.Title = "Forums";
+}
+<div class="forumList">
+	<h1>@ViewBag.Title</h1>
+	<div class="options">
+		<a rel="nofollow" href="@Url.Action("LatestAllTopics")"><img src="/images/iconrss.gif" alt="rss" /></a>
+	</div>
+	@foreach (ForumCategory category in this.Model)
+	{
+		<h2>@category.Name</h2>
+		<ul class="items">
+		@foreach (Forum forum in category.Forums)
+		{
+
+			<li>
+				<h3>
+					@Html.ActionLink(forum.Name, "Detail", new{forum=forum.ShortName})
+					<span class="details">@forum.TopicCount thread@(forum.TopicCount != 1 ? "s" : "") / @forum.MessageCount post@(forum.MessageCount != 1 ? "s" : "")</span>
+				</h3>
+				<p>@forum.Description</p>
+			</li>
+		}
+		</ul>
+	}
+	@if (this.Model.Count == 0)
+	{
+		<p>No forums found. Create @Html.ActionLink("a forum", "Add").</p>
+		if (!ViewData.Get<bool>("IsSiteSet", true))
+		{
+			<p style="padding-top:20px;"><em>Recommended: @Html.ActionLink("Check the website status", "StatusFirst", "Admin")</em></p>
+		}
+	}
+</div>
