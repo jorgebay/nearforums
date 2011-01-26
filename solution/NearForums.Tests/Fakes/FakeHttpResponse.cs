@@ -52,5 +52,37 @@ namespace NearForums.Tests.Fakes
 				return _cookies;
 			}
 		}
+
+		public override HttpCachePolicyBase Cache
+		{
+			get
+			{
+				return new FakeHttpCachePolicy();
+			}
+		}
+	}
+
+	public class FakeHttpCachePolicy : HttpCachePolicyBase
+	{
+		public FakeHttpCachePolicy()
+			: base()
+		{
+
+		}
+
+		public override void SetMaxAge(TimeSpan delta)
+		{
+			
+		}
+
+		public override void SetProxyMaxAge(TimeSpan delta)
+		{
+			
+		}
+
+		public override void AddValidationCallback(HttpCacheValidateHandler handler, object data)
+		{
+			
+		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.SessionState;
 using System.Web.Caching;
+using System.Collections.Generic;
 
 namespace NearForums.Tests.Fakes
 {
@@ -28,6 +29,7 @@ namespace NearForums.Tests.Fakes
 			_session = new FakeHttpSessionState(sessionItems);
 			_request = new FakeHttpRequest(_url, _formParams, _queryStringParams, _cookies);
 			_server = new FakeHttpServerUtility();
+			_items = new Dictionary<string, object>();
         }
 
 		public FakeHttpContext(string url)
@@ -88,6 +90,15 @@ namespace NearForums.Tests.Fakes
 			get
 			{
 				return _server;
+			}
+		}
+
+		private System.Collections.IDictionary _items;
+		public override System.Collections.IDictionary Items
+		{
+			get
+			{
+				return _items;
 			}
 		}
     }

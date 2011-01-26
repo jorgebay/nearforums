@@ -12,7 +12,7 @@ using System.Web.Routing;
 
 namespace NearForums.Web.Controllers.Filters
 {
-	public class RequireAuthorizationAttribute : FilterAttribute, IAuthorizationFilter
+	public class RequireAuthorizationAttribute : AuthorizeAttribute
 	{
 		/// <summary>
 		/// Required minimal UserGroup
@@ -53,43 +53,18 @@ namespace NearForums.Web.Controllers.Filters
 			set;
 		}
 
-		#region IAuthorizationFilter Members
-		public void OnAuthorization(AuthorizationContext filterContext)
+		protected override bool AuthorizeCore(HttpContextBase httpContext)
 		{
-			if (filterContext == null)
-			{
-				throw new ArgumentNullException("filterContext");
-			}
-
-			
-			SessionWrapper session = new SessionWrapper(filterContext.HttpContext.Session);
-			if (IsAuthorized(session.User))
-			{
-				HttpCachePolicyBase cachePolicy = filterContext.HttpContext.Response.Cache;
-				cachePolicy.SetProxyMaxAge(new TimeSpan(0));
-			}
-			else
-			{
-				//Authorization failed
-				if (RefuseOnFail)
-				{
-					filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller);
-					return;
-				}
-				string redirectOnSuccess = HttpUtility.UrlEncode(filterContext.HttpContext.Request.Url.PathAndQuery);
-				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new{controller="Authentication",action="Login",returnUrl=redirectOnSuccess,group=this.UserGroup}));
-				if (path == null)
-				{
-					throw new ArgumentException("Route for Authentication>Login not found.");
-				}
-				string loginUrl = path.VirtualPath;
-				filterContext.HttpContext.Response.Redirect(loginUrl, true);
-			}
+			SessionWrapper session = new SessionWrapper(httpContext.Session);
+			return IsAuthorized(session.User);
 		}
 
-		#endregion
-
-		public virtual bool IsAuthorized(UserState user)
+		/// <summary>
+		/// Determines if a user is authorized
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		protected virtual bool IsAuthorized(UserState user)
 		{
 			if (user == null)
 			{
@@ -103,6 +78,34 @@ namespace NearForums.Web.Controllers.Filters
 				}
 			}
 			return true;
+		}
+
+		/// <summary>
+		/// Handles the request when the user is not authorized
+		/// </summary>
+		protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+		{
+			if (RefuseOnFail)
+			{
+				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller);
+			}
+			else
+			{
+				string redirectOnSuccess = HttpUtility.UrlEncode(filterContext.HttpContext.Request.Url.PathAndQuery);
+				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new
+				{
+					controller = "Authentication",
+					action = "Login",
+					returnUrl = redirectOnSuccess,
+					group = this.UserGroup
+				}));
+				if (path == null)
+				{
+					throw new ArgumentException("Route for Authentication>Login not found.");
+				}
+				string loginUrl = path.VirtualPath;
+				filterContext.Result = new RedirectResult(loginUrl, false);
+			}
 		}
 	}
 }
