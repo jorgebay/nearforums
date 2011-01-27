@@ -161,7 +161,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)*.*" "$(SolutionDir)\NearForums.Web.UI\bin\"
-copy "$(TargetDir)*.*" "$(SolutionDir)\NearForums.Web.Output\bin\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
