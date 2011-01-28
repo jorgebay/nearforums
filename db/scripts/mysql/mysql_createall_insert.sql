@@ -17,7 +17,6 @@ SET GLOBAL log_bin_trust_function_creators = 1;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
-
 --
 -- Temporary table structure for view `messagescomplete`
 --
@@ -288,7 +287,7 @@ DROP FUNCTION IF EXISTS `FNSplit`;
 
 DELIMITER $$
 
-DROP FUNCTION IF EXISTS `FNSplit` $$
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `FNSplit`(
   x VARCHAR(255),
   delim VARCHAR(12),
@@ -297,8 +296,10 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `FNSplit`(
 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
        LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
        delim, '') $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;
+
 --
 -- Definition of procedure `SPCleanDb`
 --
@@ -942,7 +943,10 @@ SELECT
 	WHERE
 		T.ForumId = param_ForumId;
 
-                  
+IF var_TotalViews IS NULL OR var_TotalViews < 1 THEN
+	SET var_TotalViews = 1;
+END IF;
+
 prepare stmt from "
 SELECT
 	Tag,

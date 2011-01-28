@@ -24,6 +24,6 @@ using System.Runtime.InteropServices;
 //Internals visible
 [assembly: InternalsVisibleTo("NearForums.Tests")]
 
-//Assembly version
-[assembly: AssemblyVersion("4.1")]
-[assembly: AssemblyFileVersion("4.1.0.0")]
+//Only modify the assembly version values on pre release commits.
+[assembly: AssemblyVersion("5.0")]
+[assembly: AssemblyFileVersion("5.0.0.0")]
