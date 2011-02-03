@@ -22,8 +22,33 @@ namespace NearForums.Web.Controllers.Filters
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
-			//if the user has posted 
+			//var atts = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AcceptVerbsAttribute), false).First(t => t.GetType() == typeof(AcceptVerbsAttribute)) as AcceptVerbsAttribute;
+
+			//Checks if the user is flooding, show captcha
+			var isFlooding = CheckFlooding(filterContext);
+			if (isFlooding)
+			{
+				//filterContext.
+			}
+			
 			base.OnActionExecuting(filterContext);
+		}
+
+		/// <summary>
+		/// Checks if the user is flooding
+		/// </summary>
+		protected virtual bool CheckFlooding(ControllerContext context)
+		{
+			bool isFlooding = false;
+			//TODO: Get the rules of flooding from configuration.
+			var maxTime = TimeSpan.FromSeconds(120);
+			DateTime? latestPosting = GetLatestPosting(context);
+			if (latestPosting != null && DateTime.Now.Subtract(latestPosting.Value) > maxTime)
+			{
+				isFlooding = true;
+			}
+
+			return isFlooding;
 		}
 
 		/// <summary>
@@ -39,27 +64,37 @@ namespace NearForums.Web.Controllers.Filters
 			if (IsSuccess(filterContext.Result))
 			{
 				//Store the date of the posting
-				SetLatestPosting(filterContext.HttpContext);
+				SetLatestPosting(filterContext);
 			}
 			base.OnActionExecuted(filterContext);
 		}
 
+		#region Get/Set Last Posting
 		/// <summary>
 		/// Stores the date of the latest posting on the state server (cache)
 		/// </summary>
 		/// <param name="httpContext"></param>
-		protected virtual void SetLatestPosting(HttpContextBase httpContext)
+		protected virtual void SetLatestPosting(ControllerContext context)
 		{
-			var cache = new CacheWrapper(httpContext);
-			cache.SetLatestPosting(httpContext.Request.UserHostAddress);
+			var cache = new CacheWrapper(context.HttpContext);
+			cache.SetLatestPosting(context.HttpContext.Request.UserHostAddress);
 		}
+		
+		protected virtual DateTime? GetLatestPosting(ControllerContext context)
+		{
+			var cache = new CacheWrapper(context.HttpContext);
+			return cache.GetLatestPosting(context.HttpContext.Request.UserHostAddress);
+		}
+		#endregion
 
+		#region Is Success
 		/// <summary>
 		/// Determines if the action execution was successful. ie: Redirection after save, 
 		/// </summary>
 		protected virtual bool IsSuccess(ActionResult actionResult)
 		{
 			return SuccessResultType == null || (actionResult != null && actionResult.GetType().IsSubclassOf(SuccessResultType));
-		}
+		} 
+		#endregion
 	}
 }
