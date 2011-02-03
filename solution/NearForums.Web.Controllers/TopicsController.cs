@@ -71,7 +71,8 @@ namespace NearForums.Web.Controllers
 			}
 
 			topic.Messages = MessagesServiceClient.GetByTopicLatest(id);
-			return View(false, topic);
+
+			return ResultHelper.XmlViewResult(this, topic);
 		}
 		#endregion
 

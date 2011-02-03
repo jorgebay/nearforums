@@ -15,7 +15,7 @@
 			<link>@(this.Domain + Url.Action("ShortUrl", "Topics", new{id=t.Id}))</link>
 			<guid>@(this.Domain + Url.Action("ShortUrl", "Topics", new{id=t.Id}))</guid>
 			<description>@Utils.RemoveTags(t.Description)</description>
-			<pubDate>@t.Date.ToApplicationDateTime().ToString("r", new System.Globalization.CultureInfo("en-US")) %></pubDate>
+			<pubDate>@t.Date.ToApplicationDateTime().ToString("r", new System.Globalization.CultureInfo("en-US"))</pubDate>
 		</item>
 		}
 	</channel>

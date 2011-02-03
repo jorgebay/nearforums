@@ -71,15 +71,18 @@ namespace NearForums.Web.Controllers
 				return View("LatestTopics" + format.ToString(), f);
 			}
 
-			return View(false, "LatestTopics" + format.ToString(), f);
+			return ResultHelper.XmlViewResult(this, f, "LatestTopics" + format.ToString());
 		}
 
+		/// <summary>
+		/// Get the latest topics on all forums
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult LatestAllTopics()
 		{
-			//Get the latest topics
 			List<Topic> topics = TopicsServiceClient.GetLatest();
 
-			return View(false, topics);
+			return ResultHelper.XmlViewResult(this, topics);
 		} 
 		#endregion
 

@@ -8,14 +8,12 @@ using System.Web.Routing;
 
 namespace NearForums.Web.Extensions
 {
-	public class ResultHelper
+	public static class ResultHelper
 	{
 		/// <summary>
 		/// Returns a status 404 to the client and the error 404 view.
 		/// </summary>
-		/// <param name="controller"></param>
 		/// <param name="emptyBody">false: the response ends</param>
-		/// <returns></returns>
 		public static ActionResult NotFoundResult(ControllerBase controller, bool emptyBody)
 		{
 			controller.ControllerContext.HttpContext.Response.StatusCode = 404;
@@ -55,6 +53,23 @@ namespace NearForums.Web.Extensions
 		public static ActionResult MovedPermanentlyResult(ControllerBase controller, object routeValues)
 		{
 			return new MovedPermanentlyResult(routeValues);
+		}
+
+		/// <summary>
+		/// Returns a ViewResult with content type set as xml
+		/// </summary>
+		public static ActionResult XmlViewResult(ControllerBase controller, object model, string viewName=null)
+		{
+			controller.ControllerContext.HttpContext.Response.ContentType = "text/xml; charset=UTF-8";
+			if (model != null)
+			{
+				controller.ViewData.Model = model;
+			}
+			ViewResult result = new ViewResult();
+			result.ViewName = viewName;
+			result.ViewData = controller.ViewData;
+			result.TempData = controller.TempData;
+			return result;
 		}
 	}
 }
