@@ -91,6 +91,10 @@ namespace NearForums.Web.State
 		}
 		#endregion
 
+		#region Latest posting of an IP
+		/// <summary>
+		/// Stores the IP with the current time
+		/// </summary>
 		public void SetLatestPosting(string ip)
 		{
 			var usersPostings = GetItem<Dictionary<string, DateTime>>("UsersPostings", true);
@@ -100,6 +104,23 @@ namespace NearForums.Web.State
 			}
 			usersPostings[ip] = DateTime.Now;
 		}
+
+		/// <summary>
+		/// Gets the date of the latest posting of the IP. If not found, it returns null.
+		/// </summary>
+		/// <param name="ip"></param>
+		/// <returns></returns>
+		public DateTime? GetLatestPosting(string ip)
+		{
+			DateTime? result = null;
+			var usersPostings = GetItem<Dictionary<string, DateTime>>("UsersPostings", true);
+			if (usersPostings.ContainsKey(ip))
+			{
+				result = usersPostings[ip];
+			}
+			return result;
+		}
+		#endregion
 
 		#region VisitedActionAlready
 		/// <summary>
