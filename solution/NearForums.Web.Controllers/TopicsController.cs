@@ -305,7 +305,10 @@ namespace NearForums.Web.Controllers
 					return ResultHelper.ForbiddenResult(this);
 				}
 				#endregion
-				message.Body = message.Body.SafeHtml().ReplaceValues();
+				if (message.Body != null)
+				{
+					message.Body = message.Body.SafeHtml().ReplaceValues();
+				}
 				message.User = Session.User.ToUser();
 				if (msg != null)
 				{
