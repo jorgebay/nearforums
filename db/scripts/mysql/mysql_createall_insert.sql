@@ -432,6 +432,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsGetUsedShortNames`(
   param_ForumShortName varchar(32), param_SearchShortName varchar(32)
 )
 BEGIN
+/*
+	Gets used short names for forums
+	returns:
+		IF NOT USED SHORTNAME: empty result set
+		IF USED SHORTNAME: resultset with amount of rows used
+*/
 
 DECLARE CurrentValue varchar(32);
 SELECT
@@ -443,14 +449,17 @@ WHERE
 
 
 IF CurrentValue IS NULL THEN
-	SELECT NULL As ForumShortName;
+	SELECT NULL As ForumShortName FROM Forums WHERE 1=0;
 ELSE
 	SELECT
 		ForumShortName
 	FROM
 		Forums
 	WHERE
-		ForumShortName LIKE CONCAT(param_SearchShortName, '%');
+		ForumShortName LIKE CONCAT(param_SearchShortName, '%')
+    OR
+		ForumShortName = param_ForumShortName;
+
 END IF;
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
