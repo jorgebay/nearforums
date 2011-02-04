@@ -34,7 +34,6 @@
 	}
 	$(document).ready(toggleEmail);
 </script>
-	
 <ul class="path floatContainer">
 	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLink(Model.Topic.Forum.Name, "Detail", "Forums", new{forum=Model.Topic.Forum.ShortName}, null)</li>
@@ -44,6 +43,7 @@
 @Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 	{
 		{"Body", "Body must not be blank."}
+		,{"captcha", null}
 		,{"email", new Dictionary<ValidationErrorType, string>(){
 			{ValidationErrorType.NullOrEmpty, "Email must not be blank in order to notify of new posts."}
 			,{ValidationErrorType.Format, "Email format is not valid."}}}
@@ -54,6 +54,14 @@
 	@Html.TextArea("body")
 	@Html.Partial("EditorScripts", CreateViewData(new{Name="body"}))
 </div>
+@if (ViewData.GetDefault<bool>("ShowCaptcha"))
+{
+	<div class="formItem floatContainer captcha">
+		<label for="captcha">Captcha</label>
+		@Html.TextBox("captcha")
+		@Html.ValidationMessage("captcha", "You must specify a captcha to validate that you are human.")
+	</div>
+}
 @if (this.Config.Notifications.Subscription.IsDefined)
 {
 	<div class="formItem floatContainer">

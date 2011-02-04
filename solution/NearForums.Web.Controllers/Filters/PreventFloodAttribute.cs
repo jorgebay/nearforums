@@ -5,11 +5,14 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.State;
 using System.Web;
+using NearForums.Validation;
 
 namespace NearForums.Web.Controllers.Filters
 {
 	public class PreventFloodAttribute : ActionFilterAttribute
 	{
+		private const string _captchaModelStateKey = "captcha";
+
 		/// <summary>
 		/// Determines the type of the action result in case of a success
 		/// </summary>
@@ -20,37 +23,52 @@ namespace NearForums.Web.Controllers.Filters
 		}
 
 
+		#region Before action execution
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
+			//It can be the get or post request
 			//var atts = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AcceptVerbsAttribute), false).First(t => t.GetType() == typeof(AcceptVerbsAttribute)) as AcceptVerbsAttribute;
 
 			//Checks if the user is flooding, show captcha
 			var isFlooding = CheckFlooding(filterContext);
 			if (isFlooding)
 			{
-				//filterContext.
+				//If the captcha is invalid.
+					//Add ModelState error
+				ValidateCaptcha(filterContext);
+
 			}
-			
+
 			base.OnActionExecuting(filterContext);
 		}
+		#endregion
 
+		#region Validate captcha
 		/// <summary>
-		/// Checks if the user is flooding
+		/// Checks if captcha value is invalid. If so, it add a model error to the current ModelState
 		/// </summary>
-		protected virtual bool CheckFlooding(ControllerContext context)
+		/// <param name="filterContext"></param>
+		protected virtual void ValidateCaptcha(ActionExecutingContext filterContext)
 		{
-			bool isFlooding = false;
-			//TODO: Get the rules of flooding from configuration.
-			var maxTime = TimeSpan.FromSeconds(120);
-			DateTime? latestPosting = GetLatestPosting(context);
-			if (latestPosting != null && DateTime.Now.Subtract(latestPosting.Value) > maxTime)
+			var captchaModelState = filterContext.Controller.ViewData.ModelState[_captchaModelStateKey];
+			if (captchaModelState == null)
 			{
-				isFlooding = true;
+				captchaModelState = new ModelState();
+				filterContext.Controller.ViewData.ModelState[_captchaModelStateKey] = captchaModelState;
+
+				filterContext.Controller.ViewData["ShowCaptcha"] = true;
+
+				//Maybe if its post, add an error to the modelStateValue?
 			}
+			else
+			{
+				captchaModelState.Errors.Add(new ValidationError(_captchaModelStateKey, ValidationErrorType.CompareNotMatch));
+				filterContext.Controller.ViewData["ShowCaptcha"] = true;
+			}
+		} 
+		#endregion
 
-			return isFlooding;
-		}
-
+		#region After action execution
 		/// <summary>
 		/// Called after the action method executes
 		/// </summary>
@@ -67,7 +85,8 @@ namespace NearForums.Web.Controllers.Filters
 				SetLatestPosting(filterContext);
 			}
 			base.OnActionExecuted(filterContext);
-		}
+		} 
+		#endregion
 
 		#region Get/Set Last Posting
 		/// <summary>
@@ -87,13 +106,32 @@ namespace NearForums.Web.Controllers.Filters
 		}
 		#endregion
 
+		#region Check Flooding
+		/// <summary>
+		/// Checks if the user is flooding
+		/// </summary>
+		protected virtual bool CheckFlooding(ControllerContext context)
+		{
+			bool isFlooding = false;
+			//TODO: Get the rules of flooding from configuration.
+			var minTime = TimeSpan.FromMinutes(30);
+			DateTime? latestPosting = GetLatestPosting(context);
+			if (latestPosting != null && DateTime.Now.Subtract(latestPosting.Value) < minTime)
+			{
+				isFlooding = true;
+			}
+
+			return isFlooding;
+		}
+		#endregion
+
 		#region Is Success
 		/// <summary>
 		/// Determines if the action execution was successful. ie: Redirection after save, 
 		/// </summary>
 		protected virtual bool IsSuccess(ActionResult actionResult)
 		{
-			return SuccessResultType == null || (actionResult != null && actionResult.GetType().IsSubclassOf(SuccessResultType));
+			return SuccessResultType != null && actionResult != null && actionResult.GetType().IsSubclassOf(SuccessResultType);
 		} 
 		#endregion
 	}
