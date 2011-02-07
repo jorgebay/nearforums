@@ -79,6 +79,7 @@ namespace NearForums.Web.Controllers
 		#region Add
 		[AcceptVerbs(HttpVerbs.Get)]
 		[RequireAuthorization]
+		[PreventFlood]
 		public ActionResult Add(string forum)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
@@ -91,11 +92,11 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id")] Topic topic, bool notify, string email)
+		[PreventFlood(typeof(RedirectToRouteResult))]
+		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id,Forum")] Topic topic, bool notify, string email)
 		{
 			try
 			{
-
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
 
 				topic.Forum = new Forum(){ShortName=forum};
@@ -109,16 +110,21 @@ namespace NearForums.Web.Controllers
 
 				TopicsServiceClient.Create(topic, Request.UserHostAddress);
 				SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
-
-				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
 
-			topic.Forum = ForumsServiceClient.Get(forum);
-			return View("Edit", topic);
+			if (ModelState.IsValid)
+			{
+				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
+			}
+			else
+			{
+				topic.Forum = ForumsServiceClient.Get(forum);
+				return View("Edit", topic);
+			}
 		}
 		#endregion
 
@@ -155,7 +161,7 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "")] Topic topic, bool notify, string email)
+		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "", Exclude = "Forum")] Topic topic, bool notify, string email)
 		{
 			topic.Id = id;
 			try
@@ -246,6 +252,7 @@ namespace NearForums.Web.Controllers
 		/// <param name="msg">Message id of the message being quoted.</param>
 		[AcceptVerbs(HttpVerbs.Get)]
 		[RequireAuthorization]
+		[PreventFlood]
 		public ActionResult Reply(int id, string name, int? msg)
 		{
 			Message message = new Message();
@@ -286,7 +293,7 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		[RequireAuthorization]
 		[ValidateInput(false)]
-		//[PreventFlood(SuccessResultType=typeof(RedirectToRouteResult))]
+		[PreventFlood(SuccessResultType=typeof(RedirectToRouteResult))]
 		public ActionResult Reply([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
 		{
 			message.Topic = TopicsServiceClient.Get(id);
@@ -318,14 +325,21 @@ namespace NearForums.Web.Controllers
 
 				SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
 
-				return new RedirectToRouteExtraResult(new{action="Detail",controller="Topics",id=id,name=name,forum=forum}, "#msg" + message.Id);
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(ModelState, ex);
 			}
 
-			return View(message);
+			if (ModelState.IsValid)
+			{
+				
+				return new RedirectToRouteExtraResult(new{action="Detail",controller="Topics",id=id,name=name,forum=forum}, "#msg" + message.Id);
+			}
+			else
+			{
+				return View(message);
+			}
 		}
 		#endregion
 

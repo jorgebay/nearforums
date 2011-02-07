@@ -97,12 +97,32 @@ namespace NearForums.Web.State
 		/// </summary>
 		public void SetLatestPosting(string ip)
 		{
+			SetPostingTime(ip, DateTime.Now);
+		}
+
+		/// <summary>
+		/// Sets the time the ip posted in the forum
+		/// </summary>
+		protected virtual void SetPostingTime(string ip, DateTime date)
+		{
 			var usersPostings = GetItem<Dictionary<string, DateTime>>("UsersPostings", true);
 			if (!usersPostings.ContainsKey(ip))
 			{
 				usersPostings.Add(ip, DateTime.Now);
 			}
-			usersPostings[ip] = DateTime.Now;
+			usersPostings[ip] = date;
+		}
+
+		/// <summary>
+		/// Forces a timespan to the be substracted from the latest posting date
+		/// </summary>
+		public void SetTimePassed(string ip, TimeSpan amountPassed)
+		{
+			DateTime? lastPosting = GetLatestPosting(ip);
+			if (lastPosting != null)
+			{
+				SetPostingTime(ip, lastPosting.Value.Subtract(amountPassed));
+			}
 		}
 
 		/// <summary>

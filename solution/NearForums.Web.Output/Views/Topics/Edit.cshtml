@@ -38,6 +38,7 @@
 		@Html.TextArea("description")
 		@Html.Partial("EditorScripts", CreateViewData(new{Name="description"}))
 	</div>
+	@Html.Captcha("Type the text shown in the image")
 	@if (this.User.Group >= UserGroup.Moderator)
 	{
 	<div class="formItem checkbox">

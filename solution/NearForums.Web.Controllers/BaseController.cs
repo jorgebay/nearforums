@@ -11,6 +11,7 @@ using System.Web;
 using NearForums.ServiceClient;
 using NearForums.Web.Controllers.Filters;
 using System.Text.RegularExpressions;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
@@ -222,7 +223,7 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region ViewResults
+		#region Action Results
 		protected override ViewResult View(string viewName, string masterName, object model)
 		{
 			if (masterName == null)
@@ -249,6 +250,11 @@ namespace NearForums.Web.Controllers
 		protected virtual ActionResult Static(string key, bool useMaster)
 		{
 			return View(useMaster, "~/Views/Static/" + key + ".cshtml", null);
+		}
+
+		public ActionResult Captcha()
+		{
+			return CaptchaHelper.CaptchaResult(Session);
 		}
 		#endregion
 	}

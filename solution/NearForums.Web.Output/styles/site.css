@@ -706,3 +706,7 @@ form div.checkbox input.notifyEmail
 {
 	border:1px solid #A3A3A5;
 }
+div.captcha img
+{
+	padding-left: 10px;
+}

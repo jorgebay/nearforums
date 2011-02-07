@@ -35,14 +35,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-	<Compile Include="AuthenticationProvider.cs" />
+    <Compile Include="AuthenticationProvider.cs" />
     <Compile Include="AuthenticationProviderException.cs" />
     <Compile Include="Configuration\CDataBaseConfigurationElement.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
@@ -54,6 +54,7 @@
     <Compile Include="Configuration\CDataElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
+    <Compile Include="Configuration\SpamPreventionElement.cs" />
     <Compile Include="Configuration\SSOOpenIdElement.cs" />
     <Compile Include="Configuration\RedirectorConfiguration.cs" />
     <Compile Include="Configuration\RedirectorUrl.cs" />

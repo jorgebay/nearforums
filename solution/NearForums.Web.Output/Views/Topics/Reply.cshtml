@@ -43,7 +43,9 @@
 @Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 	{
 		{"Body", "Body must not be blank."}
-		,{"captcha", null}
+		,{"captcha", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, "Captcha must not be blank."}
+			,{ValidationErrorType.CompareNotMatch, "Captcha does not match the image value. Please retry."}}}
 		,{"email", new Dictionary<ValidationErrorType, string>(){
 			{ValidationErrorType.NullOrEmpty, "Email must not be blank in order to notify of new posts."}
 			,{ValidationErrorType.Format, "Email format is not valid."}}}
@@ -54,14 +56,7 @@
 	@Html.TextArea("body")
 	@Html.Partial("EditorScripts", CreateViewData(new{Name="body"}))
 </div>
-@if (ViewData.GetDefault<bool>("ShowCaptcha"))
-{
-	<div class="formItem floatContainer captcha">
-		<label for="captcha">Captcha</label>
-		@Html.TextBox("captcha")
-		@Html.ValidationMessage("captcha", "You must specify a captcha to validate that you are human.")
-	</div>
-}
+@Html.Captcha("Type the text shown in the image")
 @if (this.Config.Notifications.Subscription.IsDefined)
 {
 	<div class="formItem floatContainer">

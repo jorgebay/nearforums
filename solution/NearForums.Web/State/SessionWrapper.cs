@@ -91,6 +91,21 @@ namespace NearForums.Web.State
 				SetItem<string>("CurrentAction", value);
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets the current Captcha hash for captcha validation
+		/// </summary>
+		public string CaptchaHash
+		{
+			get
+			{
+				return GetItem<string>("CaptchaHash");
+			}
+			set
+			{
+				SetItem<string>("CaptchaHash", value);
+			}
+		}
 		#endregion
 	}
 }

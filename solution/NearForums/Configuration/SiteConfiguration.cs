@@ -129,6 +129,19 @@ namespace NearForums.Configuration
 			}
 		}
 
+		[ConfigurationProperty("spamPrevention", IsRequired = true)]
+		public SpamPreventionElement SpamPrevention
+		{
+			get
+			{
+				return (SpamPreventionElement)this["spamPrevention"];
+			}
+			set
+			{
+				this["spamPrevention"] = value;
+			}
+		}
+
 		[ConfigurationProperty("timeZoneOffset", IsRequired = false)]
 		private decimal? TimeZoneOffsetHours
 		{

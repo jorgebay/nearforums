@@ -155,5 +155,35 @@ namespace NearForums.Web.Extensions
 
 			return htmlHelper.CheckBox(name, (Convert.ToInt32(value) & Convert.ToInt32(expectedBit)) > 0, new{value = Convert.ToInt32(expectedBit)});
 		}
+
+
+		/// <summary>
+		/// Returns a formItem with the captcha image in case the user has to validate his "humanity".
+		/// </summary>
+		/// <param name="labelText">Text to be shown in the label of the captcha field</param>
+		public static MvcHtmlString Captcha(this HtmlHelper htmlHelper, string labelText)
+		{
+			if (htmlHelper.ViewData.GetDefault<bool>("ShowCaptcha"))
+			{
+				var builder = new TagBuilder("div");
+				builder.AddCssClass("formItem");
+				builder.AddCssClass("floatContainer");
+				builder.AddCssClass("captcha");
+				builder.InnerHtml = htmlHelper.Label("captcha", labelText).ToString();
+				builder.InnerHtml += htmlHelper.TextBox("captcha");
+				var imageBuilder = new TagBuilder("img");
+				builder.InnerHtml += "<img src=\"" + htmlHelper.GetUrl("Captcha", "Base", null) + "\" alt=\"\" />";
+				return MvcHtmlString.Create(builder.ToString());
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		public static string GetUrl(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues)
+		{
+			return UrlHelper.GenerateUrl(null, actionName, controllerName, new RouteValueDictionary(routeValues), htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, true);
+		}
 	}
 }
