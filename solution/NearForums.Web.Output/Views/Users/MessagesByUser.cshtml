@@ -1,0 +1,19 @@
+﻿@model List<Topic>
+@{
+    Layout = null;
+}
+@if (Model.Count > 0)
+{
+	<ul>
+	@foreach (Topic t in Model)
+	{
+		<li>
+			@(t.Title):
+			@foreach (Message m in t.Messages)
+			{
+				@Html.ActionLink("#" + m.Id, "ShortUrl", "Topics", null, null, "msg" + m.Id, new{id=t.Id}, null)<span> </span>
+			}
+		</li>
+	}
+	</ul>
+}

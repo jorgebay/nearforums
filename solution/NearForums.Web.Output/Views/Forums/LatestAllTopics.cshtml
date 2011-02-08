@@ -1,0 +1,22 @@
+﻿@model List<Topic>
+@{
+	Layout = null;
+}
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+	<channel>
+		<title>Latest threads on all forums</title>
+		<link>@this.Domain</link>
+		<description>Latest threads on all forums at @this.Domain</description>
+		@foreach (Topic t in this.Model)
+		{
+		<item>
+			<title>@t.Title</title>
+			<link>@(this.Domain + Url.Action("ShortUrl", "Topics", new{id=t.Id}))</link>
+			<guid>@(this.Domain + Url.Action("ShortUrl", "Topics", new{id=t.Id}))</guid>
+			<description>@Utils.RemoveTags(t.Description)</description>
+			<pubDate>@t.Date.ToApplicationDateTime().ToString("r", new System.Globalization.CultureInfo("en-US"))</pubDate>
+		</item>
+		}
+	</channel>
+</rss>

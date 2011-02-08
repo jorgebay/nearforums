@@ -1,0 +1,11 @@
+﻿@model IList<Topic>
+<ul class="items">
+	@foreach (Topic topic in Model)
+	{
+	<li class="@(topic.IsSticky ? "sticky" : "")">
+
+		@Html.ActionLink(topic.Title, "Detail", "Topics", new{name=topic.ShortName,id=topic.Id,page=0}, null)
+		<span class="details">@topic.Replies @(topic.Replies != 1 ? "replies" : "reply") / @topic.Views view@(topic.Views != 1 ? "s" : "")</span>
+	</li>
+	}
+</ul>

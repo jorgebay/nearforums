@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums", "NearForums\NearForums.csproj", "{8039364C-28D8-4AE9-9684-628671C0FF86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.DataAccess", "NearForums.DataAccess\NearForums.DataAccess.csproj", "{8A800A71-0656-4712-881D-AA03BDCA218C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.ServiceClient", "NearForums.ServiceClient\NearForums.ServiceClient.csproj", "{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Web", "NearForums.Web\NearForums.Web.csproj", "{AF911FBC-3E0B-44FF-AB68-DF35FF353064}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Web.Controllers", "NearForums.Web.Controllers\NearForums.Web.Controllers.csproj", "{F8767C50-4290-45BF-84F2-F3BFCBDB3607}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Tests", "NearForums.Tests\NearForums.Tests.csproj", "{E3A67DF0-BB8E-4656-9E82-1C10960B435D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Web.Output", "NearForums.Web.Output\NearForums.Web.Output.csproj", "{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8039364C-28D8-4AE9-9684-628671C0FF86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8039364C-28D8-4AE9-9684-628671C0FF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8039364C-28D8-4AE9-9684-628671C0FF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8039364C-28D8-4AE9-9684-628671C0FF86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A800A71-0656-4712-881D-AA03BDCA218C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A800A71-0656-4712-881D-AA03BDCA218C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A800A71-0656-4712-881D-AA03BDCA218C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A800A71-0656-4712-881D-AA03BDCA218C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8767C50-4290-45BF-84F2-F3BFCBDB3607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8767C50-4290-45BF-84F2-F3BFCBDB3607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8767C50-4290-45BF-84F2-F3BFCBDB3607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8767C50-4290-45BF-84F2-F3BFCBDB3607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3A67DF0-BB8E-4656-9E82-1C10960B435D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3A67DF0-BB8E-4656-9E82-1C10960B435D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3A67DF0-BB8E-4656-9E82-1C10960B435D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3A67DF0-BB8E-4656-9E82-1C10960B435D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
