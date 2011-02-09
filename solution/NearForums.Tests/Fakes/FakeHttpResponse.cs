@@ -60,6 +60,18 @@ namespace NearForums.Tests.Fakes
 				return new FakeHttpCachePolicy();
 			}
 		}
+
+		public override string ContentType
+		{
+			get
+			{
+				return "text/dummy";
+			}
+			set
+			{
+				
+			}
+		}
 	}
 
 	public class FakeHttpCachePolicy : HttpCachePolicyBase

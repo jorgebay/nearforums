@@ -8,6 +8,8 @@ using System.Configuration;
 using System.Net.Mail;
 using NearForums.Configuration;
 using NearForums.Web.Extensions;
+using HtmlAgilityPack;
+using System.IO;
 
 namespace NearForums.Tests
 {
@@ -119,11 +121,11 @@ namespace NearForums.Tests
 		public void SafeHtml_Test()
 		{
 			var html = "";
-			html = "<p>Hola Mundo<object></object><script></script><iframe></iframe></p>".SafeHtml();
-			Assert.AreEqual(html, "<p>Hola Mundo</p>");
+			html = "<p>Hello World<object></object><script></script><iframe></iframe></p>".SafeHtml();
+			Assert.AreEqual(html, "<p>Hello World</p>");
 
 			//Add rel="nofollow" attribute to anchors
-			html = "<p>Hola Mundo <a href=\"http://argo.com/1.html\">argo</a></p>".SafeHtml();
+			html = "<p>Hello World <a href=\"http://argo.com/1.html\">argo</a></p>".SafeHtml();
 			Assert.IsTrue(html.Contains("rel=\"nofollow\""));
 
 			html = "<!-- test html comment -->".SafeHtml();
@@ -146,6 +148,105 @@ namespace NearForums.Tests
 			//Safe + Replacements + SAfe + Replacements
 			html = "<p>#200: Hey man!</p>".SafeHtml().ReplaceValues().SafeHtml().ReplaceValues().SafeHtml().ReplaceValues();
 			Assert.IsTrue(html.Contains("[#200]</a>: Hey man!"));
+		}
+
+		[TestMethod]
+		public void HtmlSanitizer_Test()
+		{
+			var html = "";
+			html = StringExtensions.Sanitize("<p>Hello World<object></object><script></script><iframe></iframe></p>");
+			Assert.AreEqual(html, "<p>Hello World</p>");
+
+			html = StringExtensions.Sanitize("<p>Hello World <a href=\"http://argo.com/1.html\">argo</a></p>");
+			Assert.IsTrue(html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<p>Hello World <a href=\"onclick:alert('XSS');\">argo</a></p>");
+			Assert.IsTrue(!html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<p>Hello World <a href=\"#\" onclick=\"DoXss();\">argo</a></p>");
+			Assert.IsTrue(!html.Contains("onclick"));
+
+			html = StringExtensions.Sanitize("<p>Hello World <img src=\"http://google.com/logo.gif\" onclick=\"DoXss();\" /></p>");
+			Assert.IsTrue(!html.Contains("onclick"));
+			Assert.IsTrue(html.Contains("<p"));
+
+			//Test common website html
+			#region Image tags
+			html = StringExtensions.Sanitize("<p>Hello World <img src=\"http://google.com/logo.gif\" height=\"10\" /></p>");
+			Assert.IsTrue(html.Contains("<img"));
+
+			html = StringExtensions.Sanitize("<p>Hello World <img src=\"http://google.com/logo.gif\" height=\"10\" width=\"10\" /></p>");
+			Assert.IsTrue(html.Contains("<img"));
+
+			html = StringExtensions.Sanitize("<p>Hello World <img src=\"http://google.com/logo.gif\" height=\"10\" width=\"10\" /></p>");
+			Assert.IsTrue(html.Contains("<img"));
+
+			html = StringExtensions.Sanitize("<p>Hello World <img src=\"http://google.com/logo.gif\" /></p>");
+			Assert.IsTrue(html.Contains("<img")); 
+			#endregion
+
+			#region Link tags
+			html = StringExtensions.Sanitize("<a href=\"http://google.com\">normal google link</a>");
+			Assert.IsTrue(html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<a href=\"#msg123\">[#1]</a>");
+			Assert.IsTrue(html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<a href=\"#msg123\" title=\"Message!\">[#1]</a>");
+			Assert.IsTrue(html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<a href=\"#msg123\" class=\"fastQuote\">[#1]</a>");
+			Assert.IsTrue(html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<a href=\"http://google.com\" class=\"highlight\">google highlighted</a>");
+			Assert.IsTrue(html.Contains("<a"));
+
+			html = StringExtensions.Sanitize("<a href=\"http://google.com\" rel=\"nofollow\">google nofollow</a>");
+			Assert.IsTrue(html.Contains("<a")); 
+			#endregion
+
+			#region Word copy-pasting
+			html = StringExtensions.Sanitize("<p style=\"mso-layout-grid-align: none; text-autospace: none;\"><span style=\"mso-bidi-font-family: Arial; mso-ansi-language: EN-GB;\" lang=\"EN-GB\">Text inside a p</span></p>");
+			Assert.IsTrue(html.Contains("<p>Text inside a p"));
+			#endregion
+
+			#region Tests from http://ha.ckers.org/xss.html
+			html = StringExtensions.Sanitize("<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("<IMG SRC=javascript:alert('XSS')>");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("<META HTTP-EQUIV=\"refresh\" CONTENT=\"0; URL=http://;URL=javascript:alert('XSS');\">");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("<IFRAME SRC=\"javascript:alert('XSS');\"></IFRAME>");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("<TABLE><TD BACKGROUND=\"javascript:alert('XSS')\">");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("<OBJECT TYPE=\"text/x-scriptlet\" DATA=\"http://ha.ckers.org/scriptlet.html\"></OBJECT>");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("<OBJECT TYPE=\"text/x-scriptlet\" DATA=\"http://ha.ckers.org/scriptlet.html\"></OBJECT>");
+			Assert.IsTrue(html == "");
+
+			html = StringExtensions.Sanitize("");
+			Assert.IsTrue(html == ""); 
+			#endregion
+		}
+
+		[TestMethod]
+		public void HtmlDescendance_Test()
+		{
+			StringWriter outputWriter = new StringWriter();
+			var doc = new HtmlDocument();
+			doc.LoadHtml("<div class=\"wrapper\"><p><strong>This paragraph <br>is not closed</strong></div>");
+			doc.OptionWriteEmptyNodes = true;
+			doc.Save(outputWriter);
+			string output = outputWriter.ToString();
+			Assert.IsTrue(output.Contains("<p />"));
 		}
 
 		[TestMethod]
