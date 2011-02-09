@@ -240,13 +240,27 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void HtmlDescendance_Test()
 		{
-			StringWriter outputWriter = new StringWriter();
+
+			#region Auto close mallformed paragraphs
+			var outputWriter = new StringWriter();
 			var doc = new HtmlDocument();
+			string output;
 			doc.LoadHtml("<div class=\"wrapper\"><p><strong>This paragraph <br>is not closed</strong></div>");
 			doc.OptionWriteEmptyNodes = true;
 			doc.Save(outputWriter);
-			string output = outputWriter.ToString();
-			Assert.IsTrue(output.Contains("<p />"));
+			output = outputWriter.ToString();
+			Assert.IsTrue(output.Contains("<p />")); 
+			#endregion
+
+			#region Include childs in mallformed lists
+			outputWriter = new StringWriter();
+			doc = new HtmlDocument();
+			doc.LoadHtml("<div class=\"wrapper\"><ul><li>Item of the list</li></div>");
+			doc.OptionWriteEmptyNodes = true;
+			doc.Save(outputWriter);
+			output = outputWriter.ToString();
+			Assert.IsTrue(output.Contains("</ul>")); 
+			#endregion
 		}
 
 		[TestMethod]
