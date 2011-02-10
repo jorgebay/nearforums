@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Routing;
 using NearForums.Configuration;
+using NearForums.Configuration.Routing;
 using System.Web.Mvc;
 using NearForums.Web.Routing;
 

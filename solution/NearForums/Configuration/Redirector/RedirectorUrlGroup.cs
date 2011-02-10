@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Configuration;
 
-namespace NearForums.Configuration
+namespace NearForums.Configuration.Redirector
 {
 	public class RedirectorUrlGroup : ConfigurationElement
 	{

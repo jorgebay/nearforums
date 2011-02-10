@@ -2,7 +2,7 @@
 using System.Data;
 using System.Configuration;
 using System.Linq;
-namespace NearForums.Configuration
+namespace NearForums.Configuration.Redirector
 {
 	public class RedirectorUrlCollection : ConfigurationElementCollection
 	{

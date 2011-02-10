@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Configuration;
 
-namespace NearForums.Configuration
+namespace NearForums.Configuration.Redirector
 {
 	public class RedirectorConfiguration : ConfigurationSection
 	{

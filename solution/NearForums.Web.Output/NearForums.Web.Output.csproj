@@ -204,9 +204,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\HtmlRules.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Config\Logging.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

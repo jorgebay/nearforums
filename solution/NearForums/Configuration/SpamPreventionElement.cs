@@ -24,6 +24,20 @@ namespace NearForums.Configuration
 			}
 		}
 
-		//Probably this class will hold Html Sanitizer whitelists...
+		/// <summary>
+		/// Rules for the html entered by the user.
+		/// </summary>
+		[ConfigurationProperty("htmlInput", IsRequired = false)]
+		public HtmlInputElement HtmlInput
+		{
+			get
+			{
+				return (HtmlInputElement)this["htmlInput"];
+			}
+			set
+			{
+				this["htmlInput"] = value;
+			}
+		}
 	}
 }

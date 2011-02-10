@@ -59,6 +59,7 @@ namespace NearForums
 			return value;
 		}
 
+		#region Html strings
 		/// <summary>
 		/// Crops a given html fragment
 		/// </summary>
@@ -95,29 +96,6 @@ namespace NearForums
 		}
 
 		/// <summary>
-		/// Removes dangerous html code.
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public static string CleanHtml(string value)
-		{
-			value = CleanHtmlComments(value);
-			value = CleanHtmlBehaviour(value);
-
-			//Remove disallowed html tags.
-			value = Regex.Replace(value, "</?(param|(no)?script|object|i?frame|body|style|font|head|link|title|h1)[^>]*?>", "", RegexOptions.IgnoreCase);
-
-			//Remove disallowed attributed.
-			//value = Regex.Replace(value, " ?style=\"?'?[^'\">]*\"?'?", "", RegexOptions.IgnoreCase);
-			value = RemoveHtmlAttribute(value, "style");
-
-			//Replace links
-			value = Regex.Replace(value, "<a[^>]+href=\"?'?([^'\">]+)\"?'?[^>]*>(.*?)</a>", "<a href=\"$1\" rel=\"nofollow\" target=\"_blank\">$2</a>", RegexOptions.IgnoreCase);
-
-			return value;
-		}
-
-		/// <summary>
 		/// Clean script and styles html tags and content
 		/// </summary>
 		/// <returns></returns>
@@ -139,10 +117,83 @@ namespace NearForums
 			return value;
 		}
 
-		public static string RemoveHtmlAttribute(string value, string attribute)
+		/// <summary>
+		/// Adds rel=nofollow to html anchors
+		/// </summary>
+		public static string HtmlLinkAddNoFollow(string value)
 		{
-			return Regex.Replace(value, " ?" + attribute + "=\"?'?[^'\">]*\"?'?", "", RegexOptions.IgnoreCase);
+			return Regex.Replace(value, "<a[^>]+href=\"?'?(?!#[\\w-]+)([^'\">]+)\"?'?[^>]*>(.*?)</a>", "<a href=\"$1\" rel=\"nofollow\" target=\"_blank\">$2</a>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 		}
+
+		#region Sanitize Html
+		/// <summary>
+		/// sanitize any potentially dangerous tags from the provided raw HTML input using 
+		/// a whitelist based approach, leaving the "safe" HTML tags
+		/// CODESNIPPET:4100A61A-1711-4366-B0B0-144D1179A937 / http://refactormycode.com/codes/333-sanitize-html
+		/// </summary>
+		/// <param name="html">Html to sanitize</param>
+		/// <param name="whiteListTags">Regex containing the allowed name of the html elements. For example: em|h(2|3|4)|strong|p</param>
+		public static string SanitizeHtml(string html, string whiteListTags = "b(lockquote)?|code|d(d|t|l|el)|em|h(1|2|3|4)|i|kbd|li|ol|p(re)?|s(ub|up|trong|trike)?|ul|a|img")
+		{
+			#region Regex definitions
+			Regex tagsRegex = new Regex("<[^>]*(>|$)",
+				RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+
+			Regex cleanupRegex = new Regex("((?<=<\\w+[^>]*)(?!\\shref|\\sclass|\\srel|\\stitle|\\sclass|\\swidth|\\sheight|\\salt|\\ssrc)(\\s[\\w-]+)=[\"']?((?:.(?![\"']?\\s+(?:\\S+)=|[>\"']))+.)[\"']?)|((?<=<p[^>]*)\\sclass=\"MsoNormal\")",
+					RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+			Regex whitelistRegex = new Regex("^</?(" + whiteListTags + ")>$|^<(b|h)r\\s?/?>$",
+				RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace);
+
+			Regex whitelistAnchorRegex = new Regex(@"
+			^<a\s
+			href=""(\#\w+|(https?|ftp)://[-a-z0-9+&@#/%?=~_|!:,.;\(\)]+)""
+			(
+			(\sclass=""([\w-]+)"")|(\stitle=""[^""<>]+"")|
+			(\srel=""nofollow""))*
+			\s?>$|
+			^</a>$",
+				RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace);
+
+			Regex whitelistImageRegex = new Regex(@"
+			^<img\s
+			src=""https?://[-a-z0-9+&@#/%?=~_|!:,.;\(\)]+""
+			((\swidth=""\d{1,3}"")|
+			(\sheight=""\d{1,3}"")|
+			(\salt=""[^""<>]*"")|
+			(\stitle=""[^""<>]*""))*
+			\s?/?>$",
+				RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace);
+			#endregion
+
+			if (String.IsNullOrEmpty(html))
+				return html;
+
+			//Do a previous cleanup, for not not allowed attributes included comming from word
+			html = cleanupRegex.Replace(html, "");
+
+			string tagname;
+			Match tag;
+
+			// match every HTML tag in the input
+			MatchCollection tags = tagsRegex.Matches(html);
+			for (int i = tags.Count - 1; i > -1; i--)
+			{
+				tag = tags[i];
+				tagname = tag.Value.ToLowerInvariant();
+
+				if (!(whitelistRegex.IsMatch(tagname) || whitelistAnchorRegex.IsMatch(tagname) || whitelistImageRegex.IsMatch(tagname)))
+				{
+					html = html.Remove(tag.Index, tag.Length);
+					System.Diagnostics.Debug.WriteLine("tag sanitized: " + tagname);
+				}
+			}
+
+			return html;
+		}
+
+		#endregion 
+		#endregion
 
 		public static string NullToEmpty(string value)
 		{

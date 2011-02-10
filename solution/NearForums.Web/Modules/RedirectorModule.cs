@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Text.RegularExpressions;
 using NearForums.Configuration;
+using NearForums.Configuration.Redirector;
 
 namespace NearForums.Web.Modules
 {

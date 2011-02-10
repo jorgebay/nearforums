@@ -167,24 +167,6 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("antiSamyPolicyFile", IsRequired = false)]
-		public string AntiSamyPolicyFile
-		{
-			get
-			{
-				var antiSamyPolicyFile = "Config\\AntiSamy.config";
-				if (!String.IsNullOrEmpty((string)this["antiSamyPolicyFile"]))
-				{
-					antiSamyPolicyFile = (string)this["antiSamyPolicyFile"];
-				}
-				return CombinePath(antiSamyPolicyFile);
-			}
-			set
-			{
-				this["antiSamyPolicyFile"] = value;
-			}
-		}
-
 		/// <summary>
 		/// Combines the current application configuration path with the fileName given
 		/// </summary>
