@@ -82,6 +82,12 @@ namespace NearForums.Tests
 			html = "<p>Hello World <img src=\"http://google.com/logo.gif\" onclick=\"DoXss();\" /></p>".SafeHtml();
 			Assert.IsTrue(!html.Contains("onclick"));
 			Assert.IsTrue(html.Contains("<p"));
+
+			html = "<p>Accénted</p>".SafeHtml();
+			Assert.IsTrue(html.Contains("Accénted"));
+
+			html = "<p>Acc&eacute;nted</p>".SafeHtml();
+			Assert.IsTrue(html.Contains("Acc&eacute;nted"));
 		}
 
 		[TestMethod]
