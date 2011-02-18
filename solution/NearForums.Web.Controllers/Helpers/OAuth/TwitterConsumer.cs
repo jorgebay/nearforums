@@ -194,7 +194,9 @@
 							this.Description = navItem.Value;
 							break;
 						case "utc_offset":
-							this.TimeZone = Convert.ToDecimal(navItem.Value) / 3600m;
+							decimal userTimeZoneSeconds = -21600m;
+							Decimal.TryParse(navItem.Value, out userTimeZoneSeconds);
+							this.TimeZone =  userTimeZoneSeconds / 3600m;
 							break;
 					}
 				}
