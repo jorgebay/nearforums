@@ -9,6 +9,7 @@ namespace NearForums
 	{
 		Facebook,
 		Twitter,
-		OpenId
+		OpenId,
+		Membership
 	}
 }

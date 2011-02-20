@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace NearForums.Web.Output
 {
@@ -43,6 +44,12 @@ namespace NearForums.Web.Output
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
+		}
+
+		protected void Application_AuthenticateRequest()
+		{
+			if (HttpContext.Current.User != null)
+				Membership.GetUser(true);
 		}
 	}
 }

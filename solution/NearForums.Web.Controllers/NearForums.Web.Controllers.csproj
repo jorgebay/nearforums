@@ -53,20 +53,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\references\Microsoft.Contracts.dll</HintPath>
     </Reference>
+    <Reference Include="MvcMembership">
+      <HintPath>..\..\..\..\MvcMembership\MvcMembership\bin\Debug\MvcMembership.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\..\..\..\MvcMembership\MvcMembership\bin\Debug\PagedList.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
-	<Reference Include="System.Core" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Web" />
-	<Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ProgramFiles)\Microsoft ASP.NET\ASP.NET MVC 3\Assemblies\System.Web.Mvc.dll</HintPath>
     </Reference>
-	<Reference Include="System.Web.Routing" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -78,6 +84,7 @@
     <Compile Include="Filters\HandleErrorLogAttribute.cs" />
     <Compile Include="Filters\PreventFloodAttribute.cs" />
     <Compile Include="Filters\RequireAuthorizationAttribute.cs" />
+    <Compile Include="FormsAuthenticationController.cs" />
     <Compile Include="ForumsController.cs" />
     <Compile Include="Helpers\OAuth\InMemoryTokenManager.cs" />
     <Compile Include="Helpers\OAuth\TwitterConsumer.cs" />

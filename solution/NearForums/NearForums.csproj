@@ -53,6 +53,7 @@
     <Compile Include="Configuration\KeySecretElement.cs" />
     <Compile Include="Configuration\ForumElement.cs" />
     <Compile Include="Configuration\CDataElement.cs" />
+    <Compile Include="Configuration\MembershipElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
     <Compile Include="Configuration\SpamPreventionElement.cs" />

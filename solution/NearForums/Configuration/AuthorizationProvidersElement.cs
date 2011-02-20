@@ -47,10 +47,23 @@ namespace NearForums.Configuration
 			}
 		}
 
+		[ConfigurationProperty("formsAuth", IsRequired = false)]
+		public MembershipElement FormsAuth
+		{
+			get
+			{
+				return (MembershipElement)this["formsAuth"];//TODO: probably can get this info from the web.config better!
+			}
+			set
+			{
+				this["formsAuth"] = value;
+			}
+		}
+
 		/// <summary>
 		/// Determines if a provider is faked by the application, in order to enable registration/login without real connectivity to a provider.
 		/// </summary>
-		[ConfigurationProperty("fakeProvider", IsRequired = false, DefaultValue=false)]
+		[ConfigurationProperty("fakeProvider", IsRequired = false, DefaultValue = false)]
 		public bool FakeProvider
 		{
 			get
