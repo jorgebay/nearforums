@@ -135,5 +135,19 @@ namespace NearForums.DataAccess
 
 			comm.SafeExecuteNonQuery();
 		}
+
+		/// <summary>
+		/// Marks the message as inapropriate
+		/// </summary>
+		/// <returns>If the message was flagged or not (if it wasn already flagged by the same ip).</returns>
+		public bool Flag(int topicId, int messageId, string ip)
+		{
+			DbCommand comm = this.GetCommand("SPMessagesFlag");
+			comm.AddParameter<int>(this.Factory, "TopicId", topicId);
+			comm.AddParameter<int>(this.Factory, "MessageId", messageId);
+			comm.AddParameter<string>(this.Factory, "Ip", ip);
+
+			return comm.SafeExecuteNonQuery() > 0;
+		}
 	}
 }

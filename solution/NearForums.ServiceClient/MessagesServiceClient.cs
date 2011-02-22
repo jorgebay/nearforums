@@ -46,5 +46,15 @@ namespace NearForums.ServiceClient
 			MessagesDataAccess da = new MessagesDataAccess();
 			da.Delete(topicId, messageId, userId);
 		}
+
+		/// <summary>
+		/// Flags / Creates a mark on a message of a topic. The ip of flagger is stored.
+		/// </summary>
+		/// <param name="ip">Ip of the user creating the flag</param>
+		public static bool Flag(int topicId, int messageId, string ip)
+		{
+			MessagesDataAccess da = new MessagesDataAccess();
+			return da.Flag(topicId, messageId, ip);
+		}
 	}
 }
