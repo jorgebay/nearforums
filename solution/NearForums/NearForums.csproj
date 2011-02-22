@@ -36,6 +36,8 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -53,7 +55,7 @@
     <Compile Include="Configuration\KeySecretElement.cs" />
     <Compile Include="Configuration\ForumElement.cs" />
     <Compile Include="Configuration\CDataElement.cs" />
-    <Compile Include="Configuration\MembershipElement.cs" />
+    <Compile Include="Configuration\FormsAuthElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
     <Compile Include="Configuration\SpamPreventionElement.cs" />
@@ -74,6 +76,10 @@
     <Compile Include="Configuration\TopicElement.cs" />
     <Compile Include="EmailPolicy.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="ForumFormsAuthentication\IFormsAuthentication.cs" />
+    <Compile Include="ForumFormsAuthentication\IMembershipService.cs" />
+    <Compile Include="ForumFormsAuthentication\Impl\AccountMembershipService.cs" />
+    <Compile Include="ForumFormsAuthentication\Impl\FormsAuthenticationService.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumCategory.cs" />
     <Compile Include="Message.cs" />
@@ -93,6 +99,7 @@
     <Compile Include="Validation\ValidationException.cs" />
     <Compile Include="WeightTag.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,9 +7,9 @@ using System.Configuration;
 namespace NearForums.Configuration
 {
 	/// <summary>
-	/// Represents a configuration element for Open Id relying party
+	/// Represents a configuration element for Forms Authentication
 	/// </summary>
-	public class MembershipElement : ConfigurationElement, IOptionalElement
+	public class FormsAuthElement : ConfigurationElement, IOptionalElement
 	{
 		/// <summary>
 		/// 

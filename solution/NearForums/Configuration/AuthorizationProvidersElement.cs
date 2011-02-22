@@ -48,11 +48,11 @@ namespace NearForums.Configuration
 		}
 
 		[ConfigurationProperty("formsAuth", IsRequired = false)]
-		public MembershipElement FormsAuth
+		public FormsAuthElement FormsAuth
 		{
 			get
 			{
-				return (MembershipElement)this["formsAuth"];//TODO: probably can get this info from the web.config better!
+				return (FormsAuthElement)this["formsAuth"];//TODO: probably can get this info from the web.config better!
 			}
 			set
 			{
