@@ -39,5 +39,18 @@ namespace NearForums.Web.Controllers
 			return Json(flagged);
 		}
 		#endregion
+
+		#region List flagged messages
+		/// <summary>
+		/// Gets a list of flagged messages
+		/// </summary>
+		/// <returns></returns>
+		[RequireAuthorization(UserGroup.Moderator)]
+		public ActionResult ListFlagged()
+		{
+			var messages = MessagesServiceClient.ListFlagged();
+			return View();
+		}
+		#endregion
 	}
 }

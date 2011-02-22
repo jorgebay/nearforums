@@ -56,5 +56,10 @@ namespace NearForums.ServiceClient
 			MessagesDataAccess da = new MessagesDataAccess();
 			return da.Flag(topicId, messageId, ip);
 		}
+
+		public static List<Message> ListFlagged()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
