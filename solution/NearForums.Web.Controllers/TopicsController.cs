@@ -452,27 +452,5 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 		#endregion
-
-		#region Messages
-		#region Delete
-		[HttpPost]
-		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail = true)]
-		public ActionResult DeleteMessage(int mid, int id, string forum, string name)
-		{
-			MessagesServiceClient.Delete(id, mid, this.User.Id);
-			return Json(true);
-		} 
-		#endregion
-
-		#region Flag messages
-		[HttpPost]
-		public ActionResult FlagMessage(int mid, int id, string forum, string name)
-		{
-			bool flagged = MessagesServiceClient.Flag(id, mid, Request.UserHostAddress);
-
-			return Json(flagged);
-		}
-		#endregion
-		#endregion
 	}
 }

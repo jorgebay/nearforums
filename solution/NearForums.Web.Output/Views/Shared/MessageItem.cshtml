@@ -44,7 +44,7 @@
 			{
 				if (confirm('Are you sure you want to hide the message #' + mid + '?'))
 				{
-					$.post('@Url.Action("DeleteMessage")', { mid: mid }, function (data)
+					$.post('@Url.Action("Delete", "Messages")', { mid: mid }, function (data)
 					{
 						$("#msg" + mid + " > div.msgBody").html("<p class=\"removed\">Message removed</p>");
 						alert('The message was removed.');
@@ -54,8 +54,9 @@
 			}
 			function flagMessage(mid)
 			{
-				$.post('@Url.Action("FlagMessage")', {mid:mid}, function(data){
-					alert('Thanks for flagging the message, a moderator will review the message.');
+				$.post('@Url.Action("Flag", "Messages")', { mid: mid }, function (data)
+				{
+					alert('Thanks you, a moderator will review the message.');
 				});
 				return false;
 			}
