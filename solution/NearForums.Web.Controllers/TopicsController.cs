@@ -452,22 +452,5 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 		#endregion
-
-		#region Delete message
-		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail=true)]
-		public ActionResult DeleteMessage(int mid, int id, string forum, string name)
-		{
-			MessagesServiceClient.Delete(id, mid, this.User.Id);
-
-			if (Request.UrlReferrer != null)
-			{
-				return Redirect(Request.UrlReferrer.PathAndQuery);
-			}
-			else
-			{
-				return RedirectToAction("Detail", new{id=id, name=name, forum=forum});
-			}
-		}
-		#endregion
 	}
 }

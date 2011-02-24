@@ -185,7 +185,7 @@ namespace NearForums.DataAccess
 		/// Safely opens the connection, executes and closes the connection
 		/// </summary>
 		/// <param name="comm"></param>
-		/// <returns></returns>
+		/// <returns>The number of rows affected.</returns>
 		public static int SafeExecuteNonQuery(this DbCommand comm)
 		{
 			int rowsAffected = 0;

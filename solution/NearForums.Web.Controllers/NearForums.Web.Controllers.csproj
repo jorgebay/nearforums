@@ -91,6 +91,7 @@
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\SubscriptionHelper.cs" />
     <Compile Include="HomeController.cs" />
+    <Compile Include="MessagesController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagsController.cs" />
     <Compile Include="TopicsController.cs" />

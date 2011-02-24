@@ -30,11 +30,36 @@
 		@Html.ActionLink("reply", "Reply", new{msg=Model.Id}, new{rel="nofollow"})
 		@if (this.User != null && this.User.Group >= UserGroup.Moderator && Model.Active)
 		{
-			@Html.ActionLink("remove", "DeleteMessage", new{mid=Model.Id}, new{onclick="return confirmDelete();"})
+			@Html.Link("remove", "#", new{onclick="return deleteMessage(" + Model.Id + ");"})
 		}
+		@Html.Link("flag", "#", new{title="Mark as inappropriate", onclick="return flagMessage(" + Model.Id + ");"})
 	</div>
+	@*
+	Add required js functions just once
+	*@
 	@if (Model.Id == 1)
 	{
-		<script type="text/javascript">			function confirmDelete() { return confirm('Are you sure you want to hide this message?'); }</script>
+		<script type="text/javascript">
+			function deleteMessage(mid)
+			{
+				if (confirm('Are you sure you want to hide the message #' + mid + '?'))
+				{
+					$.post('@Url.Action("Delete", "Messages")', { mid: mid }, function (data)
+					{
+						$("#msg" + mid + " > div.msgBody").html("<p class=\"removed\">Message removed</p>");
+						alert('The message was removed.');
+					});
+				}
+				return false;
+			}
+			function flagMessage(mid)
+			{
+				$.post('@Url.Action("Flag", "Messages")', { mid: mid }, function (data)
+				{
+					alert('Thanks you, a moderator will review the message.');
+				});
+				return false;
+			}
+		</script>
 	}
 </li>
