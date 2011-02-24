@@ -118,39 +118,6 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
-		public void SafeHtml_Test()
-		{
-			var html = "";
-			html = "<p>Hola Mundo<object></object><script></script><iframe></iframe></p>".SafeHtml();
-			Assert.AreEqual(html, "<p>Hola Mundo</p>");
-
-			//Add rel="nofollow" attribute to anchors
-			html = "<p>Hola Mundo <a href=\"http://argo.com/1.html\">argo</a></p>".SafeHtml();
-			Assert.IsTrue(html.Contains("rel=\"nofollow\""));
-
-			html = "<!-- test html comment -->".SafeHtml();
-			Assert.IsTrue(html == "");
-
-			html = "<a href=\"something.aspx\" class=\"fastQuote\">Something</a>".SafeHtml();
-			Assert.IsTrue(html.Contains("class="));
-
-			html = "<a href=\"something.aspx\" class=\"highlight\">Something</a>".SafeHtml();
-			Assert.IsTrue(html.Contains("class="));
-
-			html = "<a href=\"something.aspx\" class=\"anotherClass\">Something</a>".SafeHtml();
-			Assert.IsTrue(!html.Contains("class="));
-
-			//Smiley
-			html = ":)".SafeHtml().ReplaceValues();
-			Assert.IsTrue(html.Contains("<img"));
-			
-			//Check interaction with replacements
-			//Safe + Replacements + SAfe + Replacements
-			html = "<p>#200: Hey man!</p>".SafeHtml().ReplaceValues().SafeHtml().ReplaceValues().SafeHtml().ReplaceValues();
-			Assert.IsTrue(html.Contains("[#200]</a>: Hey man!"));
-		}
-
-		[TestMethod]
 		public void NotificationsConfiguration_Test()
 		{
 			string value = SiteConfiguration.Current.Notifications.Subscription.Body.Value;

@@ -198,6 +198,10 @@ namespace NearForums.Tests
 			html = "<p>#200: Hey man!</p>".SafeHtml().ReplaceValues().SafeHtml().ReplaceValues().SafeHtml().ReplaceValues();
 			Assert.IsTrue(html.Contains("[#200]</a>: Hey man!"));
 			Assert.IsTrue(html.Contains("fastQuote"));
+
+
+			html = "<a href=\"#msg10\" class=\"fastQuote\">Something</a>".SafeHtml();
+			Assert.IsTrue(html.Contains("class="));
 		}
 
 		[TestMethod]
