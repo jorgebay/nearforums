@@ -23,7 +23,7 @@
         }
         if (Config.AuthorizationProviders.FormsAuth.IsDefined)
         {
-        <li class="login"><a href="@Url.Action("Login", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })"></a></li>
+        <li class="login"><a href="@Url.Action("Login", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })">Site Login</a></li>
         }
     }
     else
