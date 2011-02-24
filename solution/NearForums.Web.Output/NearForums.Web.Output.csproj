@@ -212,6 +212,7 @@
     </Content>
     <Content Include="Config\Routes.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\Site.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -380,6 +381,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FormsAuthentication\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FormsAuthentication\ChangePassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FormsAuthentication\ChangePasswordSuccess.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

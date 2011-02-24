@@ -153,35 +153,36 @@ namespace NearForums.Web.Controllers
 		public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
 
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
-			if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
-			{
-				return View();
-			}
+            if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
+            {
+                return View();
+            }
 
-			try
-			{  
-				if (MembershipService.ChangePassword(Membership.GetUser().UserName, currentPassword, newPassword))
-				{
-					return RedirectToAction("ChangePasswordSuccess");
-				}
-				else
-				{
-					ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
-					return View();
-				}
-			}
-			catch
-			{
-				ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
-				return View();
-			}
+            try
+            {
+                if (MembershipService.ChangePassword(Membership.GetUser().UserName, currentPassword, newPassword))
+                {
+                    return RedirectToAction("ChangePasswordSuccess");
+                }
+                else
+                {
+                    ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
+                    return View();
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
+                return View();
+            }
 		}
 
+        [Authorize]
+		//[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ChangePasswordSuccess()
 		{
-
 			return View();
 		}
 
@@ -194,7 +195,7 @@ namespace NearForums.Web.Controllers
 		//}
 
 		#region Validation Methods
-        [NonAction]
+		[NonAction]
 		private bool ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
 			if (String.IsNullOrEmpty(currentPassword))
@@ -216,7 +217,7 @@ namespace NearForums.Web.Controllers
 
 			return ModelState.IsValid;
 		}
-        [NonAction]
+		[NonAction]
 		private bool ValidateLogOn(string userName, string password)
 		{
 			if (String.IsNullOrEmpty(userName))
@@ -234,7 +235,7 @@ namespace NearForums.Web.Controllers
 
 			return ModelState.IsValid;
 		}
-        [NonAction]
+		[NonAction]
 		private bool ValidateRegistration(string userName, string email, string password, string confirmPassword)
 		{
 			if (String.IsNullOrEmpty(userName))
@@ -258,7 +259,7 @@ namespace NearForums.Web.Controllers
 			}
 			return ModelState.IsValid;
 		}
-        [NonAction]
+		[NonAction]
 		private static string ErrorCodeToString(MembershipCreateStatus createStatus)
 		{
 			// See http://msdn.microsoft.com/en-us/library/system.web.security.membershipcreatestatus.aspx for

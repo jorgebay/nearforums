@@ -1,6 +1,9 @@
 ﻿@{
     ViewBag.Title = "Register"; ;
 }
+<ul class="path floatContainer">
+    <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+</ul>
 <h2>
     Register</h2>
 <p>
@@ -56,7 +59,7 @@
             </tr>
             <tr align="right">
                 <td colspan ="2">
-                    <input type="submit" value="Register" />
+                    <input type="submit" class="button" value="Register" />
                 </td>
             </tr>
     </table>
