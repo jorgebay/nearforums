@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NearForums.Validation;
 
 namespace NearForums
 {
@@ -19,6 +20,7 @@ namespace NearForums
 			this.Name = name;
 		}
 
+		[Range(1, Int32.MaxValue)]
 		public int Id
 		{
 			get;
