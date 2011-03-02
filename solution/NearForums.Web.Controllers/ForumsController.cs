@@ -128,16 +128,25 @@ namespace NearForums.Web.Controllers
 				{
 					forum.ShortName = Utils.ToUrlFragment(forum.Name, 32);
 				}
-				ForumsServiceClient.Add(forum, this.User.Id);
-				return RedirectToAction("Manage");
+				if (ModelState.IsValid)
+				{
+					ForumsServiceClient.Add(forum, this.User.Id);
+				}
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
-			ViewData["Categories"] = categories;
-			return View("Edit", forum);
+			if (ModelState.IsValid)
+			{
+				return RedirectToAction("Manage");
+			}
+			else
+			{
+				SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+				ViewData["Categories"] = categories;
+				return View("Edit", forum);
+			}
 		} 
 		#endregion
 
@@ -161,18 +170,26 @@ namespace NearForums.Web.Controllers
 			{
 				//fill the short name to use it as key
 				f.ShortName = forum;
-
-				ForumsServiceClient.Edit(f, this.User.Id);
-				return RedirectToAction("Manage");
+				if (ModelState.IsValid)
+				{
+					ForumsServiceClient.Edit(f, this.User.Id);
+				}
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
-			ViewData["Categories"] = categories;
-			ViewData["IsEdit"] = true;
-			return View("Edit", f);
+			if (ModelState.IsValid)
+			{
+				return RedirectToAction("Manage");
+			}
+			else
+			{
+				SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+				ViewData["Categories"] = categories;
+				ViewData["IsEdit"] = true;
+				return View("Edit", f);
+			}
 		} 
 		#endregion
 
