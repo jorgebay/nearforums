@@ -81,5 +81,14 @@ namespace NearForums
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Determines the number of flags
+		/// </summary>
+		public int FlagCount
+		{
+			get;
+			set;
+		}
 	}
 }

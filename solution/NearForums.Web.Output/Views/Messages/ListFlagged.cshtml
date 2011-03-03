@@ -1,0 +1,37 @@
+﻿@model List<Topic>
+@{
+    ViewBag.Title = "Flagged messages";
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+</ul>
+<h1>@ViewBag.Title</h1>
+@if (Model.Count > 0)
+{
+	<ul>
+	@foreach (Topic t in Model)
+	{
+		<li>
+			<h3>@Html.ActionLink(t.Title, "ShortUrl", "Topics", new{id=t.Id}, null)</h3>
+			<ul>
+			@foreach (Message m in t.Messages)
+			{
+				<li>
+					<div class="msgHeader">
+						<strong>
+							@Html.ActionLink("#" + m.Id, "ShortUrl", "Topics", null, null, "msg" + m.Id, new{id=t.Id}, null)
+						</strong>
+						<span class="userSep">
+						by
+						</span>
+						<strong class="userName">@Html.ActionLink(m.User.UserName, "Detail", "Users", new{id=m.User.Id}, null)</strong>
+					</div>
+					<div class="msgBody">@Html.Raw(m.Body)</div>
+				</li>
+			}
+			</ul>
+		</li>
+	}
+	</ul>
+}

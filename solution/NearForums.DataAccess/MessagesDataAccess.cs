@@ -149,5 +149,36 @@ namespace NearForums.DataAccess
 
 			return comm.SafeExecuteNonQuery() > 0;
 		}
+
+		/// <summary>
+		/// List flagged messages grouped by topic
+		/// </summary>
+		/// <returns></returns>
+		public List<Topic> ListFlagged()
+		{
+			List<Topic> list = new List<Topic>();
+			DbCommand comm = this.GetCommand("SPMessagesFlagsGetAll");
+
+
+			DataTable dt = this.GetTable(comm);
+			Topic t = null;
+			foreach (DataRow dr in dt.Rows)
+			{
+				if (t == null || t.Id != dr.Get<int>("TopicId"))
+				{
+					t = new Topic(dr.Get<int>("TopicId"));
+					t.Title = dr.GetString("TopicTitle");
+					list.Add(t);
+				}
+				t.Messages.Add(new Message()
+				{
+					Id = dr.Get<int>("MessageId")
+					,Body = dr.GetString("MessageBody")
+					,FlagCount = dr.Get<int>("TotalFlags")
+					,User = new User(dr.Get<int>("UserId"), dr.GetString("UserName"))
+				});
+			}
+			return list;
+		}
 	}
 }

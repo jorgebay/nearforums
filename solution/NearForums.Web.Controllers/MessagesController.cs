@@ -49,7 +49,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult ListFlagged()
 		{
 			var messages = MessagesServiceClient.ListFlagged();
-			return View();
+			return View(messages);
 		}
 		#endregion
 	}

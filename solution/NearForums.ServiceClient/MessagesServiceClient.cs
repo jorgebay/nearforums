@@ -57,9 +57,13 @@ namespace NearForums.ServiceClient
 			return da.Flag(topicId, messageId, ip);
 		}
 
-		public static List<Message> ListFlagged()
+		/// <summary>
+		/// Gets a list of flagged messages grouped by topic
+		/// </summary>
+		public static List<Topic> ListFlagged()
 		{
-			throw new NotImplementedException();
+			var da = new MessagesDataAccess();
+			return da.ListFlagged();
 		}
 	}
 }
