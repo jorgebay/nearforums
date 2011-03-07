@@ -449,7 +449,7 @@ ul#messages div.msgHeader a.msgId
 	font-size: 22px;
 	font-weight: normal;
 }
-ul#messages div.msgOptions
+ul div.msgOptions
 {
 	text-align: right;
 	visibility: hidden;
@@ -457,26 +457,26 @@ ul#messages div.msgOptions
 	top: 2px;
 	line-height: 11px;
 }
-ul#messages div.msgOptions a
+ul div.msgOptions a
 {
 	text-decoration: none;
 	font-weight: normal;
 	border-left: solid 1px #666666;
 	padding-left: 3px;
 }
-ul#messages div.msgOptions a:hover
+ul div.msgOptions a:hover
 {
 	text-decoration: underline;
 }
-ul#messages div.msgOptions a.first
+ul div.msgOptions a.first
 {
 	border: none;
 }
-ul#messages li.over
+li.over
 {
 	background-color: #F0F0F0;
 }
-ul#messages li.over div.msgOptions
+li.over div.msgOptions
 {
 	visibility: visible;
 }
@@ -709,4 +709,8 @@ form div.checkbox input.notifyEmail
 div.captcha img
 {
 	padding-left: 10px;
+}
+#listFlagged ul li
+{
+	padding: 5px 5px 7px 5px;
 }

@@ -48,8 +48,18 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Moderator)]
 		public ActionResult ListFlagged()
 		{
-			var messages = MessagesServiceClient.ListFlagged();
-			return View(messages);
+			var topics = MessagesServiceClient.ListFlagged();
+			return View(topics);
+		}
+		#endregion
+
+		#region ClearFlags
+		[HttpPost]
+		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail = true)]
+		public ActionResult ClearFlags(int mid, int id, string forum, string name)
+		{
+			bool cleared = MessagesServiceClient.ClearFlags(id, mid);
+			return Json(cleared);
 		}
 		#endregion
 	}

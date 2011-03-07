@@ -168,6 +168,14 @@ namespace NearForums.DataAccess
 				{
 					t = new Topic(dr.Get<int>("TopicId"));
 					t.Title = dr.GetString("TopicTitle");
+					t.ShortName = dr.GetString("TopicShortName");
+					t.Forum = new Forum()
+					{
+						Name = dr.GetString("ForumName")
+						,ShortName = dr.GetString("ForumShortName")
+						,Id = dr.Get<int>("ForumId")
+
+					};
 					list.Add(t);
 				}
 				t.Messages.Add(new Message()
@@ -179,6 +187,15 @@ namespace NearForums.DataAccess
 				});
 			}
 			return list;
+		}
+
+		public bool ClearFlags(int topicId, int messageId)
+		{
+			DbCommand comm = this.GetCommand("SPMessagesFlagsClear");
+			comm.AddParameter<int>(this.Factory, "TopicId", topicId);
+			comm.AddParameter<int>(this.Factory, "MessageId", messageId);
+
+			return comm.SafeExecuteNonQuery() > 0;
 		}
 	}
 }

@@ -65,5 +65,11 @@ namespace NearForums.ServiceClient
 			var da = new MessagesDataAccess();
 			return da.ListFlagged();
 		}
+
+		public static bool ClearFlags(int topicId, int messageId)
+		{
+			var da = new MessagesDataAccess();
+			return da.ClearFlags(topicId, messageId);
+		}
 	}
 }
