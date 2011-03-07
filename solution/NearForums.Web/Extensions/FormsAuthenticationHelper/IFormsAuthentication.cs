@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NearForums.ForumsFormsAuthentication
+namespace NearForums.Web.Extensions.FormsAuthenticationHelper
 {
     public interface IFormsAuthentication
     {

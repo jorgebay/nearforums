@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Security;
 
-namespace NearForums.ForumsFormsAuthentication.Impl
+namespace NearForums.Web.Extensions.FormsAuthenticationHelper.Impl
 {
     public class FormsAuthenticationService : IFormsAuthentication
     {

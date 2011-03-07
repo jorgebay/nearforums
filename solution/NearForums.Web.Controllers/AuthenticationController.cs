@@ -11,6 +11,8 @@ using System.Net;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using DotNetOpenAuth.Messaging;
 using System.Web.Security;
+using NearForums.Web.Extensions.FormsAuthenticationHelper;
+using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 
 namespace NearForums.Web.Controllers
 {
@@ -34,6 +36,9 @@ namespace NearForums.Web.Controllers
 		public ActionResult Logout(string returnUrl)
 		{
 			Session.User = null;
+			IFormsAuthentication formsAuth = new FormsAuthenticationService();
+			formsAuth.SignOut();
+
 			if (String.IsNullOrEmpty(returnUrl))
 			{
 				returnUrl = "/";

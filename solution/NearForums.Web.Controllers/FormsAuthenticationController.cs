@@ -7,10 +7,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
-//using MvcMembership;
 using NearForums.Web.Controllers.Helpers;
-using NearForums.ForumsFormsAuthentication;
-using NearForums.ForumsFormsAuthentication.Impl;
+using NearForums.Web.Extensions.FormsAuthenticationHelper;
+using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 
 namespace NearForums.Web.Controllers
 {

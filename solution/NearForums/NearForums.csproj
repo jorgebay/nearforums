@@ -36,8 +36,6 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -76,10 +74,6 @@
     <Compile Include="Configuration\TopicElement.cs" />
     <Compile Include="EmailPolicy.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="ForumFormsAuthentication\IFormsAuthentication.cs" />
-    <Compile Include="ForumFormsAuthentication\IMembershipService.cs" />
-    <Compile Include="ForumFormsAuthentication\Impl\AccountMembershipService.cs" />
-    <Compile Include="ForumFormsAuthentication\Impl\FormsAuthenticationService.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumCategory.cs" />
     <Compile Include="Message.cs" />

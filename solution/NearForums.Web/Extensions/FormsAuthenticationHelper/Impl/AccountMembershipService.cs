@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
-using NearForums.ForumsFormsAuthentication;
 
-namespace NearForums.ForumsFormsAuthentication.Impl
+namespace NearForums.Web.Extensions.FormsAuthenticationHelper.Impl
 {
     public class AccountMembershipService : IMembershipService
     {
