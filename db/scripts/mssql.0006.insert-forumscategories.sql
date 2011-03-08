@@ -1,0 +1,1 @@
+INSERT INTO dbo.ForumsCategories (CategoryName, CategoryOrder) VALUES ('General', 1)
