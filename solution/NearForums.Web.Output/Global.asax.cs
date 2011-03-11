@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using NearForums.Configuration;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Output
 {
@@ -44,12 +46,16 @@ namespace NearForums.Web.Output
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
+
+			SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsDefined = WebConfigHelper.IsFormsAuthenticationEnabled();
 		}
 
 		protected void Application_AuthenticateRequest()
 		{
-			if (HttpContext.Current.User != null)
+			if (SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsDefined == true && HttpContext.Current.User != null)
+			{
 				Membership.GetUser(true);
+			}
 		}
 	}
 }

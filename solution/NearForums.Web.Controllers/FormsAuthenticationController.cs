@@ -10,6 +10,7 @@ using System.Web.UI;
 using NearForums.Web.Controllers.Helpers;
 using NearForums.Web.Extensions.FormsAuthenticationHelper;
 using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
@@ -59,7 +60,7 @@ namespace NearForums.Web.Controllers
 		{
 			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
 			{
-				return View("Error");
+				return ResultHelper.ForbiddenResult(this);
 			}
 			if (this.User != null)
 			{
@@ -74,7 +75,10 @@ namespace NearForums.Web.Controllers
 			Justification = "Needs to take same parameter type as Controller.Redirect()")]
 		public ActionResult Login(string userName, string password, bool rememberMe, string returnUrl)
 		{
-
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
 			if (!ValidateLogOn(userName, password))
 			{
 				return View();
@@ -96,7 +100,10 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult LogOff()
 		{
-
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
 			FormsAuth.SignOut();
 
 			return RedirectToAction("List", "Forums");
@@ -104,7 +111,10 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult Register()
 		{
-
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
 			return View();
@@ -113,7 +123,10 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Register(string userName, string email, string password, string confirmPassword)
 		{
-
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
 			if (ValidateRegistration(userName, email, password, confirmPassword))

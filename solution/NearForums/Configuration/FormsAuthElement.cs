@@ -11,21 +11,7 @@ namespace NearForums.Configuration
 	/// </summary>
 	public class FormsAuthElement : ConfigurationElement, IOptionalElement
 	{
-		/// <summary>
-		/// 
-		/// </summary>
-		[ConfigurationProperty("defined", IsRequired = false)]
-		public bool Identifier
-		{
-			get
-			{
-				return (bool)this["defined"];
-			}
-			set
-			{
-				this["defined"] = value;
-			}
-		}
+		private bool _isDefined;
 
 		/// <summary>
 		/// Determines if the provider required data has been defined.
@@ -34,7 +20,11 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return this.Identifier;
+				return _isDefined;
+			}
+			set
+			{
+				_isDefined = value;
 			}
 		}
 	}
