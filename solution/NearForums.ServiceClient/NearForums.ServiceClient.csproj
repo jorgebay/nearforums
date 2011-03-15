@@ -39,9 +39,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -49,6 +49,7 @@
     <Compile Include="ForumsServiceClient.cs" />
     <Compile Include="LoggerServiceClient.cs" />
     <Compile Include="MessagesServiceClient.cs" />
+    <Compile Include="PageContentsServiceClient.cs" />
     <Compile Include="TagsServiceClient.cs" />
     <Compile Include="TemplatesServiceClient.cs" />
     <Compile Include="TopicsServiceClient.cs" />

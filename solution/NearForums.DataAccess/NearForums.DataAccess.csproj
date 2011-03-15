@@ -35,9 +35,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -46,6 +46,7 @@
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="ForumsDataAccess.cs" />
     <Compile Include="MessagesDataAccess.cs" />
+    <Compile Include="PageContentsDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagsDataAccess.cs" />
     <Compile Include="TemplatesDataAccess.cs" />
