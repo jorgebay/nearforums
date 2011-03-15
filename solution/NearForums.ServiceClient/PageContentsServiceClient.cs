@@ -2,34 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NearForums.DataAccess;
 
 namespace NearForums.ServiceClient
 {
 	public static class PageContentsServiceClient
 	{
-		public static List<PageContent> List()
+		/// <summary>
+		/// Gets all page contents in a list, sorted by title
+		/// </summary>
+		/// <returns></returns>
+		public static List<PageContent> GetAll()
 		{
-			throw new NotImplementedException();
+			PageContentsDataAccess da = new PageContentsDataAccess();
+			return da.GetAll();
 		}
 
 		public static PageContent Get(string name)
 		{
-			throw new NotImplementedException();
+			var da = new PageContentsDataAccess();
+			return da.Get(name);
 		}
 
 		public static void Add(PageContent content)
 		{
-			throw new NotImplementedException();
+			if (!String.IsNullOrEmpty(content.Title))
+			{
+				content.ShortName = Utils.ToUrlFragment(content.Title, 128);
+			}
+			content.ValidateFields();
+			SetAvailableShortName(content);
+			var da = new PageContentsDataAccess();
+			da.Add(content);
+		}
+
+		/// <summary>
+		/// Gets the available shortname (based on the current one) and assigns it 
+		/// </summary>
+		public static void SetAvailableShortName(PageContent content)
+		{
+			var da = new PageContentsDataAccess();
+			content.ShortName = da.GetAvailableShortName(content.ShortName);
 		}
 
 		public static void Edit(PageContent content)
 		{
-			throw new NotImplementedException();
+			content.ValidateFields();
+			var da = new PageContentsDataAccess();
+			da.Edit(content);
 		}
 
 		public static bool Delete(string name)
 		{
-			throw new NotImplementedException();
+			var da = new PageContentsDataAccess();
+			return da.Delete(name);
 		}
 	}
 }

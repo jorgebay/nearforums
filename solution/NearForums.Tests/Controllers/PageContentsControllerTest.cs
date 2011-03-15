@@ -98,7 +98,7 @@ namespace NearForums.Tests.Controllers
 			#endregion
 
 			#region Delete
-			result = controller.Edit(content.ShortName);
+			result = controller.Delete(content.ShortName);
 			Assert.IsInstanceOfType(result, typeof(JsonResult));
 			#endregion
 		}

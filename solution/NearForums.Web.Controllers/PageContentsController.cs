@@ -14,7 +14,7 @@ namespace NearForums.Web.Controllers
 	{
 		public ActionResult List()
 		{
-			var list = PageContentsServiceClient.List();
+			var list = PageContentsServiceClient.GetAll();
 			return View(list);
 		}
 

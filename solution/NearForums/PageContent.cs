@@ -9,7 +9,7 @@ namespace NearForums
 	/// <summary>
 	/// Represents a timeless content of the site like about pages / privacy policies /etc.
 	/// </summary>
-	public class PageContent
+	public class PageContent : Entity
 	{
 		/// <summary>
 		/// Creates a new instance of a timeless content.
