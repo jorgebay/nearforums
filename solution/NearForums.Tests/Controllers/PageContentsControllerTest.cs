@@ -75,16 +75,28 @@ namespace NearForums.Tests.Controllers
 				Title = "Dummy Test Content"
 				,Body = "<p>Hello world</p>"
 			};
+			PageContent contentFail = new PageContent();
 			#region Add
 			var result = controller.Add(content);
 			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
-			Assert.IsNotNull(content.ShortName); 
+			Assert.IsNotNull(content.ShortName);
+
+			controller = new PageContentsController();
+			result = controller.Add(contentFail);
+			//Must return to the view
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			#endregion
 
 			#region Edit
 			content.Title += " (Edited)";
+			controller = new PageContentsController();
 			result = controller.Edit(content.ShortName, content);
-			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult)); 
+			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+
+			controller = new PageContentsController();
+			result = controller.Edit(content.ShortName, contentFail);
+			//Must return to the view
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			#endregion
 
 			#region List and Detail
