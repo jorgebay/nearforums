@@ -1,4 +1,11 @@
-﻿CREATE TABLE [dbo].[PageContents](
+﻿IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[PageContents]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP TABLE PageContents;
+
+GO
+
+CREATE TABLE [dbo].[PageContents](
 	[PageContentId] [int] IDENTITY(1,1) NOT NULL,
 	[PageContentTitle] [varchar](128) COLLATE Modern_Spanish_CI_AS NOT NULL,
 	[PageContentBody] [varchar](max) COLLATE Modern_Spanish_CI_AS NOT NULL,
@@ -12,6 +19,12 @@
 
 GO
 
+IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[SPPageContentsDelete]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP PROCEDURE SPPageContentsDelete;
+GO
+
 CREATE PROCEDURE [dbo].[SPPageContentsDelete]
 	@PageContentShortName varchar(128)
 AS
@@ -19,6 +32,12 @@ DELETE FROM PageContents
 WHERE
 	PageContentShortName = @PageContentShortName
 
+GO
+
+IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[SPPageContentsGet]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP PROCEDURE SPPageContentsGet;
 GO
 
 CREATE PROCEDURE [dbo].[SPPageContentsGet]
@@ -36,6 +55,12 @@ WHERE
 
 GO
 
+IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[SPPageContentsGetAll]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP PROCEDURE SPPageContentsGetAll;
+GO
+
 CREATE PROCEDURE [dbo].[SPPageContentsGetAll]
 	
 AS
@@ -49,6 +74,12 @@ FROM
 ORDER BY
 	PageContentTitle
 
+GO
+
+IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[SPPageContentsGetUsedShortNames]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP PROCEDURE SPPageContentsGetUsedShortNames;
 GO
 
 CREATE PROCEDURE [dbo].[SPPageContentsGetUsedShortNames]
@@ -86,6 +117,12 @@ ELSE
 
 GO
 
+IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[SPPageContentsInsert]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP PROCEDURE SPPageContentsInsert;
+GO
+
 CREATE PROCEDURE [dbo].[SPPageContentsInsert]
 	@PageContentShortName varchar(128)
 	,@PageContentTitle varchar(128)
@@ -106,6 +143,12 @@ VALUES
 ,GETUTCDATE()
 )
 
+GO
+
+IF EXISTS(SELECT * FROM [dbo].[sysobjects]
+	WHERE ID = object_id(N'[dbo].[SPPageContentsUpdate]') 
+	AND xtype in ('U', 'P', 'IF', 'V'))
+	DROP PROCEDURE SPPageContentsUpdate;
 GO
 
 CREATE PROCEDURE [dbo].[SPPageContentsUpdate]
