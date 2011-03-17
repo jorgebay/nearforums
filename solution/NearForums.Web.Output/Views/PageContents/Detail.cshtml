@@ -1,0 +1,21 @@
+﻿@model PageContent
+@{
+    ViewBag.Title = Model.Title;
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+</ul>
+<h1>@ViewBag.Title</h1>
+<div class="pageContent">
+	<div class="page-@Model.ShortName">
+		@Html.Raw(Model.Body)
+	</div>
+	@if (User != null && User.Group == UserGroup.Admin)
+	{
+	<div class="toolbar floatContainer">
+		<ul>
+			<li class="edit">@Html.ActionLink("Edit", "Edit", new{name=Model.ShortName})</li>
+		</ul>
+	</div>
+	}
+</div>

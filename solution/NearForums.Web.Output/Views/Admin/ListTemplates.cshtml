@@ -10,7 +10,7 @@
 @ViewData.WriteIf("DeleteCurrent", MvcHtmlString.Create("<p class='error'>You cannot delete the current template.</p>"), MvcHtmlString.Empty)
 @ViewData.WriteIf("Access", "<p class='error'>The application does not have the necessary file read/write access.</p>", "")
 	 
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0" class="admin">
 	<thead>
 		<tr>
 			<th>Action</th>

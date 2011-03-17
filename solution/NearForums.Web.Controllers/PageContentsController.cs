@@ -32,11 +32,12 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult Add()
 		{
-			return View();
+			return View("Edit");
 		}
 
 		[HttpPost]
 		[RequireAuthorization(UserGroup.Admin)]
+		[ValidateInput(false)]
 		public ActionResult Add([Bind] PageContent content)
 		{
 			try
@@ -53,7 +54,7 @@ namespace NearForums.Web.Controllers
 			}
 			else
 			{
-				return View(content);
+				return View("Edit", content);
 			}
 		}
 
@@ -66,11 +67,13 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
+			ViewData["IsEdit"] = true;
 			return View(content);
 		}
 
 		[HttpPost]
 		[RequireAuthorization(UserGroup.Admin)]
+		[ValidateInput(false)]
 		public ActionResult Edit(string name, [Bind] PageContent content)
 		{
 			try
@@ -88,6 +91,7 @@ namespace NearForums.Web.Controllers
 			}
 			else
 			{
+				ViewData["IsEdit"] = true;
 				return View(content);
 			}
 		}

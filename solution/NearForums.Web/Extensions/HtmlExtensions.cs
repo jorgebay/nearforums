@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Security;
 using NearForums.Configuration;
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace NearForums.Web.Extensions
 {
@@ -114,6 +115,7 @@ namespace NearForums.Web.Extensions
 			return htmlHelper.Date(date, SiteConfiguration.Current.DateFormat);
 		}
 
+		#region Link
 		public static MvcHtmlString Link(this HtmlHelper htmlHelper, string url)
 		{
 			return htmlHelper.Link(url, null);
@@ -131,7 +133,7 @@ namespace NearForums.Web.Extensions
 
 		public static MvcHtmlString Link(this HtmlHelper htmlHelper, string innerHtml, string url, object htmlAttributes)
 		{
-			IDictionary<string, object> htmlAttributesDictionay = ((IDictionary<string, object>) new RouteValueDictionary(htmlAttributes));
+			IDictionary<string, object> htmlAttributesDictionay = ((IDictionary<string, object>)new RouteValueDictionary(htmlAttributes));
 			TagBuilder builder = new TagBuilder("a");
 			builder.MergeAttributes<string, object>(htmlAttributesDictionay);
 			if (innerHtml == null)
@@ -144,7 +146,8 @@ namespace NearForums.Web.Extensions
 			}
 			builder.Attributes.Add("href", url);
 			return MvcHtmlString.Create(builder.ToString(TagRenderMode.Normal));
-		}
+		} 
+		#endregion
 
 		public static MvcHtmlString CheckBoxBit<T>(this HtmlHelper htmlHelper, string name, T value, T expectedBit) where T : struct, IConvertible
 		{
@@ -157,6 +160,7 @@ namespace NearForums.Web.Extensions
 		}
 
 
+		#region Captcha
 		/// <summary>
 		/// Returns a formItem with the captcha image in case the user has to validate his "humanity".
 		/// </summary>
@@ -179,7 +183,8 @@ namespace NearForums.Web.Extensions
 			{
 				return null;
 			}
-		}
+		} 
+		#endregion
 
 		public static string GetUrl(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues)
 		{
