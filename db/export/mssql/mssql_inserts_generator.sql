@@ -1,4 +1,4 @@
-select '/*030*/ IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0'
+﻿select '/*030*/ IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0'
 UNION
 select '/*040*/ BEGIN'
 UNION
