@@ -12,17 +12,18 @@
     @{Html.BeginForm(null, null, FormMethod.Post, new{@id="manageForm"});}
     @Html.AntiForgeryToken()
     <input type="hidden" name="forum" id="shortName" value="" />
-    <ul>
+    <ul class="admin">
 	@foreach (ForumCategory category in this.Model)
 	{
 		foreach (Forum f in category.Forums)
 		{
 			<li>
-				@Html.ActionLink("Edit", "Edit", "Forums", new{forum=f.ShortName}, null),
-				@*<a href="#" onclick="return deleteForum('@(f.ShortName)');">Delete</a>,*@
-				@Html.ActionLink("View", "Detail", "Forums", new{forum=f.ShortName}, null)
-				- 
-				@(category.Name + " > " + f.Name)</li>
+				<span class="actions">
+					@Html.ActionLink("Edit", "Edit", "Forums", new{forum=f.ShortName}, null)
+					<a href="#" onclick="return deleteForum('@(f.ShortName)');">Delete</a>
+				</span>
+				 @Html.ActionLink(@category.Name + " > " + f.Name, "Detail", "Forums", new{forum=f.ShortName}, null)
+			</li>
 		}	
 	}
 	</ul>

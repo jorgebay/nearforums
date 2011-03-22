@@ -227,6 +227,13 @@ ul.items li
 	margin: 0;
 	padding: 0px 0px 4px 15px;
 }
+ul.items li.sticky a
+{
+	padding-right: 20px;
+	background-image: url(/images/temp/icon-sticky.png);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
 ul.items h3
 {
 	padding-bottom: 10px;

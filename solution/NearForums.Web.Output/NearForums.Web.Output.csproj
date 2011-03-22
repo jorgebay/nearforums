@@ -129,6 +129,7 @@
     <Content Include="images\temp\icon-print.gif" />
     <Content Include="images\temp\icon-reply.gif" />
     <Content Include="images\temp\icon-show-all.gif" />
+    <Content Include="images\temp\icon-sticky.png" />
     <Content Include="images\temp\next-big.gif" />
     <Content Include="scripts\common.js" />
     <Content Include="scripts\jquery-1.3.2-vsdoc.js" />
