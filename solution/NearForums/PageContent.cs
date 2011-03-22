@@ -33,6 +33,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Short name identifier of the page. 
+		/// </summary>
 		[RequireField]
 		[Length(128)]
 		public string ShortName

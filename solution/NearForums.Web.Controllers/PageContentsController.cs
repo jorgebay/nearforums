@@ -12,6 +12,7 @@ namespace NearForums.Web.Controllers
 {
 	public class PageContentsController : BaseController
 	{
+		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult List()
 		{
 			var list = PageContentsServiceClient.GetAll();

@@ -21,6 +21,10 @@
 	@if (this.User.Group == UserGroup.Admin)
 	{
 	<li>
+		<h3>@Html.ActionLink("Manage pages", "List", "PageContents")</h3>
+		<p>Manage content pages like about / privacy / ...</p>
+	</li>
+	<li>
 		<h3>@Html.ActionLink("Manage templates", "ListTemplates", "Admin")</h3>
 		<p>Manage the site templates for the forum.</p>
 	</li>
