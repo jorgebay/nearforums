@@ -51,11 +51,6 @@ namespace NearForums.Web.Controllers
 			private set;
 		}
 
-		//public ActionResult Login()
-		//{
-		//    return View();
-		//}
-
 		public ActionResult Login(string returnUrl)
 		{
 			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
@@ -116,6 +111,16 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+
+			return View();
+		}
+
+		public ActionResult ResetPassword()
+		{
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
 
 			return View();
 		}
@@ -197,14 +202,6 @@ namespace NearForums.Web.Controllers
 		{
 			return View();
 		}
-
-		//protected override void OnActionExecuting(ActionExecutingContext filterContext)
-		//{
-		//    if (filterContext.HttpContext.User.Identity is WindowsIdentity)
-		//    {
-		//        throw new InvalidOperationException("Windows authentication is not supported.");
-		//    }
-		//}
 
 		#region Validation Methods
 		[NonAction]

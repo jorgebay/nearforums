@@ -13,6 +13,19 @@ namespace NearForums.Configuration
 	{
 		private bool _isDefined;
 
+		[ConfigurationProperty("defined", IsRequired = true)]
+		public bool Identifier
+		{
+			get
+			{
+				return (bool)this["defined"];
+			}
+			set
+			{
+				this["defined"] = value;
+			}
+		}
+
 		/// <summary>
 		/// Determines if the provider required data has been defined.
 		/// </summary>
@@ -20,11 +33,19 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return _isDefined;
+				return this.Identifier && this.IsFormsAuthDefined;
+			}
+		}
+
+		public bool IsFormsAuthDefined
+		{
+			get
+			{
+				return this._isDefined;
 			}
 			set
 			{
-				_isDefined = value;
+				this._isDefined = value;
 			}
 		}
 	}

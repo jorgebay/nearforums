@@ -45,5 +45,11 @@ namespace NearForums.Web.Extensions.FormsAuthenticationHelper.Impl
             MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
             return currentUser.ChangePassword(oldPassword, newPassword);
         }
-    }
+
+		public string ResetPassword(string userName, string secretAnswer)
+		{
+			return _provider.ResetPassword(userName, secretAnswer);
+		}
+
+	}
 }
