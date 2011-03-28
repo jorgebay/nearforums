@@ -108,5 +108,17 @@ namespace NearForums.ServiceClient
 			UsersDataAccess da = new UsersDataAccess();
 			da.AddEmail(id, email, policy);
 		}
+
+		/// <summary>
+		/// Updates the user's password reset temporary Guid used for password reset purposes
+		/// </summary>
+		/// <param name="id">UserId</param>
+		/// <param name="Guid">PasswordResetGuid</param>
+		/// <param name="expireDate">PasswordResetGuidExpireDate</param>
+		public static void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			da.UpdatePasswordResetGuid(id, Guid, expireDate);
+		}
 	}
 }
