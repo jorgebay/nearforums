@@ -1,0 +1,8 @@
+﻿DROP INDEX IX_Flags ON [dbo].[Flags];
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Flags] ON [dbo].[Flags] 
+(
+	[TopicId] ASC,
+	[MessageId] ASC,
+	[Ip] ASC
+)WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY]
