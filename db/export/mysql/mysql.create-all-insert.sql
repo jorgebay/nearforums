@@ -1,4 +1,4 @@
-﻿-- Init options
+-- Init options
 SET GLOBAL log_bin_trust_function_creators = 1;
 
 -- MySQL Administrator dump 1.4
@@ -62,6 +62,26 @@ CREATE TABLE `topicscomplete` (
 );
 
 --
+-- Definition of table `flags`
+--
+
+DROP TABLE IF EXISTS `flags`;
+CREATE TABLE `flags` (
+  `flagId` int(11) NOT NULL AUTO_INCREMENT,
+  `topicId` int(11) NOT NULL,
+  `messageId` int(11) NOT NULL,
+  `ip` varchar(15) CHARACTER SET latin1 NOT NULL,
+  `flagdate` datetime NOT NULL,
+  PRIMARY KEY (`flagId`,`topicId`) USING BTREE,
+  UNIQUE KEY `ix_topicid_messageid_ip` (`topicId`,`messageId`,`ip`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `flags`
+--
+INSERT INTO `flags` VALUES   (18,1,2,'127.0.0.1','2011-03-29 14:26:28');
+
+--
 -- Definition of table `forums`
 --
 
@@ -88,7 +108,7 @@ CREATE TABLE `forums` (
   CONSTRAINT `fk_forums_forumscategories` FOREIGN KEY (`categoryid`) REFERENCES `forumscategories` (`categoryid`),
   CONSTRAINT `fk_forums_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
   CONSTRAINT `fk_forums_users_lastedit` FOREIGN KEY (`forumlastedituser`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `forums`
@@ -104,7 +124,7 @@ CREATE TABLE `forumscategories` (
   `categoryname` varchar(255) NOT NULL,
   `categoryorder` int(11) NOT NULL,
   PRIMARY KEY (`categoryid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `forumscategories`
@@ -131,11 +151,30 @@ CREATE TABLE `messages` (
   KEY `fk_messages_users` (`userid`),
   CONSTRAINT `fk_messages_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
   CONSTRAINT `fk_messages_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `messages`
 --
+
+--
+-- Definition of table `pagecontents`
+--
+
+DROP TABLE IF EXISTS `pagecontents`;
+CREATE TABLE `pagecontents` (
+  `pagecontentid` int(11) NOT NULL AUTO_INCREMENT,
+  `pagecontenttitle` varchar(128) NOT NULL,
+  `pagecontentbody` longtext NOT NULL,
+  `pagecontentshortname` varchar(128) NOT NULL,
+  `pagecontenteditdate` datetime NOT NULL,
+  PRIMARY KEY (`pagecontentid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `pagecontents`
+--
+INSERT INTO `pagecontents` VALUES   (1,'About','\r\n	<p>This forum is powered by <a href=\"http://www.nearforums.com\">Nearforums</a>, an open source forum engine.</p>\r\n	<p>Nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">MIT License</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2011-03-29 14:39:22');
 
 --
 -- Definition of table `tags`
@@ -148,7 +187,7 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`tag`,`topicid`),
   KEY `fk_tags_topics` (`topicid`),
   CONSTRAINT `fk_tags_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tags`
@@ -166,7 +205,7 @@ CREATE TABLE `templates` (
   `templateiscurrent` tinyint(1) NOT NULL,
   `templatedate` datetime NOT NULL,
   PRIMARY KEY (`templateid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `templates`
@@ -203,7 +242,7 @@ CREATE TABLE `topics` (
   CONSTRAINT `fk_topics_forums` FOREIGN KEY (`forumid`) REFERENCES `forums` (`forumid`),
   CONSTRAINT `fk_topics_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
   CONSTRAINT `fk_topics_users_lastedit` FOREIGN KEY (`topiclastedituser`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `topics`
@@ -221,7 +260,7 @@ CREATE TABLE `topicssubscriptions` (
   KEY `fk_topicssubscriptions_users` (`userid`),
   CONSTRAINT `fk_topicssubscriptions_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
   CONSTRAINT `fk_topicssubscriptions_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `topicssubscriptions`
@@ -254,7 +293,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`userid`),
   KEY `fk_users_usersgroups` (`usergroupid`),
   CONSTRAINT `fk_users_usersgroups` FOREIGN KEY (`usergroupid`) REFERENCES `usersgroups` (`usergroupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -269,7 +308,7 @@ CREATE TABLE `usersgroups` (
   `usergroupid` smallint(6) NOT NULL,
   `usergroupname` varchar(50) NOT NULL,
   PRIMARY KEY (`usergroupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `usersgroups`
@@ -278,6 +317,23 @@ INSERT INTO `usersgroups` VALUES   (1,'Level 1');
 INSERT INTO `usersgroups` VALUES   (2,'Level2');
 INSERT INTO `usersgroups` VALUES   (3,'Moderator');
 INSERT INTO `usersgroups` VALUES   (10,'Admin');
+
+--
+-- Definition of function `FNCastToInt`
+--
+
+DROP FUNCTION IF EXISTS `FNCastToInt`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `FNCastToInt`(number bigint) RETURNS int(11)
+BEGIN
+  return number;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
 
 --
 -- Definition of function `FNSplit`
@@ -318,6 +374,14 @@ BEGIN
   TRUNCATE TABLE Templates;
   TRUNCATE TABLE Forums;
   TRUNCATE TABLE Users;
+  TRUNCATE TABLE PageContents;
+/*
+DEFAULT VALUES
+*/
+INSERT INTO PageContents (PageContentTitle, PageContentShortName, PageContentEditDate, PageContentBody)
+	VALUES ('About', 'about', UTC_TIMESTAMP(), '
+	<p>This forum is powered by <a href="http://www.nearforums.com">Nearforums</a>, an open source forum engine.</p>
+	<p>Nearforums is released under <a href="http://nearforums.codeplex.com/license" target="_blank">MIT License</a>, you can get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.</p>');
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
@@ -681,6 +745,108 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `SPMessagesFlag`
+--
+
+DROP PROCEDURE IF EXISTS `SPMessagesFlag`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesFlag`(
+	param_TopicId int
+	,param_MessageId int
+	,param_Ip varchar(15)
+)
+BEGIN
+	INSERT IGNORE INTO Flags
+	(TopicId, MessageId, Ip, FlagDate)
+	VALUES
+	(param_TopicId, param_MessageId, param_Ip, UTC_TIMESTAMP());
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPMessagesFlagsClear`
+--
+
+DROP PROCEDURE IF EXISTS `SPMessagesFlagsClear`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesFlagsClear`(
+	param_TopicId int
+	,param_MessageId int
+)
+BEGIN
+DELETE FROM
+	Flags
+WHERE
+	TopicId = param_TopicId
+	AND
+	MessageId = param_MessageId;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPMessagesFlagsGetAll`
+--
+
+DROP PROCEDURE IF EXISTS `SPMessagesFlagsGetAll`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesFlagsGetAll`()
+BEGIN
+/*
+	Lists all flagged messages (not topics)
+*/
+SELECT
+	F.TopicId
+	,F.MessageId
+	,FNCastToInt(COUNT(FlagId)) AS TotalFlags
+	,T.TopicTitle
+	,T.TopicShortName
+	,Forums.ForumId
+	,Forums.ForumShortName
+	,Forums.ForumName
+	,M.MessageBody
+	,M.UserName
+	,M.UserId
+FROM
+	Flags F
+	INNER JOIN Topics T ON T.TopicId = F.TopicId
+	INNER JOIN Forums ON Forums.ForumId = T.ForumId
+	INNER JOIN MessagesComplete M ON M.TopicId = T.TopicId AND M.MessageId = F.MessageId
+WHERE
+	T.Active = 1
+	AND	
+	M.Active = 1
+GROUP BY
+	F.TopicId
+	,F.MessageId
+	,T.TopicTitle
+	,T.TopicShortName
+	,Forums.ForumId
+	,Forums.ForumShortName
+	,Forums.ForumName
+	,M.MessageBody
+	,M.UserName
+	,M.UserId
+ORDER BY COUNT(FlagId) DESC, F.TopicId;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `SPMessagesGetByTopic`
 --
 
@@ -922,6 +1088,188 @@ START TRANSACTION;
 COMMIT;
 
 
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPPageContentsDelete`
+--
+
+DROP PROCEDURE IF EXISTS `SPPageContentsDelete`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsDelete`(
+  param_PageContentShortName varchar(128)
+)
+BEGIN
+DELETE FROM PageContents
+WHERE
+	PageContentShortName = param_PageContentShortName;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPPageContentsGet`
+--
+
+DROP PROCEDURE IF EXISTS `SPPageContentsGet`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsGet`(
+  param_PageContentShortName varchar(128)
+)
+BEGIN
+SELECT
+	PageContentId
+	,PageContentTitle
+	,PageContentBody
+	,PageContentShortName
+FROM
+	PageContents
+WHERE
+	PageContentShortName = param_PageContentShortName;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPPageContentsGetAll`
+--
+
+DROP PROCEDURE IF EXISTS `SPPageContentsGetAll`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsGetAll`()
+BEGIN
+SELECT
+	PageContentId
+	,PageContentTitle
+	,PageContentBody
+	,PageContentShortName
+FROM
+	PageContents
+ORDER BY
+	PageContentTitle;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPPageContentsGetUsedShortNames`
+--
+
+DROP PROCEDURE IF EXISTS `SPPageContentsGetUsedShortNames`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsGetUsedShortNames`(
+	param_PageContentShortName varchar(32),
+	param_SearchShortName varchar(32)
+)
+BEGIN
+/*
+	Gets used short names for PageContents
+	returns:
+		IF NOT USED SHORTNAME: empty result set
+		IF USED SHORTNAME: resultset with amount of rows used
+*/
+DECLARE var_CurrentValue varchar(32);
+SELECT
+	PageContentShortName INTO var_CurrentValue
+FROM
+	PageContents
+WHERE
+	PageContentShortName = param_PageContentShortName;
+
+
+IF var_CurrentValue IS NULL THEN
+	SELECT NULL As ForumShortName FROM pagecontents WHERE 1=0;
+ELSE
+	SELECT
+		PageContentShortName
+	FROM
+		PageContents
+	WHERE
+		PageContentShortName LIKE CONCAT(param_SearchShortName, '%')
+		OR
+		PageContentShortName = param_PageContentShortName;
+END IF;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPPageContentsInsert`
+--
+
+DROP PROCEDURE IF EXISTS `SPPageContentsInsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsInsert`(
+	param_PageContentShortName varchar(128)
+	,param_PageContentTitle varchar(128)
+	,param_PageContentBody longtext
+)
+BEGIN
+INSERT INTO PageContents
+(
+PageContentTitle
+,PageContentBody
+,PageContentShortName
+,PageContentEditDate
+)
+VALUES
+(
+param_PageContentTitle
+,param_PageContentBody
+,param_PageContentShortName
+,UTC_TIMESTAMP()
+);
+
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `SPPageContentsUpdate`
+--
+
+DROP PROCEDURE IF EXISTS `SPPageContentsUpdate`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsUpdate`(
+	param_PageContentShortName varchar(128)
+	,param_PageContentTitle varchar(128)
+	,param_PageContentBody longtext
+ )
+BEGIN
+UPDATE PageContents
+SET
+	PageContentTitle = param_PageContentTitle
+	,PageContentBody = param_PageContentBody
+	,PageContentEditDate = UTC_TIMESTAMP()
+WHERE
+	PageContentShortName = param_PageContentShortName;
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
