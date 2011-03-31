@@ -4,63 +4,34 @@
 <ul class="path floatContainer">
     <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 </ul>
-<h2>
-    Register</h2>
+<h1>@ViewBag.Title</h1>
 <p>
-    Use the form below to create a new account.
+    
 </p>
-<p>
-    Passwords are required to be a minimum of
-    @Html.Encode(ViewData["PasswordLength"]) characters in length.
-</p>
-@Html.ValidationSummary("Account creation was unsuccessful. Please correct the errors and try again.")
+@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>(), null)
 @using (Html.BeginForm())
 {
-    <table>
-            <tr>
-                <td align="right">
-                    <label for="username">
-                        Username:</label>
-                </td>
-                <td>
-                    @Html.TextBox("username")
-                    @Html.ValidationMessage("username")
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <label for="email">
-                        Email:</label>
-                </td>
-                <td>
-                    @Html.TextBox("email")
-                    @Html.ValidationMessage("email")
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <label for="email">
-                        Password:</label>
-                </td>
-                <td>
-                    @Html.Password("password")
-                    @Html.ValidationMessage("password")
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <label for="email">
-                        Confirm Password:</label>
-                </td>
-                <td>
-                    @Html.Password("confirmPassword")
-                    @Html.ValidationMessage("confirmPassword")
-                </td>
-            </tr>
-            <tr align="right">
-                <td colspan ="2">
-                    <input type="submit" class="button" value="Register" />
-                </td>
-            </tr>
-    </table>
+    <fieldset>
+		<legend>Use the form below to create a new account</legend>
+		<div class="formItem floatContainer">
+			<label for="username">Username</label>
+			@Html.TextBox("username")
+		</div>
+		<div class="formItem floatContainer">
+			<label for="email">Email</label>
+			@Html.TextBox("email")
+		</div>
+		<div class="formItem floatContainer">
+			<label for="password">Password</label>
+			@Html.Password("password")
+			<span class="note">Passwords are required to be a minimum of @ViewData["PasswordLength"] characters in length.</span>
+		</div>
+		<div class="formItem floatContainer">
+			<label for="email">Confirm Password:</label>
+			@Html.Password("confirmPassword")
+		</div>
+		<div class="formItem buttons">
+			<input type="submit" class="button" value="Create a new account" />
+		</div>
+    </fieldset>
 }
