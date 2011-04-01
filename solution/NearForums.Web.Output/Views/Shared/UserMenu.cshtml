@@ -7,41 +7,36 @@
 }
 <ul id="userMenu">
     <li class="toContent"><a href="#content" accesskey="1">Go to content</a></li>
-    @if (User == null)
-    {
+	@if (User == null)
+	{
         if (Config.AuthorizationProviders.Facebook.IsDefined)
         {
-        <li class="login"><a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;"
-            href="#">
-            <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_short.gif"
-                alt="Login using facebook" /></a> </li>
+		<li class="login"><a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;" href="#"><img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_short.gif" alt="Login using facebook" /></a> </li>
         }
-        if (Config.AuthorizationProviders.Twitter.IsDefined)
-        {
-        <li class="login"><a href="@Url.Action("TwitterStartLogin", "Authentication", new { returnUrl = this.Request.Url.PathAndQuery })" rel="external">
-            <img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
-        }
-        if (Config.AuthorizationProviders.FormsAuth.IsDefined)
-        {
-        <li class="login"><a href="@Url.Action("Login", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })">Sign in</a></li>
+		if (Config.AuthorizationProviders.Twitter.IsDefined)
+		{
+		<li class="login"><a href="@Url.Action("TwitterStartLogin", "Authentication", new { returnUrl = this.Request.Url.PathAndQuery })" rel="external"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
+		}
+		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
+		{
+		<li class="login"><a href="@Url.Action("Login", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })">Sign in</a></li>
         }
     }
     else
-    {
-        if (this.User.Group >= UserGroup.Moderator)
-        {
-        <li class="admin">@Html.ActionLink("Admin dashboard", "Dashboard", "Admin")</li>
-        }		
-        <li class="userName">@Html.ActionLink(this.User.UserName, "Detail", "Users", new { id = User.Id }, null)</li>
-        <li class="logged">@Html.ActionLink("Edit Profile", "Edit", "Users", new { id = User.Id }, null)</li>
-                      if (this.User.Provider == AuthenticationProvider.Facebook)
-                      {
-        <li class="logout"><a href="#" onclick="FB.Connect.logoutAndRedirect('@Url.Action("Logout", "Authentication", new { returnUrl = Request.Url.PathAndQuery })');return false;">
-            Logout</a></li>
-                      }
-                      else
-                      {
-        <li class="logout">@Html.ActionLink("Logout", "Logout", "Authentication")</li>
-                      }
-    }
+	{
+		if (this.User.Group >= UserGroup.Moderator)
+		{
+			<li class="admin">@Html.ActionLink("Admin dashboard", "Dashboard", "Admin")</li>
+		}		
+		<li class="userName">@Html.ActionLink(this.User.UserName, "Detail", "Users", new { id = User.Id }, null)</li>
+		<li class="logged">@Html.ActionLink("Account", "Edit", "Users", new { id = User.Id }, null)</li>
+		if (this.User.Provider == AuthenticationProvider.Facebook)
+		{
+			<li class="logout"><a href="#" onclick="FB.Connect.logoutAndRedirect('@Url.Action("Logout", "Authentication", new { returnUrl = Request.Url.PathAndQuery })');return false;">Logout</a></li>
+		}
+		else
+		{
+			<li class="logout">@Html.ActionLink("Logout", "Logout", "Authentication")</li>
+		}
+	}
 </ul>

@@ -1,6 +1,6 @@
 ﻿@model User
 @{
-    ViewBag.Title = "Edit profile";
+    ViewBag.Title = "Account";
 }
 <ul class="path floatContainer">
     <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
@@ -15,51 +15,42 @@
 	}, null)
 @{Html.BeginForm(null, null, FormMethod.Post, new { @id = "accountForm" });}
 <fieldset>
-    <legend>Change your account info</legend>
+    <legend>Change your account information</legend>
     <div class="formItem floatContainer">
-        <label for="title">
-            Name</label>
-        @Html.TextBox("userName", null, new { @class = "text" })
+		<label for="title">Public name</label>
+		@Html.TextBox("userName", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
-        <label for="birthDate">
-            Birthdate</label>
+		<label for="birthDate">Birthdate</label>
         @Html.TextBox("birthDate", this.Model.BirthDate != null ? this.Model.BirthDate.Value.ToString("d") : null, new { @class = "text" })
-    </div>
-    <div class="formItem floatContainer" style="display: none;">
-        <label for="timezone">
-            Timezone</label>
+	</div>
+	<div class="formItem floatContainer" style="display: none;">
+		<label for="timezone">Timezone</label>
         @Html.TextBox("timezone", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
-        <label for="photo">
-            Photo url</label>
-        @Html.TextBox("photo", null, new { @class = "text" })
-        @if (!string.IsNullOrWhiteSpace(Model.Photo))
-        { 
-            <span class="note">
-                <img src="@Model.Photo" alt="Profile image" /></span>
-        }
+		<label for="photo">Photo url</label>
+		@Html.TextBox("photo", null, new { @class = "text" })
+		@if (!string.IsNullOrWhiteSpace(Model.Photo))
+		{ 
+			<span class="note"><img src="@Model.Photo" alt="Profile image" /></span>
+		}
     </div>
-    <div class="formItem floatContainer">
-        <label for="website">
-            Website</label>
+	<div class="formItem floatContainer">
+		<label for="website">Website</label>
         @Html.TextBox("website", null, new { @class = "text" })
-    </div>
-    @if (Config.AuthorizationProviders.FormsAuth.IsDefined)
-    {
-        <p class="button">
-            <input type="button" class="button" value="Change Password" onclick="window.location.href='@Url.Action("ChangePassword", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })';" /></p>
+	</div>
+	@if (User.Provider == AuthenticationProvider.Membership)
+	{
+		<p class="button"><input type="button" class="button" value="Change Password" onclick="window.location.href='@Url.Action("ChangePassword", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })';" /></p>
     }
 </fieldset>
-<h2>
-    Email</h2>
+<h2>Email</h2>
 <fieldset>
     <legend>Your email will not be shared with anyone. We will not make a different use
         than detailed below.</legend>
     <div class="formItem floatContainer">
-        <label for="email">
-            Email address</label>
+        <label for="email">Email address</label>
         @Html.TextBox("email", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
