@@ -89,7 +89,7 @@ namespace NearForums.DataAccess
 			comm.AddParameter<string>(this.Factory, "UserWebsite", user.Website);
 			comm.AddParameter<Guid>(this.Factory, "UserGuid", Guid.NewGuid());
 			comm.AddParameter<decimal>(this.Factory, "UserTimezone", (decimal)user.TimeZone.TotalHours);
-			comm.AddParameter(this.Factory, "UserEmail", DbType.String, null);
+			comm.AddParameter(this.Factory, "UserEmail", DbType.String, string.IsNullOrWhiteSpace(user.Email) ? null : user.Email);
 			comm.AddParameter(this.Factory, "UserEmailPolicy", DbType.Int32, null);
 			comm.AddParameter<string>(this.Factory, "UserPhoto", user.Photo);
 			comm.AddParameter<string>(this.Factory, "UserExternalProfileUrl", user.ExternalProfileUrl);

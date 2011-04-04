@@ -11,6 +11,7 @@ using NearForums.Web.Controllers.Helpers;
 using NearForums.Web.Extensions.FormsAuthenticationHelper;
 using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 using NearForums.Web.Extensions;
+using NearForums.ServiceClient;
 
 namespace NearForums.Web.Controllers
 {
@@ -122,6 +123,32 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 
+			return View();
+		}
+
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult ResetPassword(string email)
+		{
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			string userName = Membership.GetUserNameByEmail(email);
+
+			if (userName != null)
+			{
+				MembershipUser membershipUser = Membership.GetUser(userName);
+				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
+				string guid = System.Guid.NewGuid().ToString().Replace("-",string.Empty);
+				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddDays(2)); //Expire after 2 days. Maybe could be defined in config
+				//TODO: Send email with the GUID and verify guid expire date on web request!!
+			}
+			else
+			{
+				ModelState.AddModelError("_FORM", "There is no account associated with the provided email address.");
+				return View();
+			}
 			return View();
 		}
 

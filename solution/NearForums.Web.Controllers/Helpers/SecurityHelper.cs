@@ -342,6 +342,7 @@ namespace NearForums.Web.Controllers.Helpers
             {
                 siteUser = new User();
                 siteUser.UserName = MembershipUser.UserName;
+				siteUser.Email = MembershipUser.Email;
                 siteUser = UsersServiceClient.Add(siteUser, AuthenticationProvider.Membership, MembershipUser.ProviderUserKey.ToString());
             }
 
