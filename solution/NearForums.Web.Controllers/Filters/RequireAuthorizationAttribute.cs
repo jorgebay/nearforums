@@ -91,7 +91,7 @@ namespace NearForums.Web.Controllers.Filters
 			}
 			else
 			{
-				string redirectOnSuccess = HttpUtility.UrlEncode(filterContext.HttpContext.Request.Url.PathAndQuery);
+				string redirectOnSuccess = filterContext.HttpContext.Request.Url.PathAndQuery;
 				VirtualPathData path = this.Routes.GetVirtualPath(filterContext.RequestContext, new RouteValueDictionary(new
 				{
 					controller = "Authentication",

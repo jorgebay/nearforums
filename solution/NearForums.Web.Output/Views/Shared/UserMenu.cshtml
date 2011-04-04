@@ -11,16 +11,16 @@
 	{
         if (Config.AuthorizationProviders.Facebook.IsDefined)
         {
-		<li class="login"><a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;" href="#"><img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_short.gif" alt="Login using facebook" /></a> </li>
+		<li class="login">@Html.Partial("ButtonFacebook", new{size="small"}, true)</li>
         }
 		if (Config.AuthorizationProviders.Twitter.IsDefined)
 		{
-		<li class="login"><a href="@Url.Action("TwitterStartLogin", "Authentication", new { returnUrl = this.Request.Url.PathAndQuery })" rel="external"><img src="http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png" alt="Sign in with twitter" /></a></li>
+		<li class="login">@Html.Partial("ButtonTwitter", new{size="small"}, true)</li>
 		}
 		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
 		{
-		<li class="login"><a href="@Url.Action("Login", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })">Sign in</a></li>
-        }
+		<li class="login">@Html.ActionLink("Sign In", "Login", "Authentication", new{returnUrl = ViewBag.ReturnUrl ?? Request.Url.PathAndQuery}, null)</li>
+		}
     }
     else
 	{

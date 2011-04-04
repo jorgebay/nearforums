@@ -52,6 +52,7 @@ namespace NearForums.Web.Controllers
 			private set;
 		}
 
+		[HttpGet]
 		public ActionResult Login(string returnUrl)
 		{
 			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
@@ -62,11 +63,12 @@ namespace NearForums.Web.Controllers
 			{
 				return Redirect(returnUrl);
 			}
+			ViewBag.ReturnUrl = returnUrl;
 
 			return View();
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings",
 			Justification = "Needs to take same parameter type as Controller.Redirect()")]
 		public ActionResult Login(string userName, string password, bool rememberMe, string returnUrl)
@@ -77,6 +79,7 @@ namespace NearForums.Web.Controllers
 			}
 			if (!ValidateLogOn(userName, password))
 			{
+				ViewBag.ReturnUrl = returnUrl;
 				return View();
 			}
 

@@ -186,9 +186,28 @@ namespace NearForums.Web.Extensions
 		} 
 		#endregion
 
+		#region GetUrl
+		/// <summary>
+		/// Generates a url based on the routeValues
+		/// </summary>
 		public static string GetUrl(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues)
 		{
 			return UrlHelper.GenerateUrl(null, actionName, controllerName, new RouteValueDictionary(routeValues), htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, true);
-		}
+		} 
+		#endregion
+
+		#region Partial
+		public static MvcHtmlString Partial(this HtmlHelper htmlHelper, string partialViewName, object viewDataValues, bool createViewData)
+		{
+			if (createViewData)
+			{
+				return htmlHelper.Partial(partialViewName, ViewDataExtensions.CreateViewData(viewDataValues));
+			}
+			else
+			{
+				return htmlHelper.Partial(partialViewName, htmlHelper.ViewData);
+			}
+		} 
+		#endregion
 	}
 }

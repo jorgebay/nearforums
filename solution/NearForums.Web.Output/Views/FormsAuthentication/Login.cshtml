@@ -6,29 +6,5 @@
 </ul>
 <div id="login">
 	<h1>@ViewBag.Title</h1>
-    <p>
-        Please enter your username and password. @Html.ActionLink("Register", "Register")
-        if you don't have an account.
-    </p>
-	@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>(), null)
-	@using (Html.BeginForm())
-    {
-		<fieldset>
-			<div class="formItem floatContainer">
-				<label for="username">Username</label>
-				@Html.TextBox("username")
-			</div>
-			<div class="formItem floatContainer">
-				<label for="password">Password</label>
-				@Html.Password("password")
-			</div>
-			<div class="formItem checkbox">
-				@Html.CheckBox("rememberMe")
-				<label class="inline" for="rememberMe">Remember me</label>
-			</div>
-			<div class="formItem buttons">
-				<input type="submit" class="button" value="Sign in" />
-			</div>
-		</fieldset>
-	}
+	@Html.Partial("~/Views/FormsAuthentication/LoginForm.cshtml")
 </div>

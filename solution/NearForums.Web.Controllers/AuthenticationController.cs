@@ -24,12 +24,12 @@ namespace NearForums.Web.Controllers
 			{
 				if (group == null || User.Group >= group)
 				{
-					return Redirect(HttpUtility.UrlDecode(returnUrl ?? "/"));
+					return Redirect(returnUrl ?? "/");
 				}
-				ViewData["UserGroup"] = group;
-				ViewData["UserGroupName"] = UsersServiceClient.GetGroupName(group.Value);
+				ViewBag.UserGroup = group;
+				ViewBag.UserGroupName = UsersServiceClient.GetGroupName(group.Value);
 			}
-
+			ViewBag.ReturnUrl = returnUrl;
 			return View();
 		}
 
@@ -43,7 +43,7 @@ namespace NearForums.Web.Controllers
 			{
 				returnUrl = "/";
 			}
-			return Redirect(HttpUtility.UrlDecode(returnUrl));
+			return Redirect(returnUrl);
 		}
 
 		#region Twitter

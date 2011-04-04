@@ -1,0 +1,8 @@
+﻿@{
+	var imgUrl = "http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_large_long.gif";
+	if (ViewData["size"] == "small")
+	{
+		imgUrl = "http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_short.gif";
+	}
+}
+<a onclick="FB.Connect.requireSession(function(){window.location.reload();});return false;" href="#"><img src="@imgUrl" alt="Login using facebook" /></a>

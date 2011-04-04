@@ -5,9 +5,6 @@
     <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p>
-    
-</p>
 @Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>(), null)
 @using (Html.BeginForm())
 {
