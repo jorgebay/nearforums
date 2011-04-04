@@ -130,5 +130,20 @@ namespace NearForums
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Used for storing a temporary Guid used for password reset purposes
+		/// </summary>
+		public string PasswordResetGuid
+		{
+			get;
+			set;
+		}
+
+		public DateTime PasswordResetGuidExpireDate
+		{
+			get;
+			set;
+		}
 	}
 }

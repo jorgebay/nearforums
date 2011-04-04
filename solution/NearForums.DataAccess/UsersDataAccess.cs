@@ -237,5 +237,18 @@ namespace NearForums.DataAccess
 			comm.SafeExecuteNonQuery();
 		} 
 		#endregion
+
+
+		#region Update Password Reset Guid
+		public void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate)
+		{
+			DbCommand comm = GetCommand("SPUsersUpdatePasswordResetGuid");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+			comm.AddParameter<string>(this.Factory, "PasswordResetGuid", Guid);
+			comm.AddParameter(this.Factory, "PasswordResetGuidExpireDate", DbType.DateTime, expireDate);
+
+			comm.SafeExecuteNonQuery();
+		}
+		#endregion
 	}
 }
