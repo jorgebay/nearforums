@@ -166,6 +166,8 @@ CREATE TABLE [dbo].[Users](
 	[UserProvider] [varchar](32) NOT NULL,
 	[UserProviderId] [varchar](64) NOT NULL,
 	[UserProviderLastCall] [datetime] NOT NULL,
+	[PasswordResetGuid] [varchar](100) NULL,
+	[PasswordResetGuidExpireDate] [datetime] NULL
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
 	[UserId] ASC
