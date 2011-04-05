@@ -542,6 +542,11 @@ div.toolbar li.edit a
 	padding-left: 25px;
 	background-image: url(/images/temp/icon-edit.gif);
 }
+div.toolbar li.manage a
+{
+	padding-left: 25px;
+	background-image: url(/images/temp/icon-manage.gif);
+}
 div.toolbar li.move a
 {
 	padding-left: 20px;

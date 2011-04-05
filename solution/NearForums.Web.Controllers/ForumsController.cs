@@ -139,7 +139,7 @@ namespace NearForums.Web.Controllers
 			}
 			if (ModelState.IsValid)
 			{
-				return RedirectToAction("Manage");
+				return RedirectToAction("Detail", new{forum=forum.ShortName});
 			}
 			else
 			{
@@ -158,6 +158,10 @@ namespace NearForums.Web.Controllers
 			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			ViewData["Categories"] = categories;
 			Forum f = ForumsServiceClient.Get(forum);
+			if (f == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			ViewData["IsEdit"] = true;
 			return View("Edit", f);
 		}
@@ -181,7 +185,7 @@ namespace NearForums.Web.Controllers
 			}
 			if (ModelState.IsValid)
 			{
-				return RedirectToAction("Manage");
+				return RedirectToAction("Detail", new{forum=f.ShortName});
 			}
 			else
 			{

@@ -22,8 +22,16 @@
 		<p class="warning">No threads for this forum.</p>
 	}
 	@Html.Pager(Config.Forums.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], "Previous", "Next")
-		
 	@Html.Partial("TagCloud", ViewData.Get<List<WeightTag>>("Tags"))
-		
 	<p class="action">@Html.ActionLink("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
+	
+	@if (User != null && User.Group >= UserGroup.Moderator)
+	{
+	<div class="toolbar floatContainer">
+		<ul>
+			<li class="edit">@Html.ActionLink("Edit", "Edit", new{forum=Model.ShortName})</li>
+			<li class="manage">@Html.ActionLink("Manage forums", "Manage")</li>
+		</ul>
+	</div>
+	}
 </div>
