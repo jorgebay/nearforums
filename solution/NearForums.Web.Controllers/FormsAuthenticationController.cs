@@ -172,6 +172,8 @@ namespace NearForums.Web.Controllers
 				if (createStatus == MembershipCreateStatus.Success)
 				{
 					FormsAuth.SignIn(userName, false /* createPersistentCookie */);
+
+					SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
 					return RedirectToAction("List", "Forums");
 				}
 				else
