@@ -37,8 +37,8 @@ namespace NearForums.Web.Controllers
 			{
 				users = UsersServiceClient.GetByName(userName);
 			}
-			ViewData["userName"] = userName;
-			ViewData["page"] = page;
+			ViewBag.UserName = userName;
+			ViewBag.Page = page;
 
 			return View(users);
 		}
@@ -98,6 +98,8 @@ namespace NearForums.Web.Controllers
 
 		#region Promote / Demote / Delete
 		[RequireAuthorization(UserGroup.Admin)]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Promote(int id, string searched)
 		{
 			UsersServiceClient.Promote(id);
@@ -109,6 +111,8 @@ namespace NearForums.Web.Controllers
 		}
 
 		[RequireAuthorization(UserGroup.Admin)]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Demote(int id, string searched)
 		{
 			UsersServiceClient.Demote(id);
@@ -120,6 +124,8 @@ namespace NearForums.Web.Controllers
 		}
 
 		[RequireAuthorization(UserGroup.Admin)]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, string searched)
 		{
 			UsersServiceClient.Delete(id);

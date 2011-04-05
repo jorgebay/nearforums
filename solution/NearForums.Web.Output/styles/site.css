@@ -764,24 +764,25 @@ ul.admin li
 	line-height: 20px;
 	padding: 0 0 10px 0;
 }
-ul.admin span.actions
+.admin span.actions
 {
 	float: left;
 	padding: 0 10px 0 0;
 }
-ul.admin span.actions a
+.admin span.actions a
 {
 	text-decoration: none;
 	font-weight: normal;
 	float: left;
-	padding: 0 5px 0 5px;
+	padding: 0 5px;
 	background-color: #F0F0F0;
 	margin-right: 2px;
 	border: 1px solid #0372A0;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
+	line-height: 24px;
 }
-ul.admin span.actions a:hover
+.admin span.actions a:hover
 {
 	border: 1px solid #000000;
 	color: #333333;
