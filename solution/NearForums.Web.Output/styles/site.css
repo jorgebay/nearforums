@@ -22,7 +22,7 @@ body
 	padding:0;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	background-image: url(/images/temp/body-bg.gif);
+	background-image: url(../images/temp/body-bg.gif);
 	background-repeat: repeat-x;
 }
 img
@@ -208,7 +208,7 @@ strong a
 }
 #content
 {
-	background-image: url(/images/temp/content-top.gif);
+	background-image: url(../images/temp/content-top.gif);
 	background-repeat: no-repeat;
 	background-color: #ffffff;
 	padding: 17px 25px 50px 25px;
@@ -221,7 +221,7 @@ ul.items
 ul.items li
 {
 	list-style-type: none;
-	background-image: url(/images/temp/arrow-right.gif);
+	background-image: url(../images/temp/arrow-right.gif);
 	background-position: 2px 8px;
 	background-repeat: no-repeat;
 	margin: 0;
@@ -230,7 +230,7 @@ ul.items li
 ul.items li.sticky a
 {
 	padding-right: 20px;
-	background-image: url(/images/temp/icon-sticky.png);
+	background-image: url(../images/temp/icon-sticky.png);
 	background-position: right center;
 	background-repeat: no-repeat;
 }
@@ -274,7 +274,7 @@ ul.path a
 	text-decoration: none;
 	display: block;
 	padding-right: 10px;
-	background-image: url(/images/temp/arrow-right.gif);
+	background-image: url(../images/temp/arrow-right.gif);
 	background-repeat: no-repeat;
 	background-position: right center;
 }
@@ -521,7 +521,7 @@ div.toolbar ul li a:hover
 div.toolbar li.reply a
 {
 	padding-left: 25px;
-	background-image: url(/images/temp/icon-reply.gif);
+	background-image: url(../images/temp/icon-reply.gif);
 }
 div.toolbar li.showAll
 {
@@ -530,46 +530,46 @@ div.toolbar li.showAll
 div.toolbar li.showAll a
 {
 	padding-left: 17px;
-	background-image: url(/images/temp/icon-show-all.gif);
+	background-image: url(../images/temp/icon-show-all.gif);
 }
 div.toolbar li.print a
 {
 	padding-left: 27px;
-	background-image: url(/images/temp/icon-print.gif);
+	background-image: url(../images/temp/icon-print.gif);
 }
 div.toolbar li.edit a
 {
 	padding-left: 25px;
-	background-image: url(/images/temp/icon-edit.gif);
+	background-image: url(../images/temp/icon-edit.gif);
 }
 div.toolbar li.manage a
 {
 	padding-left: 25px;
-	background-image: url(/images/temp/icon-manage.gif);
+	background-image: url(../images/temp/icon-manage.gif);
 }
 div.toolbar li.move a
 {
 	padding-left: 20px;
-	background-image: url(/images/temp/icon-move.gif);
+	background-image: url(../images/temp/icon-move.gif);
 }
 div.toolbar li.delete a
 {
 	padding-left: 22px;
-	background-image: url(/images/temp/icon-delete.gif);
+	background-image: url(../images/temp/icon-delete.gif);
 }
 div.toolbar li.close a
 {
 	padding-left: 22px;
-	background-image: url(/images/temp/icon-close.gif);
+	background-image: url(../images/temp/icon-close.gif);
 }
 div.toolbar li.open a
 {
 	padding-left: 20px;
-	background-image: url(/images/temp/icon-open.gif);
+	background-image: url(../images/temp/icon-open.gif);
 }
 #pagerClient
 {
-	background: #DCECF4 url(/images/temp/next-big.gif) no-repeat scroll 98% 50%;
+	background: #DCECF4 url(../images/temp/next-big.gif) no-repeat scroll 98% 50%;
 	border-top: 1px solid #00418F;
 }
 #pagerClient img
@@ -585,7 +585,7 @@ div.toolbar li.open a
 	display: block;
 	text-align: center;
 	text-decoration: none;
-	background: transparent url(/images/temp/next-big.gif) no-repeat scroll 2% 50%;
+	background: transparent url(../images/temp/next-big.gif) no-repeat scroll 2% 50%;
 }
 #pagerClient.loading img
 {
