@@ -26,7 +26,7 @@
 }
 <h2>Messages posted by @Model.UserName</h2>
 <p class="messageButton"><a href="#" onclick="return getMessages()">Get all messages posted by @Model.UserName</a></p>
-<p class="loading" style="display:none;font-style: italic;"><img src="/images/loadingMini.gif" alt="" style="" /> Loading...</p>
+<p class="loading" style="display:none;font-style: italic;">@Html.Img("~/images/loadingMini.gif", "") Loading...</p>
 <div id="messagesResult" style="display:none;"></div>
 @Html.ScriptjQuery()
 <script type="text/javascript">

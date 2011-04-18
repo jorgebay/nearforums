@@ -5,5 +5,5 @@
 	@Html.ActionLink("Latest threads", "LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Html}, IsAction("LatestTopics") ? new{@class="selected"} : null)
 	<span>/</span>
 	@Html.ActionLink("Unanswered threads", "ListUnansweredTopics", null, IsAction("ListUnansweredTopics") ? new{@class="selected"} : null)
-	<a rel="nofollow" href="@Url.Action("LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Rss})"><img src="/images/iconrss.gif" alt="rss" /></a>
+	<a rel="nofollow" href="@Url.Action("LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Rss})">@Html.Img("~/images/iconrss.gif", "rss")</a>
 </div>

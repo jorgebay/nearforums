@@ -192,18 +192,11 @@ namespace NearForums.Web.Extensions
 
 		#region Script, style sheets and images
 		/// <summary>
-		/// Script tag, enforces to be application relative
+		/// Script tag, enforces to be app relative
 		/// </summary>
 		public static MvcHtmlString Script(this HtmlHelper htmlHelper, string url)
 		{
-			if (String.IsNullOrEmpty(url))
-			{
-				throw new ArgumentNullException("url");
-			}
-			if ((!url.StartsWith("http://")) && (!url.StartsWith("https://")) && url[0] != '~')
-			{
-				throw new ArgumentException("Url must start tilde character '~' or be absolute.", "url");
-			}
+			ValidateApplicationUrl(url);
 			if (url[0] == '~')
 			{
 				url = url.ToLower();
@@ -221,6 +214,57 @@ namespace NearForums.Web.Extensions
 		public static MvcHtmlString ScriptjQuery(this HtmlHelper htmlHelper)
 		{
 			return htmlHelper.Script("~/scripts/jquery-1.5.2.min.js");
+		}
+
+		/// <summary>
+		/// Add a link tag referencing the stylesheet, enforcing the url to be app relative.
+		/// </summary>
+		public static MvcHtmlString Stylesheet(this HtmlHelper htmlHelper, string url)
+		{
+			ValidateApplicationUrl(url);
+			if (url[0] == '~')
+			{
+				url = url.ToLower();
+			}
+
+			TagBuilder builder = new TagBuilder("link");
+			builder.Attributes.Add("type", "text/css");
+			builder.Attributes.Add("rel", "stylesheet");
+			builder.Attributes.Add("href", UrlHelper.GenerateContentUrl(url, htmlHelper.ViewContext.HttpContext));
+			return MvcHtmlString.Create(builder.ToString(TagRenderMode.SelfClosing));
+		}
+
+		/// <summary>
+		/// Add a link tag referencing the stylesheet, enforcing the url to be app relative.
+		/// </summary>
+		public static MvcHtmlString Img(this HtmlHelper htmlHelper, string url, string alt)
+		{
+			ValidateApplicationUrl(url);
+			if (url[0] == '~')
+			{
+				url = url.ToLower();
+			}
+
+			TagBuilder builder = new TagBuilder("img");
+			builder.Attributes.Add("alt", alt);
+			builder.Attributes.Add("src", UrlHelper.GenerateContentUrl(url, htmlHelper.ViewContext.HttpContext));
+			return MvcHtmlString.Create(builder.ToString(TagRenderMode.SelfClosing));
+		}
+
+		/// <summary>
+		/// Validates that the url is absolute or starts with tilde (~) char.
+		/// </summary>
+		/// <param name="url"></param>
+		private static void ValidateApplicationUrl(string url)
+		{
+			if (String.IsNullOrEmpty(url))
+			{
+				throw new ArgumentNullException("url");
+			}
+			if ((!url.StartsWith("http://")) && (!url.StartsWith("https://")) && url[0] != '~')
+			{
+				throw new ArgumentException("Url must start tilde character '~' or be absolute.", "url");
+			}
 		}
 		#endregion
 	}

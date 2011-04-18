@@ -5,7 +5,7 @@
 <div class="forumList">
 	<h1>@ViewBag.Title</h1>
 	<div class="options">
-		<a rel="nofollow" href="@Url.Action("LatestAllTopics")"><img src="/images/iconrss.gif" alt="rss" /></a>
+		<a rel="nofollow" href="@Url.Action("LatestAllTopics")">@Html.Img("~/images/iconrss.gif", "rss")</a>
 	</div>
 	@foreach (ForumCategory category in this.Model)
 	{

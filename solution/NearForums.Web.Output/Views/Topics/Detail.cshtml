@@ -14,7 +14,7 @@
 <div class="topicDetail">
 	<h1>@ViewBag.Title</h1>
 	<div class="options">
-		<a rel="nofollow" href="@Url.Action("LatestMessages")"><img src="/images/iconrss.gif" alt="rss" /></a>
+		<a rel="nofollow" href="@Url.Action("LatestMessages")">@Html.Img("~/images/iconrss.gif", "rss")</a>
 	</div>
 	<p class="info">
 		Posted by <strong class="userName">@Html.ActionLink(Model.User.UserName, "Detail", "Users", new{id=Model.User.Id}, new{rel="nofollow"})</strong>
@@ -48,7 +48,7 @@
 			messages
 		</div>
 	}
-	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;"><img src="/images/loadingMini.gif" alt="" style="" />Show more messages</a></div>
+	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">@Html.Img("~/images/loadingMini.gif", "") Show more messages</a></div>
 	@Html.Pager(messages)
 	@Html.Partial("Toolbar", this.Model)
 	@Html.Partial("Related", this.Model)

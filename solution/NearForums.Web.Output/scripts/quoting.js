@@ -23,7 +23,7 @@
 		if (href.length > 4)
 		{
 			var quotedId = href.substring(4);
-			//TODO: Determine if quoteId is numeric
+			//Determine if quoteId is numeric
 			if (quoting.isNumber(quotedId))
 			{
 				quotedId = parseInt(quotedId, 10);
