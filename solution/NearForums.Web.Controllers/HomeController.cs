@@ -32,5 +32,14 @@ namespace NearForums.Web.Controllers
 			}
 			return ResultHelper.NotFoundResult(this);
 		}
+
+		/// <summary>
+		/// This action is used when another action was not found.
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult NotFound()
+		{
+			return ResultHelper.NotFoundResult(this);
+		}
 	}
 }

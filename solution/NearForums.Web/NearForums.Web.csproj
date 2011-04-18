@@ -73,13 +73,13 @@
     <Compile Include="Extensions\PagerExtensions.cs" />
     <Compile Include="Extensions\RedirectToRouteExtraResult.cs" />
     <Compile Include="Extensions\ResultHelper.cs" />
+    <Compile Include="Extensions\RoutingHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewDataExtensions.cs" />
     <Compile Include="Handlers\StaticFileHandler.cs" />
     <Compile Include="Modules\CompressionModule.cs" />
     <Compile Include="Modules\ModelBinderModule.cs" />
     <Compile Include="Modules\RedirectorModule.cs" />
-    <Compile Include="Modules\RouteMappingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\StrictRoute.cs" />
     <Compile Include="State\CacheWrapper.cs" />

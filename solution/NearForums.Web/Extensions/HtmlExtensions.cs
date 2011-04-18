@@ -17,26 +17,6 @@ namespace NearForums.Web.Extensions
 {
 	public static class HtmlExtensions
 	{
-		public static string ImageStatic(this HtmlHelper htmlHelper, string src, string css)
-		{
-			if (src == null)
-			{
-				throw new NullReferenceException("The src cannot be null.");
-			}
-			else if (!src.StartsWith("/"))
-			{
-				throw new ArgumentException("The src should be absolute (starting with /)");
-			}
-			TagBuilder builder = new TagBuilder("img");
-			if (css != null)
-			{
-				builder.AddCssClass(css);
-			}
-			builder.Attributes.Add("src", src);
-
-			return builder.ToString();
-		}
-
 		public static string GetModelAttemptedValue(this HtmlHelper htmlHelper, string key)
 		{
 			ModelState state;
@@ -208,6 +188,40 @@ namespace NearForums.Web.Extensions
 				return htmlHelper.Partial(partialViewName, htmlHelper.ViewData);
 			}
 		} 
+		#endregion
+
+		#region Script, style sheets and images
+		/// <summary>
+		/// Script tag, enforces to be application relative
+		/// </summary>
+		public static MvcHtmlString Script(this HtmlHelper htmlHelper, string url)
+		{
+			if (String.IsNullOrEmpty(url))
+			{
+				throw new ArgumentNullException("url");
+			}
+			if ((!url.StartsWith("http://")) && (!url.StartsWith("https://")) && url[0] != '~')
+			{
+				throw new ArgumentException("Url must start tilde character '~' or be absolute.", "url");
+			}
+			if (url[0] == '~')
+			{
+				url = url.ToLower();
+			}
+			
+			TagBuilder builder = new TagBuilder("script");
+			builder.Attributes.Add("type", "text/javascript");
+			builder.Attributes.Add("src", UrlHelper.GenerateContentUrl(url, htmlHelper.ViewContext.HttpContext));
+			return MvcHtmlString.Create(builder.ToString(TagRenderMode.Normal));
+		}
+
+		/// <summary>
+		/// Jquery script tag (current version)
+		/// </summary>
+		public static MvcHtmlString ScriptjQuery(this HtmlHelper htmlHelper)
+		{
+			return htmlHelper.Script("~/scripts/jquery-1.5.2.min.js");
+		}
 		#endregion
 	}
 }

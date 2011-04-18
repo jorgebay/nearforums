@@ -7,6 +7,10 @@ using System.Web.Routing;
 using System.Web.Security;
 using NearForums.Configuration;
 using NearForums.Web.Controllers.Helpers;
+using NearForums.Web.Modules;
+using NearForums.Configuration.Routing;
+using NearForums.Web.Controllers;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Output
 {
@@ -22,22 +26,11 @@ namespace NearForums.Web.Output
 
 		public static void RegisterRoutes(RouteCollection routes)
 		{
-			//Routes are not registered on the Global.asax
-			//Routes are registered at: NearForums.Web.Modules.RouteMappingModule
+			//Routes are not registered on the Global.asax.cs file
+			//Routes are registered at: NearForums.Web.Extensions.RoutingHelper
 			//Routes are configured at: Config\Routes.config
 
-			//routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-			//routes.MapRoute(
-			//    "Default", // Route name
-			//    "{controller}/{action}/{id}", // URL with parameters
-			//    new
-			//    {
-			//        controller = "Home",
-			//        action = "Index",
-			//        id = UrlParameter.Optional
-			//    } // Parameter defaults
-			//);
+			RoutingHelper.RegisterRoutes(RouteTable.Routes, RouteMappingConfiguration.Current);
 		}
 
 		protected void Application_Start()

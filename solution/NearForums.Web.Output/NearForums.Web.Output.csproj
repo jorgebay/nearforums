@@ -137,10 +137,7 @@
     <Content Include="images\temp\icon-sticky.png" />
     <Content Include="images\temp\next-big.gif" />
     <Content Include="scripts\common.js" />
-    <Content Include="scripts\jquery-1.3.2-vsdoc.js" />
-    <Content Include="scripts\jquery-1.3.2.js" />
-    <Content Include="scripts\jquery-1.3.2.min-vsdoc.js" />
-    <Content Include="scripts\jquery-1.3.2.min.js" />
+    <Content Include="scripts\jquery-1.5.2.min.js" />
     <Content Include="scripts\mobile.js" />
     <Content Include="scripts\overtip.js" />
     <Content Include="scripts\pager.js" />

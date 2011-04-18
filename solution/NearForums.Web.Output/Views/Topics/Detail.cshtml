@@ -4,8 +4,8 @@
 }
 @section Head{
 	@Html.MetaDescription(Utils.Summarize(Utils.RemoveTags(Model.Description), 160, ""))
-	<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" src="/scripts/common.js"></script>
+	@Html.ScriptjQuery()
+	@Html.Script("~/scripts/common.js")
 }
 <ul class="path">
 	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
@@ -53,9 +53,9 @@
 	@Html.Partial("Toolbar", this.Model)
 	@Html.Partial("Related", this.Model)
 </div>
-<script type="text/javascript" src="/scripts/overtip.js"></script>
-<script type="text/javascript" src="/scripts/pager.js"></script>
-<script type="text/javascript" src="/scripts/quoting.js"></script>
+@Html.Script("~/scripts/overtip.js")
+@Html.Script("~/scripts/pager.js")
+@Html.Script("~/scripts/quoting.js")
 <script type="text/javascript">
 	$(document).ready(function ()
 	{
