@@ -29,7 +29,10 @@ namespace NearForums.Web.Routing
 				//Compare if the current url (httpContext.Request.Url) matches route url defined (urlRegex)
 				if (localPath.Length > 1)
 				{
-					localPath = localPath.Substring(1);
+					int appBasePathlength = VirtualPathUtility.ToAbsolute("~/").Length;
+					
+					//Ignore the base application path (/ or /forums/)
+					localPath = localPath.Substring(appBasePathlength);
 					urlRegex = "^" + urlRegex + "$";
 
 					if (!Regex.IsMatch(localPath, urlRegex))
