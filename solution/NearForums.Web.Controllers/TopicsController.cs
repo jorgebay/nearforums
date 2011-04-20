@@ -108,8 +108,11 @@ namespace NearForums.Web.Controllers
 					topic.Description = topic.Description.SafeHtml().ReplaceValues();
 				}
 
-				TopicsServiceClient.Create(topic, Request.UserHostAddress);
-				SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+				if (ModelState.IsValid)
+				{
+					TopicsServiceClient.Create(topic, Request.UserHostAddress);
+					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+				}
 			}
 			catch (ValidationException ex)
 			{
@@ -321,10 +324,12 @@ namespace NearForums.Web.Controllers
 				{
 					message.InReplyOf = new Message(msg.Value);
 				}
-				TopicsServiceClient.AddReply(message, Request.UserHostAddress);
+				if (ModelState.IsValid)
+				{
+					TopicsServiceClient.AddReply(message, Request.UserHostAddress);
 
-				SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
-
+					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
+				}
 			}
 			catch (ValidationException ex)
 			{
@@ -333,7 +338,6 @@ namespace NearForums.Web.Controllers
 
 			if (ModelState.IsValid)
 			{
-				
 				return new RedirectToRouteExtraResult(new{action="Detail",controller="Topics",id=id,name=name,forum=forum}, "#msg" + message.Id);
 			}
 			else

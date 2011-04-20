@@ -81,7 +81,8 @@ namespace NearForums.Tests.Controllers
 		public void Topic_Add_Delete_Test()
 		{
 			TopicsController controller = new TopicsController();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+			var controllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+			controller.ControllerContext = controllerContext;
 			ActionResult result = null;
 
 			Forum forum = ForumsControllerTest.GetAForum();
@@ -98,6 +99,9 @@ namespace NearForums.Tests.Controllers
 			t.User = controller.User.ToUser();
 			t.Forum = forum;
 
+
+			controller = new TopicsController();
+			controller.ControllerContext = controllerContext;
 			result = controller.Add(forum.ShortName, t, true, "admin@admin.com");
 			int topicId = t.Id;
 

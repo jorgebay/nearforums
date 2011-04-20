@@ -36,6 +36,10 @@ namespace NearForums.ServiceClient
 			topic.Related = da.GetRelatedTopics(topic, amount);
 		}
 
+		/// <summary>
+		/// Adds a new message to the topic
+		/// </summary>
+		/// <exception cref="ValidationException">If the model is not valid</exception>
 		public static void AddReply(Message message, string ip)
 		{
 			message.ValidateFields();
