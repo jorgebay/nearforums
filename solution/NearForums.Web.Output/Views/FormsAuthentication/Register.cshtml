@@ -5,7 +5,21 @@
     <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>(), null)
+@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>()
+	{
+		{"email", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, "Email must not be blank."}
+			,{ValidationErrorType.Format, "Email format is not valid."}
+			,{ValidationErrorType.DuplicateNotAllowed, "A user account already exists for the email address you entered."}}}
+		,{"userName", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, "Username must not be blank."}
+			,{ValidationErrorType.Format, "Username format is not valid."}
+			,{ValidationErrorType.DuplicateNotAllowed, "Username already in use"}}}
+		,{"password", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, "Password must not be blank."}
+			,{ValidationErrorType.Format, "Password format is not valid."}
+			,{ValidationErrorType.CompareNotMatch, "Password does not match the confirm password."}}}
+	}, null)
 @using (Html.BeginForm())
 {
     <fieldset>

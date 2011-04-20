@@ -12,6 +12,7 @@ using NearForums.Web.Extensions.FormsAuthenticationHelper;
 using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 using NearForums.Web.Extensions;
 using NearForums.ServiceClient;
+using NearForums.Validation;
 
 namespace NearForums.Web.Controllers
 {
@@ -163,26 +164,31 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			var createStatus = MembershipCreateStatus.Success;
 
-			if (ValidateRegistration(userName, email, password, confirmPassword))
+			try
 			{
-				// Attempt to register the user
-				MembershipCreateStatus createStatus = MembershipService.CreateUser(userName, password, email);
-
-				if (createStatus == MembershipCreateStatus.Success)
+				ValidateRegistration(userName, email, password, confirmPassword);
+				// Attempt to register the user in the membership db
+				createStatus = MembershipService.CreateUser(userName, password, email);
+				ValidateCreateStatus(createStatus);
+				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
+				FormsAuth.SignIn(userName, false);
+				if (ModelState.IsValid)
 				{
-					FormsAuth.SignIn(userName, false /* createPersistentCookie */);
-
-					SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
 					return RedirectToAction("List", "Forums");
 				}
-				else
+			}
+			catch (ValidationException ex)
+			{
+				if (createStatus == MembershipCreateStatus.Success)
 				{
-					ModelState.AddModelError("_FORM", ErrorCodeToString(createStatus));
+					//The membership succeded but the creation of the site user failed / Model constraint.
+					Membership.DeleteUser(userName);
 				}
+				this.AddErrors(this.ModelState, ex);
 			}
 
-			// If we got this far, something failed, redisplay form
 			return View();
 		}
 
@@ -276,66 +282,45 @@ namespace NearForums.Web.Controllers
 
 			return ModelState.IsValid;
 		}
-		[NonAction]
-		private bool ValidateRegistration(string userName, string email, string password, string confirmPassword)
+
+		/// <summary>
+		/// Maps MembershipCreateStatus values to model's ValidationException
+		/// </summary>
+		/// <exception cref="ValidationException"></exception>
+		protected void ValidateCreateStatus(MembershipCreateStatus createStatus)
 		{
-			if (String.IsNullOrEmpty(userName))
-			{
-				ModelState.AddModelError("username", "You must specify a username.");
-			}
-			if (String.IsNullOrEmpty(email))
-			{
-				ModelState.AddModelError("email", "You must specify an email address.");
-			}
-			if (password == null || password.Length < MembershipService.MinPasswordLength)
-			{
-				ModelState.AddModelError("password",
-					String.Format(CultureInfo.CurrentCulture,
-						 "You must specify a password of {0} or more characters.",
-						 MembershipService.MinPasswordLength));
-			}
-			if (!String.Equals(password, confirmPassword, StringComparison.Ordinal))
-			{
-				ModelState.AddModelError("_FORM", "The new password and confirmation password do not match.");
-			}
-			return ModelState.IsValid;
-		}
-		[NonAction]
-		private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-		{
-			// See http://msdn.microsoft.com/en-us/library/system.web.security.membershipcreatestatus.aspx for
-			// a full list of status codes.
 			switch (createStatus)
 			{
+				case MembershipCreateStatus.Success:
+					break;
 				case MembershipCreateStatus.DuplicateUserName:
-					return "Username already exists. Please enter a different user name.";
-
+					throw new ValidationException(new ValidationError("username", ValidationErrorType.DuplicateNotAllowed));
 				case MembershipCreateStatus.DuplicateEmail:
-					return "A username for that e-mail address already exists. Please enter a different e-mail address.";
-
+					throw new ValidationException(new ValidationError("email", ValidationErrorType.DuplicateNotAllowed));
 				case MembershipCreateStatus.InvalidPassword:
-					return "The password provided is invalid. Please enter a valid password value.";
-
+					throw new ValidationException(new ValidationError("password", ValidationErrorType.Format));
 				case MembershipCreateStatus.InvalidEmail:
-					return "The e-mail address provided is invalid. Please check the value and try again.";
-
+					throw new ValidationException(new ValidationError("email", ValidationErrorType.Format));
 				case MembershipCreateStatus.InvalidAnswer:
-					return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
+					throw new ValidationException(new ValidationError("answer", ValidationErrorType.Format));
 				case MembershipCreateStatus.InvalidQuestion:
-					return "The password retrieval question provided is invalid. Please check the value and try again.";
-
+					throw new ValidationException(new ValidationError("question", ValidationErrorType.Format));
 				case MembershipCreateStatus.InvalidUserName:
-					return "The user name provided is invalid. Please check the value and try again.";
-
-				case MembershipCreateStatus.ProviderError:
-					return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-				case MembershipCreateStatus.UserRejected:
-					return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
+					throw new ValidationException(new ValidationError("username", ValidationErrorType.Format));
 				default:
-					return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+					throw new ValidationException(new ValidationError("__FORM", ValidationErrorType.Format));
+			}
+		}
+
+		/// <summary>
+		/// Validates fields that Membership does not.
+		/// </summary>
+		/// <exception cref="ValidationException"></exception>
+		private void ValidateRegistration(string userName, string email, string password, string confirmPassword)
+		{
+			if (!String.Equals(password, confirmPassword, StringComparison.Ordinal))
+			{
+				throw new ValidationException(new ValidationError("password", ValidationErrorType.CompareNotMatch));
 			}
 		}
 		#endregion

@@ -321,7 +321,11 @@ namespace NearForums.Web.Controllers.Helpers
         #endregion
 
         #region Membership
-
+		/// <summary>
+		/// Logs the user in or creates the a site user account if the user does not exist, based on membership user.
+		/// Sets the logged user in the session.
+		/// </summary>
+		/// <exception cref="ValidationException"></exception>
         public static bool TryFinishMembershipLogin(SessionWrapper session, MembershipUser MembershipUser)
         {
             bool logged = false;
