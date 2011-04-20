@@ -29,7 +29,7 @@ namespace NearForums.Web.Routing
 				//Compare if the current url (httpContext.Request.Url) matches route url defined (urlRegex)
 				if (localPath.Length > 1)
 				{
-					int appBasePathlength = VirtualPathUtility.ToAbsolute("~/").Length;
+					int appBasePathlength = VirtualPathUtility.ToAbsolute("~/", httpContext.Request.ApplicationPath).Length;
 					
 					//Ignore the base application path (/ or /forums/)
 					localPath = localPath.Substring(appBasePathlength);

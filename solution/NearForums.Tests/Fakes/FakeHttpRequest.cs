@@ -73,7 +73,7 @@ namespace NearForums.Tests.Fakes
 		{
 			get
 			{
-				return "";
+				return "/";
 			}
 		}
 

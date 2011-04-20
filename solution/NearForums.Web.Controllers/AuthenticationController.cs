@@ -24,7 +24,7 @@ namespace NearForums.Web.Controllers
 			{
 				if (group == null || User.Group >= group)
 				{
-					return Redirect(returnUrl ?? "/");
+					return Redirect(returnUrl ?? ApplicationHomeUrl);
 				}
 				ViewBag.UserGroup = group;
 				ViewBag.UserGroupName = UsersServiceClient.GetGroupName(group.Value);
@@ -41,7 +41,7 @@ namespace NearForums.Web.Controllers
 
 			if (String.IsNullOrEmpty(returnUrl))
 			{
-				returnUrl = "/";
+				returnUrl = ApplicationHomeUrl;
 			}
 			return Redirect(returnUrl);
 		}
@@ -113,7 +113,7 @@ namespace NearForums.Web.Controllers
 			}
 			if (String.IsNullOrEmpty(returnUrl))
 			{
-				returnUrl = "/";
+				returnUrl = ApplicationHomeUrl;
 			}
 
 			OpenIdRelyingParty openid = new OpenIdRelyingParty();

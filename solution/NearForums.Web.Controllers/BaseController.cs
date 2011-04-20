@@ -100,6 +100,19 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
+		#region ApplicationHome
+		/// <summary>
+		/// The application path url. It would be / or /forum/ depending on if its a main website or is a sub application
+		/// </summary>
+		public string ApplicationHomeUrl
+		{
+			get
+			{
+				return Url.Content("~/");
+			}
+		}
+		#endregion
+
 		#region Site Setup
 		/// <summary>
 		/// Determines if the site is correctly setup.
