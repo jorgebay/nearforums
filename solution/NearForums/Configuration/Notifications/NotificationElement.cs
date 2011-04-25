@@ -21,14 +21,12 @@ namespace NearForums.Configuration.Notifications
 			}
 		}
 
-		/// <summary>
-		/// Determines if the provider required data has been defined.
-		/// </summary>
+	
 		public bool IsDefined
 		{
 			get
 			{
-				return (!String.IsNullOrEmpty(this.Body.ToString()));
+				return SiteConfiguration.Current.Notifications != null && SiteConfiguration.Current.Notifications.MembershipPasswordReset !=null && (!String.IsNullOrEmpty(this.Body.ToString()));
 			}
 		}
 	}

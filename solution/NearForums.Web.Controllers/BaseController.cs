@@ -95,7 +95,7 @@ namespace NearForums.Web.Controllers
 				{
 					return "http://www.contoso.com";
 				}
-				return this.Request.Url.Scheme + Uri.SchemeDelimiter + this.Request.Url.Host;
+				return this.Request.Url.Scheme + Uri.SchemeDelimiter + this.Request.Url.Host + (this.Request.Url.Port !=80 ? ":" + Request.Url.Port : String.Empty);
 			}
 		}
 		#endregion

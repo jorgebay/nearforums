@@ -48,5 +48,18 @@ namespace NearForums.Configuration
 				this._isDefined = value;
 			}
 		}
+
+		[ConfigurationProperty("EmailPasswordRecoveryLink", IsRequired = true)]
+		public bool EmailPasswordRecoveryLink
+		{
+			get
+			{
+				return (bool)this["EmailPasswordRecoveryLink"];
+			}
+			set
+			{
+				this["EmailPasswordRecoveryLink"] = value;
+			}
+		}
 	}
 }

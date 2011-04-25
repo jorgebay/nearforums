@@ -17,6 +17,9 @@
 			@Html.CheckBox("rememberMe")
 			<label class="inline" for="rememberMe">Remember me</label>
 		</div>
+		<legend>
+			@Html.ActionLink("Forgot your password?", "ResetPassword", "FormsAuthentication")
+		</legend>
 		<div class="formItem buttons">
 			<input type="submit" class="button" value="Sign in" />
 		</div>

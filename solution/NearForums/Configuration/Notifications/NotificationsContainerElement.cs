@@ -20,5 +20,18 @@ namespace NearForums.Configuration.Notifications
 				this["subscription"] = value;
 			}
 		}
+
+		[ConfigurationProperty("membershipPasswordReset", IsRequired = false)]
+		public NotificationElement MembershipPasswordReset
+		{
+			get
+			{
+				return (NotificationElement)this["membershipPasswordReset"];
+			}
+			set
+			{
+				this["membershipPasswordReset"] = value;
+			}
+		}
 	}
 }

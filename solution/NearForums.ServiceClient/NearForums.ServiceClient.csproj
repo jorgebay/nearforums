@@ -49,6 +49,7 @@
     <Compile Include="ForumsServiceClient.cs" />
     <Compile Include="LoggerServiceClient.cs" />
     <Compile Include="MessagesServiceClient.cs" />
+    <Compile Include="NotificationsServiceClient.cs" />
     <Compile Include="PageContentsServiceClient.cs" />
     <Compile Include="TagsServiceClient.cs" />
     <Compile Include="TemplatesServiceClient.cs" />

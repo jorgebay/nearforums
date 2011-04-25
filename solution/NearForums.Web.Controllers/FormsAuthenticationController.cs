@@ -13,6 +13,7 @@ using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 using NearForums.Web.Extensions;
 using NearForums.ServiceClient;
 using NearForums.Validation;
+using NearForums.Configuration;
 
 namespace NearForums.Web.Controllers
 {
@@ -130,6 +131,18 @@ namespace NearForums.Web.Controllers
 			return View();
 		}
 
+		public ActionResult NewPassword(string guid)
+		{
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			//TODO: Write method to check guid against DB, verify GUID hasn't expired 
+			//and redirect to change password for user associated with GUID.
+			return ResultHelper.ForbiddenResult(this);
+		}
+
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ResetPassword(string email)
 		{
@@ -137,21 +150,38 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
-
-			string userName = Membership.GetUserNameByEmail(email);
-
-			if (userName != null)
+			try
 			{
+				string userName = Membership.GetUserNameByEmail(email);
+
+				ValidateRegistration(userName);
 				MembershipUser membershipUser = Membership.GetUser(userName);
 				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
-				string guid = System.Guid.NewGuid().ToString().Replace("-",string.Empty);
+				string guid = System.Guid.NewGuid().ToString().Replace("-", string.Empty);
 				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddDays(2)); //Expire after 2 days. Maybe could be defined in config
-				//TODO: Send email with the GUID and verify guid expire date on web request!!
+				if (Config.Notifications.MembershipPasswordReset.IsDefined && ModelState.IsValid)
+				{
+					string linkUrl = this.Domain + this.Url.RouteUrl(new
+					{
+						controller = "FormsAuthentication",
+						action = "NewPassword",
+						id = guid
+					});
+					string body = SiteConfiguration.Current.Notifications.MembershipPasswordReset.Body.ToString();
+					int notificationSent = NotificationsServiceClient.SendNotificationsSync(user, body, linkUrl, true);
+					if (notificationSent > 0)
+					{
+						return View("ResetPasswordEmailConfirmation");
+					}
+					else
+					{
+						return View("Error");
+					}
+				}
 			}
-			else
+			catch (ValidationException ex)
 			{
-				ModelState.AddModelError("_FORM", "There is no account associated with the provided email address.");
-				return View();
+				this.AddErrors(this.ModelState, ex);
 			}
 			return View();
 		}
@@ -208,33 +238,33 @@ namespace NearForums.Web.Controllers
 		public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
 
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
-            if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
-            {
-                return View();
-            }
+			if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
+			{
+				return View();
+			}
 
-            try
-            {
-                if (MembershipService.ChangePassword(Membership.GetUser().UserName, currentPassword, newPassword))
-                {
-                    return RedirectToAction("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
-                    return View();
-                }
-            }
-            catch
-            {
-                ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
-                return View();
-            }
+			try
+			{
+				if (MembershipService.ChangePassword(Membership.GetUser().UserName, currentPassword, newPassword))
+				{
+					return RedirectToAction("ChangePasswordSuccess");
+				}
+				else
+				{
+					ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
+					return View();
+				}
+			}
+			catch
+			{
+				ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
+				return View();
+			}
 		}
 
-        [Authorize]
+		[Authorize]
 		//[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ChangePasswordSuccess()
 		{
@@ -321,6 +351,14 @@ namespace NearForums.Web.Controllers
 			if (!String.Equals(password, confirmPassword, StringComparison.Ordinal))
 			{
 				throw new ValidationException(new ValidationError("password", ValidationErrorType.CompareNotMatch));
+			}
+		}
+
+		private void ValidateRegistration(string userName)
+		{
+			if (userName == null)
+			{
+				throw new ValidationException(new ValidationError("email", ValidationErrorType.CompareNotMatch));
 			}
 		}
 		#endregion
