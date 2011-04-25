@@ -126,11 +126,15 @@ namespace NearForums.Web.Controllers.Helpers
                             session.User = new UserState(user, AuthenticationProvider.Facebook);
                             logged = true;
                         }
-                        catch (FacebookException)
-                        {
-                            //The session is not valid / has expired.
-                            ClearFacebookCookies(request.Cookies, response.Cookies);
-                        }
+						catch (FacebookException ex)
+						{
+							if (ex.ErrorType == ErrorType.Signing || ex.ErrorType == ErrorType.ServiceUnavailable || ex.ErrorType == ErrorType.RequestLimit || ex.ErrorType == ErrorType.Timeout)
+							{
+								throw ex;
+							}
+							//The session is not valid / has expired / user unknown etc.
+							ClearFacebookCookies(request.Cookies, response.Cookies);
+						}
                     }
                 }
             }
