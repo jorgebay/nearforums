@@ -130,7 +130,7 @@ namespace NearForums.Web.Controllers.Helpers
 						{
 							if (ex.ErrorType == ErrorType.Signing || ex.ErrorType == ErrorType.ServiceUnavailable || ex.ErrorType == ErrorType.RequestLimit || ex.ErrorType == ErrorType.Timeout)
 							{
-								throw ex;
+								throw;
 							}
 							//The session is not valid / has expired / user unknown etc.
 							ClearFacebookCookies(request.Cookies, response.Cookies);
