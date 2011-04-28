@@ -26,7 +26,7 @@ namespace NearForums.Configuration.Notifications
 		{
 			get
 			{
-				return SiteConfiguration.Current.Notifications != null && SiteConfiguration.Current.Notifications.MembershipPasswordReset !=null && (!String.IsNullOrEmpty(this.Body.ToString()));
+				return (!String.IsNullOrEmpty(this.Body.ToString()));
 			}
 		}
 	}

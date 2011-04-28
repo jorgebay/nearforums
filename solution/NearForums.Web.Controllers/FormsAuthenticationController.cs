@@ -14,6 +14,7 @@ using NearForums.Web.Extensions;
 using NearForums.ServiceClient;
 using NearForums.Validation;
 using NearForums.Configuration;
+using System.Configuration;
 
 namespace NearForums.Web.Controllers
 {
@@ -159,7 +160,7 @@ namespace NearForums.Web.Controllers
 				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
 				string guid = System.Guid.NewGuid().ToString().Replace("-", string.Empty);
 				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddDays(2)); //Expire after 2 days. Maybe could be defined in config
-				if (Config.Notifications.MembershipPasswordReset.IsDefined && ModelState.IsValid)
+				if (ModelState.IsValid)
 				{
 					string linkUrl = this.Domain + this.Url.RouteUrl(new
 					{
@@ -167,16 +168,8 @@ namespace NearForums.Web.Controllers
 						action = "NewPassword",
 						id = guid
 					});
-					string body = SiteConfiguration.Current.Notifications.MembershipPasswordReset.Body.ToString();
-					int notificationSent = NotificationsServiceClient.SendNotificationsSync(user, body, linkUrl, true);
-					if (notificationSent > 0)
-					{
-						return View("ResetPasswordEmailConfirmation");
-					}
-					else
-					{
-						return View("Error");
-					}
+					NotificationsServiceClient.SendResetPassword(user, linkUrl);
+					return View("ResetPasswordEmailConfirmation");
 				}
 			}
 			catch (ValidationException ex)

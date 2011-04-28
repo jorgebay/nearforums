@@ -114,7 +114,7 @@ namespace NearForums.Tests
 			//Check that the topic recently subscribed is present.
 			Assert.IsTrue(subscribedTopics.Any(x => x.Id == topic.Id));
 
-			TopicsSubscriptionsServiceClient.SendNotificationsSync(topic, -1, "Unit test email from " + TestContext.TestName + ", :<!--!UNSUBSCRIBEURL!-->:<!--!URL!-->:<!--!TITLE!-->:", "http://url", "http://unsubscribeUrl/{0}/{1}", false);
+			NotificationsServiceClient.SendToUsersSubscribed(topic, subscribedUsers, "Unit test email from " + TestContext.TestName + ", :<!--!UNSUBSCRIBEURL!-->:<!--!URL!-->:<!--!TITLE!-->:", "http://url", "http://unsubscribeUrl/{0}/{1}", false);
 
 			TopicsSubscriptionsServiceClient.Remove(topic.Id, user.Id, user.Guid);
 

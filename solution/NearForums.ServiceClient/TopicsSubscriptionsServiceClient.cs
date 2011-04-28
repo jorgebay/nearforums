@@ -5,6 +5,7 @@ using System.Text;
 using NearForums.DataAccess;
 using System.Net.Mail;
 using NearForums.Configuration;
+using System.Configuration;
 
 namespace NearForums.ServiceClient
 {
@@ -52,69 +53,14 @@ namespace NearForums.ServiceClient
 			if (SiteConfiguration.Current.Notifications != null && SiteConfiguration.Current.Notifications.Subscription != null)
 			{
 				string body = SiteConfiguration.Current.Notifications.Subscription.Body.ToString();
-				SendNotificationsHandler handler = new SendNotificationsHandler(SendNotificationsSync);
-				handler.BeginInvoke(topic, userId, body, url, unsubscribeUrl, true, null, null);
+				SendNotificationsHandler handler = new SendNotificationsHandler(NotificationsServiceClient.SendToUsersSubscribed);
+				var users = GetSubscribed(topic.Id);
+				users.RemoveAll(x => x.Id == userId || String.IsNullOrEmpty(x.Email));
+
+				handler.BeginInvoke(topic, users, body, url, unsubscribeUrl, true, null, null);
 			}
-		}
-
-		/// <summary>
-		/// Sync Sends a notification to every user subscribed to a topic, except the one provided in the userId
-		/// </summary>
-		/// <param name="topic"></param>
-		/// <param name="userId">userId of the last poster</param>
-		internal static int SendNotificationsSync(Topic topic, int userId, string body, string url, string unsubscribeUrl, bool handleExceptions)
-		{
-			int sentMailsCount = 0;
-			var users = GetSubscribed(topic.Id);
-			users.RemoveAll(x => x.Id == userId || String.IsNullOrEmpty(x.Email));
-
-			foreach (User u in users)
-			{
-				if ((u.EmailPolicy & EmailPolicy.SendFromSubscriptions) > 0)
-				{
-					try
-					{
-						SendEmail(topic, u, body, url, unsubscribeUrl);
-						sentMailsCount++;
-					}
-					catch (Exception ex)
-					{
-						if (handleExceptions)
-						{
-							LoggerServiceClient.LogError(ex);
-						}
-						else
-						{
-							throw ex;
-						}
-					}
-				}
-			}
-			return sentMailsCount;
-		}
-
-		private static void SendEmail(Topic topic, User user, string body, string url, string unsubscribeUrl)
-		{
-			if (user.Guid == Guid.Empty)
-			{
-				throw new ArgumentException("User.Guid cannot be empty.");
-			}
-			unsubscribeUrl = String.Format(unsubscribeUrl, user.Id, user.Guid.ToString("N"));
-			MailMessage message = new MailMessage();
-			message.To.Add(new MailAddress(user.Email, user.UserName));
-			message.IsBodyHtml = true;
-			#region Replace body values
-			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName"});
-			body = Utils.ReplaceBodyValues(body, topic, new[] { "Title", "Id" });
-			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>(){{"unsubscribeUrl", unsubscribeUrl}, {"url", url}});
-			#endregion
-			message.Body = body;
-			message.Subject = "Re: " + topic.Title;
-
-			SmtpClient client = new SmtpClient();
-			client.Send(message);
 		}
 	}
 
-	public delegate int SendNotificationsHandler(Topic topic, int userId, string body, string url, string unsubscribeUrl, bool handleExceptions);
+	public delegate int SendNotificationsHandler(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions);
 }
