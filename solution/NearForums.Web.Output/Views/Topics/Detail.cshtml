@@ -71,5 +71,8 @@
 	{
 		$("#messages li").unbind("mouseenter mouseleave").hover(function () { $(this).addClass("over"); }, function () { $(this).removeClass("over"); });
 	});
+	$(document).ready(function ()
+	{
+		$("#messages li").live("tap", function () { $(this).toggleClass("over"); });
+	});
 </script>
-

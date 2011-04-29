@@ -5,3 +5,4 @@
 	$("ul.items").attr("data-role", "listview");
 	//$("ul.items span.details").addClass("ui-li-count");
 });
+$("#messages li").live("tap", function () { $(this).toggleClass("over"); });

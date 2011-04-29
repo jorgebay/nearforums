@@ -2,9 +2,9 @@
 <html> 
 <head> 
     <title>@ViewBag.Title</title>
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.css" />
-	<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.0a2/jquery.mobile-1.0a2.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+	@Html.ScriptjQuery()
+	<script src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
 	@Html.Script("~/scripts/mobile.js")
 	@Html.Stylesheet("~/styles/mobile.css")
 	@RenderSection("Head", required: false)

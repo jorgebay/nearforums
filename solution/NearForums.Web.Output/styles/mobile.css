@@ -1,6 +1,11 @@
 ﻿body
 {
 }
+ul
+{
+	padding: 5px 0 5px 10px;
+	margin: 0;
+}
 li.toContent
 {
 	display: none;
@@ -32,6 +37,74 @@ div.ui-content ul.items
 	margin: 10px 0 10px 0;
 }
 ul.items span.details
+{
+	display: none;
+}
+ul#messages
+{
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+ul#messages li
+{
+	margin-bottom: 2px;
+	padding: 0 10px 10px 5px;
+}
+ul#messages div.msgBody
+{
+	padding: 10px 0 0 8px;
+}
+ul#messages div.msgBody p.removed
+{
+	font-style: italic;
+}
+ul#messages div.msgHeader
+{
+	font-size: 16px;
+	color: #666666;
+}
+ul#messages div.msgHeader a
+{
+	text-decoration: none;
+}
+ul#messages div.msgHeader a.msgId
+{
+	font-size: 22px;
+	font-weight: normal;
+}
+ul div.msgOptions
+{
+	text-align: right;
+	visibility: hidden;
+	position: relative;
+	top: 2px;
+	line-height: 11px;
+}
+ul div.msgOptions a
+{
+	text-decoration: none;
+	font-weight: normal;
+	border-left: solid 1px #666666;
+	padding-left: 3px;
+}
+ul div.msgOptions a:hover
+{
+	text-decoration: underline;
+}
+ul div.msgOptions a.first
+{
+	border: none;
+}
+li.over
+{
+	background-color: #F0F0F0;
+}
+li.over div.msgOptions
+{
+	visibility: visible;
+}
+div li.print
 {
 	display: none;
 }
