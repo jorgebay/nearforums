@@ -96,6 +96,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="BasicTests.cs" />
     <Compile Include="Controllers\ActionFiltersTests.cs" />
     <Compile Include="Controllers\AdminControllerTest.cs" />

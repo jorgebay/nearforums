@@ -60,9 +60,6 @@
 	$(document).ready(function ()
 	{
 		quoting.init();
-	});
-	$(document).ready(function ()
-	{
 		pager.init('@Url.Action("PageMore", "Topics", new{id=Model.Id})', '@Url.Action("PageUntil", "Topics", new{id=Model.Id})');
 	});
 </script>
