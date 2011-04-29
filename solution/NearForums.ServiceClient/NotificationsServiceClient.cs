@@ -38,7 +38,7 @@ namespace NearForums.ServiceClient
 
 		#region Subscriptions
 		/// <summary>
-		/// Sync Sends a notification to every user subscribed to a topic, except the one provided in the userId
+		/// Sync Sends a notification to every user subscribed to a topic
 		/// </summary>
 		/// <param name="topic"></param>
 		/// <param name="userId">userId of the last poster</param>

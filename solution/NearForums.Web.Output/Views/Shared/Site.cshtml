@@ -15,7 +15,7 @@
             @RenderBody()
         </div>
         <div id="footer">
-			<p>@Html.ActionLink("About", "Detail", "PageContents", new{name="about"}, null) | Powered by <a href="http://www.nearforums.com">nearforums</a></p>
+			<p>@Html.ActionLink("About", "Detail", "PageContents", new{name="about"}, null) | @Html.ActionLink("Terms and conditions", "Detail", "PageContents", new{name="terms"}, null) | Powered by <a href="http://www.nearforums.com">nearforums</a></p>
         </div>
     </div>
 </body>

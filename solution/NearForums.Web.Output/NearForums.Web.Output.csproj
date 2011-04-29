@@ -235,9 +235,6 @@
     <Content Include="Views\Forums\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Static\About.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NearForums.Web.Controllers\NearForums.Web.Controllers.csproj">
       <Project>{F8767C50-4290-45BF-84F2-F3BFCBDB3607}</Project>
       <Name>NearForums.Web.Controllers</Name>
