@@ -29,6 +29,26 @@ namespace NearForums.DataAccess
 		} 
 		#endregion
 
+		#region Get by password reset guid
+		public User GetByPasswordResetGuid(AuthenticationProvider provider, string PasswordResetGuid)
+		{
+			User user = null;
+
+			DbCommand command = GetCommand("SPUsersGetByPasswordResetGuid");
+			command.AddParameter<string>(this.Factory, "Provider", provider.ToString().ToUpper());
+			command.AddParameter<string>(this.Factory, "PasswordResetGuid", PasswordResetGuid);
+
+			DataRow dr = GetFirstRow(command);
+			if (dr != null)
+			{
+				user = ParseUserLoginInfo(dr);
+				user.PasswordResetGuid = dr.GetString("PasswordResetGuid");
+				user.PasswordResetGuidExpireDate = dr.GetDate("PasswordResetGuidExpireDate");
+			}
+			return user;
+		}
+		#endregion
+
 		public User GetTestUser()
 		{
 			User user = null;
@@ -54,8 +74,9 @@ namespace NearForums.DataAccess
 			user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
 			user.ProviderLastCall = dr.GetDate("UserProviderLastCall");
 			user.Email = dr.GetString("UserEmail");
-
 			decimal offSet = dr.Get<decimal>("UserTimeZone");
+			//user.PasswordResetGuid = dr.GetString("PasswordResetGuid");
+			//user.PasswordResetGuidExpireDate = dr.GetDate("PasswordResetGuidExpireDate");
 			user.TimeZone = new TimeSpan((long)(offSet * (decimal)TimeSpan.TicksPerHour));
 
 			return user;

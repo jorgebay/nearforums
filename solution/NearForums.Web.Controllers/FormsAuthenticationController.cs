@@ -29,6 +29,8 @@ namespace NearForums.Web.Controllers
 
 		// This constructor is used by the MVC framework to instantiate the controller using
 		// the default forms authentication and membership providers.
+		private bool IsPasswordReset = false;
+
 		public FormsAuthenticationController()
 			: this(null, null)
 		{
@@ -139,9 +141,31 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 
-			//TODO: Write method to check guid against DB, verify GUID hasn't expired 
-			//and redirect to change password for user associated with GUID.
-			return ResultHelper.ForbiddenResult(this);
+			Guid pwdResetGuid;
+			if(Guid.TryParseExact(guid,"N",out pwdResetGuid) == false)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+
+			User user = UsersServiceClient.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
+			if (user == null || user.PasswordResetGuidExpireDate < DateTime.Now)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			
+			MembershipUser membershipUser = Membership.GetUser(user.UserName);
+			if(membershipUser==null)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			MembershipProvider provider = Membership.Provider;
+			FormsAuth.SignIn(membershipUser.UserName, false);
+			SecurityHelper.TryFinishMembershipLogin(base.Session, membershipUser);
+			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewBag.IsPasswordReset = true;
+			return View("ChangePassword");//TODO: Create changepassword action method and send guid as route value to mantain session state
+										// and to know for which user to change the password.
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
@@ -158,7 +182,7 @@ namespace NearForums.Web.Controllers
 				ValidateRegistration(userName);
 				MembershipUser membershipUser = Membership.GetUser(userName);
 				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
-				string guid = System.Guid.NewGuid().ToString().Replace("-", string.Empty);
+				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
 				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddDays(2)); //Expire after 2 days. Maybe could be defined in config
 				if (ModelState.IsValid)
 				{
@@ -216,6 +240,16 @@ namespace NearForums.Web.Controllers
 		}
 
 		[Authorize]
+		public ActionResult ChangePassword(string guid)
+		{
+
+			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewBag.IsPasswordReset = true;
+
+			return View();
+		}
+
+		[Authorize]
 		public ActionResult ChangePassword()
 		{
 
@@ -256,6 +290,7 @@ namespace NearForums.Web.Controllers
 				return View();
 			}
 		}
+
 
 		[Authorize]
 		//[AcceptVerbs(HttpVerbs.Post)]

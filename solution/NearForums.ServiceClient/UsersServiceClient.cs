@@ -16,6 +16,12 @@ namespace NearForums.ServiceClient
 			return da.GetByProviderId(provider, providerId);
 		}
 
+		public static User GetByPasswordResetGuid(AuthenticationProvider provider, string PasswordResetGuid)
+		{
+			UsersDataAccess da = new UsersDataAccess();
+			return da.GetByPasswordResetGuid(provider, PasswordResetGuid);
+		}
+
 		public static User GetTestUser()
 		{
 			UsersDataAccess da = new UsersDataAccess();
