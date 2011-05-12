@@ -37,6 +37,7 @@
 		$.ajax({
 			url: '@(Url.Action("MessagesByUser"))',
 			cache: true,
+			dataType: "html",
 			success: function (html)
 			{
 				if ($.trim(html) != "")
