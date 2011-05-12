@@ -16,11 +16,20 @@ namespace NearForums.Web.State
 		}
 
 		#region Get / Set to session
+		/// <summary>
+		/// Gets typed values from the session
+		/// </summary>
+		/// <param name="key">The key name of the session value</param>
 		public T GetItem<T>(string key)
 		{
 			return (T)Session[key];
 		}
 
+		/// <summary>
+		/// Gets typed values from the session
+		/// </summary>
+		/// <param name="key">The key name of the session value</param>
+		/// <param name="create">Determines if a new instance of the type T should be created in case it does not exist in session for that key</param>
 		public T GetItem<T>(string key, bool create) where T : new()
 		{
 
@@ -104,6 +113,21 @@ namespace NearForums.Web.State
 			set
 			{
 				SetItem<string>("CaptchaHash", value);
+			}
+		}
+
+		/// <summary>
+		/// Determines if the current session is meant for password reset
+		/// </summary>
+		public bool IsPasswordReset
+		{
+			get
+			{
+				return GetItem<bool>("IsPasswordReset", true);
+			}
+			set
+			{
+				SetItem<bool>("IsPasswordReset", value);
 			}
 		}
 		#endregion

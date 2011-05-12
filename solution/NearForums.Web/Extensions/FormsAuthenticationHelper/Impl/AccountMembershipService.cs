@@ -40,11 +40,21 @@ namespace NearForums.Web.Extensions.FormsAuthenticationHelper.Impl
             return status;
         }
 
-        public bool ChangePassword(string userName, string oldPassword, string newPassword)
-        {
-            MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
-            return currentUser.ChangePassword(oldPassword, newPassword);
-        }
+		public bool ChangePassword(string userName, string oldPassword, string newPassword)
+		{
+			MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
+			return currentUser.ChangePassword(oldPassword, newPassword);
+		}
+
+		/// <summary>
+		/// Changes the password of a user without asking the old password.
+		/// </summary>
+		public bool ChangePassword(string userName, string newPassword)
+		{
+			var currentUser = _provider.GetUser(userName, true);
+			var oldPassword = currentUser.ResetPassword();
+			return currentUser.ChangePassword(oldPassword, newPassword);
+		}
 
 		public string ResetPassword(string userName, string secretAnswer)
 		{

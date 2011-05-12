@@ -15,6 +15,7 @@ using NearForums.ServiceClient;
 using NearForums.Validation;
 using NearForums.Configuration;
 using System.Configuration;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
@@ -26,10 +27,6 @@ namespace NearForums.Web.Controllers
 		 * Source code licensed by MS-PL
 		 * Website: https://github.com/TroyGoode/MembershipStarterKit
 		 */
-
-		// This constructor is used by the MVC framework to instantiate the controller using
-		// the default forms authentication and membership providers.
-		private bool IsPasswordReset = false;
 
 		public FormsAuthenticationController()
 			: this(null, null)
@@ -102,17 +99,6 @@ namespace NearForums.Web.Controllers
 			}
 		}
 
-		public ActionResult LogOff()
-		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
-			FormsAuth.SignOut();
-
-			return RedirectToAction("List", "Forums");
-		}
-
 		public ActionResult Register()
 		{
 			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
@@ -124,16 +110,9 @@ namespace NearForums.Web.Controllers
 			return View();
 		}
 
-		public ActionResult ResetPassword()
-		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
-
-			return View();
-		}
-
+		/// <summary>
+		/// Action executed when a user clicks on the reset password email
+		/// </summary>
 		public ActionResult NewPassword(string guid)
 		{
 			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
@@ -162,12 +141,27 @@ namespace NearForums.Web.Controllers
 			MembershipProvider provider = Membership.Provider;
 			FormsAuth.SignIn(membershipUser.UserName, false);
 			SecurityHelper.TryFinishMembershipLogin(base.Session, membershipUser);
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-			ViewBag.IsPasswordReset = true;
-			return View("ChangePassword");//TODO: Create changepassword action method and send guid as route value to mantain session state
-										// and to know for which user to change the password.
+			Session.IsPasswordReset = true;
+
+			return RedirectToAction("ChangePassword");
 		}
 
+		/// <summary>
+		/// Show the form to send the email to the user to reset the password
+		/// </summary>
+		public ActionResult ResetPassword()
+		{
+			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			return View();
+		}
+
+		/// <summary>
+		/// Sends the email to the user to reset the password
+		/// </summary>
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ResetPassword(string email)
 		{
@@ -190,7 +184,7 @@ namespace NearForums.Web.Controllers
 					{
 						controller = "FormsAuthentication",
 						action = "NewPassword",
-						id = guid
+						guid = guid
 					});
 					NotificationsServiceClient.SendResetPassword(user, linkUrl);
 					return View("ResetPasswordEmailConfirmation");
@@ -239,88 +233,80 @@ namespace NearForums.Web.Controllers
 			return View();
 		}
 
-		[Authorize]
-		public ActionResult ChangePassword(string guid)
-		{
-
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-			ViewBag.IsPasswordReset = true;
-
-			return View();
-		}
-
-		[Authorize]
+		[RequireAuthorization]
 		public ActionResult ChangePassword()
 		{
 
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
 
 			return View();
 		}
 
-		[Authorize]
-		[AcceptVerbs(HttpVerbs.Post)]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-			Justification = "Exceptions result in password not being changed.")]
+		[RequireAuthorization]
+		[HttpPost]
 		public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
-
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-
-			if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
-			{
-				return View();
-			}
-
+			var user = Membership.GetUser();
 			try
 			{
-				if (MembershipService.ChangePassword(Membership.GetUser().UserName, currentPassword, newPassword))
+				ValidateChangePassword(currentPassword, newPassword, confirmPassword);
+				if (Session.IsPasswordReset)
 				{
-					return RedirectToAction("ChangePasswordSuccess");
+					MembershipService.ChangePassword(user.UserName, newPassword);
 				}
 				else
 				{
-					ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
-					return View();
+					if (!MembershipService.ChangePassword(user.UserName, currentPassword, newPassword))
+					{
+						throw new ValidationException(new ValidationError("currentPassword", ValidationErrorType.CompareNotMatch));
+					}
 				}
+
+				//The time window to reset password ends
+				Session.IsPasswordReset = false;
+				return RedirectToAction("ChangePasswordSuccess");
 			}
-			catch
+			catch (ValidationException ex)
 			{
-				ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
-				return View();
+				this.AddErrors(ModelState, ex);
 			}
+			
+			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			return View();
 		}
 
-
-		[Authorize]
-		//[AcceptVerbs(HttpVerbs.Post)]
+		[RequireAuthorization]
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
 		}
 
 		#region Validation Methods
+		/// <summary>
+		/// Validates change password form params
+		/// </summary>
+		/// <exception cref="ValidationException"></exception>
 		[NonAction]
-		private bool ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)
+		private void ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
-			if (String.IsNullOrEmpty(currentPassword))
+			var errors = new List<ValidationError>();
+			if ((!Session.IsPasswordReset) && String.IsNullOrEmpty(currentPassword))
 			{
-				ModelState.AddModelError("currentPassword", "You must specify a current password.");
+				errors.Add(new ValidationError("currentPassword", ValidationErrorType.NullOrEmpty));
 			}
 			if (newPassword == null || newPassword.Length < MembershipService.MinPasswordLength)
 			{
-				ModelState.AddModelError("newPassword",
-					String.Format(CultureInfo.CurrentCulture,
-						 "You must specify a new password of {0} or more characters.",
-						 MembershipService.MinPasswordLength));
+				errors.Add(new ValidationError("newPassword", ValidationErrorType.NullOrEmpty));
 			}
-
-			if (!String.Equals(newPassword, confirmPassword, StringComparison.Ordinal))
+			else if (newPassword != confirmPassword)
 			{
-				ModelState.AddModelError("_FORM", "The new password and confirmation password do not match.");
+				errors.Add(new ValidationError("newPassword", ValidationErrorType.CompareNotMatch));
 			}
 
-			return ModelState.IsValid;
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
 		}
 		[NonAction]
 		private bool ValidateLogOn(string userName, string password)
