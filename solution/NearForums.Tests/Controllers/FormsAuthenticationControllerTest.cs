@@ -37,7 +37,6 @@ namespace NearForums.Tests.Controllers
 			var u = (MembershipUser)enumerator.Current;
 			#endregion
 
-			SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsFormsAuthDefined = true;
 			var result = controller.ResetPassword(u.Email);
 			Assert.IsTrue(controller.ModelState.IsValid);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));

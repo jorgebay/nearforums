@@ -9,7 +9,7 @@ using NearForums.ServiceClient;
 
 namespace NearForums.Web.Controllers.Filters
 {
-	public class AddVisitAttribute : ActionFilterAttribute
+	public class AddVisitAttribute : BaseActionFilterAttribute
 	{
 		public override void OnActionExecuted(ActionExecutedContext filterContext)
 		{
@@ -26,13 +26,5 @@ namespace NearForums.Web.Controllers.Filters
 			}
 			base.OnActionExecuted(filterContext);
 		}
-
-		//protected virtual string GetActionIdentifier(ActionDescriptor descriptor, HttpContextBase httpContext)
-		//{
-		//    return
-		//        httpContext.Request.HttpMethod + " "
-		//        + descriptor.ControllerDescriptor.ControllerType.FullName + "."
-		//        + descriptor.ActionName;
-		//}
 	}
 }

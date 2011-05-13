@@ -16,7 +16,7 @@ namespace NearForums.Web.Controllers.Filters
 	/// Prevents a user (determined by the ip) to post unlimited times.
 	/// Checks that a certain amount of time passed since the last post, if not it shows (and validates input) a captcha image to validate that its a human input.
 	/// </summary>
-	public class PreventFloodAttribute : ActionFilterAttribute
+	public class PreventFloodAttribute : BaseActionFilterAttribute
 	{
 		#region Constructor, Field and Props
 		private const string _captchaModelStateKey = "captcha";
@@ -37,7 +37,7 @@ namespace NearForums.Web.Controllers.Filters
 		{
 			get
 			{
-				var minTime = TimeSpan.FromMinutes(SiteConfiguration.Current.SpamPrevention.TimeToRepost);
+				var minTime = TimeSpan.FromMinutes(Config.SpamPrevention.TimeToRepost);
 				return minTime;
 			}
 		}

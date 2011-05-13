@@ -33,32 +33,7 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return this.Identifier && this.IsFormsAuthDefined;
-			}
-		}
-
-		public bool IsFormsAuthDefined
-		{
-			get
-			{
-				return this._isDefined;
-			}
-			set
-			{
-				this._isDefined = value;
-			}
-		}
-
-		[ConfigurationProperty("EmailPasswordRecoveryLink", IsRequired = true)]
-		public bool EmailPasswordRecoveryLink
-		{
-			get
-			{
-				return (bool)this["EmailPasswordRecoveryLink"];
-			}
-			set
-			{
-				this["EmailPasswordRecoveryLink"] = value;
+				return this.Identifier;
 			}
 		}
 	}

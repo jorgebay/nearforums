@@ -39,8 +39,6 @@ namespace NearForums.Web.Output
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
-
-			SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsFormsAuthDefined = WebConfigHelper.IsFormsAuthenticationEnabled;
 		}
 
 		protected void Application_AuthenticateRequest()

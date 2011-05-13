@@ -21,6 +21,7 @@ namespace NearForums.Web.Controllers
 {
 
 	[HandleError]
+	[ValidateFormsAuth]
 	public class FormsAuthenticationController : BaseController
 	{
 		/* This class uses code written by Troy Goode
@@ -57,10 +58,6 @@ namespace NearForums.Web.Controllers
 		[HttpGet]
 		public ActionResult Login(string returnUrl)
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
 			if (this.User != null)
 			{
 				return Redirect(returnUrl);
@@ -75,10 +72,6 @@ namespace NearForums.Web.Controllers
 			Justification = "Needs to take same parameter type as Controller.Redirect()")]
 		public ActionResult Login(string userName, string password, bool rememberMe, string returnUrl)
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
 			if (!ValidateLogOn(userName, password))
 			{
 				ViewBag.ReturnUrl = returnUrl;
@@ -101,10 +94,6 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult Register()
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
 			return View();
@@ -115,11 +104,6 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		public ActionResult NewPassword(string guid)
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
-
 			Guid pwdResetGuid;
 			if(Guid.TryParseExact(guid,"N",out pwdResetGuid) == false)
 			{
@@ -151,11 +135,6 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		public ActionResult ResetPassword()
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
-
 			return View();
 		}
 
@@ -165,10 +144,6 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult ResetPassword(string email)
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
 			try
 			{
 				string userName = Membership.GetUserNameByEmail(email);
@@ -200,10 +175,6 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Register(string userName, string email, string password, string confirmPassword)
 		{
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 			var createStatus = MembershipCreateStatus.Success;
 
@@ -236,7 +207,6 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization]
 		public ActionResult ChangePassword()
 		{
-
 			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
 
 			return View();
