@@ -441,9 +441,6 @@ namespace NearForums.Web.Controllers
 				#endregion
 
 				#region Authorization providers
-
-				SecurityHelper.TryLoginFromFacebook(this.Session, this.Request, this.Response);
-
 				ViewData["Facebook"] = Config.AuthorizationProviders.Facebook.IsDefined;
 				ViewData["Twitter"] = Config.AuthorizationProviders.Twitter.IsDefined;
 				#region Test Twitter

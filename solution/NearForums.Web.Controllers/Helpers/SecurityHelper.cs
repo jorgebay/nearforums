@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NearForums.ServiceClient;
-using Facebook.Session;
-using Facebook.Rest;
 using NearForums.Web.State;
 using System.Web.SessionState;
 using System.Web;
 using NearForums.Configuration;
-using Facebook.Utility;
 using System.Configuration;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -38,10 +35,10 @@ namespace NearForums.Web.Controllers.Helpers
             {
                 logged = true;
             }
-            else if (TryLoginFromFacebook(session, request, response))
-            {
-                logged = true;
-            }
+			//else if (TryLoginFromFacebook(session, request, response))
+			//{
+			//    logged = true;
+			//}
             else if (TryFinishLoginFromTwitter(session, cache))
             {
                 logged = true;
@@ -84,155 +81,47 @@ namespace NearForums.Web.Controllers.Helpers
         #endregion
 
         #region Facebook
-        public static bool TryLoginFromFacebook(SessionWrapper session, HttpRequestBase request, HttpResponseBase response)
-        {
-            bool logged = false;
-            if (SiteConfiguration.Current.AuthorizationProviders.Facebook != null)
-            {
-                string apiKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.ApiKey;
-                string secretKey = SiteConfiguration.Current.AuthorizationProviders.Facebook.SecretKey;
-                ConnectSession connectSession = new ConnectSession(apiKey, secretKey);
-                //Checks facebook cookies
-                if (connectSession.IsConnected())
-                {
-                    Api facebookApi = new Api(connectSession);
-                    User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, connectSession.UserId.ToString());
-                    //Check if exist user from facebook
-                    if (user != null)
-                    {
-                        if (IsValidFacebookSignature(apiKey, secretKey, request))
-                        {
-                            session.User = new UserState(user, AuthenticationProvider.Facebook);
-                            logged = true;
-                        }
-                        else
-                        {
-                            ClearFacebookCookies(request.Cookies, response.Cookies);
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Facebook.Schema.user facebookUser = facebookApi.Users.GetInfo();
 
-                            //Autoregister
+		#region Create user
+		/// <summary>
+		/// Creates a new instance of nearforums user with properties from a facebook User
+		/// </summary>
+		public static User CreateUser(dynamic facebookUser)
+		{
+			//Full facebook documentation: http://developers.facebook.com/docs/reference/api/user/
+			User user = new User();
+			user.UserName = facebookUser.first_name + " " + facebookUser.last_name;
+			user.ExternalProfileUrl = facebookUser.link;
+			user.Profile = facebookUser.about;
+			#region Birthdate
+			DateTime? birthDate = null;
+			if (birthDate != null)
+			{
+				DateTime parsedBirthDate = DateTime.MinValue;
+				if (DateTime.TryParse(facebookUser.birthday, new CultureInfo("en-US"), DateTimeStyles.AdjustToUniversal, out parsedBirthDate))
+				{
+					birthDate = parsedBirthDate;
+				}
+			}
+			user.BirthDate = birthDate;
+			#endregion
+			#region Timezone
+			if (facebookUser.timezone != null)
+			{
+				user.TimeZone = TimeSpan.FromHours((double)facebookUser.timezone);
+			}
+			else
+			{
+				user.TimeZone = new TimeSpan();
+			}
+			#endregion
+			#region Picture
+			user.Photo = String.Format("http://graph.facebook.com/{0}/picture?type=normal", facebookUser.id);
+			#endregion
 
-                            user = CreateUser(facebookUser);
-
-                            user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.uid.Value.ToString());
-
-                            //Log in
-                            session.User = new UserState(user, AuthenticationProvider.Facebook);
-                            logged = true;
-                        }
-						catch (FacebookException ex)
-						{
-							if (ex.ErrorType == ErrorType.Signing || ex.ErrorType == ErrorType.ServiceUnavailable || ex.ErrorType == ErrorType.RequestLimit || ex.ErrorType == ErrorType.Timeout)
-							{
-								throw;
-							}
-							//The session is not valid / has expired / user unknown etc.
-							ClearFacebookCookies(request.Cookies, response.Cookies);
-						}
-                    }
-                }
-            }
-            return logged;
-        }
-
-        #region Create user
-        private static User CreateUser(Facebook.Schema.user facebookUser)
-        {
-            //Pending field: facebookUser.locale
-            User user = new User();
-            user.UserName = facebookUser.first_name + " " + facebookUser.last_name;
-            user.ExternalProfileUrl = facebookUser.profile_url;
-            user.Profile = facebookUser.about_me;
-            #region Birthdate
-            DateTime? birthDate = null;
-            if (birthDate != null)
-            {
-                DateTime parsedBirthDate = DateTime.MinValue;
-                if (DateTime.TryParse(facebookUser.birthday, new CultureInfo("en-US"), DateTimeStyles.AdjustToUniversal, out parsedBirthDate))
-                {
-                    birthDate = parsedBirthDate;
-                }
-            }
-            user.BirthDate = birthDate;
-            #endregion
-            user.Photo = facebookUser.pic;
-            #region Timezone
-            if (facebookUser.timezone != null)
-            {
-                user.TimeZone = TimeSpan.FromHours((double)facebookUser.timezone.Value);
-            }
-            else
-            {
-                user.TimeZone = new TimeSpan();
-            }
-            #endregion
-
-            return user;
-        }
-        #endregion
-
-        #region Validate facebook signature
-        /// <summary>
-        /// Validates the facebook data agains secret key
-        /// </summary>
-        private static bool IsValidFacebookSignature(string apiKey, string secretKey, HttpRequestBase request)
-        {
-            //keys must remain in alphabetical order
-            string[] keyArray = { "expires", "session_key", "ss", "user" };
-            string signature = "";
-
-            foreach (string key in keyArray)
-            {
-                signature += string.Format("{0}={1}", key, GetFacebookCookie(apiKey, key, request));
-            }
-
-            signature += secretKey;
-
-            MD5 md5 = MD5.Create();
-            byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(signature.Trim()));
-
-            StringBuilder sb = new StringBuilder();
-            foreach (byte hashByte in hash)
-            {
-                sb.Append(hashByte.ToString("x2", CultureInfo.InvariantCulture));
-            }
-
-            return (GetFacebookCookie(apiKey, "", request) == sb.ToString());
-        }
-
-        private static string GetFacebookCookie(string apiKey, string cookieName, HttpRequestBase request)
-        {
-            //APIKey issued by FB
-            string fullCookie = string.IsNullOrEmpty(cookieName) ? apiKey : apiKey + "_" + cookieName;
-
-            return request.Cookies[fullCookie].Value;
-        }
-        #endregion
-
-        /// <summary>
-        /// Clears all cookie information with the facebook apiKey + Name format.
-        /// </summary>
-        private static void ClearFacebookCookies(HttpCookieCollection requestCookies, HttpCookieCollection responseCookies)
-        {
-            //Set all cookies from the user browser as expired
-            string[] cookieKeys = requestCookies.AllKeys;
-            foreach (string key in cookieKeys)
-            {
-                if (key.Contains(SiteConfiguration.Current.AuthorizationProviders.Facebook.ApiKey))
-                {
-                    HttpCookie cookie = requestCookies[key];
-
-                    cookie.Expires = DateTime.Now.AddDays(-1d);
-                    responseCookies.Add(cookie);
-                }
-            }
-        }
+			return user;
+		}
+		#endregion
         #endregion
 
         #region OAuth

@@ -13,6 +13,9 @@ using DotNetOpenAuth.Messaging;
 using System.Web.Security;
 using NearForums.Web.Extensions.FormsAuthenticationHelper;
 using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
+using Facebook;
+using NearForums.Web.State;
+using System.Web.Routing;
 
 namespace NearForums.Web.Controllers
 {
@@ -24,7 +27,7 @@ namespace NearForums.Web.Controllers
 			{
 				if (group == null || User.Group >= group)
 				{
-					return Redirect(returnUrl ?? ApplicationHomeUrl);
+					return Redirect(returnUrl);
 				}
 				ViewBag.UserGroup = group;
 				ViewBag.UserGroupName = UsersServiceClient.GetGroupName(group.Value);
@@ -39,10 +42,6 @@ namespace NearForums.Web.Controllers
 			IFormsAuthentication formsAuth = new FormsAuthenticationService();
 			formsAuth.SignOut();
 
-			if (String.IsNullOrEmpty(returnUrl))
-			{
-				returnUrl = ApplicationHomeUrl;
-			}
 			return Redirect(returnUrl);
 		}
 
@@ -65,11 +64,67 @@ namespace NearForums.Web.Controllers
 		} 
 		#endregion
 
-		#region Facebook
-		public ActionResult FacebookReceiver()
+		#region Facebook OAuth 2.0
+		public ActionResult FacebookStartLogin(string returnUrl)
 		{
-			return Static("FacebookXDReceiver", false);
-		} 
+			if (!this.Config.AuthorizationProviders.Facebook.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			var oAuthClient = new FacebookOAuthClient();
+			oAuthClient.AppId = this.Config.AuthorizationProviders.Facebook.ApiKey;
+			oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
+			var loginUri = oAuthClient.GetLoginUrl(new Dictionary<string, object>(){{"state", Session.SessionToken}});
+
+			Session.NextUrl = returnUrl;
+			
+			return new RedirectResult(loginUri.AbsoluteUri);
+		}
+
+		public ActionResult FacebookFinishLogin(string code, string state)
+		{
+			if (!this.Config.AuthorizationProviders.Facebook.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			FacebookOAuthResult oauthResult;
+			if (state == Session.SessionToken && FacebookOAuthResult.TryParse(Request.Url, out oauthResult))
+			{
+				if (oauthResult.IsSuccess)
+				{
+					var oAuthClient = new FacebookOAuthClient();
+					oAuthClient.AppId = this.Config.AuthorizationProviders.Facebook.ApiKey;
+					oAuthClient.AppSecret = this.Config.AuthorizationProviders.Facebook.SecretKey;
+					oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
+					
+					//Could throw an OAuth exception if validation fails.
+					dynamic tokenResult = oAuthClient.ExchangeCodeForAccessToken(code);
+					string accessToken = tokenResult.access_token;
+
+					DateTime expiresOn = DateTime.MaxValue;
+					if (tokenResult.ContainsKey("expires"))
+					{
+						expiresOn = DateTimeConvertor.FromUnixTime(tokenResult.expires);
+					}
+
+					FacebookClient fbClient = new FacebookClient(accessToken);
+					dynamic facebookUser = fbClient.Get("me?fields=id,name,first_name,last_name,about,link,birthday,timezone");
+					
+					User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, facebookUser.id);
+					if (user == null)
+					{
+						//Its a new user for the application
+						user = SecurityHelper.CreateUser(facebookUser);
+						user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.id);
+					}
+
+					//Log the user in
+					Session.User = new UserState(user, AuthenticationProvider.Facebook);
+				}
+			}
+
+			return Redirect(Session.NextUrl);
+		}
 		#endregion
 
 		#region OpenId
@@ -110,10 +165,6 @@ namespace NearForums.Web.Controllers
 			if (!this.Config.AuthorizationProviders.SSOOpenId.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
-			}
-			if (String.IsNullOrEmpty(returnUrl))
-			{
-				returnUrl = ApplicationHomeUrl;
 			}
 
 			OpenIdRelyingParty openid = new OpenIdRelyingParty();

@@ -130,6 +130,37 @@ namespace NearForums.Web.State
 				SetItem<bool>("IsPasswordReset", value);
 			}
 		}
+
+		/// <summary>
+		/// Gets a unique private token for this session. This token is not related to session id.
+		/// </summary>
+		public string SessionToken
+		{
+			get
+			{
+				const string sessionTokenKey = "SessionToken";
+				if (GetItem<string>(sessionTokenKey) == null)
+				{
+					SetItem<string>(sessionTokenKey, Guid.NewGuid().ToString("N"));
+				}
+				return GetItem<string>(sessionTokenKey);
+			}
+		}
+
+		/// <summary>
+		/// Gets or set a next Url to go to. Generally used for flows like authentication.
+		/// </summary>
+		public string NextUrl
+		{
+			get
+			{
+				return GetItem<string>("NextUrl");
+			}
+			set
+			{
+				SetItem<string>("NextUrl", value);
+			}
+		}
 		#endregion
 	}
 }

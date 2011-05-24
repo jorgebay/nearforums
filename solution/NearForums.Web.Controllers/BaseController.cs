@@ -54,6 +54,9 @@ namespace NearForums.Web.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Gets the current user in session
+		/// </summary>
 		public new UserState User
 		{
 			get
@@ -104,7 +107,7 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// The application path url. It would be / or /forum/ depending on if its a main website or is a sub application
 		/// </summary>
-		public string ApplicationHomeUrl
+		private string ApplicationHomeUrl
 		{
 			get
 			{
@@ -268,6 +271,22 @@ namespace NearForums.Web.Controllers
 		public ActionResult Captcha()
 		{
 			return CaptchaHelper.CaptchaResult(Session);
+		}
+
+		/// <summary>
+		/// Only local Urls. Creates a RedirectResult object that redirects to the specified URL. Checks that the URL is a local url.
+		/// If the url is null, it redirects to the application home.
+		/// </summary>
+		protected override RedirectResult Redirect(string url)
+		{
+			if ((!String.IsNullOrEmpty(url)) && Url != null && Url.IsLocalUrl(url))
+			{
+				return base.Redirect(url);
+			}
+			else
+			{
+				return base.Redirect(this.ApplicationHomeUrl);
+			}
 		}
 		#endregion
 	}
