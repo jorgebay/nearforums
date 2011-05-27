@@ -1,4 +1,4 @@
-﻿SET ANSI_NULLS ON
+SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
@@ -18,8 +18,6 @@ RETURN (
     SELECT pn AS position,
       SUBSTRING(@s, start, CASE WHEN stop > 0 THEN stop-start ELSE 512 END) AS part
     FROM Pieces
-  )
-
-' 
+  )' 
 END
 

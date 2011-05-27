@@ -1,11 +1,11 @@
-﻿SET ANSI_NULLS ON
+SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[TopicsComplete]'))
 EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[TopicsComplete] 
 AS
-	SELECT
+SELECT
 		T.TopicId
 		,T.TopicTitle
 		,T.TopicShortName
@@ -28,15 +28,15 @@ AS
 		INNER JOIN Forums F ON F.ForumId = T.ForumId
 	WHERE
 		T.Active = 1
-' 
+		AND
+		F.Active = 1' 
 GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[MessagesComplete]'))
-EXEC dbo.sp_executesql @statement = N'
-CREATE VIEW [dbo].[MessagesComplete]
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[MessagesComplete]
 AS
 SELECT
 	
@@ -56,6 +56,4 @@ FROM
 	dbo.Messages M
 	INNER JOIN dbo.Users U ON U.UserId = M.UserId
 	INNER JOIN dbo.UsersGroups G ON G.UserGroupId = U.UserGroupId
-	LEFT JOIN dbo.Messages P ON P.TopicId = M.TopicId AND P.MessageId = M.ParentId AND P.Active = 1
-
-' 
+	LEFT JOIN dbo.Messages P ON P.TopicId = M.TopicId AND P.MessageId = M.ParentId AND P.Active = 1' 
