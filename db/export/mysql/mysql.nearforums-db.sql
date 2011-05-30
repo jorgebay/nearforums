@@ -3061,6 +3061,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
 CREATE TABLE  mysql_Membership(`PKID` varchar(36) NOT NULL,
               Username varchar(255) NOT NULL, 
               ApplicationName varchar(255) NOT NULL,
@@ -3217,4 +3218,5 @@ UPDATE my_aspnet_SchemaVersion SET version=5;
 ALTER TABLE my_aspnet_Sessions CONVERT TO CHARACTER SET DEFAULT;
 ALTER TABLE my_aspnet_Sessions MODIFY SessionItems LONGBLOB;
 
-UPDATE my_aspnet_SchemaVersion SET version=6;
+UPDATE my_aspnet_SchemaVersion SET version=6;
+
