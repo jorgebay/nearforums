@@ -1,4 +1,4 @@
-﻿GO
+GO
 IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0
 BEGIN
 	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (1, 'Level 1')
