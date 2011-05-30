@@ -11,4 +11,4 @@ using System.Runtime.InteropServices;
 //Only modify the assembly version values on pre release commits, only changes to major and minor
 [assembly: AssemblyVersion("6.0")]
 //Major and minor are copied from assembly version. Real revisions.
-[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.1.0")]
