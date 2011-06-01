@@ -1,4 +1,2566 @@
-ï»¿
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PageContents]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[PageContents](
+	[PageContentId] [int] IDENTITY(1,1) NOT NULL,
+	[PageContentTitle] [varchar](128) NOT NULL,
+	[PageContentBody] [varchar](max) NOT NULL,
+	[PageContentShortName] [varchar](128) NOT NULL,
+	[PageContentEditDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_PageContents] PRIMARY KEY CLUSTERED 
+(
+	[PageContentId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UsersGroups]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[UsersGroups](
+	[UserGroupId] [smallint] NOT NULL,
+	[UserGroupName] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_UsersGroups] PRIMARY KEY CLUSTERED 
+(
+	[UserGroupId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Templates]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Templates](
+	[TemplateId] [int] IDENTITY(1,1) NOT NULL,
+	[TemplateKey] [varchar](16) NOT NULL,
+	[TemplateDescription] [varchar](256) NULL,
+	[TemplateIsCurrent] [bit] NOT NULL,
+	[TemplateDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_Templates] PRIMARY KEY CLUSTERED 
+(
+	[TemplateId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ForumsCategories]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[ForumsCategories](
+	[CategoryId] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [varchar](255) NOT NULL,
+	[CategoryOrder] [int] NOT NULL,
+ CONSTRAINT [PK_ForumsCategories] PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Tags]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Tags](
+	[Tag] [varchar](50) NOT NULL,
+	[TopicId] [int] NOT NULL,
+ CONSTRAINT [PK_Tags] PRIMARY KEY CLUSTERED 
+(
+	[Tag] ASC,
+	[TopicId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Messages]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Messages](
+	[TopicId] [int] NOT NULL,
+	[MessageId] [int] NOT NULL,
+	[MessageBody] [varchar](max) NOT NULL,
+	[MessageCreationDate] [datetime] NOT NULL,
+	[MessageLastEditDate] [datetime] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[ParentId] [int] NULL,
+	[Active] [bit] NOT NULL,
+	[EditIp] [varchar](15) NULL,
+	[MessageLastEditUser] [int] NOT NULL,
+ CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED 
+(
+	[TopicId] ASC,
+	[MessageId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[TopicsSubscriptions](
+	[TopicId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+ CONSTRAINT [PK_TopicsSubscriptions] PRIMARY KEY CLUSTERED 
+(
+	[TopicId] ASC,
+	[UserId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Topics]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Topics](
+	[TopicId] [int] IDENTITY(1,1) NOT NULL,
+	[TopicTitle] [varchar](256) NOT NULL,
+	[TopicShortName] [varchar](64) NOT NULL,
+	[TopicDescription] [varchar](max) NOT NULL,
+	[TopicCreationDate] [datetime] NOT NULL,
+	[TopicLastEditDate] [datetime] NOT NULL,
+	[TopicViews] [int] NOT NULL,
+	[TopicReplies] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[TopicTags] [varchar](256) NOT NULL,
+	[ForumId] [int] NOT NULL,
+	[TopicLastEditUser] [int] NOT NULL,
+	[TopicLastEditIp] [varchar](15) NOT NULL,
+	[Active] [bit] NOT NULL,
+	[TopicIsClose] [bit] NOT NULL,
+	[TopicOrder] [int] NULL,
+	[LastMessageId] [int] NULL,
+	[MessagesIdentity] [int] NOT NULL,
+ CONSTRAINT [PK_Topics] PRIMARY KEY CLUSTERED 
+(
+	[TopicId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Flags]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Flags](
+	[FlagId] [int] IDENTITY(1,1) NOT NULL,
+	[TopicId] [int] NOT NULL,
+	[MessageId] [int] NULL,
+	[Ip] [varchar](15) NOT NULL,
+	[FlagDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_Flags] PRIMARY KEY CLUSTERED 
+(
+	[FlagId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Flags]') AND name = N'IX_Flags')
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Flags] ON [dbo].[Flags] 
+(
+	[TopicId] ASC,
+	[MessageId] ASC,
+	[Ip] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Forums](
+	[ForumId] [int] IDENTITY(1,1) NOT NULL,
+	[ForumName] [varchar](255) NOT NULL,
+	[ForumShortName] [varchar](32) NOT NULL,
+	[ForumDescription] [varchar](max) NOT NULL,
+	[CategoryId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[ForumCreationDate] [datetime] NOT NULL,
+	[ForumLastEditDate] [datetime] NOT NULL,
+	[ForumLastEditUser] [int] NOT NULL,
+	[Active] [bit] NOT NULL,
+	[ForumTopicCount] [int] NOT NULL,
+	[ForumMessageCount] [int] NOT NULL,
+	[ForumOrder] [int] NOT NULL,
+ CONSTRAINT [PK_Forums] PRIMARY KEY CLUSTERED 
+(
+	[ForumId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Forums]') AND name = N'IX_Forums_ForumShortName')
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Forums_ForumShortName] ON [dbo].[Forums] 
+(
+	[ForumShortName] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Users]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Users](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [varchar](50) NOT NULL,
+	[UserProfile] [varchar](max) NULL,
+	[UserSignature] [varchar](max) NULL,
+	[UserGroupId] [smallint] NOT NULL,
+	[Active] [bit] NOT NULL,
+	[UserBirthDate] [datetime] NULL,
+	[UserWebsite] [varchar](255) NULL,
+	[UserGuid] [char](32) NOT NULL,
+	[UserTimezone] [decimal](9, 2) NOT NULL,
+	[UserEmail] [varchar](100) NULL,
+	[UserEmailPolicy] [int] NULL,
+	[UserPhoto] [varchar](1024) NULL,
+	[UserRegistrationDate] [datetime] NOT NULL,
+	[UserExternalProfileUrl] [varchar](255) NULL,
+	[UserProvider] [varchar](32) NOT NULL,
+	[UserProviderId] [varchar](64) NOT NULL,
+	[UserProviderLastCall] [datetime] NOT NULL,
+	[PasswordResetGuid] [varchar](100) NULL,
+	[PasswordResetGuidExpireDate] [datetime] NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Users]') AND name = N'IX_Users')
+CREATE NONCLUSTERED INDEX [IX_Users] ON [dbo].[Users] 
+(
+	[UserProvider] ASC,
+	[UserProviderId] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Tags]'))
+ALTER TABLE [dbo].[Tags]  WITH CHECK ADD  CONSTRAINT [FK_Tags_Topics] FOREIGN KEY([TopicId])
+REFERENCES [dbo].[Topics] ([TopicId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
+ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Topics] FOREIGN KEY([TopicId])
+REFERENCES [dbo].[Topics] ([TopicId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
+ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Users] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
+ALTER TABLE [dbo].[TopicsSubscriptions]  WITH CHECK ADD  CONSTRAINT [FK_TopicsSubscriptions_Topics] FOREIGN KEY([TopicId])
+REFERENCES [dbo].[Topics] ([TopicId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
+ALTER TABLE [dbo].[TopicsSubscriptions]  WITH CHECK ADD  CONSTRAINT [FK_TopicsSubscriptions_Users] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Forums] FOREIGN KEY([ForumId])
+REFERENCES [dbo].[Forums] ([ForumId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Users] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Users_LastEdit] FOREIGN KEY([TopicLastEditUser])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Flags_Messages]') AND parent_object_id = OBJECT_ID(N'[dbo].[Flags]'))
+ALTER TABLE [dbo].[Flags]  WITH CHECK ADD  CONSTRAINT [FK_Flags_Messages] FOREIGN KEY([TopicId], [MessageId])
+REFERENCES [dbo].[Messages] ([TopicId], [MessageId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_ForumsCategories]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_ForumsCategories] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[ForumsCategories] ([CategoryId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Users] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Users_LastEdit] FOREIGN KEY([ForumLastEditUser])
+REFERENCES [dbo].[Users] ([UserId])
+GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Users_UsersGroups]') AND parent_object_id = OBJECT_ID(N'[dbo].[Users]'))
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_UsersGroups] FOREIGN KEY([UserGroupId])
+REFERENCES [dbo].[UsersGroups] ([UserGroupId])
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+BEGIN
+execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[Split] (@s varchar(512), @sep char(1))
+RETURNS table
+AS
+RETURN (
+    WITH Pieces(pn, start, stop) AS (
+      SELECT 1, 1, CHARINDEX(@sep, @s)
+      UNION ALL
+      SELECT pn + 1, stop + 1, CHARINDEX(@sep, @s, stop + 1)
+      FROM Pieces
+      WHERE stop > 0
+    )
+    SELECT pn AS position,
+      SUBSTRING(@s, start, CASE WHEN stop > 0 THEN stop-start ELSE 512 END) AS part
+    FROM Pieces
+  )' 
+END
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[TopicsComplete]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[TopicsComplete] 
+AS
+SELECT
+		T.TopicId
+		,T.TopicTitle
+		,T.TopicShortName
+		,T.TopicDescription
+		,T.TopicCreationDate
+		,T.TopicViews
+		,T.TopicReplies
+		,T.UserId
+		,T.TopicTags
+		,T.TopicIsClose
+		,T.TopicOrder
+		,T.LastMessageId
+		,U.UserName
+		,F.ForumId
+		,F.ForumName
+		,F.ForumShortName
+	FROM
+		Topics T
+		INNER JOIN Users U ON U.UserId = T.UserId
+		INNER JOIN Forums F ON F.ForumId = T.ForumId
+	WHERE
+		T.Active = 1
+		AND
+		F.Active = 1' 
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[MessagesComplete]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[MessagesComplete]
+AS
+SELECT
+	
+	M.TopicId
+	,M.MessageId
+	,M.MessageBody
+	,M.MessageCreationDate
+	,M.MessageLastEditDate
+	,M.ParentId
+	,M.UserId
+	,M.Active
+	,U.UserName
+	,U.UserSignature
+	,U.UserGroupId
+	,G.UserGroupName
+FROM
+	dbo.Messages M
+	INNER JOIN dbo.Users U ON U.UserId = M.UserId
+	INNER JOIN dbo.UsersGroups G ON G.UserGroupId = U.UserGroupId
+	LEFT JOIN dbo.Messages P ON P.TopicId = M.TopicId AND P.MessageId = M.ParentId AND P.Active = 1' 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsUpdateLastMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdateLastMessage]
+	@TopicId int
+	,@MessageId int
+AS
+
+UPDATE Topics
+SET
+	TopicReplies = TopicReplies + 1
+	,LastMessageId = @MessageId
+WHERE
+	TopicId = @TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdateLastMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdateLastMessage]
+	@TopicId int
+	,@MessageId int
+AS
+
+UPDATE F
+SET
+	F.ForumMessageCount = F.ForumMessageCount + 1
+FROM
+	Topics T
+	INNER JOIN Forums F ON F.ForumId = T.ForumId
+WHERE
+  T.TopicId = @TopicId;' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdateRecount]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdateRecount]
+	@ForumId int = 2
+AS
+/*
+	RECOUNTS THE CHILDREN MESSAGES AND TOPICS
+*/
+DECLARE @ForumTopicCount int, @ForumMessageCount int;
+
+SELECT
+	@ForumTopicCount = COUNT(TopicId)
+	,@ForumMessageCount = SUM(TopicReplies)
+FROM
+	Topics
+WHERE
+	ForumId = @ForumId
+	AND
+	Active = 1;
+
+UPDATE Forums
+SET 
+	ForumTopicCount = ISNULL(@ForumTopicCount, 0)
+	,ForumMessageCount = ISNULL(@ForumMessageCount, 0)
+WHERE	
+	ForumId = @ForumId;' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsGetMostViewed]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsGetMostViewed]
+	@ForumId int=2
+	,@Top bigint=5
+AS
+SELECT
+	Tag, 
+	TagViews, 
+	(TagViews*100.00)/SUM(case when TagViews > 0 then TagViews else 1 end) OVER() AS Weight
+FROM
+	(
+	SELECT
+		TOP (@Top)
+		Tags.Tag
+		,SUM(T.TopicViews) As TagViews
+		,COUNT(T.TopicId) As TopicCount
+	FROM
+		Tags
+		INNER JOIN Topics T ON Tags.TopicId = T.TopicId
+	WHERE
+		T.ForumId = @ForumId
+		AND
+		T.Active = 1
+	GROUP BY
+		Tags.Tag
+	ORDER BY SUM(T.TopicViews) desc
+	) T
+ORDER BY Tag' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsClose]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsClose]
+	@TopicId int
+	,@UserId int
+	,@Ip varchar(15)
+AS
+	UPDATE Topics
+	SET
+		TopicIsClose = 1
+		,TopicLastEditDate = GETUTCDATE()
+		,TopicLastEditUser = @UserId
+		,TopicLastEditIp = @Ip
+	WHERE
+		TopicId = @TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsOpen]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsOpen]
+	@TopicId int
+	,@UserId int
+	,@Ip varchar(15)
+AS
+	UPDATE Topics
+	SET
+		TopicIsClose = 0
+		,TopicLastEditDate = GETUTCDATE()
+		,TopicLastEditUser = @UserId
+		,TopicLastEditIp = @Ip
+	WHERE
+		TopicId = @TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsAddVisit]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsAddVisit]
+	@TopicId int=2
+AS
+UPDATE Topics
+SET
+	TopicViews = TopicViews+1
+WHERE
+	TopicId = @TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsInsert]
+	@TopicId int
+	,@UserId int
+AS
+IF NOT EXISTS (SELECT TopicId FROM TopicsSubscriptions WHERE TopicId = @TopicId AND UserID = @UserId)
+BEGIN
+	INSERT INTO TopicsSubscriptions
+	(TopicId, UserId)
+	VALUES
+	(@TopicId, @UserId)
+END' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsDelete]
+	@TopicId int
+	,@UserId int
+	,@Userguid char(32)
+AS
+DELETE S
+FROM 
+	TopicsSubscriptions S
+	INNER JOIN Users U ON U.UserId = S.UserId
+WHERE
+	S.TopicId = @TopicId
+	AND
+	S.UserId = @UserId	
+	AND
+	U.UserGuid = @UserGuid' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsGetByTopic]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByTopic]
+	@TopicId int
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserEmail
+	,U.UserEmailPolicy
+	,U.UserGuid
+FROM
+	TopicsSubscriptions S
+	INNER JOIN Users U ON U.UserId = S.UserId
+WHERE
+	TopicId = @TopicId
+	AND
+	U.Active = 1' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByShortName]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByShortName]
+	@ShortName varchar(32)
+AS
+SELECT
+	F.ForumId
+	,F.ForumName
+	,F.ForumShortName
+	,F.ForumDescription
+	,F.UserId
+	,F.ForumCreationDate
+	,F.ForumTopicCount
+	,F.ForumMessageCount
+	,C.CategoryId
+	,C.CategoryName
+FROM
+	Forums F 
+	INNER JOIN ForumsCategories C ON F.CategoryId = C.CategoryId
+WHERE
+	F.ForumShortName = @ShortName
+	AND
+	F.Active = 1' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsDelete]
+	@ForumShortName varchar(32)
+AS
+
+UPDATE Forums
+SET
+	Active = 0
+WHERE
+	ForumShortName = @ForumShortName' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsInsert]
+(
+	@ForumName varchar(255)
+	,@ForumShortName varchar(32)
+	,@ForumDescription varchar(max)
+	,@CategoryId int
+	,@UserId int
+)
+AS
+INSERT INTO Forums
+(
+	ForumName
+	,ForumShortName
+	,ForumDescription
+	,CategoryId
+	,UserId
+	,ForumCreationDate
+	,ForumLastEditDate
+	,ForumLastEditUser
+	,Active
+	,ForumTopicCount
+	,ForumMessageCount
+	,ForumOrder
+)
+VALUES
+(
+	@ForumName
+	,@ForumShortName
+	,@ForumDescription
+	,@CategoryId
+	,@UserId
+	,GETUTCDATE()
+	,GETUTCDATE()
+	,@UserId
+	,1
+	,0
+	,0
+	,0
+)' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdate]
+(
+	@ForumShortName varchar(32)
+	,@ForumName varchar(255)
+	,@ForumDescription varchar(max)
+	,@CategoryId int
+	,@UserId int
+)
+AS
+UPDATE Forums
+SET
+	ForumName = @ForumName
+	,ForumDescription = @ForumDescription 
+	,CategoryId = @CategoryId
+	,ForumLastEditDate = GETUTCDATE()
+	,ForumLastEditUser = @UserId
+WHERE
+	ForumShortName = @ForumShortName' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetUsedShortNames]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetUsedShortNames]
+(
+	@ForumShortName varchar(32), 
+	@SearchShortName varchar(32)
+)
+AS
+/*
+	Gets used short names for forums
+	returns:
+		IF NOT USED SHORTNAME: empty result set
+		IF USED SHORTNAME: resultset with amount of rows used
+*/
+DECLARE @CurrentValue varchar(32)
+SELECT 
+	@CurrentValue = ForumShortName
+FROM 
+	Forums
+WHERE
+	ForumShortName = @ForumShortName
+	
+
+IF @CurrentValue IS NULL
+	SELECT NULL As ForumShortName WHERE 1=0
+ELSE
+	SELECT 
+		ForumShortName
+	FROM
+		Forums
+	WHERE
+		ForumShortName LIKE @SearchShortName + ''%''
+		OR
+		ForumShortName = @ForumShortName' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByCategory]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByCategory]
+AS
+SELECT
+	F.ForumId
+	,F.ForumName
+	,F.ForumShortName
+	,F.ForumDescription
+	,F.UserId
+	,F.ForumCreationDate
+	,F.ForumTopicCount
+	,F.ForumMessageCount
+	,C.CategoryId
+	,C.CategoryName
+FROM
+	ForumsCategories C
+	INNER JOIN Forums F ON F.CategoryId = C.CategoryId
+WHERE
+	F.Active = 1
+ORDER BY
+	C.CategoryOrder,
+	F.ForumOrder' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsGetUsedShortNames]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPPageContentsGetUsedShortNames]
+(
+	@PageContentShortName varchar(32), 
+	@SearchShortName varchar(32)
+)
+AS
+/*
+	Gets used short names for PageContents
+	returns:
+		IF NOT USED SHORTNAME: empty result set
+		IF USED SHORTNAME: resultset with amount of rows used
+*/
+DECLARE @CurrentValue varchar(32)
+SELECT 
+	@CurrentValue = PageContentShortName
+FROM 
+	PageContents
+WHERE
+	PageContentShortName = @PageContentShortName
+	
+
+IF @CurrentValue IS NULL
+	SELECT NULL As ForumShortName WHERE 1=0
+ELSE
+	SELECT 
+		PageContentShortName
+	FROM
+		PageContents
+	WHERE
+		PageContentShortName LIKE @SearchShortName + ''%''
+		OR
+		PageContentShortName = @PageContentShortName
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPPageContentsInsert]
+	@PageContentShortName varchar(128)
+	,@PageContentTitle varchar(128)
+	,@PageContentBody varchar(max)
+AS
+INSERT INTO PageContents 
+(
+PageContentTitle
+,PageContentBody
+,PageContentShortName
+,PageContentEditDate
+)
+VALUES
+(
+@PageContentTitle
+,@PageContentBody
+,@PageContentShortName
+,GETUTCDATE()
+)
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPPageContentsDelete]
+	@PageContentShortName varchar(128)
+AS
+DELETE FROM PageContents 
+WHERE
+	PageContentShortName = @PageContentShortName
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPPageContentsGet]
+	@PageContentShortName varchar(128)=''about''
+AS
+SELECT
+	PageContentId
+	,PageContentTitle
+	,PageContentBody
+	,PageContentShortName
+FROM
+	dbo.PageContents
+WHERE
+	PageContentShortName = @PageContentShortName
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPPageContentsGetAll]
+	
+AS
+SELECT
+	PageContentId
+	,PageContentTitle
+	,PageContentBody
+	,PageContentShortName
+FROM
+	dbo.PageContents
+ORDER BY
+	PageContentTitle
+
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPPageContentsUpdate]
+	@PageContentShortName varchar(128)
+	,@PageContentTitle varchar(128)
+	,@PageContentBody varchar(max)
+AS
+UPDATE PageContents 
+SET
+	PageContentTitle = @PageContentTitle
+	,PageContentBody = @PageContentBody
+	,PageContentEditDate = GETUTCDATE()
+WHERE
+	PageContentShortName = @PageContentShortName
+' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesDelete]
+	@TopicId int
+	,@MessageId int
+	,@UserId int
+AS
+UPDATE Messages
+SET
+	Active = 0
+	,MessageLastEditDate = GETUTCDATE()
+	,MessageLastEditUser = @UserId
+WHERE
+	TopicId = @TopicId
+	AND
+	MessageId = @MessageId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersPromote]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersPromote]
+	@UserId int
+AS
+DECLARE @UserGroupId int
+SELECT @UserGroupId = UserGroupId FROM Users WHERE UserId = @UserId
+SELECT @UserGroupId = MIN(UserGroupId) FROM UsersGroups WHERE UserGroupId > @UserGroupId
+
+IF @UserGroupId IS NOT NULL
+	UPDATE Users
+	SET
+		UserGroupId = @UserGroupId
+	WHERE
+		UserId = @UserId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersDemote]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersDemote]
+	@UserId int
+AS
+DECLARE @UserGroupId int
+SELECT @UserGroupId = UserGroupId FROM Users WHERE UserId = @UserId
+SELECT @UserGroupId = MAX(UserGroupId) FROM UsersGroups WHERE UserGroupId < @UserGroupId
+
+IF @UserGroupId IS NOT NULL
+	UPDATE Users
+	SET
+		UserGroupId = @UserGroupId
+	WHERE
+		UserId = @UserId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByName]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByName]
+	@UserName varchar(50)=''Jorge''	
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserProfile
+	,U.UserSignature
+	,U.UserGroupId
+	,U.UserBirthDate
+	,U.UserWebsite
+	,U.UserTimezone
+	,U.UserPhoto
+	,U.UserRegistrationDate
+	,UG.UserGroupId
+	,UG.UserGroupName
+FROM
+	Users U
+	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.UserName LIKE ''%'' + @UserName +  ''%''
+	AND
+	U.Active = 1
+ORDER BY 
+	U.UserName' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersUpdatePasswordResetGuid]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersUpdatePasswordResetGuid]
+	@UserId int
+	,@PasswordResetGuid varchar(100)
+	,@PasswordResetGuidExpireDate datetime
+AS
+UPDATE Users
+SET
+	PasswordResetGuid = @PasswordResetGuid
+	,PasswordResetGuidExpireDate = @PasswordResetGuidExpireDate
+WHERE
+	UserId = @UserId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByPasswordResetGuid]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByPasswordResetGuid]
+	@Provider varchar(32)
+	,@PasswordResetGuid varchar(64)
+AS
+SELECT 
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+	,U.UserProviderId
+	,U.PasswordResetGuid
+	,U.PasswordResetGuidExpireDate
+FROM
+	Users U
+WHERE
+	UserProvider = @Provider
+	AND
+	PasswordResetGuid = @PasswordResetGuid' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByProvider]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByProvider]
+	@Provider varchar(32)
+	,@ProviderId varchar(64)
+AS
+SELECT 
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+FROM
+	Users U
+WHERE
+	UserProvider = @Provider
+	AND
+	UserProviderId = @ProviderId
+	AND
+	U.Active = 1' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetAll]
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserProfile
+	,U.UserSignature
+	,U.UserGroupId
+	,U.UserBirthDate
+	,U.UserWebsite
+	,U.UserTimezone
+	,U.UserPhoto
+	,U.UserRegistrationDate
+	,UG.UserGroupId
+	,UG.UserGroupName
+FROM
+	Users U
+	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.Active = 1
+ORDER BY 
+	U.UserName' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGet]
+	@UserId int=11
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserProfile
+	,U.UserSignature
+	,U.UserGroupId
+	,U.UserBirthDate
+	,U.UserWebsite
+	,U.UserTimezone
+	,U.UserPhoto
+	,U.UserRegistrationDate
+	,U.UserExternalProfileUrl
+	,U.UserEmail
+	,U.UserEmailPolicy
+	,UG.UserGroupId
+	,UG.UserGroupName
+FROM
+	Users U
+	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.UserId = @UserId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersUpdateEmail]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersUpdateEmail]
+	@UserId int
+	,@UserEmail varchar(100)
+	,@UserEmailPolicy int
+AS
+UPDATE Users
+SET
+	UserEmail = @UserEmail
+	,UserEmailPolicy = @UserEmailPolicy
+WHERE
+	UserId = @UserId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetTestUser]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetTestUser]
+	
+AS
+SELECT 
+	Top 1
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+FROM
+	Users U
+WHERE
+	U.Active = 1
+ORDER BY
+	U.UserGroupId DESC' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersInsertFromProvider]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersInsertFromProvider]
+	(@UserName varchar(50)
+	,@UserProfile varchar(max)
+	,@UserSignature varchar(max)
+	,@UserGroupId smallint
+	,@UserBirthDate datetime
+	,@UserWebsite varchar(255)
+	,@UserGuid char(32)
+	,@UserTimezone decimal(9,2)
+	,@UserEmail varchar(100)
+	,@UserEmailPolicy int
+	,@UserPhoto varchar(1024)
+	,@UserExternalProfileUrl varchar(255)
+	,@UserProvider varchar(32)
+	,@UserProviderId varchar(64))
+AS
+
+--If it is the first active user -> make it an admin
+DECLARE @UserCount int
+SELECT @UserCount=COUNT(UserId) FROM Users WHERE Active = 1
+IF ISNULL(@UserCount, 0) = 0
+	SELECT @UserGroupId = MAX(UserGroupId) FROM UsersGroups
+
+
+INSERT INTO Users
+   (UserName
+   ,UserProfile
+   ,UserSignature
+   ,UserGroupId
+   ,Active
+   ,UserBirthDate
+   ,UserWebsite
+   ,UserGuid
+   ,UserTimezone
+   ,UserEmail
+   ,UserEmailPolicy
+   ,UserPhoto
+   ,UserRegistrationDate
+   ,UserExternalProfileUrl
+   ,UserProvider
+   ,UserProviderId
+   ,UserProviderLastCall)
+VALUES
+	(@UserName
+   ,@UserProfile
+   ,@UserSignature
+   ,@UserGroupId
+   ,1 --Active
+   ,@UserBirthDate
+   ,@UserWebsite
+   ,@UserGuid
+   ,@UserTimezone
+   ,@UserEmail
+   ,@UserEmailPolicy
+   ,@UserPhoto
+   ,GETUTCDATE() --RegitrationDate
+   ,@UserExternalProfileUrl
+   ,@UserProvider
+   ,@UserProviderId
+   ,GETUTCDATE() --UserProviderLastCall
+	);
+
+DECLARE @UserId int;
+SELECT @UserId = @@IDENTITY;
+SELECT 	
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+FROM
+	Users U
+WHERE
+	U.UserId = @UserId;' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersDelete]
+	@UserId int
+AS
+UPDATE Users
+SET	
+	Active = 0
+WHERE 
+	UserId = @UserId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersUpdate]
+	@UserId int
+	,@UserName varchar(50)
+	,@UserProfile varchar(max)
+	,@UserSignature varchar(max)
+	,@UserBirthDate datetime
+	,@UserWebsite varchar(255)
+	,@UserTimezone decimal(9,2)
+	,@UserEmail varchar(100)
+	,@UserEmailPolicy int
+	,@UserPhoto varchar(1024)
+	,@UserExternalProfileUrl varchar(255)
+AS
+
+UPDATE Users
+SET 
+UserName = @UserName
+,UserProfile = @UserProfile
+,UserSignature = @UserSignature
+,UserBirthDate = @UserBirthDate
+,UserWebsite = @UserWebsite
+,UserTimezone = @UserTimezone
+,UserEmail = @UserEmail
+,UserEmailPolicy = @UserEmailPolicy
+,UserPhoto = @UserPhoto
+,UserExternalProfileUrl = @UserExternalProfileUrl
+WHERE 
+	UserId = @UserId;' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsInsert]
+	@Tags varchar(256),
+	@TopicId int,
+	@PreviousTags varchar(256)=NULL
+AS
+
+IF NOT @PreviousTags IS NULL
+	BEGIN
+	DELETE FROM Tags
+	WHERE
+		Tag IN (SELECT part FROM dbo.Split(@PreviousTags, '' ''))
+		AND
+		TopicId = @TopicId
+	END
+
+INSERT INTO Tags
+(Tag,TopicId)
+SELECT part, @TopicId FROM dbo.Split(@Tags, '' '')' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesFlag]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesFlag]
+(
+	@TopicId int=1
+	,@MessageId int=1
+	,@Ip varchar(15)=''127.0.0.1''
+)
+AS
+IF NOT EXISTS (SELECT * FROM Flags WHERE TopicId=@TopicId AND IP=@Ip AND (MessageId=@MessageId OR (@MessageId IS NULL AND MessageId IS NULL)))
+	BEGIN
+	INSERT INTO Flags
+	(TopicId, MessageId, Ip, FlagDate)
+	VALUES
+	(@TopicId, @MessageId, @Ip, GETUTCDATE())
+	END' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesFlagsClear]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesFlagsClear]
+(
+	@TopicId int=1
+	,@MessageId int=1
+)
+AS
+DELETE FROM 
+	Flags
+WHERE
+	TopicId = @TopicId
+	AND
+	MessageId = @MessageId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGroupsGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGroupsGet]
+	@UserGroupId smallint=1
+AS
+SELECT 
+	UserGroupId
+	,UserGroupName
+FROM
+	UsersGroups
+WHERE
+	UserGroupId = @UserGroupId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesInsert]
+	@TemplateKey varchar(16)
+	,@TemplateDescription varchar(256)
+	,@TemplateId int OUTPUT
+AS
+INSERT INTO Templates
+(
+	TemplateKey
+	,TemplateDescription
+	,TemplateDate
+	,TemplateIsCurrent
+)
+VALUES
+(
+	@TemplateKey
+	,@TemplateDescription
+	,GETUTCDATE()
+	,0
+)
+
+SELECT @TemplateId = @@IDENTITY' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesDelete]
+	@TemplateId int
+AS
+DELETE FROM Templates WHERE TemplateId = @TemplateId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesGet]
+	@TemplateId int
+AS
+SELECT
+	TemplateId
+	,TemplateKey
+	,TemplateDescription
+	,TemplateIsCurrent
+FROM
+	Templates
+WHERE
+	TemplateId = @TemplateId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesGetCurrent]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesGetCurrent]
+
+AS
+SELECT
+	TemplateId
+	,TemplateKey
+	,TemplateDescription
+FROM
+	Templates
+WHERE
+	TemplateIsCurrent = 1' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesUpdateCurrent]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesUpdateCurrent]
+	@TemplateId int
+AS
+UPDATE T
+SET
+	TemplateIsCurrent = 
+		CASE WHEN TemplateId = @TemplateId THEN 1 ELSE 0 END
+FROM
+	Templates T' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesGetAll]
+AS
+SELECT
+	TemplateId
+	,TemplateKey
+	,TemplateDescription
+	,TemplateIsCurrent
+FROM
+	Templates' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesGetAll]
+AS
+SELECT 
+	CategoryId
+	,CategoryName
+	,CategoryOrder
+FROM
+	ForumsCategories
+ORDER BY
+	CategoryOrder' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsInsert]
+(
+	@TopicTitle varchar(255)
+	,@TopicShortName varchar(64)
+	,@TopicDescription varchar(max)
+	,@UserId int
+	,@TopicTags varchar(256)
+	,@TopicOrder int
+	,@Forum varchar(32)
+	,@Ip varchar(15)
+	,@TopicId int OUTPUT
+)
+AS
+/*
+- Inserts topic
+- Insert tags
+- Updates recount on father
+*/
+
+DECLARE @ForumId int
+
+SELECT @ForumId = ForumId FROM Forums WHERE ForumShortName = @Forum
+SET @TopicTags = LOWER(@TopicTags)
+
+IF @TopicOrder IS NOT NULL
+	BEGIN
+	SELECT @TopicOrder = MAX(TopicOrder)+1 FROM Topics
+	SELECT @TopicOrder = ISNULL(@TopicOrder, 1)
+	END
+
+BEGIN TRY
+	BEGIN TRANSACTION
+	
+	INSERT INTO dbo.Topics
+	(
+	TopicTitle
+	,TopicShortName
+	,TopicDescription
+	,TopicCreationDate
+	,TopicLastEditDate
+	,TopicViews
+	,TopicReplies
+	,UserId
+	,TopicTags
+	,ForumId
+	,TopicLastEditUser
+	,TopicLastEditIp
+	,Active
+	,TopicIsClose
+	,TopicOrder
+	,MessagesIdentity
+	)
+	VALUES
+	(
+	@TopicTitle
+	,@TopicShortName
+	,@TopicDescription
+	,GETUTCDATE()
+	,GETUTCDATE()
+	,0--TopicViews
+	,0--TopicReplies
+	,@UserId
+	,@TopicTags
+	,@ForumId
+	,@UserId
+	,@Ip
+	,1--Active
+	,0--TopicIsClose
+	,@TopicOrder
+	,0--MessageIdentity
+	);
+
+	SELECT @TopicId = @@IDENTITY;
+
+	--Add tags
+	exec dbo.SPTagsInsert @Tags=@TopicTags, @TopicId=@TopicId;
+
+	--Recount
+	exec dbo.SPForumsUpdateRecount @ForumId=@ForumId;
+	COMMIT
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK
+
+  -- Raise an error with the details of the exception
+	DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
+	SELECT @ErrMsg = ERROR_MESSAGE(),
+		 @ErrSeverity = ERROR_SEVERITY()
+
+	RAISERROR(@ErrMsg, @ErrSeverity, 1)
+
+END CATCH' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsMove]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsMove]
+	@TopicId int
+	,@ForumId int
+	,@UserId int
+	,@Ip varchar(15)
+AS
+DECLARE @PreviousForumId int
+SELECT @PreviousForumId = ForumId FROM Topics WHERE TopicId = @TopicId
+BEGIN TRY
+	BEGIN TRANSACTION
+	
+	UPDATE Topics
+	SET
+		ForumId = @ForumId
+		,TopicLastEditDate = GETUTCDATE()
+		,TopicLastEditUser = @UserId
+		,TopicLastEditIp = @Ip
+	WHERE
+		TopicId = @TopicId
+
+	exec SPForumsUpdateRecount @ForumId
+	exec SPForumsUpdateRecount @PreviousForumId
+
+	COMMIT
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK
+
+  -- Raise an error with the details of the exception
+	DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
+	SELECT @ErrMsg = ERROR_MESSAGE(),
+		 @ErrSeverity = ERROR_SEVERITY()
+
+	RAISERROR(@ErrMsg, @ErrSeverity, 1)
+
+END CATCH' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesFlagsGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesFlagsGetAll]
+AS
+/*
+	Lists all flagged messages (not topics)
+*/
+SELECT
+	F.TopicId
+	,F.MessageId
+	,COUNT(FlagId) AS TotalFlags
+	,T.TopicTitle
+	,T.TopicShortName
+	,Forums.ForumId
+	,Forums.ForumShortName
+	,Forums.ForumName
+	,M.MessageBody
+	,M.UserName
+	,M.UserId
+FROM
+	Flags F
+	INNER JOIN Topics T ON T.TopicId = F.TopicId
+	INNER JOIN Forums ON Forums.ForumId = T.ForumId
+	INNER JOIN MessagesComplete M ON M.TopicId = T.TopicId AND M.MessageId = F.MessageId
+WHERE
+	T.Active = 1
+	AND	
+	M.Active = 1
+GROUP BY	
+	F.TopicId
+	,F.MessageId
+	,T.TopicTitle
+	,T.TopicShortName
+	,Forums.ForumId
+	,Forums.ForumShortName
+	,Forums.ForumName
+	,M.MessageBody
+	,M.UserName
+	,M.UserId
+ORDER BY COUNT(FlagId) DESC, F.TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesInsert]
+	@TopicId int
+	,@MessageBody varchar(max)
+	,@UserId int
+	,@MessageId int OUTPUT
+	,@Ip varchar(15)
+	,@ParentId int
+AS
+
+UPDATE T
+	SET
+	MessagesIdentity = MessagesIdentity+1
+	,@MessageId = MessagesIdentity+1
+FROM
+	Topics T
+WHERE
+	TopicId = @TopicId
+
+
+BEGIN TRY
+	BEGIN TRANSACTION
+
+	INSERT INTO Messages
+	(
+	TopicId
+	,MessageId
+	,MessageBody
+	,MessageCreationDate
+	,MessageLastEditDate
+	,MessageLastEditUser
+	,UserId
+	,Active
+	,EditIp
+	,ParentId
+	)
+	VALUES
+	(
+	@TopicId
+	,@MessageId
+	,@MessageBody
+	,GETUTCDATE()
+	,GETUTCDATE()
+	,@UserId
+	,@UserId
+	,1
+	,@Ip
+	,@ParentId
+	)
+
+
+	
+	--Update topic
+	exec SPTopicsUpdateLastMessage @TopicId=@TopicId, @MessageId=@MessageId
+	--Update forums
+	exec SPForumsUpdateLastMessage @TopicId=@TopicId, @MessageId=@MessageId
+	COMMIT
+
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK
+
+  -- Raise an error with the details of the exception
+	DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
+	SELECT @ErrMsg = ERROR_MESSAGE(),
+		 @ErrSeverity = ERROR_SEVERITY()
+
+	RAISERROR(@ErrMsg, @ErrSeverity, 1)
+
+END CATCH' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsDelete]
+	@TopicId int
+	,@UserId int
+	,@Ip varchar(15)
+AS
+/*
+- SETS THE TOPIC ACTIVE=0
+- UPDATES RECOUNT ON FORUM
+*/
+
+DECLARE @ForumId int;
+SELECT @ForumId = ForumId FROM Topics WHERE TopicId = @TopicId;
+
+UPDATE Topics
+SET
+	Active = 0
+	,TopicLastEditDate = GETUTCDATE()
+	,TopicLastEditUser = @UserId
+	,TopicLastEditIp = @Ip
+WHERE
+	TopicId = @TopicId;
+
+exec dbo.SPForumsUpdateRecount @ForumId;' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdate]
+	@TopicId int
+	,@TopicTitle varchar(256)
+	,@TopicDescription varchar(max)
+	,@UserId int
+	,@TopicTags varchar(256)
+	,@TopicOrder int
+	,@Ip varchar(15)
+AS
+DECLARE @PreviousTags varchar(256)
+SELECT @PreviousTags=TopicTags FROM Topics WHERE TopicId=@TopicId
+
+IF @TopicOrder IS NOT NULL
+	BEGIN
+	SELECT @TopicOrder = MAX(TopicOrder)+1 FROM Topics
+	SELECT @TopicOrder = ISNULL(@TopicOrder, 1)
+	END
+
+BEGIN TRY
+	BEGIN TRANSACTION
+
+	UPDATE T
+	SET
+		TopicTitle = @TopicTitle
+		,TopicDescription = @TopicDescription
+		,TopicLastEditDate = GETUTCDATE()
+		,TopicTags = @TopicTags
+		,TopicLastEditUser = @UserId
+		,TopicLastEditIp = @Ip
+		,TopicOrder = @TopicOrder
+	FROM
+		Topics T
+	WHERE
+		TopicId = @TopicId
+
+	--Edit tags
+	EXEC dbo.[SPTagsInsert] @Tags=@TopicTags, @TopicId=@TopicId, @PreviousTags=@PreviousTags
+
+	COMMIT
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK
+
+  -- Raise an error with the details of the exception
+	DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
+	SELECT @ErrMsg = ERROR_MESSAGE(),
+		 @ErrSeverity = ERROR_SEVERITY()
+
+	RAISERROR(@ErrMsg, @ErrSeverity, 1)
+
+END CATCH' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsGetByUser]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByUser]
+	@UserId int=21
+AS
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.ForumId
+	,T.ForumName
+	,T.ForumShortName
+FROM
+	TopicsSubscriptions S
+	INNER JOIN TopicsComplete T ON T.TopicId = S.TopicId
+WHERE
+	S.UserId = @UserId
+ORDER BY
+	S.TopicId DESC' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByForumUnanswered]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByForumUnanswered]
+	@ForumId int = 2
+AS
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+	,T.LastMessageId
+	,T.UserName
+	,M.MessageCreationDate
+FROM
+	TopicsComplete T
+	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+WHERE
+	T.ForumId = @ForumId
+	AND
+	T.TopicReplies = 0 -- Unanswered
+	AND
+	T.TopicOrder IS NULL -- Not sticky	
+ORDER BY 
+	TopicViews DESC, TopicId DESC' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByForum]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByForum]
+	@ForumId int = 2
+	,@StartIndex int = 0
+	,@Length int = 10
+AS
+SELECT
+	*
+FROM
+	(SELECT
+		ROW_NUMBER()
+			OVER 
+				(ORDER BY TopicOrder desc
+				 ,TopicViews desc)
+			AS RowNumber
+		,T.TopicId
+		,T.TopicTitle
+		,T.TopicShortName
+		,T.TopicDescription
+		,T.TopicCreationDate
+		,T.TopicViews
+		,T.TopicReplies
+		,T.UserId
+		,T.TopicTags
+		,T.TopicIsClose
+		,T.TopicOrder
+		,T.LastMessageId
+		,T.UserName
+		,M.MessageCreationDate
+	FROM
+		TopicsComplete T
+		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+	WHERE
+		T.ForumId = @ForumId
+	) T
+WHERE
+	RowNumber BETWEEN @StartIndex+1 AND @StartIndex + @Length' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetUnanswered]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetUnanswered]
+AS
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+	,T.LastMessageId
+	,T.UserName
+	,M.MessageCreationDate
+	,T.ForumId
+	,T.ForumName
+	,T.ForumShortName
+FROM
+	TopicsComplete T
+	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+WHERE
+	T.TopicReplies = 0 -- Unanswered
+	AND
+	T.TopicOrder IS NULL -- Not sticky	
+ORDER BY 
+	TopicId DESC' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByUser]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByUser]
+	@UserId int	
+AS
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+	,T.LastMessageId
+	,T.UserName
+	,M.MessageCreationDate
+FROM
+	TopicsComplete T
+	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+WHERE
+	T.UserId = @UserId
+ORDER BY T.TopicId desc' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetMessagesByUser]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetMessagesByUser]
+	@UserId int	
+AS
+/*
+Gets the messages posted by the user grouped by topic
+*/
+SELECT
+	T.TopicId
+	,M.MessageId
+	,M.MessageCreationDate
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+FROM
+	TopicsComplete T
+	INNER JOIN Messages M ON M.TopicId = T.TopicId
+WHERE
+	M.UserId = @UserId
+ORDER BY T.TopicId desc, M.MessageId desc' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByForumLatest]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByForumLatest]
+	@ForumId int = 2
+	,@StartIndex int = 0
+	,@Length int = 10
+AS
+SELECT
+	*
+FROM
+	(SELECT
+		ROW_NUMBER()
+			OVER 
+				(ORDER BY T.TopicId desc)
+			AS RowNumber
+		,T.TopicId
+		,T.TopicTitle
+		,T.TopicShortName
+		,T.TopicDescription
+		,T.TopicCreationDate
+		,T.TopicViews
+		,T.TopicReplies
+		,T.UserId
+		,T.TopicTags
+		,T.TopicIsClose
+		,T.TopicOrder
+		,T.LastMessageId
+		,T.UserName
+		,M.MessageCreationDate
+	FROM
+		TopicsComplete T
+		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+	WHERE
+		T.ForumId = @ForumId
+	) T
+WHERE
+	RowNumber BETWEEN @StartIndex+1 AND @StartIndex + @Length' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetLatest]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetLatest]
+AS
+	SELECT
+		TOP 20
+		T.TopicId
+		,T.TopicTitle
+		,T.TopicShortName
+		,T.TopicDescription
+		,T.TopicCreationDate
+		,T.TopicViews
+		,T.TopicReplies
+		,T.UserId
+		,T.TopicTags
+		,T.TopicIsClose
+		,T.TopicOrder
+		,T.LastMessageId
+		,T.UserName
+		,M.MessageCreationDate
+	FROM
+		TopicsComplete T
+		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+	
+	ORDER BY T.TopicId desc' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByRelated]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByRelated]
+	@Tag1 varchar(50)=''problem''
+	,@Tag2 varchar(50)=''installation''
+	,@Tag3 varchar(50)=''copy''
+	,@Tag4 varchar(50)=null
+	,@Tag5 varchar(50)=null
+	,@Tag6 varchar(50)=null
+	,@TopicId int=1
+	,@Amount int=5
+AS
+	
+WITH TagsParams (Tag) AS
+(
+	SELECT @Tag1
+	UNION
+	SELECT @Tag2
+	UNION
+	SELECT @Tag3
+	UNION
+	SELECT @Tag4
+	UNION
+	SELECT @Tag5
+	UNION
+	SELECT @Tag6
+)
+SELECT
+	TOP (@Amount)
+	Ta.TagCount
+	,Topics.TopicId
+	,Topics.TopicTitle
+	,Topics.TopicShortName
+	,Topics.TopicDescription
+	,Topics.TopicCreationDate
+	,Topics.TopicViews
+	,Topics.TopicReplies
+	,Topics.ForumId
+	,Topics.ForumName
+	,Topics.ForumShortName
+	,Topics.TopicIsClose
+	,Topics.TopicOrder
+FROM
+	(
+	SELECT 
+		T.TopicId
+		,COUNT(T.Tag) AS TagCount
+	FROM 
+		Tags T
+		INNER JOIN TagsParams P ON T.Tag=P.Tag
+	WHERE
+		T.Tag=P.Tag
+	GROUP BY
+		T.TopicId
+	)
+	Ta
+	INNER JOIN TopicsComplete Topics ON Topics.TopicId = Ta.TopicId
+WHERE
+	Topics.TopicId <> @TopicId
+ORDER BY
+	1 desc, Topics.TopicViews desc' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByTag]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByTag]
+	@Tag varchar(50)=''forum'',
+	@ForumId int=2
+AS
+
+--Remove the last char
+SET @Tag = SUBSTRING(@Tag, 1, LEN(@Tag)-1)
+SELECT
+		T.TopicId
+		,T.TopicTitle
+		,T.TopicShortName
+		,T.TopicDescription
+		,T.TopicCreationDate
+		,T.TopicViews
+		,T.TopicReplies
+		,T.UserId
+		,T.TopicTags
+		,T.TopicIsClose
+		,T.TopicOrder
+		,T.LastMessageId
+		,T.UserName
+FROM
+	Tags
+	INNER JOIN TopicsComplete T ON T.TopicId = Tags.TopicId
+WHERE
+	Tags.Tag LIKE @Tag + ''%''
+	AND
+	T.ForumId = @ForumId
+ORDER BY TopicOrder DESC,TopicViews DESC' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGet]
+	@TopicId int=1
+AS
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.TopicDescription
+	,T.TopicCreationDate
+	,T.TopicViews
+	,T.TopicReplies
+	,T.UserId
+	,T.TopicTags
+	,T.TopicIsClose
+	,T.TopicOrder
+	,T.LastMessageId
+	,T.UserName
+	,T.ForumId
+	,T.ForumName
+	,T.ForumShortName
+FROM 
+	TopicsComplete T
+WHERE
+	T.TopicId = @TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesGetByTopicLatest]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesGetByTopicLatest]
+	@TopicId int=2
+AS
+SELECT 
+	TOP 20
+	M.TopicId
+	,M.MessageId
+	,M.MessageBody
+	,M.MessageCreationDate
+	,M.MessageLastEditDate
+	,M.ParentId
+	,UserId
+	,UserName
+	,UserSignature
+	,UserGroupId
+	,UserGroupName
+	,M.Active
+FROM 
+	dbo.MessagesComplete M
+WHERE 
+	M.TopicId = @TopicId
+ORDER BY
+	TopicId, MessageId DESC' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesGetByTopicUpTo]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesGetByTopicUpTo]
+	@TopicId int=1,
+	@FirstMsg int=14,
+	@LastMsg int=28
+AS
+SELECT 
+	ROW_NUMBER()
+			OVER 
+				(ORDER BY M.TopicId, M.MessageId)
+			AS RowNumber
+	,M.TopicId
+	,M.MessageId
+	,M.MessageBody
+	,M.MessageCreationDate
+	,M.MessageLastEditDate
+	,M.ParentId
+	,UserId
+	,UserName
+	,UserSignature
+	,UserGroupId
+	,UserGroupName
+	,M.Active
+FROM 
+	dbo.MessagesComplete M
+WHERE 
+	M.TopicId = @TopicId
+	AND
+	M.MessageId > @FirstMsg
+	AND
+	M.MessageId <= @LastMsg' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesGetByTopic]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesGetByTopic]
+	@TopicId int=2
+AS
+SELECT 
+	ROW_NUMBER()
+			OVER 
+				(ORDER BY M.TopicId, M.MessageId)
+			AS RowNumber
+	,M.TopicId
+	,M.MessageId
+	,M.MessageBody
+	,M.MessageCreationDate
+	,M.MessageLastEditDate
+	,M.ParentId
+	,UserId
+	,UserName
+	,UserSignature
+	,UserGroupId
+	,UserGroupName
+	,M.Active
+FROM 
+	dbo.MessagesComplete M
+WHERE 
+	M.TopicId = @TopicId' 
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesGetByTopicFrom]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesGetByTopicFrom]
+	@TopicId int=1,
+	@FirstMsg int=13,
+	@Amount int=10
+AS
+SELECT
+*
+FROM
+	(
+	SELECT 
+		ROW_NUMBER()
+				OVER 
+					(ORDER BY M.TopicId, M.MessageId)
+				AS RowNumber
+		,M.TopicId
+		,M.MessageId
+		,M.MessageBody
+		,M.MessageCreationDate
+		,M.MessageLastEditDate
+		,M.ParentId
+		,UserId
+		,UserName
+		,UserSignature
+		,UserGroupId
+		,UserGroupName
+		,M.Active
+	FROM 
+		dbo.MessagesComplete M
+	WHERE 
+		M.TopicId = @TopicId
+		AND
+		M.MessageId > @FirstMsg
+	) M
+WHERE
+	RowNumber <= @Amount' 
+END
+GO
+IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0
+BEGIN
+	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (1, 'Level 1')
+	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (10, 'Admin')
+	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (2, 'Level2')
+	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (3, 'Moderator')
+END
+GO
+IF (SELECT COUNT(*) FROM dbo.ForumsCategories) = 0
+BEGIN
+	INSERT INTO dbo.ForumsCategories (CategoryName, CategoryOrder) VALUES ('General', 1)
+END
+IF (SELECT COUNT(*) FROM dbo.PageContents) = 0
+BEGIN
+	INSERT INTO dbo.[PageContents] (PageContentTitle, PageContentShortName, PageContentEditDate, PageContentBody)
+		VALUES ('About', 'about', GETUTCDATE(), '
+		<p>This forum is powered by <a href="http://www.nearforums.com">Nearforums</a>, an open source forum engine.</p>
+		<p>Nearforums is released under <a href="http://nearforums.codeplex.com/license" target="_blank">MIT License</a>, you can get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.</p>');
+	INSERT INTO dbo.[PageContents] (PageContentTitle, PageContentShortName, PageContentEditDate, PageContentBody) 
+		VALUES ('Terms and conditions', 'terms', GETUTCDATE(),
+		'<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the "User") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our <span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “Agreement”) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person''s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website''s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users'' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users'' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users'' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users'' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users'' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users'' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post ("Contributions") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it''s likely that you''re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operators’s current <span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys'' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS''S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please <span>contact</span> us.</p>');
+END
+GO
+
+
 GO
 
 /*************************************************************/
