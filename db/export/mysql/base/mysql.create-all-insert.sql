@@ -1,6 +1,3 @@
--- Init options
-SET GLOBAL log_bin_trust_function_creators = 1;
-
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
@@ -14,8 +11,7 @@ SET GLOBAL log_bin_trust_function_creators = 1;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO,MYSQL323' */;
 
 --
 -- Temporary table structure for view `messagescomplete`
@@ -70,11 +66,11 @@ CREATE TABLE `flags` (
   `flagId` int(11) NOT NULL AUTO_INCREMENT,
   `topicId` int(11) NOT NULL,
   `messageId` int(11) NOT NULL,
-  `ip` varchar(15) CHARACTER SET latin1 NOT NULL,
+  `ip` varchar(15) NOT NULL,
   `flagdate` datetime NOT NULL,
-  PRIMARY KEY (`flagId`,`topicId`) USING BTREE,
-  UNIQUE KEY `ix_topicid_messageid_ip` (`topicId`,`messageId`,`ip`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`flagId`,`topicId`),
+  UNIQUE KEY `ix_topicid_messageid_ip` (`topicId`,`messageId`,`ip`)
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `flags`
@@ -107,7 +103,7 @@ CREATE TABLE `forums` (
   CONSTRAINT `fk_forums_forumscategories` FOREIGN KEY (`categoryid`) REFERENCES `forumscategories` (`categoryid`),
   CONSTRAINT `fk_forums_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
   CONSTRAINT `fk_forums_users_lastedit` FOREIGN KEY (`forumlastedituser`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `forums`
@@ -123,7 +119,7 @@ CREATE TABLE `forumscategories` (
   `categoryname` varchar(255) NOT NULL,
   `categoryorder` int(11) NOT NULL,
   PRIMARY KEY (`categoryid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) TYPE=InnoDB AUTO_INCREMENT=2;
 
 --
 -- Dumping data for table `forumscategories`
@@ -150,7 +146,7 @@ CREATE TABLE `messages` (
   KEY `fk_messages_users` (`userid`),
   CONSTRAINT `fk_messages_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
   CONSTRAINT `fk_messages_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `messages`
@@ -168,13 +164,13 @@ CREATE TABLE `pagecontents` (
   `pagecontentshortname` varchar(128) NOT NULL,
   `pagecontenteditdate` datetime NOT NULL,
   PRIMARY KEY (`pagecontentid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) TYPE=InnoDB AUTO_INCREMENT=3;
 
 --
 -- Dumping data for table `pagecontents`
 --
-INSERT INTO `pagecontents` VALUES   (1,'About','\r\n	<p>This forum is powered by <a href=\"http://www.nearforums.com\">Nearforums</a>, an open source forum engine.</p>\r\n	<p>Nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">MIT License</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2011-05-27 10:30:45');
-INSERT INTO `pagecontents` VALUES   (2,'Terms and conditions','<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the \"User\") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our <span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “Agreement”) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person\'s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website\'s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users\' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users\' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users\' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users\' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users\' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users\' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post (\"Contributions\") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it\'s likely that you\'re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operators’s current <span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys\' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN \"AS IS\" AND \"AS AVAILABLE\" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS\'S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please <span>contact</span> us.</p>','terms','2011-05-27 10:30:45');
+INSERT INTO `pagecontents` VALUES   (1,'About','\r\n	<p>This forum is powered by <a href=\"http://www.nearforums.com\">Nearforums</a>, an open source forum engine.</p>\r\n	<p>Nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">MIT License</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2011-06-06 08:45:47');
+INSERT INTO `pagecontents` VALUES   (2,'Terms and conditions','<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the \"User\") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our <span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “Agreement”) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person\'s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website\'s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users\' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users\' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users\' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users\' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users\' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users\' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post (\"Contributions\") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it\'s likely that you\'re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operators’s current <span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys\' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN \"AS IS\" AND \"AS AVAILABLE\" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS\'S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please <span>contact</span> us.</p>','terms','2011-06-06 08:45:47');
 
 --
 -- Definition of table `tags`
@@ -187,7 +183,7 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`tag`,`topicid`),
   KEY `fk_tags_topics` (`topicid`),
   CONSTRAINT `fk_tags_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `tags`
@@ -205,7 +201,7 @@ CREATE TABLE `templates` (
   `templateiscurrent` tinyint(1) NOT NULL,
   `templatedate` datetime NOT NULL,
   PRIMARY KEY (`templateid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `templates`
@@ -242,7 +238,7 @@ CREATE TABLE `topics` (
   CONSTRAINT `fk_topics_forums` FOREIGN KEY (`forumid`) REFERENCES `forums` (`forumid`),
   CONSTRAINT `fk_topics_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
   CONSTRAINT `fk_topics_users_lastedit` FOREIGN KEY (`topiclastedituser`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `topics`
@@ -256,11 +252,11 @@ DROP TABLE IF EXISTS `topicssubscriptions`;
 CREATE TABLE `topicssubscriptions` (
   `topicid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  PRIMARY KEY (`topicid`,`userid`) USING BTREE,
+  PRIMARY KEY (`topicid`,`userid`),
   KEY `fk_topicssubscriptions_users` (`userid`),
   CONSTRAINT `fk_topicssubscriptions_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
   CONSTRAINT `fk_topicssubscriptions_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `topicssubscriptions`
@@ -295,7 +291,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`userid`),
   KEY `fk_users_usersgroups` (`usergroupid`),
   CONSTRAINT `fk_users_usersgroups` FOREIGN KEY (`usergroupid`) REFERENCES `usersgroups` (`usergroupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `users`
@@ -310,7 +306,7 @@ CREATE TABLE `usersgroups` (
   `usergroupid` smallint(6) NOT NULL,
   `usergroupname` varchar(50) NOT NULL,
   PRIMARY KEY (`usergroupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `usersgroups`
@@ -329,7 +325,7 @@ DROP FUNCTION IF EXISTS `FNCastToInt`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` FUNCTION `FNCastToInt`(number bigint) RETURNS int(11)
+CREATE FUNCTION `FNCastToInt`(number bigint) RETURNS int(11)
 BEGIN
   return number;
 END $$
@@ -346,7 +342,7 @@ DROP FUNCTION IF EXISTS `FNSplit`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` FUNCTION `FNSplit`(
+CREATE FUNCTION `FNSplit`(
   x VARCHAR(255),
   delim VARCHAR(12),
   pos INT
@@ -367,7 +363,7 @@ DROP PROCEDURE IF EXISTS `SPCleanDb`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPCleanDb`()
+CREATE PROCEDURE `SPCleanDb`()
 BEGIN
   TRUNCATE TABLE Tags;
   TRUNCATE TABLE Messages;
@@ -404,7 +400,7 @@ DROP PROCEDURE IF EXISTS `SPForumsCategoriesGetAll`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsCategoriesGetAll`()
+CREATE PROCEDURE `SPForumsCategoriesGetAll`()
 BEGIN
 SELECT
 	CategoryId
@@ -428,7 +424,7 @@ DROP PROCEDURE IF EXISTS `SPForumsDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsDelete`(
+CREATE PROCEDURE `SPForumsDelete`(
   param_ForumShortName varchar(32)
 )
 BEGIN
@@ -451,7 +447,7 @@ DROP PROCEDURE IF EXISTS `SPForumsGetByCategory`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsGetByCategory`()
+CREATE PROCEDURE `SPForumsGetByCategory`()
 BEGIN
 
 SELECT
@@ -488,7 +484,7 @@ DROP PROCEDURE IF EXISTS `SPForumsGetByShortName`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsGetByShortName`(param_ShortName varchar(32))
+CREATE PROCEDURE `SPForumsGetByShortName`(param_ShortName varchar(32))
 BEGIN
 SELECT
 	F.ForumId
@@ -522,7 +518,7 @@ DROP PROCEDURE IF EXISTS `SPForumsGetUsedShortNames`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsGetUsedShortNames`(
+CREATE PROCEDURE `SPForumsGetUsedShortNames`(
   param_ForumShortName varchar(32), param_SearchShortName varchar(32)
 )
 BEGIN
@@ -569,7 +565,7 @@ DROP PROCEDURE IF EXISTS `SPForumsInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsInsert`(
+CREATE PROCEDURE `SPForumsInsert`(
 	param_ForumName varchar(255)
 	,param_ForumShortName varchar(32)
 	,param_ForumDescription longtext
@@ -623,7 +619,7 @@ DROP PROCEDURE IF EXISTS `SPForumsUpdate`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsUpdate`(
+CREATE PROCEDURE `SPForumsUpdate`(
 	param_ForumShortName varchar(32)
 	,param_ForumName varchar(255)
 	,param_ForumDescription longtext
@@ -657,7 +653,7 @@ DROP PROCEDURE IF EXISTS `SPForumsUpdateLastMessage`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsUpdateLastMessage`(
+CREATE PROCEDURE `SPForumsUpdateLastMessage`(
 	param_TopicId int
 	,param_MessageId int
 )
@@ -685,7 +681,7 @@ DROP PROCEDURE IF EXISTS `SPForumsUpdateLastTopic`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsUpdateLastTopic`(param_ForumId int)
+CREATE PROCEDURE `SPForumsUpdateLastTopic`(param_ForumId int)
 BEGIN
 
 
@@ -709,7 +705,7 @@ DROP PROCEDURE IF EXISTS `SPForumsUpdateRecount`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPForumsUpdateRecount`(param_ForumId int)
+CREATE PROCEDURE `SPForumsUpdateRecount`(param_ForumId int)
 BEGIN
 
 /*
@@ -752,7 +748,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesDelete`(
+CREATE PROCEDURE `SPMessagesDelete`(
 	param_TopicId int
 	,param_MessageId int
 	,param_UserId int
@@ -783,7 +779,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesFlag`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesFlag`(
+CREATE PROCEDURE `SPMessagesFlag`(
 	param_TopicId int
 	,param_MessageId int
 	,param_Ip varchar(15)
@@ -807,7 +803,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesFlagsClear`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesFlagsClear`(
+CREATE PROCEDURE `SPMessagesFlagsClear`(
 	param_TopicId int
 	,param_MessageId int
 )
@@ -832,7 +828,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesFlagsGetAll`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesFlagsGetAll`()
+CREATE PROCEDURE `SPMessagesFlagsGetAll`()
 BEGIN
 /*
 	Lists all flagged messages (not topics)
@@ -885,7 +881,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesGetByTopic`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesGetByTopic`(param_TopicId int)
+CREATE PROCEDURE `SPMessagesGetByTopic`(param_TopicId int)
 BEGIN
 
 SELECT
@@ -922,7 +918,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesGetByTopicFrom`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesGetByTopicFrom`(
+CREATE PROCEDURE `SPMessagesGetByTopicFrom`(
 	param_TopicId int
 	,param_FirstMsg int
 	,param_Amount int
@@ -975,7 +971,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesGetByTopicLatest`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesGetByTopicLatest`(param_TopicId int)
+CREATE PROCEDURE `SPMessagesGetByTopicLatest`(param_TopicId int)
 BEGIN
 
 SELECT
@@ -1013,7 +1009,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesGetByTopicUpTo`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesGetByTopicUpTo`(
+CREATE PROCEDURE `SPMessagesGetByTopicUpTo`(
   param_TopicId int,
 	param_FirstMsg int,
 	param_LastMsg int
@@ -1058,7 +1054,7 @@ DROP PROCEDURE IF EXISTS `SPMessagesInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPMessagesInsert`(
+CREATE PROCEDURE `SPMessagesInsert`(
 	param_TopicId int
 	,param_MessageBody longtext
 	,param_UserId int
@@ -1132,7 +1128,7 @@ DROP PROCEDURE IF EXISTS `SPPageContentsDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsDelete`(
+CREATE PROCEDURE `SPPageContentsDelete`(
   param_PageContentShortName varchar(128)
 )
 BEGIN
@@ -1153,7 +1149,7 @@ DROP PROCEDURE IF EXISTS `SPPageContentsGet`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsGet`(
+CREATE PROCEDURE `SPPageContentsGet`(
   param_PageContentShortName varchar(128)
 )
 BEGIN
@@ -1180,7 +1176,7 @@ DROP PROCEDURE IF EXISTS `SPPageContentsGetAll`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsGetAll`()
+CREATE PROCEDURE `SPPageContentsGetAll`()
 BEGIN
 SELECT
 	PageContentId
@@ -1205,7 +1201,7 @@ DROP PROCEDURE IF EXISTS `SPPageContentsGetUsedShortNames`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsGetUsedShortNames`(
+CREATE PROCEDURE `SPPageContentsGetUsedShortNames`(
 	param_PageContentShortName varchar(32),
 	param_SearchShortName varchar(32)
 )
@@ -1251,7 +1247,7 @@ DROP PROCEDURE IF EXISTS `SPPageContentsInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsInsert`(
+CREATE PROCEDURE `SPPageContentsInsert`(
 	param_PageContentShortName varchar(128)
 	,param_PageContentTitle varchar(128)
 	,param_PageContentBody longtext
@@ -1287,7 +1283,7 @@ DROP PROCEDURE IF EXISTS `SPPageContentsUpdate`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPPageContentsUpdate`(
+CREATE PROCEDURE `SPPageContentsUpdate`(
 	param_PageContentShortName varchar(128)
 	,param_PageContentTitle varchar(128)
 	,param_PageContentBody longtext
@@ -1314,7 +1310,7 @@ DROP PROCEDURE IF EXISTS `SPTagsGetMostViewed`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTagsGetMostViewed`(
+CREATE PROCEDURE `SPTagsGetMostViewed`(
   param_ForumId int
 	,param_Top bigint
 )
@@ -1380,7 +1376,7 @@ DROP PROCEDURE IF EXISTS `SPTagsInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTagsInsert`(
+CREATE PROCEDURE `SPTagsInsert`(
 	param_Tags varchar(256)
 	,param_TopicId int
 	,param_PreviousTags varchar(256)
@@ -1424,7 +1420,7 @@ DROP PROCEDURE IF EXISTS `SPTemplatesDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTemplatesDelete`(param_TemplateId int)
+CREATE PROCEDURE `SPTemplatesDelete`(param_TemplateId int)
 BEGIN
 
 DELETE FROM Templates WHERE TemplateId = param_TemplateId;
@@ -1443,7 +1439,7 @@ DROP PROCEDURE IF EXISTS `SPTemplatesGet`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTemplatesGet`(param_TemplateId int)
+CREATE PROCEDURE `SPTemplatesGet`(param_TemplateId int)
 BEGIN
 
 
@@ -1472,7 +1468,7 @@ DROP PROCEDURE IF EXISTS `SPTemplatesGetAll`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTemplatesGetAll`()
+CREATE PROCEDURE `SPTemplatesGetAll`()
 BEGIN
 
 SELECT
@@ -1497,7 +1493,7 @@ DROP PROCEDURE IF EXISTS `SPTemplatesGetCurrent`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTemplatesGetCurrent`()
+CREATE PROCEDURE `SPTemplatesGetCurrent`()
 BEGIN
 SELECT
 	TemplateId
@@ -1521,7 +1517,7 @@ DROP PROCEDURE IF EXISTS `SPTemplatesInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTemplatesInsert`(
+CREATE PROCEDURE `SPTemplatesInsert`(
 	param_TemplateKey varchar(16)
 	,param_TemplateDescription varchar(256)
 	,OUT param_TemplateId int
@@ -1557,7 +1553,7 @@ DROP PROCEDURE IF EXISTS `SPTemplatesUpdateCurrent`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTemplatesUpdateCurrent`(param_TemplateId int)
+CREATE PROCEDURE `SPTemplatesUpdateCurrent`(param_TemplateId int)
 BEGIN
 
 
@@ -1579,7 +1575,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsAddVisit`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsAddVisit`(param_TopicId int)
+CREATE PROCEDURE `SPTopicsAddVisit`(param_TopicId int)
 BEGIN
 
 UPDATE Topics
@@ -1602,7 +1598,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsClose`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsClose`(
+CREATE PROCEDURE `SPTopicsClose`(
 	param_TopicId int
 	,param_UserId int
 	,param_Ip varchar(15)
@@ -1632,7 +1628,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsDelete`(
+CREATE PROCEDURE `SPTopicsDelete`(
 	param_TopicId int
 	,param_UserId int
 	,param_Ip varchar(15)
@@ -1671,7 +1667,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGet`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGet`(param_TopicId int)
+CREATE PROCEDURE `SPTopicsGet`(param_TopicId int)
 BEGIN
 
 SELECT
@@ -1710,7 +1706,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetByForum`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByForum`(
+CREATE PROCEDURE `SPTopicsGetByForum`(
 	param_ForumId int
 	,param_StartIndex int
 	,param_Length int
@@ -1764,7 +1760,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetByForumLatest`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByForumLatest`(
+CREATE PROCEDURE `SPTopicsGetByForumLatest`(
 	param_ForumId int
 	,param_StartIndex int
 	,param_Length int
@@ -1818,7 +1814,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetByForumUnanswered`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByForumUnanswered`(param_ForumId int)
+CREATE PROCEDURE `SPTopicsGetByForumUnanswered`(param_ForumId int)
 BEGIN
 
 SELECT
@@ -1862,7 +1858,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetByRelated`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByRelated`(
+CREATE PROCEDURE `SPTopicsGetByRelated`(
   param_Tag1 varchar(50)
 	,param_Tag2 varchar(50)
 	,param_Tag3 varchar(50)
@@ -1940,7 +1936,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetByTag`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByTag`(
+CREATE PROCEDURE `SPTopicsGetByTag`(
   param_Tag varchar(50),
 	param_ForumId int
 )
@@ -1984,7 +1980,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetByUser`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetByUser`(
+CREATE PROCEDURE `SPTopicsGetByUser`(
 	param_UserId int
 )
 BEGIN
@@ -2025,7 +2021,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetLatest`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetLatest`()
+CREATE PROCEDURE `SPTopicsGetLatest`()
 BEGIN
 
 	SELECT   
@@ -2064,7 +2060,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetMessagesByUser`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetMessagesByUser`(
+CREATE PROCEDURE `SPTopicsGetMessagesByUser`(
 	param_UserId int
 )
 BEGIN
@@ -2106,7 +2102,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsGetUnanswered`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsGetUnanswered`()
+CREATE PROCEDURE `SPTopicsGetUnanswered`()
 BEGIN
 SELECT
 	T.TopicId
@@ -2149,7 +2145,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsInsert`(
+CREATE PROCEDURE `SPTopicsInsert`(
 	param_TopicTitle varchar(255)
 	,param_TopicShortName varchar(64)
 	,param_TopicDescription longtext
@@ -2244,7 +2240,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsMove`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsMove`(
+CREATE PROCEDURE `SPTopicsMove`(
 	param_TopicId int
 	,param_ForumId int
 	,param_UserId int
@@ -2291,7 +2287,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsOpen`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsOpen`(
+CREATE PROCEDURE `SPTopicsOpen`(
 	param_TopicId int
 	,param_UserId int
 	,param_Ip varchar(15)
@@ -2319,7 +2315,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsDelete`(
+CREATE PROCEDURE `SPTopicsSubscriptionsDelete`(
 	param_TopicId int
 	,param_UserId int
 	,param_Userguid char(32)
@@ -2353,7 +2349,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsGetByTopic`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsGetByTopic`(
+CREATE PROCEDURE `SPTopicsSubscriptionsGetByTopic`(
 	param_TopicId int
 )
 BEGIN
@@ -2385,7 +2381,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsGetByUser`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsGetByUser`(
+CREATE PROCEDURE `SPTopicsSubscriptionsGetByUser`(
   param_UserId int
 )
 BEGIN
@@ -2419,7 +2415,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsSubscriptionsInsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsSubscriptionsInsert`(
+CREATE PROCEDURE `SPTopicsSubscriptionsInsert`(
 	param_TopicId int
 	,param_UserId int
 )
@@ -2445,7 +2441,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsUpdate`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsUpdate`(
+CREATE PROCEDURE `SPTopicsUpdate`(
 	param_TopicId int
 	,param_TopicTitle varchar(256)
 	,param_TopicDescription longtext
@@ -2502,7 +2498,7 @@ DROP PROCEDURE IF EXISTS `SPTopicsUpdateLastMessage`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPTopicsUpdateLastMessage`(
+CREATE PROCEDURE `SPTopicsUpdateLastMessage`(
 	param_TopicId int
 	,param_MessageId int
 )
@@ -2530,7 +2526,7 @@ DROP PROCEDURE IF EXISTS `SPUsersDelete`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersDelete`(param_UserId int)
+CREATE PROCEDURE `SPUsersDelete`(param_UserId int)
 BEGIN
 UPDATE Users
 SET
@@ -2551,7 +2547,7 @@ DROP PROCEDURE IF EXISTS `SPUsersDemote`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersDemote`(param_UserId int)
+CREATE PROCEDURE `SPUsersDemote`(param_UserId int)
 BEGIN
 DECLARE var_UserGroupId int;
 SELECT UserGroupId INTO var_UserGroupId FROM Users WHERE UserId = param_UserId;
@@ -2578,7 +2574,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGet`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGet`(param_UserId int)
+CREATE PROCEDURE `SPUsersGet`(param_UserId int)
 BEGIN
 
 SELECT
@@ -2617,7 +2613,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGetAll`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetAll`()
+CREATE PROCEDURE `SPUsersGetAll`()
 BEGIN
 SELECT
 	U.UserId
@@ -2654,7 +2650,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGetByName`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetByName`(
+CREATE PROCEDURE `SPUsersGetByName`(
   param_UserName varchar(50)
 )
 BEGIN
@@ -2696,7 +2692,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGetByPasswordResetGuid`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetByPasswordResetGuid`(
+CREATE PROCEDURE `SPUsersGetByPasswordResetGuid`(
 	param_Provider varchar(32)
 	,param_PasswordResetGuid varchar(64)
 )
@@ -2733,7 +2729,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGetByProvider`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetByProvider`(
+CREATE PROCEDURE `SPUsersGetByProvider`(
 	param_Provider varchar(32)
 	,param_ProviderId varchar(64)
 )
@@ -2769,7 +2765,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGetTestUser`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGetTestUser`()
+CREATE PROCEDURE `SPUsersGetTestUser`()
 BEGIN
 SELECT
 	U.UserId
@@ -2801,7 +2797,7 @@ DROP PROCEDURE IF EXISTS `SPUsersGroupsGet`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersGroupsGet`(param_UserGroupId smallint)
+CREATE PROCEDURE `SPUsersGroupsGet`(param_UserGroupId smallint)
 BEGIN
 
 SELECT
@@ -2826,7 +2822,7 @@ DROP PROCEDURE IF EXISTS `SPUsersInsertFromProvider`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersInsertFromProvider`(
+CREATE PROCEDURE `SPUsersInsertFromProvider`(
   param_UserName varchar(50)
 	,param_UserProfile longtext
 	,param_UserSignature longtext
@@ -2921,7 +2917,7 @@ DROP PROCEDURE IF EXISTS `SPUsersPromote`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersPromote`(param_UserId int)
+CREATE PROCEDURE `SPUsersPromote`(param_UserId int)
 BEGIN
 DECLARE var_UserGroupId int;
 SELECT UserGroupId INTO var_UserGroupId FROM Users WHERE UserId = param_UserId;
@@ -2948,7 +2944,7 @@ DROP PROCEDURE IF EXISTS `SPUsersUpdate`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersUpdate`(
+CREATE PROCEDURE `SPUsersUpdate`(
 	param_UserId int
 	,param_UserName varchar(50)
 	,param_UserProfile longtext
@@ -2992,7 +2988,7 @@ DROP PROCEDURE IF EXISTS `SPUsersUpdateEmail`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersUpdateEmail`(
+CREATE PROCEDURE `SPUsersUpdateEmail`(
 	param_UserId int
 	,param_UserEmail varchar(100)
 	,param_UserEmailPolicy int
@@ -3019,7 +3015,7 @@ DROP PROCEDURE IF EXISTS `SPUsersUpdatePasswordResetGuid`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SPUsersUpdatePasswordResetGuid`(
+CREATE PROCEDURE `SPUsersUpdatePasswordResetGuid`(
 	param_UserId int
 	,param_PasswordResetGuid varchar(100)
 	,param_PasswordResetGuidExpireDate datetime
@@ -3042,7 +3038,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `messagescomplete`;
 DROP VIEW IF EXISTS `messagescomplete`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `messagescomplete` AS select `m`.`topicid` AS `TopicId`,`m`.`messageid` AS `MessageId`,`m`.`messagebody` AS `MessageBody`,`m`.`messagecreationdate` AS `MessageCreationDate`,`m`.`messagelasteditdate` AS `MessageLastEditDate`,`m`.`parentid` AS `ParentId`,`m`.`userid` AS `UserId`,`m`.`active` AS `Active`,`u`.`username` AS `UserName`,`u`.`usersignature` AS `UserSignature`,`u`.`usergroupid` AS `UserGroupId`,`g`.`usergroupname` AS `UserGroupName` from (((`messages` `m` join `users` `u` on((`u`.`userid` = `m`.`userid`))) join `usersgroups` `g` on((`g`.`usergroupid` = `u`.`usergroupid`))) left join `messages` `p` on(((`p`.`topicid` = `m`.`topicid`) and (`p`.`messageid` = `m`.`parentid`) and (`p`.`active` = 1))));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `messagescomplete` AS select `m`.`topicid` AS `TopicId`,`m`.`messageid` AS `MessageId`,`m`.`messagebody` AS `MessageBody`,`m`.`messagecreationdate` AS `MessageCreationDate`,`m`.`messagelasteditdate` AS `MessageLastEditDate`,`m`.`parentid` AS `ParentId`,`m`.`userid` AS `UserId`,`m`.`active` AS `Active`,`u`.`username` AS `UserName`,`u`.`usersignature` AS `UserSignature`,`u`.`usergroupid` AS `UserGroupId`,`g`.`usergroupname` AS `UserGroupName` from (((`messages` `m` join `users` `u` on((`u`.`userid` = `m`.`userid`))) join `usersgroups` `g` on((`g`.`usergroupid` = `u`.`usergroupid`))) left join `messages` `p` on(((`p`.`topicid` = `m`.`topicid`) and (`p`.`messageid` = `m`.`parentid`) and (`p`.`active` = 1))));
 
 --
 -- Definition of view `topicscomplete`
@@ -3050,7 +3046,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 
 DROP TABLE IF EXISTS `topicscomplete`;
 DROP VIEW IF EXISTS `topicscomplete`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `topicscomplete` AS select `t`.`topicid` AS `TopicId`,`t`.`topictitle` AS `TopicTitle`,`t`.`topicshortname` AS `TopicShortName`,`t`.`topicdescription` AS `TopicDescription`,`t`.`topiccreationdate` AS `TopicCreationDate`,`t`.`topicviews` AS `TopicViews`,`t`.`topicreplies` AS `TopicReplies`,`t`.`userid` AS `UserId`,`t`.`topictags` AS `TopicTags`,`t`.`topicisclose` AS `TopicIsClose`,`t`.`topicorder` AS `TopicOrder`,`t`.`lastmessageid` AS `LastMessageId`,`u`.`username` AS `UserName`,`f`.`forumid` AS `ForumId`,`f`.`forumname` AS `ForumName`,`f`.`forumshortname` AS `ForumShortName` from ((`topics` `t` join `users` `u` on((`u`.`userid` = `t`.`userid`))) join `forums` `f` on((`f`.`forumid` = `t`.`forumid`))) where (`t`.`active` = 1);
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `topicscomplete` AS select `t`.`topicid` AS `TopicId`,`t`.`topictitle` AS `TopicTitle`,`t`.`topicshortname` AS `TopicShortName`,`t`.`topicdescription` AS `TopicDescription`,`t`.`topiccreationdate` AS `TopicCreationDate`,`t`.`topicviews` AS `TopicViews`,`t`.`topicreplies` AS `TopicReplies`,`t`.`userid` AS `UserId`,`t`.`topictags` AS `TopicTags`,`t`.`topicisclose` AS `TopicIsClose`,`t`.`topicorder` AS `TopicOrder`,`t`.`lastmessageid` AS `LastMessageId`,`u`.`username` AS `UserName`,`f`.`forumid` AS `ForumId`,`f`.`forumname` AS `ForumName`,`f`.`forumshortname` AS `ForumShortName` from ((`topics` `t` join `users` `u` on((`u`.`userid` = `t`.`userid`))) join `forums` `f` on((`f`.`forumid` = `t`.`forumid`))) where (`t`.`active` = 1);
 
 
 
