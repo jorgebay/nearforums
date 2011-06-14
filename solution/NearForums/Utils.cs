@@ -9,24 +9,6 @@ namespace NearForums
 {
 	public static class Utils
 	{
-		public static string ToUrlFragment(string value, int maxLength)
-		{
-			if (value == null)
-			{
-				return null;
-			}
-			value = value.ToLowerInvariant();
-			value = Regex.Replace(value, @"[^a-z- ]+", "");
-			value = Regex.Replace(value, @" ", "-");
-			value = Regex.Replace(value, @"-+", "-");
-			value = Regex.Replace(value, @"^-+|-+$", "");
-			if (value.Length > maxLength)
-			{
-				value = value.Substring(0, maxLength);
-			}
-			return value;
-		}
-
 		/// <summary>
 		/// Crops a given text
 		/// </summary>

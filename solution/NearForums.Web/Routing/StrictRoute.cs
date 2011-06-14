@@ -16,6 +16,10 @@ namespace NearForums.Web.Routing
 
 		}
 
+		/// <summary>
+		/// Checks that the route is a match, taking also in account case sensitivity and trailing slashes
+		/// </summary>
+		/// <returns>Returns null if the requested url and the route does not match</returns>
 		public override RouteData GetRouteData(HttpContextBase httpContext)
 		{
 			RouteData data = base.GetRouteData(httpContext);
@@ -23,21 +27,18 @@ namespace NearForums.Web.Routing
 			{
 				//Check for trailing slash and case sensitivity
 				//if not set data to null
-				string urlRegex = Regex.Replace(this.Url, @"{[\w_-]+?}", @"[\w-]*?");
-				string localPath = httpContext.Request.Url.AbsolutePath;
+				var virtualPath = httpContext.Request.AppRelativeCurrentExecutionFilePath.Substring(2) + httpContext.Request.PathInfo;
 
-				//Compare if the current url (httpContext.Request.Url) matches route url defined (urlRegex)
-				if (localPath.Length > 1)
+				if (virtualPath.Length > 1)
 				{
-					int appBasePathlength = VirtualPathUtility.ToAbsolute("~/", httpContext.Request.ApplicationPath).Length;
-					
-					//Ignore the base application path (/ or /forums/)
-					localPath = localPath.Substring(appBasePathlength);
-					urlRegex = "^" + urlRegex + "$";
-
-					if (!Regex.IsMatch(localPath, urlRegex))
+					//Count trailing slashes
+					if (Regex.Matches(this.Url, "/").Count != Regex.Matches(virtualPath, "/").Count)
 					{
-						return null;
+						data = null;
+					}
+					else if (virtualPath.ToLowerInvariant() != virtualPath)
+					{
+						data = null;
 					}
 				}
 			}

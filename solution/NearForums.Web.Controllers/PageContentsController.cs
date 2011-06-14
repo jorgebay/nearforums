@@ -43,6 +43,7 @@ namespace NearForums.Web.Controllers
 		{
 			try
 			{
+				content.ShortName = content.Title.ToUrlSegment(128);
 				PageContentsServiceClient.Add(content);
 			}
 			catch (ValidationException ex)

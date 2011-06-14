@@ -3,8 +3,11 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NearForums.Web.Extensions;
 using NearForums.Configuration;
 using NearForums.Configuration.Routing;
+using System.Web;
+using System.Text.RegularExpressions;
 
 namespace NearForums.Tests.Routing
 {
@@ -66,6 +69,14 @@ namespace NearForums.Tests.Routing
 		{
 			RouteMappingConfiguration config = RouteMappingConfiguration.Current;
 			Assert.IsNotNull(config.Routes[0]);
+		}
+
+		[TestMethod]
+		public void NonAscii_Urls()
+		{
+			var url = "เที่ยวไทย".ToUrlSegment(32);
+			Assert.IsFalse(String.IsNullOrEmpty(url));
+			Assert.IsFalse(url.Contains("ย"));
 		}
 	}
 }

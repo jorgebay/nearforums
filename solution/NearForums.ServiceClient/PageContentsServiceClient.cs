@@ -26,10 +26,6 @@ namespace NearForums.ServiceClient
 
 		public static void Add(PageContent content)
 		{
-			if (!String.IsNullOrEmpty(content.Title))
-			{
-				content.ShortName = Utils.ToUrlFragment(content.Title, 128);
-			}
 			content.ValidateFields();
 			SetAvailableShortName(content);
 			var da = new PageContentsDataAccess();

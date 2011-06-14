@@ -101,7 +101,7 @@ namespace NearForums.Web.Controllers
 
 				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
-				topic.ShortName = Utils.ToUrlFragment(topic.Title, 64);
+				topic.ShortName = topic.Title.ToUrlSegment(64);
 				topic.IsSticky = (topic.IsSticky && this.User.Group >= UserGroup.Moderator);
 				if (topic.Description != null)
 				{

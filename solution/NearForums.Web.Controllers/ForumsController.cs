@@ -126,7 +126,7 @@ namespace NearForums.Web.Controllers
 			{
 				if (!String.IsNullOrEmpty(forum.Name))
 				{
-					forum.ShortName = Utils.ToUrlFragment(forum.Name, 32);
+					forum.ShortName = forum.Name.ToUrlSegment(32);
 				}
 				if (ModelState.IsValid)
 				{

@@ -7,6 +7,7 @@ using NearForums.Configuration;
 using System.Configuration;
 using System.IO;
 using HtmlAgilityPack;
+using System.Web;
 
 namespace NearForums.Web.Extensions
 {
@@ -72,6 +73,33 @@ namespace NearForums.Web.Extensions
 				return result;
 			}
 			return value;
+		}
+
+		/// <summary>
+		/// Returns a string that can be used in a url segment
+		/// </summary>
+		public static string ToUrlSegment(this string value, int maxLength)
+		{
+			if (value == null)
+			{
+				return null;
+			}
+			value = value.ToLowerInvariant();
+			var segment = Regex.Replace(value, @"[^a-z- ]+", "");
+			segment = Regex.Replace(segment, @" ", "-");
+			segment = Regex.Replace(segment, @"-+", "-");
+			segment = Regex.Replace(segment, @"^-+|-+$", "");
+
+			//Handle alfabets that does not have contain ascii chars a-z
+			if (segment == "" && Regex.IsMatch(value, @"\w+"))
+			{
+				segment = HttpUtility.UrlEncode(value);
+			}
+			if (segment.Length > maxLength)
+			{
+				segment = segment.Substring(0, maxLength);
+			}
+			return segment;
 		}
 	}
 }

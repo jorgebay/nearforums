@@ -8,6 +8,8 @@ using NearForums.Tests.Fakes;
 using System.Web.Mvc;
 using NearForums.ServiceClient;
 using System.Web.SessionState;
+using NearForums.Web;
+using NearForums.Web.Extensions;
 using NearForums.Web.State;
 
 namespace NearForums.Tests.Controllers
@@ -95,7 +97,7 @@ namespace NearForums.Tests.Controllers
 			t.Title = "Unit testing " + TestContext.TestName;
 			t.Description = "This is a sample topic from unit testing project.";
 			t.Tags = new TagList("test");
-			t.ShortName = Utils.ToUrlFragment(t.Title, 64);
+			t.ShortName = t.Title.ToUrlSegment(64);
 			t.User = controller.User.ToUser();
 			t.Forum = forum;
 
