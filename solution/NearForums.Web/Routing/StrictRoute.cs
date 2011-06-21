@@ -36,10 +36,11 @@ namespace NearForums.Web.Routing
 					{
 						data = null;
 					}
-					else if (virtualPath.ToLowerInvariant() != virtualPath)
-					{
-						data = null;
-					}
+					//TODO: See a way to handle only lowercase virtualPath, but also handle url encoded params
+					//else if (virtualPath.ToLowerInvariant() != virtualPath)
+					//{
+					//    data = null;
+					//}
 				}
 			}
 			return data;

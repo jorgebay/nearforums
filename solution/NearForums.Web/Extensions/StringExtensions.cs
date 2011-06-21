@@ -84,7 +84,6 @@ namespace NearForums.Web.Extensions
 			{
 				return null;
 			}
-			value = value.ToLowerInvariant();
 			var segment = Regex.Replace(value, @"[^a-z- ]+", "");
 			segment = Regex.Replace(segment, @" ", "-");
 			segment = Regex.Replace(segment, @"-+", "-");
@@ -95,10 +94,11 @@ namespace NearForums.Web.Extensions
 			{
 				segment = HttpUtility.UrlEncode(value);
 			}
-			if (segment.Length > maxLength)
+			else if (segment.Length > maxLength)
 			{
 				segment = segment.Substring(0, maxLength);
 			}
+			segment = segment.ToLowerInvariant();
 			return segment;
 		}
 	}

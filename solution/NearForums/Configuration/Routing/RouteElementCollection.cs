@@ -8,6 +8,11 @@ namespace NearForums.Configuration.Routing
 {
 	public class RouteElementCollection : ConfigurationElementCollection
 	{
+		public void Add(RouteElement element)
+		{
+			BaseAdd(element);
+		}
+
 		protected override ConfigurationElement CreateNewElement()
 		{
 			return new RouteElement();
