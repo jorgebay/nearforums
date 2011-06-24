@@ -191,7 +191,7 @@ namespace NearForums.Tests
 			ForumsController controller = new ForumsController();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
-			forum.Name = "เที่ยวไทย";
+			forum.Name = "ถ้า";
 			forum.Description = forum.Name + "... description.";
 			forum.Category = GetACategory();
 
