@@ -53,7 +53,7 @@ namespace NearForums.Tests.Routing
 		public void RoutingHelper_NonAscii_Test()
 		{
 			var routes = new RouteCollection();
-			var routesConfig = RouteMappingConfiguration.Current;
+			var routesConfig = RouteMappingConfiguration.Current; //Load from app.config
 
 			RoutingHelper.RegisterRoutes(routes, routesConfig);
 
@@ -62,7 +62,21 @@ namespace NearForums.Tests.Routing
 				controller = "Forums",
 				action = "DetailNotConstrained"
 			});
-			TestHelper.AssertIsRouteOf(routes, "/forum-detail/" + "เที่ยวไทย".ToUrlSegment(32) + "/", new
+			TestHelper.AssertVirtualPathNotNull(routes, new
+			{
+				controller = "Forums",
+				action = "DetailNotConstrained",
+				forum = "whatever"
+			});
+
+			//back and fw
+			string url = TestHelper.AssertVirtualPathNotNull(routes, new
+			{
+				controller = "Forums",
+				action = "DetailNotConstrained",
+				forum = "เที่ยวไทย".ToUrlSegment(32)
+			});
+			TestHelper.AssertIsRouteOf(routes, url, new
 			{
 				controller = "Forums",
 				action = "DetailNotConstrained"

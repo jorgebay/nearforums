@@ -45,5 +45,16 @@ namespace NearForums.Tests
 				}
 			}
 		}
+
+		public static string AssertVirtualPathNotNull(RouteCollection routes, object routeValues)
+		{
+			var httpContext = new FakeHttpContext("http://localhost");
+			((FakeHttpRequest)httpContext.Request).SetUri(new Uri(new Uri("http://localhost"), "/").ToString());
+
+			var virtualPath = routes.GetVirtualPath(new RequestContext(httpContext, new RouteData()), new RouteValueDictionary(routeValues));
+
+			Assert.IsNotNull(virtualPath);
+			return virtualPath.VirtualPath;
+		}
 	}
 }
