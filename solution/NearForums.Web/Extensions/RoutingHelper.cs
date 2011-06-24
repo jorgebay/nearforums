@@ -42,7 +42,9 @@ namespace NearForums.Web.Extensions
 
 				foreach (RouteElement item in config.Routes)
 				{
-					StrictRoute route = new StrictRoute(item.Url, new MvcRouteHandler());
+					var lowerCaseOnly = item.LowerCaseOnly == null ? config.Routes.LowerCaseOnly : item.LowerCaseOnly.Value;
+
+					var route = new StrictRoute(item.Url, new MvcRouteHandler(), lowerCaseOnly);
 					route.Defaults = new RouteValueDictionary();
 					route.Defaults.Add("Controller", item.Controller);
 					route.Defaults.Add("Action", item.Action);

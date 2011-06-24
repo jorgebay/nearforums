@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using NearForums.Web.Output;
 using System.Web.Routing;
 using NearForums.Tests.Fakes;
+using System.Web.Mvc;
 
 namespace NearForums.Tests.Routing
 {
@@ -39,6 +40,12 @@ namespace NearForums.Tests.Routing
 			{
 				controller = "What",
 				action = "TheF"
+			});
+			//Case sensitivity
+			TestHelper.AssertIsNotRouteOf(routes, "/some-Forum/", new
+			{
+				controller = "Forums",
+				action = "Detail"
 			});
 		}
 

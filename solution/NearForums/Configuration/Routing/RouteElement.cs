@@ -22,6 +22,22 @@ namespace NearForums.Configuration.Routing
 			}
 		}
 
+		/// <summary>
+		/// Determines if the route only match lower case urls.
+		/// </summary>
+		[ConfigurationProperty("lowerCaseOnly", DefaultValue=null)]
+		public bool? LowerCaseOnly
+		{
+			get
+			{
+				return (bool?)this["lowerCaseOnly"];
+			}
+			set
+			{
+				this["lowerCaseOnly"] = value;
+			}
+		}
+
 		[ConfigurationProperty("controller", IsRequired = true)]
 		public string Controller
 		{
@@ -57,7 +73,7 @@ namespace NearForums.Configuration.Routing
 			}
 			set
 			{
-				this["namespace"] = value; 
+				this["namespace"] = value;
 			}
 		}
 

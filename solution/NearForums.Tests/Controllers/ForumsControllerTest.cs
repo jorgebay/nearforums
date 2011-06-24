@@ -164,7 +164,7 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
-		public void Forum_Add_Delete()
+		public void Forum_Add_Delete_English()
 		{
 			Forum forum = new Forum();
 			ForumsController controller = new ForumsController();
@@ -179,6 +179,42 @@ namespace NearForums.Tests
 
 			result = controller.Delete(forum.ShortName);
 			Assert.IsTrue(result is RedirectToRouteResult);
+		}
+
+		[TestMethod]
+		public void Forum_Add_Delete_Thai()
+		{
+			//Forum forum = new Forum();
+			//ForumsController controller = new ForumsController();
+			//controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+
+			//forum.Name = "Unit test forum";
+			//forum.Description = forum.Name + "... description.";
+			//forum.Category = GetACategory();
+
+			//var result = controller.Add(forum);
+			//Assert.IsTrue(result is RedirectToRouteResult);
+
+			//result = controller.Delete(forum.ShortName);
+			//Assert.IsTrue(result is RedirectToRouteResult);
+
+			////Test routing with the forum 
+			//var routes = new RouteCollection();
+			//var routesConfig = RouteMappingConfiguration.Current;
+
+			//RoutingHelper.RegisterRoutes(routes, routesConfig);
+
+			//TestHelper.AssertIsRouteOf(routes, "/forum-detail/whatever/", new
+			//{
+			//    controller = "Forums",
+			//    action = "DetailNotConstrained"
+			//});
+			//TestHelper.AssertIsRouteOf(routes, "/forum-detail/" + "เที่ยวไทย".ToUrlSegment(32) + "/", new
+			//{
+			//    controller = "Forums",
+			//    action = "DetailNotConstrained"
+			//});
+
 		}
 
 	}

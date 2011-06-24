@@ -229,6 +229,7 @@ namespace NearForums.Web.Controllers
 								{
 									part.Append(currentLine[i]);
 									part = new StringBuilder();
+									//TODO: Save part?
 									partsList.Add(part);
 								}
 								else

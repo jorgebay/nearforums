@@ -10,10 +10,22 @@ namespace NearForums.Web.Routing
 {
 	public class StrictRoute : Route
 	{
+		public bool LowerCaseOnly
+		{
+			get;
+			set;
+		}
+
 		public StrictRoute(string url, IRouteHandler handler)
 			: base(url, handler)
 		{
+			
+		}
 
+		public StrictRoute(string url, IRouteHandler handler, bool lowerCaseOnly)
+			: this(url, handler)
+		{
+			LowerCaseOnly = lowerCaseOnly;
 		}
 
 		/// <summary>
@@ -36,11 +48,10 @@ namespace NearForums.Web.Routing
 					{
 						data = null;
 					}
-					//TODO: See a way to handle only lowercase virtualPath, but also handle url encoded params
-					//else if (virtualPath.ToLowerInvariant() != virtualPath)
-					//{
-					//    data = null;
-					//}
+					else if (LowerCaseOnly && virtualPath.ToLowerInvariant() != virtualPath)
+					{
+						data = null;
+					}
 				}
 			}
 			return data;
