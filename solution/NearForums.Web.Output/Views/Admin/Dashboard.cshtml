@@ -5,6 +5,7 @@
 	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 </ul>
 <h1>Admin Dashboard</h1>
+<h2>Moderation</h2>
 <ul class="items">
 	<li>
 		<h3>@Html.ActionLink("Manage forums", "Manage", "Forums")</h3>
@@ -18,23 +19,26 @@
 		<h3>@Html.ActionLink("Flagged messages", "ListFlagged", "Messages")</h3>
 		<p>Manage all flagged messages.</p>
 	</li>
-	@if (this.User.Group == UserGroup.Admin)
-	{
-	<li>
-		<h3>@Html.ActionLink("Manage pages", "List", "PageContents")</h3>
-		<p>Manage content pages like about / privacy / ...</p>
-	</li>
-	<li>
-		<h3>@Html.ActionLink("Manage templates", "ListTemplates", "Admin")</h3>
-		<p>Manage the site templates for the forum.</p>
-	</li>
 	<li>
 		<h3>@Html.ActionLink("Manage users", "List", "Users")</h3>
 		<p>Promote, demote and delete forum users.</p>
 	</li>
-	<li>
-		<h3>@Html.ActionLink("Website status", "Status", "Admin")</h3>
-		<p>View the status of the webserver/db/website/configuration...</p>
-	</li>
-	}
 </ul>
+@if (this.User.Group == UserGroup.Admin)
+{
+	<h2>Administration</h2>
+	<ul class="items">
+		<li>
+			<h3>@Html.ActionLink("Manage pages", "List", "PageContents")</h3>
+			<p>Manage content pages like about / privacy / ...</p>
+		</li>
+		<li>
+			<h3>@Html.ActionLink("Manage templates", "List", "Templates")</h3>
+			<p>Manage the site templates for the forum.</p>
+		</li>
+		<li>
+			<h3>@Html.ActionLink("Website status", "Status", "Admin")</h3>
+			<p>View the status of the webserver/db/website/configuration...</p>
+		</li>
+	</ul>
+}

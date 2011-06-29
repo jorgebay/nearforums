@@ -23,7 +23,7 @@
 	@foreach (Template t in this.Model)
 	{
 		<tr>
-			<td>@Html.ActionLink("Set", "TemplateSetCurrent", new{id=t.Id}), @Html.ActionLink("Delete", "DeleteTemplate", new{id=t.Id}, new{onclick="return confirm('Are you sure you want to DELETE this template?\\nThis action is not reversible.');"})</td>
+			<td>@Html.ActionLink("Set", "SetCurrent", new{id=t.Id}), @Html.ActionLink("Delete", "Delete", new{id=t.Id}, new{onclick="return confirm('Are you sure you want to DELETE this template?\\nThis action is not reversible.');"})</td>
 			<td>@t.Key</td>
 			<td>@t.Description</td>
 			<td>@(t.IsCurrent ? "Current" : "")</td>
@@ -31,7 +31,7 @@
 	}
 	</tbody>
 </table>
-<p class="">@Html.ActionLink("Upload a new template", "AddTemplate")</p>
+<p class="">@Html.ActionLink("Upload a new template", "Add")</p>
 @if (!Config.Template.UseTemplates)
 {
 	<p style="padding-top: 50px;">
