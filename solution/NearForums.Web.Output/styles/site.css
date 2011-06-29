@@ -787,3 +787,27 @@ ul.admin li
 	border: 1px solid #000000;
 	color: #333333;
 }
+ul.templateList
+{
+	margin: 20px 0;
+	padding: 0;	
+	list-style-type: none;
+}
+ul.templateList li
+{
+	width: 255px;
+	height: 255px;
+	padding: 20px;
+	float: left;
+	border-left: 1px solid #dddddd;
+	border-bottom: 1px solid #dddddd;
+	overflow: auto;
+}
+ul.templateList li.first
+{
+	border-left: none;
+}
+ul.templateList img
+{
+	border: 1px solid #dddddd;
+}

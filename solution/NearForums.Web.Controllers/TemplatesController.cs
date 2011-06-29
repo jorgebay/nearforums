@@ -14,6 +14,7 @@ using System.Net;
 using NearForums.Web.Extensions;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
+using NearForums.Configuration;
 
 namespace NearForums.Web.Controllers
 {
@@ -262,14 +263,15 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult List(TemplateActionError? error)
 		{
-			List<Template> list = TemplatesServiceClient.GetAll();
+			var list = TemplatesServiceClient.GetAll();
+			ViewBag.BasePath = SiteConfiguration.Current.Template.Path;
 			if (error == TemplateActionError.DeleteCurrent)
 			{
-				ViewData["DeleteCurrent"] = true;
+				ViewBag.DeleteCurrent = true;
 			}
 			else if (error == TemplateActionError.UnauthorizedAccess)
 			{
-				ViewData["Access"] = true;
+				ViewBag.Access = true;
 			}
 			return View(list);
 		}
