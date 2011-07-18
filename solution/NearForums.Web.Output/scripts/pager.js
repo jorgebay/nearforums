@@ -72,7 +72,7 @@ var pager =
 	{
 		if (pager.enabled && pager.lastItem < pager.totalItems)
 		{
-			var fromId = $("#messages li:last").attr("id").substring(3);
+			var fromId = $("#messages > li:last").attr("id").substring(3);
 			$.post(pager.postUrl, {from:fromId, initIndex:$("#messages > li").length}, pager.moreCallback);
 			pager.loadingStart();
 		}
