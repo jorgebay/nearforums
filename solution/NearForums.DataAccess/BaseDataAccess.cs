@@ -104,15 +104,5 @@ namespace NearForums.DataAccess
 		{
 			return comm.SafeExecuteNonQuery();
 		}
-
-		private void CompilerOnly()
-		{
-			MySql.Data.MySqlClient.MySqlCommand command1 = null;
-			System.Data.SqlClient.SqlCommand command2 = null;
-			if (command1 != null && command2 != null)
-			{
-
-			}
-		}
 	}
 }
