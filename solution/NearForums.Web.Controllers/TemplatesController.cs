@@ -54,7 +54,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult List(TemplateActionError? error)
 		{
 			var list = TemplatesServiceClient.GetAll();
-			ViewBag.BasePath = SiteConfiguration.Current.Template.Path;
+			ViewBag.BasePath = Url.Content(Config.Template.Path);
 			if (error == TemplateActionError.DeleteCurrent)
 			{
 				ViewBag.DeleteCurrent = true;
@@ -119,6 +119,19 @@ namespace NearForums.Web.Controllers
 				
 			}
 			return RedirectToAction("List", new{error=error});
+		}
+		#endregion
+
+		#region Export
+		[RequireAuthorization(UserGroup.Admin)]
+		public ActionResult Export(int id)
+		{
+			var template = TemplatesServiceClient.Get(id);
+			string fileName = Server.MapPath(Config.Template.Path + template.Key + "/template.zip");
+			return new FilePathResult(fileName, "application/zip") 
+			{ 
+				FileDownloadName = template.Key + ".zip"
+			};
 		}
 		#endregion
 		#endregion

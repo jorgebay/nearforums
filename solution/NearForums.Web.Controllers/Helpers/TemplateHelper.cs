@@ -18,7 +18,7 @@ namespace NearForums.Web.Controllers.Helpers
 		private static bool ValidateFileName(string fileName)
 		{
 			bool fileValid = true;
-			if (!Regex.IsMatch(fileName, @"^((template\.html)|(screenshot\.png)|(template-contents/((.*\.gif)|(.*\.png)|(.*\.jpg)|(.*\.css))?))$", RegexOptions.IgnoreCase))
+			if (!Regex.IsMatch(fileName, @"^((template\.html)|(screenshot\.png)|(.*\.txt)|(template-contents/((.*\.gif)|(.*\.png)|(.*\.jpg)|(.*\.css))?))$", RegexOptions.IgnoreCase))
 			{
 				fileValid = false;
 			}
@@ -156,7 +156,11 @@ namespace NearForums.Web.Controllers.Helpers
 						throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.AccessRights));
 					}
 					#endregion
-					//Open the zip file.
+
+					#region Save zip file to disk
+					postedFile.SaveAs(baseDirectory + "/template.zip");
+					#endregion
+
 					#region Save the files in the zip file
 					using (ZipInputStream zipStream = new ZipInputStream(postedFile.InputStream))
 					{
