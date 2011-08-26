@@ -9,6 +9,7 @@ using NearForums.Validation;
 using NearForums.ServiceClient;
 using ICSharpCode.SharpZipLib.Zip;
 using NearForums.Configuration;
+using NearForums.Web.State;
 
 namespace NearForums.Web.Controllers.Helpers
 {
@@ -249,6 +250,40 @@ namespace NearForums.Web.Controllers.Helpers
 				return SiteConfiguration.Current;
 			}
 		} 
+		#endregion
+
+		#region Load TemplateState
+		public static TemplateState GetCurrentTemplateState(HttpContextBase context)
+		{
+			return GetTemplateState(context, null);
+		}
+
+		public static TemplateState GetTemplateState(HttpContextBase context, int? id)
+		{
+			TemplateState template = null;
+			Template t = null;
+			if (id != null)
+			{
+				t = TemplatesServiceClient.Get(id.Value);
+			}
+			else
+			{
+				//Gets the current template code from db
+				t = TemplatesServiceClient.GetCurrent();
+			}
+
+			if (t != null)
+			{
+				//Get all the files in the directory
+				template = new TemplateState(t.Key);
+				string[] fileNameList = SafeIO.Directory_GetFiles(context.Server.MapPath(template.Path), "*.part.*.html");
+				foreach (string fileName in fileNameList)
+				{
+					template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));
+				}
+			}
+			return template;
+		}
 		#endregion
 	}
 }

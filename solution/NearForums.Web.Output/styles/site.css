@@ -792,6 +792,7 @@ ul.templateList
 	margin: 20px 0;
 	padding: 0;	
 	list-style-type: none;
+	border-left: 1px solid #dddddd;
 }
 ul.templateList li
 {
@@ -799,7 +800,7 @@ ul.templateList li
 	height: 280px;
 	padding: 20px;
 	float: left;
-	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
 	border-bottom: 1px solid #dddddd;
 	overflow: auto;
 }

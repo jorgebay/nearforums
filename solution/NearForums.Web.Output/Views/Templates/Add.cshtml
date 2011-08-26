@@ -13,9 +13,9 @@
 					{ 
 						{ValidationErrorType.AccessRights, "The application does not file Write access on the server's template folder."}
 						,{ValidationErrorType.FileFormat, "File format is invalid. Please include only the allowed files."}
-						,{ValidationErrorType.NullOrEmpty, "File format must not be blank."}
+						,{ValidationErrorType.NullOrEmpty, "File must not be blank."}
 					}}
-		, {"Key", "Key format is not valid. Include a-z 0-9 and up to 16 characters."}
+		, {"Key", "Key format is not valid. Include a-z 0-9 and up to 64 characters."}
 	}, null)
 		
 @{Html.BeginForm(null, null, FormMethod.Post, new{enctype="multipart/form-data"});}
@@ -32,18 +32,3 @@
 	<input type="submit" value="Submit" />
 </div>
 @{Html.EndForm();}
-<h2 style="padding-top: 30px;">File format</h2>
-<p>Compressed zip file with the following allowed files and folders.</p>
-<ul>
-	<li><strong>template.html</strong>: html file. The html file must contain the following place holders: {-TitleContent-}, {-HeadContent-}, {-UserMenu-}, {-MainContent-}. Please mantain the footer links to the Nearforums website.</li>
-	<li>
-		<strong>template-contents</strong>: folder that contains any css, png, jpg or gif files.
-		<ul>
-			<li>picture1.png</li>
-			<li>icon.png</li>
-			<li>picture2.jpg</li>
-			<li>styles.css</li>
-			<li>...etc...</li>
-		</ul>
-	</li>
-</ul>

@@ -169,11 +169,6 @@ namespace NearForums.Web.Controllers
 
 		protected virtual void Init()
 		{
-			if (this.Config.Template.UseTemplates && Cache.Template == null)
-			{
-				LoadTemplate();
-			}
-
 			if (Session.User == null)
 			{
 				SecurityHelper.TryLoginFromProviders(this.Session, this.Cache, this.Request, this.Response);
@@ -209,30 +204,38 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Templates & Master
-		public void LoadTemplate()
+		/// <summary>
+		/// Returns active/current template. It returns null if disabled by configuration
+		/// </summary>
+		public TemplateState Template 
 		{
-			//Gets the current template code from db
-			Template t = TemplatesServiceClient.GetCurrent();
-
-
-			//Get all the files in the directory
-			TemplateState template = new TemplateState(t.Key);
-			string[] fileNameList = SafeIO.Directory_GetFiles(Server.MapPath(template.Path), "*.part.*.html");
-			foreach (string fileName in fileNameList)
+			get
 			{
-				template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));
-			}
+				TemplateState template = null;
+				if (Config.Template.UseTemplates)
+				{
+					//Check if its loaded
+					if (Cache.Template == null)
+					{
+						this.Cache.Template = TemplateHelper.GetCurrentTemplateState(HttpContext);
+					}
+					template = this.Cache.Template;
+				}
 
-			this.Cache.Template = template;
+				return template;
+			}
 		}
 
 		protected virtual string GetDefaultMasterName()
 		{
-			var masterName = Config.Template.Master;
-			//
+			var masterName = "Site";
 			if (IsMobileRequest)
 			{
-				masterName = Config.Template.MobileMaster;
+				masterName = "Mobile";
+			}
+			else if (this.Template != null)
+			{
+				masterName = "Templated";
 			}
 
 			return masterName;

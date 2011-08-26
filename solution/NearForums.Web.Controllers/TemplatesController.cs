@@ -20,7 +20,6 @@ namespace NearForums.Web.Controllers
 {
 	public class TemplatesController : BaseController
 	{
-		#region Templates
 		#region Add template
 		[RequireAuthorization(UserGroup.Admin)]
 		[AcceptVerbs(HttpVerbs.Get)]
@@ -134,6 +133,13 @@ namespace NearForums.Web.Controllers
 			};
 		}
 		#endregion
+
+		#region How to
+		[RequireAuthorization(UserGroup.Admin)]
+		public ActionResult HowTo()
+		{
+			return View();
+		}
 		#endregion
 	}
 }

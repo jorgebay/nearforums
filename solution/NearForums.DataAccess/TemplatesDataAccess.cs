@@ -28,10 +28,10 @@ namespace NearForums.DataAccess
 
 		public Template GetCurrent()
 		{
-			Template t = new Template();
-			DbCommand comm = this.GetCommand("SPTemplatesGetCurrent");
+			Template t = null;
+			var comm = this.GetCommand("SPTemplatesGetCurrent");
 
-			DataRow dr = this.GetFirstRow(comm);
+			var dr = this.GetFirstRow(comm);
 			if (dr != null)
 			{
 				t = ParseTemplateDataRow(dr);

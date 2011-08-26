@@ -16,7 +16,7 @@ namespace NearForums
 
 		private string _key;
 		[RequireField]
-		[RegexFormat("[\\w-]{1,16}")]
+		[RegexFormat("^[\\w-]{1,64}$")]
 		public string Key
 		{
 			get
