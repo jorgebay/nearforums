@@ -1,21 +1,19 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>@ViewBag.Title</title>
-	@Html.Stylesheet("~/styles/site.css")
+	@Html.Partial("HeadContainer")
     @RenderSection("Head", required:false)
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 </head>
 <body>
     <div id="container">
         <div id="header">
-			@Html.Partial("UserMenu", this.ViewData)
+			@Html.Partial("HeaderContent", ViewData)
         </div>
         <div id="content">
             @RenderBody()
         </div>
         <div id="footer">
-			<p>@Html.ActionLink("About", "Detail", "PageContents", new{name="about"}, null) | @Html.ActionLink("Terms and conditions", "Detail", "PageContents", new{name="terms"}, null) | Powered by <a href="http://www.nearforums.com">nearforums</a></p>
+			@Html.Partial("FooterContent")
         </div>
     </div>
 </body>
