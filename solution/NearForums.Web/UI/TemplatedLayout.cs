@@ -58,11 +58,12 @@ namespace NearForums.Web.UI
 			{
 				switch (item.Value.ToUpper()) //Name
 				{
-					case "MAINCONTENT":
+					case "BODYCONTAINER":
 						Write(RenderBody());
 						WriteTemplatePreview();
 						break;
-					case "HEADCONTENT":
+					case "HEADCONTAINER":
+						Write(Html.Partial("HeadContainer"));
 						if (IsSectionDefined("Head"))
 						{
 							Write(RenderSection("Head"));

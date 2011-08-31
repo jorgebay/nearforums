@@ -11,12 +11,13 @@ using ICSharpCode.SharpZipLib.Zip;
 using NearForums.Configuration;
 using NearForums.Web.State;
 using NearForums.Web.Extensions;
+using System.Web.Mvc;
 
 namespace NearForums.Web.Controllers.Helpers
 {
 	public static class TemplateHelper
 	{
-		#region Validate filename
+		#region Validation
 		private static bool ValidateFileName(string fileName)
 		{
 			bool fileValid = true;
@@ -26,6 +27,22 @@ namespace NearForums.Web.Controllers.Helpers
 			}
 			return fileValid;
 		}
+
+		///// <summary>
+		///// TODO: Checks that all required parts are there and the contents and containers are valid
+		///// </summary>
+		///// <exception cref="ValidationException"></exception>
+		//private static void ValidateTemplateParts(List<StringBuilder> partsList)
+		//{
+		//    foreach (var part in partsList)
+		//    {
+		//        if (part.Length < 30 && part[0] == '{')
+		//        {
+		//            var placeholder = part.ToString();
+		//        }
+		//    }
+		//    //throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
+		//}
 		#endregion
 
 		#region Replace files paths
@@ -34,6 +51,7 @@ namespace NearForums.Web.Controllers.Helpers
 		/// </summary>
 		private static void ReplaceFilePaths(string filePath, string newPath)
 		{
+			//Normally a template html file won't be larger than 100Kb, should we replace by line? (instead of readall)
 			System.IO.File.WriteAllText(filePath, Regex.Replace(System.IO.File.ReadAllText(filePath), "template-contents/", newPath + "contents/"));
 		}
 		#endregion
@@ -79,7 +97,7 @@ namespace NearForums.Web.Controllers.Helpers
 								{
 									part.Append(currentLine[i]);
 									part = new StringBuilder();
-									//TODO: Save part?
+									
 									partsList.Add(part);
 								}
 								else
@@ -98,6 +116,9 @@ namespace NearForums.Web.Controllers.Helpers
 					}
 				}
 			}
+
+			//Check parts
+			//ValidateTemplateParts(partsList);
 
 			//Save the files based on the partsList.
 			int partNumber = 0;
@@ -211,8 +232,8 @@ namespace NearForums.Web.Controllers.Helpers
 				if (fileValid)
 				{
 					//All worked file
-					ReplaceFilePaths(baseDirectory + "\\template.html", Config.Template.Path + template.Key + "/");
-
+					ReplaceFilePaths(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.Template.Path + template.Key + "/", context));
+					
 					ChopTemplateFile(baseDirectory + "\\template.html");
 				}
 				else
