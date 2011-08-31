@@ -173,6 +173,7 @@ namespace NearForums.Web.Controllers
 			{
 				SecurityHelper.TryLoginFromProviders(this.Session, this.Cache, this.Request, this.Response);
 			}
+			LoadTemplate();
 		} 
 		#endregion
 
@@ -205,25 +206,21 @@ namespace NearForums.Web.Controllers
 
 		#region Templates & Master
 		/// <summary>
-		/// Returns active/current template. It returns null if disabled by configuration
+		/// Loads the current template
 		/// </summary>
-		public TemplateState Template 
+		protected virtual void LoadTemplate()
 		{
-			get
-			{
-				TemplateState template = null;
-				if (Config.Template.UseTemplates)
-				{
-					//Check if its loaded
-					if (Cache.Template == null)
-					{
-						this.Cache.Template = TemplateHelper.GetCurrentTemplateState(HttpContext);
-					}
-					template = this.Cache.Template;
-				}
+			Template = TemplateHelper.LoadTemplate(HttpContext);
+		}
 
-				return template;
-			}
+		/// <summary>
+		/// Returns active/current template. 
+		/// It returns null if disabled by configuration or no active.
+		/// </summary>
+		public TemplateState Template
+		{
+			get;
+			set;
 		}
 
 		protected virtual string GetDefaultMasterName()
@@ -233,7 +230,7 @@ namespace NearForums.Web.Controllers
 			{
 				masterName = "Mobile";
 			}
-			else if (this.Template != null)
+			else if (Template != null)
 			{
 				masterName = "Templated";
 			}

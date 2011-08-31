@@ -30,7 +30,7 @@
 						<span>
 							<a href="#" onclick="return activeTemplate(@t.Id);">Activate</a>
 							|
-							@Html.ActionLink("Preview", "Preview", new{id=t.Id})
+							@Html.ActionLink("Preview", "Preview", new { id = t.Id }, new { target="_blank"})
 						</span>
 					}
 					else

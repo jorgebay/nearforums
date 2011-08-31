@@ -37,6 +37,14 @@ namespace NearForums.Web.State
 			set;
 		}
 
+		public bool IsAdmin 
+		{
+			get
+			{
+				return Group == UserGroup.Admin;
+			}
+		}
+
 		public string Email
 		{
 			get;

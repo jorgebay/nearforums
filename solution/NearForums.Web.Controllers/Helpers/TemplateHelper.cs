@@ -10,6 +10,7 @@ using NearForums.ServiceClient;
 using ICSharpCode.SharpZipLib.Zip;
 using NearForums.Configuration;
 using NearForums.Web.State;
+using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers.Helpers
 {
@@ -276,12 +277,51 @@ namespace NearForums.Web.Controllers.Helpers
 			{
 				//Get all the files in the directory
 				template = new TemplateState(t.Key);
+				template.Id = t.Id;
 				string[] fileNameList = SafeIO.Directory_GetFiles(context.Server.MapPath(template.Path), "*.part.*.html");
 				foreach (string fileName in fileNameList)
 				{
 					template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));
 				}
 			}
+			return template;
+		}
+		#endregion
+
+		#region Load Template
+		public static TemplateState LoadTemplate(HttpContextBase context)
+		{
+			TemplateState template = null;
+			var session = new SessionWrapper(context);
+			var cache = new CacheWrapper(context);
+			int? previewTemplateId = context.Request.QueryString["_tid"].ToNullableInt();
+			if (session.IsTemplatePreview)
+			{
+				if (previewTemplateId != null)
+				{
+					if (session.TemplatePreviewed == null || session.TemplatePreviewed.Id != previewTemplateId.Value)
+					{
+						//Load the previewed template into the session
+						session.TemplatePreviewed = TemplateHelper.GetTemplateState(context, previewTemplateId);
+					}
+				}
+				else
+				{
+					//Prevent for the previus previewed template to be shown in this 
+					session.TemplatePreviewed = null;
+				}
+				template = session.TemplatePreviewed;
+			}
+			if (Config.Template.UseTemplates && template == null)
+			{
+				if (cache.Template == null)
+				{
+					//Load the current template in the cache
+					cache.Template = TemplateHelper.GetCurrentTemplateState(context);
+				}
+				template = cache.Template;
+			}
+
 			return template;
 		}
 		#endregion

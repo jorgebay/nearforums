@@ -141,5 +141,14 @@ namespace NearForums.Web.Controllers
 			return View();
 		}
 		#endregion
+
+		#region Preview
+		[RequireAuthorization(UserGroup.Admin)]
+		public ActionResult Preview(int id)
+		{
+			Session.IsTemplatePreview = true;
+			return RedirectToRoute(new { controller="Forums", action="List", _tid=id});
+		}
+		#endregion
 	}
 }

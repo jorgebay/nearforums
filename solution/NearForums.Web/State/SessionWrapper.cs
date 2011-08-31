@@ -131,6 +131,38 @@ namespace NearForums.Web.State
 			}
 		}
 
+		#region Templating
+		/// <summary>
+		/// Determines if the current session is previewing templates
+		/// </summary>
+		public bool IsTemplatePreview
+		{
+			get
+			{
+				return GetItem<bool>("IsTemplatePreview", true);
+			}
+			set
+			{
+				SetItem<bool>("IsTemplatePreview", value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the current template beeing previewed
+		/// </summary>
+		public TemplateState TemplatePreviewed
+		{
+			get
+			{
+				return GetItem<TemplateState>("TemplatePreviewed");
+			}
+			set
+			{
+				SetItem<TemplateState>("TemplatePreviewed", value);
+			}
+		}
+		#endregion
+
 		/// <summary>
 		/// Gets a unique private token for this session. This token is not related to session id.
 		/// </summary>

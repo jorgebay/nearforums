@@ -101,5 +101,17 @@ namespace NearForums.Web.Extensions
 			segment = segment.ToLowerInvariant();
 			return segment;
 		}
+
+		public static int? ToNullableInt(this string value)
+		{
+			if (String.IsNullOrEmpty(value))
+			{
+				return (int?)null;
+			}
+			else
+			{
+				return Convert.ToInt32(value);
+			}
+		}
 	}
 }

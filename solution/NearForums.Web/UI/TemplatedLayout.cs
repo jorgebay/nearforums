@@ -13,13 +13,39 @@ namespace NearForums.Web.UI
 {
 	public class TemplatedLayout : BaseViewPage
 	{
+		protected virtual TemplateState Template
+		{
+			get
+			{
+				if (Session.TemplatePreviewed != null)
+				{
+					return Session.TemplatePreviewed;
+				}
+				return Cache.Template;
+			}
+		}
+
+		protected virtual int? TemplatePreviewId
+		{
+			get
+			{
+				int? id = null;
+				if (Session.TemplatePreviewed != null)
+				{
+					id = Session.TemplatePreviewed.Id;
+				}
+				return id;
+			}
+		}
+
 		public override void ExecutePageHierarchy()
 		{
 			base.ExecutePageHierarchy();
-			foreach (TemplateState.TemplateItem item in this.Cache.Template.Items)
+			foreach (TemplateState.TemplateItem item in Template.Items)
 			{
 				WriteItem(item);
 			}
+
 		}
 
 		protected virtual void WriteItem(TemplateState.TemplateItem item)
@@ -34,6 +60,7 @@ namespace NearForums.Web.UI
 				{
 					case "MAINCONTENT":
 						Write(RenderBody());
+						WriteTemplatePreview();
 						break;
 					case "HEADCONTENT":
 						if (IsSectionDefined("Head"))
@@ -45,7 +72,18 @@ namespace NearForums.Web.UI
 			}
 			else if (item.Type == TemplateState.TemplateItemType.Partial)
 			{
-				Write(this.Html.Partial(item.Value, this.ViewData));
+				Write(Html.Partial(item.Value, ViewData));
+			}
+		}
+
+		/// <summary>
+		/// If the template is beeing previewed, renders a special partial view
+		/// </summary>
+		protected virtual void WriteTemplatePreview()
+		{
+			if (TemplatePreviewId != null)
+			{
+				Write(Html.Partial("~/Views/Templates/PreviewPartial.cshtml", ViewData));
 			}
 		}
 	}

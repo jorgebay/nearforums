@@ -15,6 +15,12 @@ namespace NearForums.Web.State
 			this.Items = new List<TemplateItem>();
 		}
 
+		public int Id 
+		{
+			get; 
+			set; 
+		}
+
 		public string Name
 		{
 			get;

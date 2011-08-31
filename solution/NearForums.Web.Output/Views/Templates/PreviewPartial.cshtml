@@ -1,0 +1,24 @@
+﻿@Html.ScriptjQuery()
+<script type="text/javascript">
+	//Add _tid parameter to all local urls
+	var tid = "@Session.TemplatePreviewed.Id";
+	$(document).ready(function(){
+		$("a").each(function (){
+			var element = $(this);
+			var url = element.attr("href");
+			if (url.indexOf("http://") != 0 && url.indexOf("https://") != 0 && url.indexOf("ftp://") != 0)
+			{
+				//is a local link
+				if (url.indexOf("?") >= 0)
+				{
+					url += "&_tid=" + tid;
+				}
+				else
+				{
+					url += "?_tid=" + tid;
+				}
+				element.attr("href", url);
+			}
+		});
+	});
+</script>
