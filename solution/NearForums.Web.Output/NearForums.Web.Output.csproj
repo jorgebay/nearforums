@@ -183,8 +183,9 @@
     <Content Include="scripts\tinymce\utils\form_utils.js" />
     <Content Include="scripts\tinymce\utils\mctabs.js" />
     <Content Include="scripts\tinymce\utils\validate.js" />
+    <Content Include="styles\layout.css" />
     <Content Include="styles\mobile.css" />
-    <Content Include="styles\site.css" />
+    <Content Include="styles\content.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
