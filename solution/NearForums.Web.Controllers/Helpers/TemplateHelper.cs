@@ -47,12 +47,15 @@ namespace NearForums.Web.Controllers.Helpers
 
 		#region Replace files paths
 		/// <summary>
-		/// Replaces the paths from template-contents/ to /Content/Templates/{NameOfTheTemplate}/contents/ in the files .html and css
+		/// Replaces the paths from template-contents/ and special keywords
 		/// </summary>
-		private static void ReplaceFilePaths(string filePath, string newPath)
+		private static void ReplaceFilePaths(string filePath, string newPath, HttpContextBase context)
 		{
 			//Normally a template html file won't be larger than 100Kb, should we replace by line? (instead of readall)
-			System.IO.File.WriteAllText(filePath, Regex.Replace(System.IO.File.ReadAllText(filePath), "template-contents/", newPath + "contents/"));
+			var content = File.ReadAllText(filePath);
+			content = Regex.Replace(content, "template-contents/", newPath + "contents/", RegexOptions.IgnoreCase);
+			content = Regex.Replace(content, "{-applicationpath-}", UrlHelper.GenerateContentUrl("~/", context), RegexOptions.IgnoreCase);
+			System.IO.File.WriteAllText(filePath, content);
 		}
 		#endregion
 
@@ -232,7 +235,7 @@ namespace NearForums.Web.Controllers.Helpers
 				if (fileValid)
 				{
 					//All worked file
-					ReplaceFilePaths(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.Template.Path + template.Key + "/", context));
+					ReplaceFilePaths(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.Template.Path + template.Key + "/", context), context);
 					
 					ChopTemplateFile(baseDirectory + "\\template.html");
 				}

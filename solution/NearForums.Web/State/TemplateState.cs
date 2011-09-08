@@ -66,7 +66,7 @@ namespace NearForums.Web.State
 				if (fullText.StartsWith("{-"))
 				{
 					this.Value = Regex.Replace(fullText, @"{-(\w+?)-}", "$1");
-					if (this.Value.Contains("Container"))
+					if (this.Value.ToUpper().Contains("CONTAINER"))
 					{
 						this.Type = TemplateItemType.Container;
 					}

@@ -399,7 +399,7 @@
     <Content Include="Views\FormsAuthentication\ResetPasswordEmailConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="content\templates\" />
+    <Folder Include="content\templates\installation\" />
     <Folder Include="Views\Static\" />
   </ItemGroup>
   <ItemGroup>
