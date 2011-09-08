@@ -12,57 +12,42 @@ namespace NearForums.DataAccess
 	{
 		public List<Topic> GetByForum(int forumId, int startIndex, int length)
 		{
-			List<Topic> list = new List<Topic>();
 			DbCommand comm = this.GetCommand("SPTopicsGetByForum");
 			comm.AddParameter(this.Factory, "ForumId", DbType.Int32, forumId);
 			comm.AddParameter(this.Factory, "StartIndex", DbType.Int32, startIndex);
 			comm.AddParameter(this.Factory, "Length", DbType.Int32, length);
 
-			DataTable dt = this.GetTable(comm);
-			foreach (DataRow dr in dt.Rows)
-			{
-				Topic t = ParseBasicTopicDataRow(dr);
-				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
-
-				list.Add(t);
-			}
+			var list = ParseTopicsForFullList(comm);
 			return list;
 		}
 
 		public List<Topic> GetByTag(string tag, int forumId)
 		{
-			List<Topic> list = new List<Topic>();
 			DbCommand comm = this.GetCommand("SPTopicsGetByTag");
 			comm.AddParameter<string>(this.Factory, "Tag", tag);
 			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
 
-			DataTable dt = this.GetTable(comm);
-			foreach (DataRow dr in dt.Rows)
-			{
-				Topic t = ParseBasicTopicDataRow(dr);
-				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
-
-				list.Add(t);
-			}
+			var list = ParseTopicsForFullList(comm);
 			return list;
 		}
 
 		public List<Topic> GetByForumLatest(int forumId, int startIndex, int length)
 		{
-			List<Topic> list = new List<Topic>();
 			DbCommand comm = this.GetCommand("SPTopicsGetByForumLatest");
 			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
 			comm.AddParameter<int>(this.Factory, "StartIndex", startIndex);
 			comm.AddParameter<int>(this.Factory, "Length", length);
 
-			DataTable dt = this.GetTable(comm);
-			foreach (DataRow dr in dt.Rows)
-			{
-				Topic t = ParseBasicTopicDataRow(dr);
-				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
+			var list = ParseTopicsForFullList(comm);
+			return list;
+		}
 
-				list.Add(t);
-			}
+		public List<Topic> GetUnanswered(int forumId)
+		{
+			DbCommand comm = this.GetCommand("SPTopicsGetByForumUnanswered");
+			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+
+			var list = ParseTopicsForFullList(comm);
 			return list;
 		}
 
@@ -131,6 +116,7 @@ namespace NearForums.DataAccess
 			return list;
 		}
 
+		#region Parsing
 		public Topic ParseBasicTopicDataRow(DataRow dr)
 		{
 			Topic t = new Topic();
@@ -146,6 +132,21 @@ namespace NearForums.DataAccess
 
 			return t;
 		}
+
+		private List<Topic> ParseTopicsForFullList(DbCommand comm)
+		{
+			var list = new List<Topic>();
+			DataTable dt = this.GetTable(comm);
+			foreach (DataRow dr in dt.Rows)
+			{
+				Topic t = ParseBasicTopicDataRow(dr);
+				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
+
+				list.Add(t);
+			}
+			return list;
+		} 
+		#endregion
 
 		public void Add(Topic topic, string ip)
 		{
@@ -234,23 +235,6 @@ namespace NearForums.DataAccess
 			comm.AddParameter<string>(this.Factory, "Ip", ip);
 
 			this.SafeExecuteNonQuery(comm);
-		}
-
-		public List<Topic> GetUnanswered(int forumId)
-		{
-			List<Topic> list = new List<Topic>();
-			DbCommand comm = this.GetCommand("SPTopicsGetByForumUnanswered");
-			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
-
-			DataTable dt = this.GetTable(comm);
-			foreach (DataRow dr in dt.Rows)
-			{
-				Topic t = ParseBasicTopicDataRow(dr);
-				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
-
-				list.Add(t);
-			}
-			return list;
 		}
 
 		public List<Topic> GetUnanswered()
