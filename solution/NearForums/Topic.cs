@@ -115,7 +115,7 @@ namespace NearForums
 		}
 
 		[RequireField]
-		[RegexFormat(@"^[a-z\-0-9 ]+$", RegexOptions.IgnoreCase)]
+		[RegexFormat(@"^\s*([\w\-\.]+(\s+|$)){1,6}$", RegexOptions.IgnoreCase)]
 		public TagList Tags
 		{
 			get;
