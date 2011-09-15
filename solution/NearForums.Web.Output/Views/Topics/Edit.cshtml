@@ -13,7 +13,7 @@
 @Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
 {
 	{"Description", "Thread message must not be blank."}
-	,{"Tags", "Tags must not be blank, separated by spaces and must not contain special characters."}
+	,{"Tags", "Tags must not be blank, separated by spaces and must not contain special characters. The maximum number of tags allowed is 6."}
 	,{"Title", "Subject must not be blank."}
 	,{"ShortName", ""}
 	,{"email", new Dictionary<ValidationErrorType, string>(){
