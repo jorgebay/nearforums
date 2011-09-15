@@ -111,7 +111,7 @@ namespace NearForums.DataAccess
 			comm.AddParameter(this.Factory, "Tag4", DbType.String, null);
 			comm.AddParameter(this.Factory, "Tag5", DbType.String, null);
 			comm.AddParameter(this.Factory, "Tag6", DbType.String, null);
-			for (int i = 0; i < topic.Tags.Count; i++)
+			for (int i = 0; i < topic.Tags.Count && i < 6; i++)
 			{
 				comm.Parameters[i].Value = topic.Tags[i];
 			}

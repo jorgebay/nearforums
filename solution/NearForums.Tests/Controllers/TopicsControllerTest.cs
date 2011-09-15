@@ -120,8 +120,61 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void TagList_Test()
 		{
-			TagList tags = new TagList("hola    mundo  sin");
-			Assert.IsTrue(tags.Count == 3);
+			#region Create a valid topic and controller
+			TopicsController controller = new TopicsController();
+			var controllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+			controller.ControllerContext = controllerContext;
+
+			Forum forum = ForumsControllerTest.GetAForum();
+
+			//Create a valid topic
+			Topic t = new Topic();
+			t.Title = "Unit testing " + TestContext.TestName;
+			t.Description = "This is a sample topic from unit testing project.";
+			t.Tags = new TagList("test");
+			t.ShortName = Utils.ToUrlFragment(t.Title, 64);
+			t.User = controller.User.ToUser();
+			t.Forum = forum; 
+			#endregion
+
+			TagListTestHelper(true, "hola mundo", 2, t, forum.ShortName, controller);
+			TagListTestHelper(true, "hola	mundo", 2, t, forum.ShortName, controller);
+			TagListTestHelper(true, "hola		mundo", 2, t, forum.ShortName, controller);
+			TagListTestHelper(false, "NOTho}la", 1, t, forum.ShortName, controller);
+			TagListTestHelper(true, " tag1 tag2 tag3 tag4 tag5 tag6", 6, t, forum.ShortName, controller);
+			TagListTestHelper(true, "tabbedtag1 	tag2 	tag3 	tag4 	tag5 	tag6 	", 6, t, forum.ShortName, controller);
+			TagListTestHelper(true, "tagdott tag2 tag3 asp.net tag", 5, t, forum.ShortName, controller);
+			TagListTestHelper(false, "NOTtag tag tagtag3 tag4 tag5 tag6 tag7 tag8", 8, t, forum.ShortName, controller);
+			TagListTestHelper(true, "repeated tag tag tag4 tag5 tagthisislong6", 5, t, forum.ShortName, controller);
+			TagListTestHelper(true, "tag tag2 tagtag3 tag4 tag5 tagthis_islmiddlescore--ong6", 6, t, forum.ShortName, controller);
+
+		}
+
+		public void TagListTestHelper(bool valid, string tags, int tagCount, Topic t, string forumShortName, TopicsController controller)
+		{
+			var context = controller.ControllerContext;
+
+			controller = new TopicsController();
+			controller.ControllerContext = context;
+			
+			t.Id = 0;
+			t.Tags = new TagList(tags);
+
+			Assert.IsTrue(t.Tags.Count == tagCount, "Tag \"" + tags + "\" count does not match expected value");
+
+			controller.Add(forumShortName, t, true, "admin@admin.com");
+			
+			int topicId = t.Id;
+			if (valid)
+			{
+				Assert.IsTrue(topicId > 0);
+
+				controller.Delete(topicId, t.ShortName, t.Forum.ShortName);
+			}
+			else
+			{
+				Assert.IsFalse(topicId > 0);
+			}
 		}
 
 		[TestMethod]

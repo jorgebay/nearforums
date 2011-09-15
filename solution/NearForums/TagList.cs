@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NearForums
 {
@@ -12,16 +13,27 @@ namespace NearForums
 
 		}
 
-		/// <param name="tags">space separated list</param>
+		/// <param name="tags">whitespace separated list</param>
 		public TagList(string tags)
 		{
 			if (!String.IsNullOrEmpty(tags))
 			{
-				string[] tagsSplitted = tags.Split(' ');
-				this.AddRange(tagsSplitted);
+				//Replace all whitespace separators to single space
+				tags = Regex.Replace(tags, @"\s+", " ");
 
-				while (this.Remove(""))
+				string[] tagsSplitted = tags.Split(' ');
+
+				//add all tags once and avoid empty strings
+				foreach (string value in tagsSplitted)
 				{
+					if (!String.IsNullOrEmpty(value))
+					{
+						var v = value.ToLower();
+						if (!Contains(v))
+						{
+							Add(v);
+						}
+					}
 				}
 			}
 		}
