@@ -10,25 +10,32 @@
 	@foreach (ForumCategory category in this.Model)
 	{
 		<h2>@category.Name</h2>
+		<ul class="itemsHeader">
+			<li class="name">Forum</li>
+			<li class="topicCount">Replies</li>
+			<li class="views">Views</li>
+		</ul>
 		<ul class="items">
 		@foreach (Forum forum in category.Forums)
-		{
+  {
 
 			<li>
-				<h3>
-					@Html.ActionLink(forum.Name, "Detail", new{forum=forum.ShortName})
-					<span class="details">@forum.TopicCount thread@(forum.TopicCount != 1 ? "s" : "") / @forum.MessageCount post@(forum.MessageCount != 1 ? "s" : "")</span>
+				<h3 class="name">
+					@Html.ActionLink(forum.Name, "Detail", new { forum = forum.ShortName })
 				</h3>
-				<p>@forum.Description</p>
+				<div class="topicCount">@forum.TopicCount <span class="label">thread@(forum.TopicCount != 1 ? "s" : "") </span></div>
+				<div class="separator">/ </div>
+				<div class="views">@forum.MessageCount <span class="label">post@(forum.MessageCount != 1 ? "s" : "") </span></div>
+				<p class="description">@forum.Description</p>
 			</li>
-		}
+  }
 		</ul>
 	}
 	@if (this.Model.Count == 0)
-	{
+ {
 		<p>No forums found. Create @Html.ActionLink("a forum", "Add").</p>
-		if (!ViewData.Get<bool>("IsSiteSet", true))
-		{
+	 if (!ViewData.Get<bool>("IsSiteSet", true))
+	 {
 			<p style="padding-top:20px;"><em>Recommended: @Html.ActionLink("Check the website status", "StatusFirst", "Admin")</em></p>
 		}
 	}
