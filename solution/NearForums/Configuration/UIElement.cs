@@ -80,5 +80,21 @@ namespace NearForums.Configuration
 				this["template"] = value;
 			}
 		}
+
+		/// <summary>
+		/// Determines if user details (image, member since, ...) are shown on topic detail page
+		/// </summary>
+		[ConfigurationProperty("showUserDetailsOnList", IsRequired = false)]
+		public bool ShowUserDetailsOnList
+		{
+			get
+			{
+				return (bool)this["showUserDetailsOnList"];
+			}
+			set
+			{
+				this["showUserDetailsOnList"] = value;
+			}
+		}
 	}
 }

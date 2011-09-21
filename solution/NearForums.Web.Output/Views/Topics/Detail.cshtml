@@ -24,9 +24,9 @@
 	<div class="description">
 		@Html.Raw(Model.Description)
 	</div>
-	@{
-	PagedList<Message> messages = new PagedList<Message>(Model.Messages, this.PageIndex, Config.UI.MessagesPerPage);
-	}
+@{
+	var messages = new PagedList<Message>(Model.Messages, this.PageIndex, Config.UI.MessagesPerPage);
+}
 	@if (messages.Count > 0)
 	{
 		<ul id="messages">
@@ -64,12 +64,12 @@
 	});
 </script>
 <script type="text/javascript">
-	$(document).bind("dataLoaded", function ()
-	{
-		$("#messages li").unbind("mouseenter mouseleave").hover(function () { $(this).addClass("over"); }, function () { $(this).removeClass("over"); });
-	});
+	//$(document).bind("dataLoaded", function ()
 	$(document).ready(function ()
 	{
-		$("#messages li").live("tap", function () { $(this).toggleClass("over"); });
+		$("#messages li")
+			.live("tap", function () { $(this).toggleClass("over"); })
+			.live("mouseenter", function () { $(this).addClass("over"); })
+			.live("mouseleave", function () { $(this).removeClass("over"); });
 	});
 </script>

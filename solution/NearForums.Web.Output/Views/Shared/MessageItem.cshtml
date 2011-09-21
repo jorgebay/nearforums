@@ -1,7 +1,7 @@
 ﻿@model Message
 <li class="floatContainer" id="msg@(Model.Id)">
 	<div class="msgHeader">
-		<strong>
+		<strong class="number">
 			<a class="msgId" rel="nofollow"
 				href="@(ViewData.Get<bool>("FullUrl", false) ? Url.Action(null, null, new{page=0}) : "")#msg@(Model.Id)" 
 				onclick="window.location.hash='#msg@(Model.Id)';return false;">#@(Model.Id)</a>
