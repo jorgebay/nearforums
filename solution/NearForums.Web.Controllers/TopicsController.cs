@@ -215,7 +215,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
 		{
 			//load messages
-			List<Message> messages = MessagesServiceClient.GetByTopicFrom(id, from, Config.Topics.MessagesPerPage, initIndex);
+			List<Message> messages = MessagesServiceClient.GetByTopicFrom(id, from, Config.UI.MessagesPerPage, initIndex);
 			//Defines that the message url just be the anchor name
 			ViewData["FullUrl"] = false;
 

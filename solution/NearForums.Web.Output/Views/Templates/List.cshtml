@@ -52,7 +52,7 @@
 		</ul>
 		<p>@Html.ActionLink("Upload a new template >>", "Add")</p>
 		<p>@Html.ActionLink("Create your custom template", "HowTo")</p>
-		if (!Config.Template.UseTemplates)
+		if (!Config.UI.Template.UseTemplates)
 		{
 			<p style="padding-top: 50px;">
 				Templating feature is <strong>disabled</strong> by configuration.

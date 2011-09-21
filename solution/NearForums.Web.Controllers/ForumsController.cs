@@ -42,9 +42,9 @@ namespace NearForums.Web.Controllers
 			}
 			//Get the topics of the forum
 			//Must Paginate the topics on the backend (Can be too many topics)
-			f.Topics = TopicsServiceClient.GetByForum(f.Id, page * Config.Forums.TopicsPerPage, Config.Forums.TopicsPerPage);
+			f.Topics = TopicsServiceClient.GetByForum(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage);
 
-			ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.Forums.TagsCloudCount);
+			ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
 			ViewData["Page"] = page;
 			ViewData["TotalTopics"] = f.TopicCount;
 
@@ -62,10 +62,10 @@ namespace NearForums.Web.Controllers
 			}
 			//Get the topics of the forum
 			//Must Page the topics on the backend (Can be too many topics)
-			f.Topics = TopicsServiceClient.GetLatest(f.Id, page * Config.Forums.TopicsPerPage, Config.Forums.TopicsPerPage);
+			f.Topics = TopicsServiceClient.GetLatest(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage);
 			if (format == ResultFormat.Html)
 			{
-				ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.Forums.TagsCloudCount);
+				ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
 				ViewData["Page"] = page;
 				ViewData["TotalTopics"] = f.TopicCount;
 				return View("LatestTopics" + format.ToString(), f);

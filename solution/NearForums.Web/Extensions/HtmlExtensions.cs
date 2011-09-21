@@ -92,7 +92,7 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		public static MvcHtmlString Date(this HtmlHelper htmlHelper, DateTime date)
 		{
-			return htmlHelper.Date(date, SiteConfiguration.Current.DateFormat);
+			return htmlHelper.Date(date, SiteConfiguration.Current.UI.DateFormat);
 		}
 
 		#region Link

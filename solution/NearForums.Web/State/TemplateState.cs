@@ -34,7 +34,7 @@ namespace NearForums.Web.State
 		{
 			get
 			{
-				return SiteConfiguration.Current.Template.Path + Name;
+				return SiteConfiguration.Current.UI.Template.Path + Name;
 			}
 		}
 

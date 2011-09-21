@@ -25,7 +25,7 @@
 		@Html.Raw(Model.Description)
 	</div>
 	@{
-	PagedList<Message> messages = new PagedList<Message>(Model.Messages, this.PageIndex, Config.Topics.MessagesPerPage);
+	PagedList<Message> messages = new PagedList<Message>(Model.Messages, this.PageIndex, Config.UI.MessagesPerPage);
 	}
 	@if (messages.Count > 0)
 	{
@@ -40,9 +40,9 @@
 	{
 		<div class="pagerSummary">
 			Displaying
-			<span class="firstItem">@(this.PageIndex * Config.Topics.MessagesPerPage + 1)</span>
+			<span class="firstItem">@(this.PageIndex * Config.UI.MessagesPerPage + 1)</span>
 			to
-			<span class="lastItem">@(this.PageIndex * Config.Topics.MessagesPerPage + messages.Count)</span>
+			<span class="lastItem">@(this.PageIndex * Config.UI.MessagesPerPage + messages.Count)</span>
 			of
 			<span class="totalItems">@messages.TotalItemCount</span>
 			messages

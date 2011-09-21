@@ -170,7 +170,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 				if (fileValid)
 				{
-					baseDirectory = context.Server.MapPath(Config.Template.Path + template.Key);
+					baseDirectory = context.Server.MapPath(Config.UI.Template.Path + template.Key);
 					#region Create directories
 					try
 					{
@@ -235,7 +235,7 @@ namespace NearForums.Web.Controllers.Helpers
 				if (fileValid)
 				{
 					//All worked file
-					ReplaceFilePaths(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.Template.Path + template.Key + "/", context), context);
+					ReplaceFilePaths(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.UI.Template.Path + template.Key + "/", context), context);
 					
 					ChopTemplateFile(baseDirectory + "\\template.html");
 				}
@@ -336,7 +336,7 @@ namespace NearForums.Web.Controllers.Helpers
 				}
 				template = session.TemplatePreviewed;
 			}
-			if (Config.Template.UseTemplates && template == null)
+			if (Config.UI.Template.UseTemplates && template == null)
 			{
 				if (cache.Template == null)
 				{

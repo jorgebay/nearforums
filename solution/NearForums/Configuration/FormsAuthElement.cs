@@ -11,8 +11,6 @@ namespace NearForums.Configuration
 	/// </summary>
 	public class FormsAuthElement : ConfigurationElement, IOptionalElement
 	{
-		private bool _isDefined;
-
 		[ConfigurationProperty("defined", IsRequired = true)]
 		public bool Identifier
 		{

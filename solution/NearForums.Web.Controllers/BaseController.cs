@@ -149,9 +149,9 @@ namespace NearForums.Web.Controllers
 			get
 			{
 				bool isMobile = false;
-				if (Config.Template.Mobile.IsDefined && !String.IsNullOrEmpty(Request.UserAgent))
+				if (Config.UI.Template.Mobile.IsDefined && !String.IsNullOrEmpty(Request.UserAgent))
 				{
-					isMobile = Regex.IsMatch(Request.UserAgent, Config.Template.Mobile.Regex, RegexOptions.IgnoreCase);
+					isMobile = Regex.IsMatch(Request.UserAgent, Config.UI.Template.Mobile.Regex, RegexOptions.IgnoreCase);
 				}
 				return isMobile;
 			}

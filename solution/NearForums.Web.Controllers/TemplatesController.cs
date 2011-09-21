@@ -53,7 +53,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult List(TemplateActionError? error)
 		{
 			var list = TemplatesServiceClient.GetAll();
-			ViewBag.BasePath = Url.Content(Config.Template.Path);
+			ViewBag.BasePath = Url.Content(Config.UI.Template.Path);
 			if (error == TemplateActionError.DeleteCurrent)
 			{
 				ViewBag.DeleteCurrent = true;
@@ -104,7 +104,7 @@ namespace NearForums.Web.Controllers
 				else
 				{
 
-					string baseDirectory = Server.MapPath(Config.Template.Path + t.Key);
+					string baseDirectory = Server.MapPath(Config.UI.Template.Path + t.Key);
 					try
 					{
 						SafeIO.Directory_Delete(baseDirectory, true);
@@ -126,7 +126,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Export(int id)
 		{
 			var template = TemplatesServiceClient.Get(id);
-			string fileName = Server.MapPath(Config.Template.Path + template.Key + "/template.zip");
+			string fileName = Server.MapPath(Config.UI.Template.Path + template.Key + "/template.zip");
 			return new FilePathResult(fileName, "application/zip") 
 			{ 
 				FileDownloadName = template.Key + ".zip"

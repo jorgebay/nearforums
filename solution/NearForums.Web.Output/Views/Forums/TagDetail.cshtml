@@ -9,8 +9,8 @@
 	</ul>
 	<h1>@ViewBag.Title</h1>
 @{	
-	PagedList<Topic> topics = new PagedList<Topic>(Model.Topics, this.PageIndex, Config.Forums.TopicsPerPage);
+	PagedList<Topic> topics = new PagedList<Topic>(Model.Topics, this.PageIndex, Config.UI.TopicsPerPage);
 }
 	@Html.Partial("ForumTopicList", topics)
-	@Html.Pager(Config.Forums.TopicsPerPage, this.PageIndex, topics.Count, "Previous", "Next")
+	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, topics.Count, "Previous", "Next")
 </div>

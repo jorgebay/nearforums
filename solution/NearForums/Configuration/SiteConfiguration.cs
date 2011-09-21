@@ -25,29 +25,16 @@ namespace NearForums.Configuration
 		}
 		#endregion
 
-		[ConfigurationProperty("topics", IsRequired = true)]
-		public TopicElement Topics
+		[ConfigurationProperty("ui", IsRequired = true)]
+		public UIElement UI
 		{
 			get
 			{
-				return (TopicElement)this["topics"];
+				return (UIElement)this["ui"];
 			}
 			set
 			{
-				this["topics"] = value;
-			}
-		}
-
-		[ConfigurationProperty("forums", IsRequired = true)]
-		public ForumElement Forums
-		{
-			get
-			{
-				return (ForumElement)this["forums"];
-			}
-			set
-			{
-				this["forums"] = value;
+				this["ui"] = value;
 			}
 		}
 
@@ -61,19 +48,6 @@ namespace NearForums.Configuration
 			set
 			{
 				this["authorizationProviders"] = value;
-			}
-		}
-
-		[ConfigurationProperty("template", IsRequired = true)]
-		public TemplateElement Template
-		{
-			get
-			{
-				return (TemplateElement)this["template"];
-			}
-			set
-			{
-				this["template"] = value;
 			}
 		}
 
@@ -100,19 +74,6 @@ namespace NearForums.Configuration
 			set
 			{
 				this["dataAccess"] = value;
-			}
-		}
-
-		[ConfigurationProperty("dateFormat", IsRequired = false)]
-		public string DateFormat
-		{
-			get
-			{
-				return (string)this["dateFormat"];
-			}
-			set
-			{
-				this["dateFormat"] = value;
 			}
 		}
 
