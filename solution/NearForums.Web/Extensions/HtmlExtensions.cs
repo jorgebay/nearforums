@@ -81,7 +81,7 @@ namespace NearForums.Web.Extensions
 		{
 			DateTime appDate = date.ToApplicationDateTime();
 			TagBuilder builder = new TagBuilder("span");
-			builder.AddCssClass("date");
+			builder.AddCssClass("datetime");
 			builder.AddCssClass("d" + appDate.Year + "-" + appDate.Month + "-" + appDate.Day + "-" + appDate.Hour + "-" + appDate.Minute);
 			builder.InnerHtml = appDate.ToString(format);
 			return MvcHtmlString.Create(builder.ToString());

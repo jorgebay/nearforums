@@ -23,19 +23,30 @@ ul.items li.sticky a
 	background-position: right center;
 	background-repeat: no-repeat;
 }
-ul.items h3
+ul.items div, ul.items h3
 {
-	padding-bottom: 10px;
+	display: inline;
 }
-ul.items a
+ul.items h3.name
 {
-	font-size:16px;
+	padding-right: 15px;
 }
-ul.items span.details
+ul.items .lastPost
 {
+	padding-left: 10px;
+}
+ul.items .lastPost, ul.items .lastPost a
+{
+	color: #666666;
 	font-weight: normal;
-	font-size: 12px;
-	padding-left: 15px;
+}
+ul.items .lastPost .nomsg
+{
+	display: none;
+}
+ul.itemsHeader
+{
+	display: none;
 }
 div.forumList ul.items p
 {

@@ -117,7 +117,7 @@ namespace NearForums.DataAccess
 		}
 
 		#region Parsing
-		public Topic ParseBasicTopicDataRow(DataRow dr)
+		public virtual Topic ParseBasicTopicDataRow(DataRow dr)
 		{
 			Topic t = new Topic();
 			t.Id = dr.Get<int>("TopicId");
@@ -133,7 +133,7 @@ namespace NearForums.DataAccess
 			return t;
 		}
 
-		private List<Topic> ParseTopicsForFullList(DbCommand comm)
+		protected virtual List<Topic> ParseTopicsForFullList(DbCommand comm)
 		{
 			var list = new List<Topic>();
 			DataTable dt = this.GetTable(comm);
@@ -141,7 +141,11 @@ namespace NearForums.DataAccess
 			{
 				Topic t = ParseBasicTopicDataRow(dr);
 				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
-
+				if (!dr.IsNull("LastMessageId"))
+				{
+					t.LastMessage = new Message(dr.Get<int>("LastMessageId"), dr.GetDate("MessageCreationDate"));
+					t.LastMessage.User = new User(dr.Get<int>("MessageUserId"), dr.GetString("MessageUserName"));
+				}
 				list.Add(t);
 			}
 			return list;
