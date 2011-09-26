@@ -38,6 +38,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Name of the group the user is in (from db)
+		/// </summary>
 		public string GroupName
 		{
 			get;

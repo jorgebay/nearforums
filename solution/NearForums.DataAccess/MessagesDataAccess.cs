@@ -19,7 +19,9 @@ namespace NearForums.DataAccess
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				Message m = this.ParseBasicMessageRow(dr, 0);
+				var m = this.ParseBasicMessageRow(dr, 0);
+				m.User.Photo = dr.GetNullableString("UserPhoto");
+				m.User.RegistrationDate = dr.GetDate("UserRegistrationDate");
 
 				list.Add(m);
 			}
@@ -76,7 +78,9 @@ namespace NearForums.DataAccess
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				Message m = this.ParseBasicMessageRow(dr, initIndex);
+				var m = this.ParseBasicMessageRow(dr, initIndex);
+				m.User.Photo = dr.GetNullableString("UserPhoto");
+				m.User.RegistrationDate = dr.GetDate("UserRegistrationDate");
 
 				list.Add(m);
 			}
@@ -95,7 +99,9 @@ namespace NearForums.DataAccess
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				Message m = this.ParseBasicMessageRow(dr, initIndex);
+				var m = this.ParseBasicMessageRow(dr, initIndex);
+				m.User.Photo = dr.GetNullableString("UserPhoto");
+				m.User.RegistrationDate = dr.GetDate("UserRegistrationDate");
 
 				list.Add(m);
 			}

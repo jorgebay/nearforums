@@ -69,7 +69,7 @@
 	{
 		$("#messages li")
 			.live("tap", function () { $(this).toggleClass("over"); })
-			.live("mouseenter", function () { $(this).addClass("over"); })
+			.live("mouseenter", function () { $(this).css("background-color","").addClass("over"); })
 			.live("mouseleave", function () { $(this).removeClass("over"); });
 	});
 </script>

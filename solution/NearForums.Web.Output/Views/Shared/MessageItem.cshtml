@@ -1,5 +1,17 @@
 ﻿@model Message
 <li class="floatContainer" id="msg@(Model.Id)">
+	@if (Config.UI.ShowUserDetailsOnList)
+	{
+		<div class="msgUser group@((int)Model.User.Group)">
+			@if (Model.User.Photo != null)
+			{
+				<div class="photo"><img src="@Model.User.Photo" alt="@Model.User.UserName" /></div>
+			}
+			<div class="userName"><strong>@Model.User.UserName</strong></div>
+			<div class="groupName"><span>@Model.User.GroupName</span></div>
+			<div class="memberSince">Member for: @Html.Partial("SinceDate", Model.User.RegistrationDate)</div>
+		</div>
+	}
 	<div class="msgHeader">
 		<strong class="number">
 			<a class="msgId" rel="nofollow"
@@ -16,21 +28,21 @@
 		@Html.Date(Model.Date)
 	</div>
 	<div class="msgBody">
-	@if (this.Model.Active)
-	{
-		@Html.Raw(Model.Body)
-	}
-	else
-	{
-		<p class="removed">The message was removed by the forum moderator.</p>
-	}
+		@if (this.Model.Active)
+		{
+			@Html.Raw(Model.Body)
+		}
+		else
+		{
+			<p class="removed">The message was removed by a forum moderator.</p>
+		}
 	</div>
 	<div class="msgOptions">
-		@Html.Link("link", (ViewData.Get<bool>("FullUrl", false) ? Url.Action(null, null, new{page=0}) : "") + "#msg" + Model.Id, new{@class="first"})
-		@Html.ActionLink("reply", "Reply", new{msg=Model.Id}, new{rel="nofollow"})
+		@Html.Link("link", (ViewData.Get<bool>("FullUrl", false) ? Url.Action(null, null, new { page = 0 }) : "") + "#msg" + Model.Id, new { @class = "first" })
+		@Html.ActionLink("reply", "Reply", new { msg = Model.Id }, new { rel = "nofollow" })
 		@if (this.User != null && this.User.Group >= UserGroup.Moderator && Model.Active)
 		{
-			@Html.Link("remove", "#", new{onclick="return deleteMessage(" + Model.Id + ", '" + @Url.Action("Delete", "Messages") + "');"})
+			@Html.Link("remove", "#", new { onclick = "return deleteMessage(" + Model.Id + ", '" + @Url.Action("Delete", "Messages") + "');" })
 		}
 		@Html.Link("flag", "#", new{title="Mark as inappropriate", onclick="return flagMessage(" + Model.Id + ", '" + @Url.Action("Flag", "Messages") + "');"})
 	</div>

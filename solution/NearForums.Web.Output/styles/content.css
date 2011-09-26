@@ -143,7 +143,7 @@ div.overTip div.msgHeader
 {
 	font-weight: bold;
 }
-div.overTip span.dateSep, div.overTip span.date
+div.overTip span.dateSep, div.overTip span.date, div.overTip div.msgUser
 {
 	display: none;
 }
@@ -301,6 +301,14 @@ ul#messages div.msgHeader a.msgId
 	font-size: 22px;
 	font-weight: normal;
 }
+div.msgUser
+{
+	float: right;
+	padding: 5px 0 5px 10px;
+	margin-left: 10px;
+	text-align: center;
+	border-left: 1px solid #666666;
+}
 ul div.msgOptions
 {
 	text-align: right;
@@ -308,6 +316,7 @@ ul div.msgOptions
 	position: relative;
 	top: 2px;
 	line-height: 11px;
+	clear: both;
 }
 ul div.msgOptions a
 {
