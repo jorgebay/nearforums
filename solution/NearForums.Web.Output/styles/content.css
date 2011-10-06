@@ -282,6 +282,7 @@ ul#messages li
 {
 	margin-bottom: 2px;
 	padding: 0 10px 10px 5px;
+	overflow: hidden;
 }
 ul#messages div.msgBody
 {

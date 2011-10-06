@@ -1,5 +1,5 @@
 ﻿@model Message
-<li class="floatContainer" id="msg@(Model.Id)">
+<li id="msg@(Model.Id)">
 	@if (Config.UI.ShowUserDetailsOnList)
 	{
 		<div class="msgUser group@((int)Model.User.Group)">

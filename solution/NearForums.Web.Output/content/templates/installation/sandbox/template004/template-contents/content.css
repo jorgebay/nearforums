@@ -1,4 +1,6 @@
 ﻿/*
+	this is a copy of the one provided by Nearforums (..root site..)/styles/content.css
+
 	this css contains all base styles for classes and id used in nearforums content
 */
 
@@ -30,6 +32,10 @@ ul.items div, ul.items h3
 ul.items h3.name
 {
 	padding-right: 15px;
+}
+ul.items h3.name span
+{
+	display: none;
 }
 ul.items .lastPost
 {
@@ -278,6 +284,7 @@ ul#messages li
 {
 	margin-bottom: 2px;
 	padding: 0 10px 10px 5px;
+	overflow: hidden;
 }
 ul#messages div.msgBody
 {

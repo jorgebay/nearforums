@@ -190,7 +190,7 @@ ul.itemsHeader li.lastPost
 {
 	padding-left: 10px;
 }
-ul.itemsHeader li.replies, ul.itemsHeader li.views
+ul.itemsHeader li.replies, ul.itemsHeader li.views, ul.itemsHeader li.topicCount
 {
 	text-align: center;
 }
@@ -221,13 +221,17 @@ ul.items li .name, ul.items li div
 	padding: 3px;
 	margin: 0;
 }
-ul.items li .replies, ul.items li .views
+ul.items li .replies, ul.items li .views, ul.items li .topicCount
 {
 	text-align: center;
 	margin-top: 3px;
 	padding-top: 9px;
 	padding-bottom: 6px;
 	border-left: 1px solid #dddddd;
+}
+ul.items li .topicCount
+{
+	padding-bottom: 10px;
 }
 ul.items li .views
 {
@@ -279,6 +283,13 @@ ul.items .separator, ul.items .label
 {
 	display: none;
 }
+ul.items li p.description
+{
+	clear: left;
+	padding: 0 0 0 3px;
+	position: relative;
+	top: -10px;
+}
 div.tagCloud
 {
 	margin-top: 30px;
@@ -320,4 +331,101 @@ div.tagCloud li.weight4 {
 }
 div.tagCloud li.weight5 {
     font-size: 40px;
+}
+.forumList ul.itemsHeader li
+{
+	width: 10%;
+}
+.forumList ul.itemsHeader li.name
+{
+	width: 70%;
+	padding-left: 8px;
+}
+.forumList ul.items li .name, ul.items li p.description
+{
+	width: 70%;
+	padding-left: 8px;
+}
+.forumList ul.items li div
+{
+	width: 10%;
+}
+.forumList ul.items li .views
+{
+	border-right: medium none;
+}
+.forumList ul.items li
+{
+	padding-top: 3px;
+}
+.forumList h2
+{
+    position: relative;
+    top: 23px;
+	left: 10px;
+	color: #ffffff;
+	font-size: 12px;
+	border: none;
+	font-weight: bold;
+	margin: 0;
+	text-transform: uppercase;
+}
+ul#messages li
+{
+	background-color: #F1F4F7;
+    margin-bottom: 5px;
+    padding: 0 10px 0 5px;
+}
+#messages li div.msgUser
+{
+	border-right: 1px solid #DDDDDD;
+	border-left: medium none;
+	float: left;
+	margin-right: 10px;
+	padding: 5px 10px 5px 0;
+	text-align: center;
+	font-size: 10px;
+}
+ul#messages div.msgBody 
+{
+    padding-bottom: 20px;
+}
+ul#messages li.over
+{
+	background-color: #E1E4E7;
+}
+#messages li.over div.msgUser
+{
+	border-right: 1px solid #666666;
+}
+ul#messages div.msgOptions
+{
+	top: -15px;
+}
+ul#messages div.msgOptions a 
+{
+    border: 1px solid #666666;
+    font-weight: normal;
+    padding: 4px;
+    text-decoration: none;
+	background-color: #0372A0;
+	color: #ffffff;
+	border-radius: 2px;
+	margin-left: 5px;
+}
+ul#messages div.msgOptions a:hover
+{
+	background-color: #026270;
+}
+ul#messages div.msgHeader
+{
+	font-size: 11px;
+}
+ul#messages div.msgHeader a.msgId
+{
+	font-size: 14px;
+}
+ul#messages div.msgHeader 
+{
+	padding-top: 5px;
 }
