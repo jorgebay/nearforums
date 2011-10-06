@@ -49,12 +49,13 @@ namespace NearForums.Web.Controllers.Helpers
 		/// <summary>
 		/// Replaces the paths from template-contents/ and special keywords
 		/// </summary>
-		private static void ReplaceFilePaths(string filePath, string newPath, HttpContextBase context)
+		private static void ReplaceReservedWords(string filePath, string newPath, HttpContextBase context)
 		{
 			//Normally a template html file won't be larger than 100Kb, should we replace by line? (instead of readall)
 			var content = File.ReadAllText(filePath);
 			content = Regex.Replace(content, "template-contents/", newPath + "contents/", RegexOptions.IgnoreCase);
 			content = Regex.Replace(content, "{-applicationpath-}", UrlHelper.GenerateContentUrl("~/", context), RegexOptions.IgnoreCase);
+			content = Regex.Replace(content, "{-year-}", DateTime.UtcNow.ToApplicationDateTime().Year.ToString(), RegexOptions.IgnoreCase);
 			System.IO.File.WriteAllText(filePath, content);
 		}
 		#endregion
@@ -234,8 +235,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 				if (fileValid)
 				{
-					//All worked file
-					ReplaceFilePaths(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.UI.Template.Path + template.Key + "/", context), context);
+					ReplaceReservedWords(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.UI.Template.Path + template.Key + "/", context), context);
 					
 					ChopTemplateFile(baseDirectory + "\\template.html");
 				}
