@@ -125,20 +125,21 @@ strong a
 }
 #container
 {
-	width: 950px;
 	overflow: hidden;
 	margin: 0 auto 0 auto;
-	background-color: #ffffff;
 }
 #header
 {
-	padding: 0 0 20px 0;
-	border-bottom: 1px solid #dddddd;
+	padding: 0 20px 20px 20px;
+	border-bottom: 27px solid #dddddd;
+	background-color: #ffffff;
 }
 #footer
 {
 	background-color: #EBEBEB;
-	padding: 10px 10px 2px 10px;
+	padding: 10px 0 2px 0;
+	width: 950px;
+	margin: 0 auto 0 auto;
 }
 #footer p
 {
@@ -156,13 +157,14 @@ strong a
 #userMenu
 {
 	float: right;
-	background-color: #ffffff;
 	list-style-type: none;
 	padding: 8px 10px 6px 0;
 	margin: 0;
 	font-size: 13px;
 	height:16px;
 	overflow: hidden;
+	position: relative;
+	top: 74px;
 }
 #userMenu li
 {
@@ -179,12 +181,16 @@ strong a
 #userMenu li a
 {
 	text-decoration: none;
-	color: #444444;
+	color: #222222;
+	line-height: 20px;
+}
+#userMenu li.login.twitter a img
+{
+	padding-top: 3px;
 }
 #userMenu a img
 {
-	position: relative;
-	top: -3px;
+
 }
 #userMenu li a:hover
 {
@@ -193,6 +199,10 @@ strong a
 #content
 {
 	padding: 20px;
+	width: 910px;
+	margin: 10px auto 0 auto;
+	background-color: #ffffff;
+	border-radius: 5px 5px 0 0;
 	/*
 		to include background images use relative path, ie:
 		background-image: url(logo.png);
@@ -246,6 +256,7 @@ ul.items li
 	padding: 0;
 	margin: 0;
 	border-bottom: 1px solid #DDDDDD;
+	background-image: none;
 }
 ul.items li:hover
 {
@@ -255,7 +266,7 @@ ul.items li .name, ul.items li div
 {
 	float: left;
 	width: 8%;
-	padding: 3px;
+	padding: 5px 3px 5px 3px;
 	margin: 0;
 }
 ul.items li .replies, ul.items li .views, ul.items li .topicCount

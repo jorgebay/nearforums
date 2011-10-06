@@ -4,11 +4,11 @@
 	{
         if (Config.AuthorizationProviders.Facebook.IsDefined)
         {
-		<li class="login">@Html.Partial("ButtonFacebook", new{size="small"}, true)</li>
+		<li class="login facebook">@Html.Partial("ButtonFacebook", new{size="small"}, true)</li>
         }
 		if (Config.AuthorizationProviders.Twitter.IsDefined)
 		{
-		<li class="login">@Html.Partial("ButtonTwitter", new{size="small"}, true)</li>
+		<li class="login twitter">@Html.Partial("ButtonTwitter", new{size="small"}, true)</li>
 		}
 		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
 		{
