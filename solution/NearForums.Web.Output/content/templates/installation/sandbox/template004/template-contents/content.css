@@ -17,7 +17,7 @@ ul.items li
 	margin: 0;
 	padding: 0px 0px 4px 15px;
 }
-ul.items li.sticky a
+ul.items li.sticky a.itemTitle
 {
 	padding-right: 20px;
 	background-image: url(icon-sticky.png);

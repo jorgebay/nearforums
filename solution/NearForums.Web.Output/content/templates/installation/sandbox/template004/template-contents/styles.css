@@ -130,9 +130,13 @@ strong a
 }
 #header
 {
-	padding: 0 20px 20px 20px;
+	padding: 10px 20px 20px 20px;
 	border-bottom: 27px solid #dddddd;
 	background-color: #ffffff;
+}
+#logo
+{
+	
 }
 #footer
 {
@@ -216,7 +220,7 @@ ul.itemsHeader
 	height: 20px;
 	overflow: hidden;
 	width: 100%;
-	background-color: #2E66B6; /*@color-header*/
+	background-color: #5676A1; /*@color-header*/
 	color: #ffffff;
 	font-weight: bold;
 	border-top-right-radius:5px;
@@ -243,9 +247,9 @@ ul.itemsHeader li.replies, ul.itemsHeader li.views, ul.itemsHeader li.topicCount
 }
 ul.items
 {
-	border-left: 2px solid #2E66B6; /*@color-header*/
-	border-right: 2px solid #2E66B6; /*@color-header*/
-	border-bottom: 2px solid #2E66B6; /*@color-header*/
+	border-left: 2px solid #5676A1; /*@color-header*/
+	border-right: 2px solid #5676A1; /*@color-header*/
+	border-bottom: 2px solid #5676A1; /*@color-header*/
 	padding: 0;
 	margin: 0;
 }
