@@ -1,1 +1,0 @@
-txt files are valid in the template format!
