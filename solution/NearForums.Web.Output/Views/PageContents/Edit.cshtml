@@ -2,9 +2,6 @@
 @{
 	ViewBag.Title = ViewData.WriteIf("IsEdit", "Edit page", "Create a new content page");
 }
-@section Head{
-	@Html.ScriptjQuery()
-}
 <ul class="path floatContainer">
 	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
