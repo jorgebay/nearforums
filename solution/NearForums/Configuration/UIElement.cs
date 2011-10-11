@@ -81,6 +81,19 @@ namespace NearForums.Configuration
 			}
 		}
 
+		[ConfigurationProperty("resources", IsRequired = true)]
+		public ResourcesElement Resources
+		{
+			get
+			{
+				return (ResourcesElement)this["resources"];
+			}
+			set
+			{
+				this["resources"] = value;
+			}
+		}
+
 		/// <summary>
 		/// Determines if user details (image, member since, ...) are shown on topic detail page
 		/// </summary>

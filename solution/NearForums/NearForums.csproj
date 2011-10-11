@@ -58,6 +58,7 @@
     <Compile Include="Configuration\FormsAuthElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
+    <Compile Include="Configuration\ResourcesElement.cs" />
     <Compile Include="Configuration\SpamPreventionElement.cs" />
     <Compile Include="Configuration\SSOOpenIdElement.cs" />
     <Compile Include="Configuration\Redirector\RedirectorConfiguration.cs" />

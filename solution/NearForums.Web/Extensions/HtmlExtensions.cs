@@ -213,7 +213,7 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		public static MvcHtmlString ScriptjQuery(this HtmlHelper htmlHelper)
 		{
-			return htmlHelper.Script("~/scripts/jquery-1.5.2.min.js");
+			return htmlHelper.Script(SiteConfiguration.Current.UI.Resources.JQueryUrl);
 		}
 
 		/// <summary>
