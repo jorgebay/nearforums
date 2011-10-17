@@ -122,13 +122,13 @@ namespace NearForums.DataAccess
 			idParameter.Direction = ParameterDirection.Output;
 
 			this.SafeExecuteNonQuery(comm);
-			if (idParameter.Value == null)
-			{
-				throw new DataException("No value for the output parameter: " + idParameter.ParameterName);
-			}
 			if (idParameter.Value != DBNull.Value)
 			{
 				message.Id = Convert.ToInt32(idParameter.Value);
+			}
+			else
+			{
+				throw new DataException("No value for the output parameter: " + idParameter.ParameterName);
 			}
 		}
 
