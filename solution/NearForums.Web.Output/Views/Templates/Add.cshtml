@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Template
+@{
 	ViewBag.Title = "Add Template";
 }
 <ul class="path floatContainer">
@@ -17,20 +18,35 @@
 						,{ValidationErrorType.DuplicateNotAllowed, "You can not replace the active template."}
 					}}
 		, {"html", "The html template file does not contain the required placeholders: headcontainer and bodycontainer"}
-		, {"Key", "Key format is not valid. Include a-z 0-9 and up to 64 characters."}
+		, {"Key", "Template key format is not valid. Include a-z 0-9 and up to 64 characters."}
 	}, null)
 		
 @{Html.BeginForm(null, null, FormMethod.Post, new{enctype="multipart/form-data"});}
+
 <div class="formItem floatContainer">
-	<label for="key">Key</label>@Html.TextBox("key")
+	<label for="txtPostedFile">Template File (.zip)</label>
+	<input type="file" name="postedFile" id="txtPostedFile" />
 </div>
-<div class="formItem floatContainer">
-	<label for="description">Description</label>@Html.TextBox("description")
+<div class="formItem textarea">
+	<label for="description">Comments</label>
+	@Html.TextAreaFor(p=>p.Description)
 </div>
-<div class="formItem floatContainer">
-	<label for="txtPostedFile">Template File (.zip)</label><input type="file" name="postedFile" id="txtPostedFile" />
+<div class="formItem checkbox floatContainer">
+	@Html.CheckBox("useDefaultName", true, new { onclick = "$(this).closest('div').hide();$('#keyContainer').slideToggle();" })
+	<label for="useDefaultName">Use default name</label>
+</div>
+<div class="formItem floatContainer" id="keyContainer" style="display: none;">
+	<label for="key">Name / Key</label>
+	@Html.TextBoxFor(p=>p.Key)
 </div>
 <div class="formItem buttons floatContainer">
 	<input type="submit" value="Submit" />
 </div>
 @{Html.EndForm();}
+<script type="text/javascript">
+	$(document).ready(function () {
+		if (!$("#useDefaultName").is(":checked")) {
+			$("#useDefaultName").click().attr("checked", false);
+		}
+	});
+</script>

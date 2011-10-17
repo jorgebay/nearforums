@@ -32,11 +32,16 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserGroup.Admin)]
 		[HttpPost]
 		[ValidateInput(true)]
-		public ActionResult Add([Bind(Prefix = "")] Template template, HttpPostedFileBase postedFile)
+		public ActionResult Add([Bind(Prefix = "")] Template template, HttpPostedFileBase postedFile, bool useDefaultName)
 		{
 
 			try
 			{
+				if (useDefaultName)
+				{
+					template.Key = SafeIO.Path_GetFileNameWithoutExtension(postedFile.FileName);
+				}
+
 				TemplateHelper.Add(template, postedFile, HttpContext);
 				return RedirectToAction("List");
 			}

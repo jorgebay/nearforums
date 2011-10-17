@@ -160,7 +160,7 @@ namespace NearForums.Web.Controllers.Helpers
 				}
 				var cache = new CacheWrapper(context);
 
-				if (cache.Template != null && cache.Template.Name.ToUpper() == template.Key.ToUpper())
+				if (cache.Template != null && template.Key != null && cache.Template.Name.ToUpper() == template.Key.ToUpper())
 				{
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.DuplicateNotAllowed));
 				}

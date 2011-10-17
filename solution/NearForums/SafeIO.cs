@@ -30,7 +30,16 @@ namespace NearForums
 		public static string Path_GetFileName(string path)
 		{
 			path = path.ToLower();
-			return Path.GetFileName(path).ToLower();
+			return Path.GetFileName(path);
+		}
+
+		/// <summary>
+		/// Returns the file name of the specified path string without the extension.
+		/// </summary>
+		public static string Path_GetFileNameWithoutExtension(string path)
+		{
+			path = path.ToLower();
+			return Path.GetFileNameWithoutExtension(path);
 		}
 		#endregion
 
