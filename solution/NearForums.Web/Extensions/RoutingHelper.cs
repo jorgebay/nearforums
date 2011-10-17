@@ -32,7 +32,6 @@ namespace NearForums.Web.Extensions
 			{
 				throw new NullReferenceException("Route mapping configuration not defined.");
 			}
-
 			using (routes.GetWriteLock())
 			{
 				foreach (RouteElement ignoreItem in config.IgnoreRoutes)
@@ -60,7 +59,7 @@ namespace NearForums.Web.Extensions
 						route.Constraints = new RouteValueDictionary();
 						foreach (string key in item.Constraints.AllKeys)
 						{
-							route.Constraints.Add(key, item.Constraints[key].Value);
+							route.Constraints.Add(key, new RegexConstraint(item.Constraints[key].Value));
 						}
 					}
 					if (item.Namespace != null)

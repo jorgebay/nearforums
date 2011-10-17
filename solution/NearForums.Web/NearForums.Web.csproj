@@ -84,6 +84,7 @@
     <Compile Include="Modules\ModelBinderModule.cs" />
     <Compile Include="Modules\RedirectorModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\RegexConstraint.cs" />
     <Compile Include="Routing\StrictRoute.cs" />
     <Compile Include="State\CacheWrapper.cs" />
     <Compile Include="State\SessionWrapper.cs" />
