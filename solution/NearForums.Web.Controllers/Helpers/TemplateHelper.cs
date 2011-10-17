@@ -147,16 +147,19 @@ namespace NearForums.Web.Controllers.Helpers
 		#endregion
 
 		#region Add
-		public static void Add(Template template, HttpPostedFileBase postedFile, HttpContextBase context)
+		public static void Add(Template template, Stream postedStream, HttpContextBase context)
 		{
 			string baseDirectory = null;
 			try
 			{
 
-				bool fileValid = true;
-				if (postedFile == null)
+				if (postedStream == null)
 				{
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.NullOrEmpty));
+				}
+				else if (postedStream.Length > 1024 * 1024 * 3)
+				{
+					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.MaxLength));
 				}
 				var cache = new CacheWrapper(context);
 
@@ -167,82 +170,70 @@ namespace NearForums.Web.Controllers.Helpers
 
 				TemplatesServiceClient.AddOrUpdate(template);
 
-				if (SafeIO.Path_GetExtension(postedFile.FileName) == ".zip")
+				bool fileValid = true;
+				baseDirectory = context.Server.MapPath(Config.UI.Template.Path + template.Key);
+				#region Create directories
+				try
 				{
-					//Validate max length
-					if (postedFile.ContentLength > 1024 * 1024 * 3)
-					{
-						fileValid = false;
-					}
+					SafeIO.Directory_CreateDirectory(baseDirectory);
+					SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
 				}
-				else
+				catch (UnauthorizedAccessException)
 				{
-					fileValid = false;
+					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.AccessRights));
 				}
+				#endregion
 
-				if (fileValid)
+				#region Save zip file to disk
+				using (var fileStream = new FileStream(baseDirectory + "/template.zip", FileMode.Create))
 				{
-					baseDirectory = context.Server.MapPath(Config.UI.Template.Path + template.Key);
-					#region Create directories
-					try
-					{
-						SafeIO.Directory_CreateDirectory(baseDirectory);
-						SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
-					}
-					catch (UnauthorizedAccessException)
-					{
-						throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.AccessRights));
-					}
-					#endregion
+					postedStream.CopyTo(fileStream);
+				}
+				#endregion
 
-					#region Save zip file to disk
-					postedFile.SaveAs(baseDirectory + "/template.zip");
-					#endregion
-
-					#region Save the files in the zip file
-					using (ZipInputStream zipStream = new ZipInputStream(postedFile.InputStream))
+				postedStream.Position = 0;
+				#region Save the files in the zip file
+				using (var zipStream = new ZipInputStream(postedStream))
+				{
+					ZipEntry entry;
+					while (((entry = zipStream.GetNextEntry()) != null) && fileValid)
 					{
-						ZipEntry entry;
-						while (((entry = zipStream.GetNextEntry()) != null) && fileValid)
+						fileValid = ValidateFileName(entry.Name);
+
+						if (fileValid && entry.IsFile)
 						{
-							fileValid = ValidateFileName(entry.Name);
+							string fileName = baseDirectory;
 
-							if (fileValid && entry.IsFile)
+							if (SafeIO.Path_GetDirectoryName(entry.Name).ToUpper() == "TEMPLATE-CONTENTS")
 							{
-								string fileName = baseDirectory;
-
-								if (SafeIO.Path_GetDirectoryName(entry.Name).ToUpper() == "TEMPLATE-CONTENTS")
-								{
-									fileName += "\\contents";
-								}
-								fileName += "\\" + SafeIO.Path_GetFileName(entry.Name);
-
-								#region Save file
-								using (System.IO.FileStream streamWriter = SafeIO.File_Create(fileName))
-								{
-									int size = 2048;
-									byte[] data = new byte[2048];
-									while (true)
-									{
-										size = zipStream.Read(data, 0, data.Length);
-										if (size > 0)
-										{
-											streamWriter.Write(data, 0, size);
-										}
-										else
-										{
-											break;
-										}
-									}
-									streamWriter.Close();
-								}
-								#endregion
+								fileName += "\\contents";
 							}
+							fileName += "\\" + SafeIO.Path_GetFileName(entry.Name);
+
+							#region Save file
+							using (System.IO.FileStream streamWriter = SafeIO.File_Create(fileName))
+							{
+								int size = 2048;
+								byte[] data = new byte[2048];
+								while (true)
+								{
+									size = zipStream.Read(data, 0, data.Length);
+									if (size > 0)
+									{
+										streamWriter.Write(data, 0, size);
+									}
+									else
+									{
+										break;
+									}
+								}
+								streamWriter.Close();
+							}
+							#endregion
 						}
-						zipStream.Close();
 					}
-					#endregion
 				}
+				#endregion
 
 				if (fileValid)
 				{
@@ -276,6 +267,34 @@ namespace NearForums.Web.Controllers.Helpers
 				throw;
 			}
 		}
+		#endregion
+
+
+		#region Add default templates
+		public static int AddDefaultTemplates(string path, HttpContextBase context)
+		{
+			var templatesLength = 0;
+			try
+			{
+				var files = SafeIO.Directory_GetFiles(path, "*.zip");
+				foreach (var fileName in files)
+				{
+					var template = new Template();
+					template.Key = SafeIO.Path_GetFileNameWithoutExtension(fileName);
+					template.Description = "Default";
+					using (var file = new FileStream(fileName, FileMode.Open))
+					{
+						TemplateHelper.Add(template, file, context);
+					}
+				}
+				templatesLength = files.Length;
+			}
+			catch (DirectoryNotFoundException)
+			{
+				templatesLength = 0;
+			}
+			return templatesLength;
+		} 
 		#endregion
 
 		#region Config

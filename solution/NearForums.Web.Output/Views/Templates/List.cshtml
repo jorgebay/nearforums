@@ -6,49 +6,61 @@
 	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
 </ul>
-<h1>Templates</h1>
-@ViewData.WriteIf("DeleteCurrent", MvcHtmlString.Create("<p class='error'>You cannot delete the current template.</p>"), MvcHtmlString.Empty)
-@ViewData.WriteIf("Access", "<p class='error'>The application does not have the necessary file read/write access.</p>", "")
 <div class="templates">
+	<h1>Templates</h1>
+	@ViewData.WriteIf("DeleteCurrent", MvcHtmlString.Create("<p class='error'>You cannot delete the current template.</p>"), MvcHtmlString.Empty)
+	@ViewData.WriteIf("Access", "<p class='error'>The application does not have the necessary file read/write access.</p>", "")
+
 	@using (Html.BeginForm(null, null, FormMethod.Post, new{@id="mainForm"}))
 	{
 		@Html.AntiForgeryToken()
 		<input type="hidden" name="id" id="templateId" />
-		<ul class="templateList floatContainer">
-		@foreach (Template t in Model)
+		if (Model.Count > 0)
 		{
-			<li class="@(t == Model.First() ? "first" : "")">
-				<div><img src="@(ViewBag.BasePath + t.Key)/screenshot.png" width="240" alt="@t.Key template screenshot" /></div>
-				<h3>@t.Key</h3>
-				<p>@t.Description</p>
-				<div class="templateOptions">
-					@if (!t.IsCurrent)
-					{
-						<span>
-							<a href="#" onclick="return activeTemplate(@t.Id);">Activate</a>
-							|
-							@Html.ActionLink("Preview", "Preview", new { id = t.Id }, new { target="_blank"})
-						</span>
-					}
-					else
-					{
-						<strong>Active</strong>
-					}
-					|
-					@Html.ActionLink("Export", "Export", new{id=t.Id})
-					@if (!t.IsCurrent)
-					{
-						<span>
-							|
-							<a href="#" onclick="return deleteTemplate(@t.Id);">Remove</a>
-						</span>
-					}
-				</div>
-			</li>
+			<ul class="templateList floatContainer">
+			@foreach (Template t in Model)
+			{
+				<li class="@(t == Model.First() ? "first" : "")">
+					<div><img src="@(ViewBag.BasePath + t.Key)/screenshot.png" width="240" alt="@t.Key template screenshot" /></div>
+					<h3>@t.Key</h3>
+					<p>@t.Description</p>
+					<div class="templateOptions">
+						@if (!t.IsCurrent)
+						{
+							<span>
+								<a href="#" onclick="return activeTemplate(@t.Id);">Activate</a>
+								|
+								@Html.ActionLink("Preview", "Preview", new { id = t.Id }, new { target="_blank"})
+							</span>
+						}
+						else
+						{
+							<strong>Active</strong>
+						}
+						|
+						@Html.ActionLink("Export", "Export", new{id=t.Id})
+						@if (!t.IsCurrent)
+						{
+							<span>
+								|
+								<a href="#" onclick="return deleteTemplate(@t.Id);">Remove</a>
+							</span>
+						}
+					</div>
+				</li>
+			}
+			</ul>
 		}
-		</ul>
-		<p>@Html.ActionLink("Upload a new template >>", "Add")</p>
+		else
+		{
+			<p class="noItems">
+				No templates found.
+				<br />
+				<a href="#" onclick="return loadDefaultTemplates();">Do you want to load the default templates?</a>
+			</p>
+		}
 		<p>@Html.ActionLink("Create your custom template", "HowTo")</p>
+		<p>@Html.ActionLink("Upload a new template >>", "Add")</p>
 		if (!Config.UI.Template.UseTemplates)
 		{
 			<p style="padding-top: 50px;">
@@ -59,7 +71,7 @@
 				For example: 
 			</p>
 			<code>
-				&lt;template useTemplates="true" path="/content/templates/" /&gt;
+				&lt;template useTemplates="true" path="~/content/templates/" /&gt;
 			</code>
 		}
 	}
@@ -83,5 +95,10 @@
 			$('#mainForm').attr('action', '@(Url.Action("SetCurrent"))').submit();
 		}
 		return false;
+	}
+
+	function loadDefaultTemplates() 
+	{
+		$('#mainForm').attr('action', '@(Url.Action("AddDefaultTemplates"))').submit();
 	}
 </script>

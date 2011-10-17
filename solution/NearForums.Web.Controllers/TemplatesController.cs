@@ -42,7 +42,12 @@ namespace NearForums.Web.Controllers
 					template.Key = SafeIO.Path_GetFileNameWithoutExtension(postedFile.FileName);
 				}
 
-				TemplateHelper.Add(template, postedFile, HttpContext);
+				if (SafeIO.Path_GetExtension(postedFile.FileName) != ".zip")
+				{
+					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
+				}
+
+				TemplateHelper.Add(template, postedFile.InputStream, HttpContext);
 				return RedirectToAction("List");
 			}
 			catch (ValidationException ex)
@@ -153,6 +158,22 @@ namespace NearForums.Web.Controllers
 		{
 			Session.IsTemplatePreview = true;
 			return RedirectToRoute(new { controller="Forums", action="List", _tid=id});
+		}
+		#endregion
+
+		#region Load Default Templates
+		/// <summary>
+		/// Loads all templates delivered on install
+		/// </summary>
+		[RequireAuthorization(UserGroup.Admin)]
+		[ValidateAntiForgeryToken]
+		[HttpPost]
+		public ActionResult AddDefaultTemplates()
+		{
+			var path = Server.MapPath(Config.UI.Template.Path + "installation/");
+			ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext);
+			ViewBag.Path = path;
+			return View();
 		}
 		#endregion
 	}

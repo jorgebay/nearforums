@@ -683,3 +683,9 @@ ul.templateList img
 {
 	border: 1px solid #dddddd;
 }
+div.templates .noItems
+{
+	padding: 20px;
+	font-size: 14px;
+	line-height: 18px;
+}
