@@ -47,12 +47,17 @@ namespace NearForums.Web.Controllers.Helpers
 
 		#region Replace files paths
 		/// <summary>
-		/// Replaces the paths from template-contents/ and special keywords
+		/// Check that the html format is valid and replaces the paths from template-contents/ and special keywords
 		/// </summary>
-		private static void ReplaceReservedWords(string filePath, string newPath, HttpContextBase context)
+		/// <exception cref="ValidationException">Throws a ValidationException if the html does not contain the required placeholders.</exception>
+		private static void PrepareTemplateBody(string filePath, string newPath, HttpContextBase context)
 		{
-			//Normally a template html file won't be larger than 100Kb, should we replace by line? (instead of readall)
+			//Normally a template html file won't be larger than 100Kb, so read all in memory
 			var content = File.ReadAllText(filePath);
+			if (!Regex.IsMatch(content, "{-headcontainer-}.*{-bodycontainer-}", RegexOptions.IgnoreCase | RegexOptions.Singleline))
+			{
+				throw new ValidationException(new ValidationError("html", ValidationErrorType.FileFormat));
+			}
 			content = Regex.Replace(content, "template-contents/", newPath + "contents/", RegexOptions.IgnoreCase);
 			content = Regex.Replace(content, "{-applicationpath-}", UrlHelper.GenerateContentUrl("~/", context), RegexOptions.IgnoreCase);
 			content = Regex.Replace(content, "{-year-}", DateTime.UtcNow.ToApplicationDateTime().Year.ToString(), RegexOptions.IgnoreCase);
@@ -154,7 +159,7 @@ namespace NearForums.Web.Controllers.Helpers
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.NullOrEmpty));
 				}
 
-				TemplatesServiceClient.Add(template);
+				TemplatesServiceClient.AddOrUpdate(template);
 
 				if (SafeIO.Path_GetExtension(postedFile.FileName) == ".zip")
 				{
@@ -235,7 +240,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 				if (fileValid)
 				{
-					ReplaceReservedWords(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.UI.Template.Path + template.Key + "/", context), context);
+					PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.UI.Template.Path + template.Key + "/", context), context);
 					
 					ChopTemplateFile(baseDirectory + "\\template.html");
 				}

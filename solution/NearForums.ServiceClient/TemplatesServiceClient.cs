@@ -36,11 +36,15 @@ namespace NearForums.ServiceClient
 			return da.GetCurrent();
 		}
 
-		public static void Add(Template t)
+		/// <summary>
+		/// Adds or updates a template in the db
+		/// </summary>
+		/// <param name="t"></param>
+		public static void AddOrUpdate(Template t)
 		{
 			t.ValidateFields();
 			TemplatesDataAccess da = new TemplatesDataAccess();
-			da.Add(t);
+			da.AddOrUpdate(t);
 		}
 
 		public static void Delete(int templateId)

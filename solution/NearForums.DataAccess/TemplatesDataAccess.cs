@@ -76,7 +76,7 @@ namespace NearForums.DataAccess
 			return t;
 		}
 
-		public void Add(Template t)
+		public void AddOrUpdate(Template t)
 		{
 			DbCommand comm = this.GetCommand("SPTemplatesInsert");
 			comm.AddParameter<string>(this.Factory, "TemplateKey", t.Key);
@@ -87,13 +87,13 @@ namespace NearForums.DataAccess
 
 			this.SafeExecuteNonQuery(comm);
 
-			if (idParameter.Value == null)
-			{
-				throw new DataException("No value for the output parameter: " + idParameter.ParameterName);
-			}
 			if (idParameter.Value != DBNull.Value)
 			{
 				t.Id = Convert.ToInt32(idParameter.Value);
+			}
+			else
+			{
+				throw new DataException("No value for the output parameter: " + idParameter.ParameterName);
 			}
 		}
 
