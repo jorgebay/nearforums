@@ -147,6 +147,10 @@ namespace NearForums.Web.Controllers.Helpers
 		#endregion
 
 		#region Add
+		/// <summary>
+		/// Unpackages the template file and adds a new template in the db.
+		/// </summary>
+		/// <exception cref="ValidationException">Throws a ValidationException if the posted file is not valid or the application does not have access rights.</exception>
 		public static void Add(Template template, Stream postedStream, HttpContextBase context)
 		{
 			string baseDirectory = null;
@@ -271,28 +275,27 @@ namespace NearForums.Web.Controllers.Helpers
 
 
 		#region Add default templates
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <exception cref="DirectoryNotFoundException"></exception>
+		/// <exception cref="UnauthorizedAccessException"></exception>
+		/// <exception cref="ValidationException">Throws a ValidationException if the posted file is not valid or the application does not have access rights.</exception>
 		public static int AddDefaultTemplates(string path, HttpContextBase context)
 		{
 			var templatesLength = 0;
-			try
+			var files = SafeIO.Directory_GetFiles(path, "*.zip");
+			foreach (var fileName in files)
 			{
-				var files = SafeIO.Directory_GetFiles(path, "*.zip");
-				foreach (var fileName in files)
+				var template = new Template();
+				template.Key = SafeIO.Path_GetFileNameWithoutExtension(fileName);
+				template.Description = "Default";
+				using (var file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
 				{
-					var template = new Template();
-					template.Key = SafeIO.Path_GetFileNameWithoutExtension(fileName);
-					template.Description = "Default";
-					using (var file = new FileStream(fileName, FileMode.Open))
-					{
-						TemplateHelper.Add(template, file, context);
-					}
+					TemplateHelper.Add(template, file, context);
 				}
-				templatesLength = files.Length;
 			}
-			catch (DirectoryNotFoundException)
-			{
-				templatesLength = 0;
-			}
+			templatesLength = files.Length;
 			return templatesLength;
 		} 
 		#endregion

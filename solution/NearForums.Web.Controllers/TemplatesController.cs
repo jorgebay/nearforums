@@ -15,6 +15,7 @@ using NearForums.Web.Extensions;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
 using NearForums.Configuration;
+using System.IO;
 
 namespace NearForums.Web.Controllers
 {
@@ -171,8 +172,30 @@ namespace NearForums.Web.Controllers
 		public ActionResult AddDefaultTemplates()
 		{
 			var path = Server.MapPath(Config.UI.Template.Path + "installation/");
-			ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext);
+			ViewBag.TemplateCount = 0;
 			ViewBag.Path = path;
+			try
+			{
+				ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext);
+			}
+			catch (DirectoryNotFoundException ex)
+			{
+				ViewBag.ErrorMessage = ex.Message;
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				ViewBag.ErrorMessage = ex.Message;
+			}
+			catch (ValidationException ex)
+			{
+				if (ex.ValidationErrors.Count > 0)
+				{
+					if (ex.ValidationErrors[0].Type == ValidationErrorType.AccessRights)
+					{
+						ViewBag.ErrorMessage = "The application does not have write access in the template folder.";
+					}
+				}
+			}
 			return View();
 		}
 		#endregion

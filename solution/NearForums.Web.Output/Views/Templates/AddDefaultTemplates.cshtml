@@ -8,4 +8,8 @@
 </ul>
 <h1>@ViewBag.Title</h1>
 <p style="padding: 20px;">@ViewBag.TemplateCount templates loaded.</p>
+@if (ViewBag.ErrorMessage != null)
+{
+	<p style="padding:0 20px 20px 20px;color: red;">@ViewBag.ErrorMessage</p>
+}
 <p>@Html.ActionLink("Continue >>", "List")</p>
