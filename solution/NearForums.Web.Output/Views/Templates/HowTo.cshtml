@@ -7,24 +7,25 @@
 	<li>@Html.ActionLink("Templates", "List")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p>?You can create a template for your forum website from scratch or exporting an existing </p>
-
-<p>?The easiest way to create a template for your forum website is to Export an existing template...</p>
-
-<p>?To create a custom Nearforums template, follow these instructions:</p>
+<p>To create a custom Nearforums template, follow these instructions:</p>
 <ul>
-	<li>?Download the sample template</li>
-	<li>?MO...</li>
+	<li>Export the sample template (included in the default templates).</li>
+	<li>Unpack the downloaded zip file.</li>
+	<li>
+		Following the guidelines of the template file format below, 
+		edit the template.html file and the style sheets. If needed, add additional files to the template-contents folder.
+	</li>
+	<li>Compress the all the files in a zip file. Use only word characters (a to z, 0 to 9) and hyphen (- minus) in the file name.</li>
+	<li>@Html.ActionLink("Upload the template", "Add").</li>
 </ul>
+<p>It is recommended to preview the template before activate it.</p>
 
-<h2>File format</h2>
+<h2 style="padding-top: 20px;">Templates file format</h2>
 <p>Compressed zip file with the following allowed files and folders.</p>
-<p>?UTF 8</p>
-<p>?Application path</p>
-<p>?Use css from the site</p>
-<p>?Advanced: Render any user control from template</p>
 <ul>
-	<li><strong>template.html</strong>: html file. The html file must contain the following place holders: {-TitleContent-}, {-HeadContent-}, {-UserMenu-}, {-MainContent-}. Please mantain the footer links to the Nearforums website.</li>
+	<li><strong>template.html</strong>: UTF-8 html template file. The html file must contain the following place holders: {-headcontainer-} and {-bodycontainer-}. <br />Please mantain the footer links to the Nearforums website.</li>
+	<li><strong>screenshot.png</strong>: image to visually identify the template. Used in the template list.</li>
+	<li><strong>license.txt</strong>: required if you want to distribute your template package.</li>
 	<li>
 		<strong>template-contents</strong>: folder that contains any css, png, jpg or gif files.
 		<ul>
