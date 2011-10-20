@@ -1,8 +1,28 @@
 ﻿@model Forum
+@* 
+	Show default sort
+*@
+@{
+	var defaultSortLabel = "Most viewed threads";
+	switch (Config.UI.DefaultForumSort)
+	{
+		case ForumSort.LatestTopics: 
+			defaultSortLabel = "Latest threads";
+			break;
+	}
+}
 <div class="options">
-	@Html.ActionLink("Most viewed threads", "Detail", new{page=0}, IsAction("Detail") ? new{@class="selected"} : null)
-	<span>/</span>
-	@Html.ActionLink("Latest threads", "LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Html}, IsAction("LatestTopics") ? new{@class="selected"} : null)
+	@Html.ActionLink(defaultSortLabel, "Detail", new { page = 0 }, IsAction("Detail") ? new { @class = "selected" } : null)
+	@if (Config.UI.DefaultForumSort != ForumSort.MostViewedTopics)
+	{
+		<span>/</span>
+		@Html.ActionLink("Most viewed threads", "MostViewedTopics", new { page = 0 }, IsAction("MostViewedTopics") ? new { @class = "selected" } : null)
+	}
+	@if (Config.UI.DefaultForumSort != ForumSort.LatestTopics)
+	{
+		<span>/</span>
+		@Html.ActionLink("Latest threads", "LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Html}, IsAction("LatestTopics") ? new{@class="selected"} : null)
+	}
 	<span>/</span>
 	@Html.ActionLink("Unanswered threads", "ListUnansweredTopics", null, IsAction("ListUnansweredTopics") ? new{@class="selected"} : null)
 	<a rel="nofollow" href="@Url.Action("LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Rss})">@Html.Img("~/images/iconrss.gif", "rss")</a>

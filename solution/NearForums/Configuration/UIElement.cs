@@ -109,5 +109,21 @@ namespace NearForums.Configuration
 				this["showUserDetailsOnList"] = value;
 			}
 		}
+
+		/// <summary>
+		/// Determines which is the default forum sorting of topics
+		/// </summary>
+		[ConfigurationProperty("defaultForumSort", IsRequired = false)]
+		public ForumSort DefaultForumSort
+		{
+			get
+			{
+				return (ForumSort)this["defaultForumSort"];
+			}
+			set
+			{
+				this["defaultForumSort"] = value;
+			}
+		}
 	}
 }

@@ -1,10 +1,21 @@
 ﻿@model Forum
 @{
 	ViewBag.Title = Model.Name;
+	if (IsAction("MostViewedTopics"))
+	{
+		ViewBag.Title += " - Most viewed";
+	}
+	else if (IsAction("LatestTopics"))
+	{
+		ViewBag.Title += " - Latest threads";
+	}
 }
 @section Head
 {
-	@Html.MetaDescription(Model.Description)
+	@if (IsAction("Detail"))
+	{
+		@Html.MetaDescription(Model.Description)
+	}
 }
 <div class="forumDetail">
 	<ul class="path floatContainer">
@@ -12,7 +23,10 @@
 	</ul>
 	<h1>@ViewBag.Title</h1>
 	@Html.Partial("ForumOptions")
-	<p>@Model.Description</p>
+	@if (IsAction("Detail"))
+	{
+		<p class="description">@Model.Description</p>
+	}
 	@if (this.Model.Topics.Count > 0)
 	{
 		Html.RenderPartial("ForumTopicList", this.Model.Topics);

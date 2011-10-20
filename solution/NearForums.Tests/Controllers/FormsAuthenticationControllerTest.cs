@@ -26,20 +26,28 @@ namespace NearForums.Tests.Controllers
 			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
 
 			#region Get a test user to reset the password
-			var users = Membership.GetAllUsers();
-			if (users.Count == 0)
+			try
 			{
-				Assert.Inconclusive("No membership data for unit testing");
-				return;
-			}
-			var enumerator = users.GetEnumerator();
-			enumerator.MoveNext();
-			var u = (MembershipUser)enumerator.Current;
-			#endregion
+				var users = Membership.GetAllUsers();
 
-			var result = controller.ResetPassword(u.Email);
-			Assert.IsTrue(controller.ModelState.IsValid);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
+				if (users.Count == 0)
+				{
+					Assert.Inconclusive("No membership data for unit testing");
+					return;
+				}
+				var enumerator = users.GetEnumerator();
+				enumerator.MoveNext();
+				var u = (MembershipUser)enumerator.Current;
+				#endregion
+
+				var result = controller.ResetPassword(u.Email);
+				Assert.IsTrue(controller.ModelState.IsValid);
+				Assert.IsInstanceOfType(result, typeof(ViewResult));
+			}
+			catch (NotSupportedException)
+			{
+				Assert.Inconclusive();
+			}
 		}
 	}
 }

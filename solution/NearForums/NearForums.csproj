@@ -51,6 +51,7 @@
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
+    <Compile Include="Configuration\ForumSorting.cs" />
     <Compile Include="Configuration\HtmlInputElement.cs" />
     <Compile Include="Configuration\IOptionalElement.cs" />
     <Compile Include="Configuration\KeySecretElement.cs" />

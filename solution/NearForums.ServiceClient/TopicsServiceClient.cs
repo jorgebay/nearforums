@@ -8,6 +8,9 @@ namespace NearForums.ServiceClient
 {
 	public static class TopicsServiceClient
 	{
+		/// <summary>
+		/// Gets a list of topics of a forum ordered by views
+		/// </summary>
 		public static List<Topic> GetByForum(int forumId, int startIndex, int length)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();

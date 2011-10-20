@@ -8,6 +8,7 @@ using NearForums.Web.UI;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
 using NearForums.Web.Extensions;
+using NearForums.Configuration;
 
 namespace NearForums.Web.Controllers
 {
@@ -35,6 +36,17 @@ namespace NearForums.Web.Controllers
 		#region Detail
 		public ActionResult Detail(string forum, int page)
 		{
+			if (Config.UI.DefaultForumSort == ForumSort.LatestTopics)
+			{
+				return LatestTopics(forum, page, ResultFormat.Html);
+			}
+			return MostViewedTopics(forum, page);
+		} 
+		#endregion
+
+		#region Most Viewed topics
+		public ActionResult MostViewedTopics(string forum, int page)
+		{
 			Forum f = ForumsServiceClient.Get(forum);
 			if (f == null)
 			{
@@ -48,8 +60,8 @@ namespace NearForums.Web.Controllers
 			ViewData["Page"] = page;
 			ViewData["TotalTopics"] = f.TopicCount;
 
-			return View(f);
-		} 
+			return View("Detail", f);
+		}
 		#endregion
 
 		#region Latest topics
@@ -68,10 +80,10 @@ namespace NearForums.Web.Controllers
 				ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
 				ViewData["Page"] = page;
 				ViewData["TotalTopics"] = f.TopicCount;
-				return View("LatestTopics" + format.ToString(), f);
+				return View("Detail", f);
 			}
 
-			return ResultHelper.XmlViewResult(this, f, "LatestTopics" + format.ToString());
+			return ResultHelper.XmlViewResult(this, f, "LatestTopicsRss");
 		}
 
 		/// <summary>
