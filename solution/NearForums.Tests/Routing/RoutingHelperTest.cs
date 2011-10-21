@@ -47,6 +47,20 @@ namespace NearForums.Tests.Routing
 				controller = "Forums",
 				action = "Detail"
 			});
+			//Case sensitivity
+			TestHelper.AssertIsRouteOf(routes, "/some-forum/", new
+			{
+				controller = "Forums",
+				action = "Detail",
+				forum = "Some Forum".ToUrlSegment()
+			});
+			//Complete with ascii
+			TestHelper.AssertIsRouteOf(routes, "/awesome-job-my-man/", new
+			{
+				controller = "Forums",
+				action = "Detail",
+				forum = "AWESOME Job     my    man!!!!!!!!".ToUrlSegment()
+			});
 		}
 
 		[TestMethod]
@@ -81,6 +95,13 @@ namespace NearForums.Tests.Routing
 				controller = "Forums",
 				action = "DetailNotConstrained"
 			});
+		}
+
+		[TestMethod]
+		public void RoutingHelper_Segment_Tests()
+		{
+			Assert.AreEqual("yeah", "YEAH!!!!!".ToUrlSegment());
+			Assert.AreEqual("oh-yeah", "OH YEAH".ToUrlSegment());
 		}
 	}
 }

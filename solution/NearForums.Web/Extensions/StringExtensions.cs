@@ -84,9 +84,13 @@ namespace NearForums.Web.Extensions
 			{
 				return null;
 			}
-			var segment = Regex.Replace(value, @"[^a-z- ]+", "");
+			//Step 1: Replace anything except a-z or -
+			var segment = Regex.Replace(value, @"[^a-z- ]+", "", RegexOptions.IgnoreCase);
+			//Step 2: Replace spaces with -
 			segment = Regex.Replace(segment, @" ", "-");
+			//Step 3: Replace multiple - with just one (in case multiple unwanted chars where replaced in step 1 or step 2)
 			segment = Regex.Replace(segment, @"-+", "-");
+			//Step 4: Replace starting and ending - with nothing
 			segment = Regex.Replace(segment, @"^-+|-+$", "");
 
 			//Handle alfabets that does not have contain ascii chars a-z
@@ -98,8 +102,18 @@ namespace NearForums.Web.Extensions
 			{
 				segment = segment.Substring(0, maxLength);
 			}
+
 			segment = segment.ToLowerInvariant();
 			return segment;
+		}
+
+		/// <summary>
+		/// Returns a string that can be used in a url segment
+		/// </summary>
+		public static string ToUrlSegment(this string value)
+		{
+			var maxLength = 2000; //url length on most browsers
+			return value.ToUrlSegment(maxLength);
 		}
 
 		public static int? ToNullableInt(this string value)
