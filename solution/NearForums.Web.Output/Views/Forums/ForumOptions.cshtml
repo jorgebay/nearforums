@@ -6,8 +6,8 @@
 	var defaultSortLabel = "Most viewed threads";
 	switch (Config.UI.DefaultForumSort)
 	{
-		case ForumSort.LatestTopics: 
-			defaultSortLabel = "Latest threads";
+		case ForumSort.LatestActivity: 
+			defaultSortLabel = "Latest activity";
 			break;
 	}
 }
@@ -18,10 +18,10 @@
 		<span>/</span>
 		@Html.ActionLink("Most viewed threads", "MostViewedTopics", new { page = 0 }, IsAction("MostViewedTopics") ? new { @class = "selected" } : null)
 	}
-	@if (Config.UI.DefaultForumSort != ForumSort.LatestTopics)
+	@if (Config.UI.DefaultForumSort != ForumSort.LatestActivity)
 	{
 		<span>/</span>
-		@Html.ActionLink("Latest threads", "LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Html}, IsAction("LatestTopics") ? new{@class="selected"} : null)
+		@Html.ActionLink("Latest activity", "LatestTopics", new{page=0,format=NearForums.Web.UI.ResultFormat.Html}, IsAction("LatestTopics") ? new{@class="selected"} : null)
 	}
 	<span>/</span>
 	@Html.ActionLink("Unanswered threads", "ListUnansweredTopics", null, IsAction("ListUnansweredTopics") ? new{@class="selected"} : null)

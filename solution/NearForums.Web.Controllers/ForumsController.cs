@@ -36,7 +36,7 @@ namespace NearForums.Web.Controllers
 		#region Detail
 		public ActionResult Detail(string forum, int page)
 		{
-			if (Config.UI.DefaultForumSort == ForumSort.LatestTopics)
+			if (Config.UI.DefaultForumSort == ForumSort.LatestActivity)
 			{
 				return LatestTopics(forum, page, ResultFormat.Html);
 			}

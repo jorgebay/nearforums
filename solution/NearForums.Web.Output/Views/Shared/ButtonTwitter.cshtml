@@ -1,6 +1,6 @@
 ﻿@{
 	var imgUrl = "http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l.png";
-	if (ViewData["size"] == "small")
+	if (ViewData.Get<string>("size") == "small")
 	{
 		imgUrl = "http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png";
 	}

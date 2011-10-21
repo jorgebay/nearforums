@@ -8,7 +8,6 @@ namespace NearForums.Configuration
 	public enum ForumSort
 	{
 		MostViewedTopics = 0,
-		LatestTopics = 1,
-		LatestActivity = 2
+		LatestActivity = 1
 	}
 }

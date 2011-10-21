@@ -1,6 +1,6 @@
 ﻿@{
 	var imgUrl = Url.Content("~/images/fb-login.png");
-	if (ViewData["size"] == "small")
+	if (ViewData.Get<string>("size") == "small")
 	{
 		imgUrl = Url.Content("~/images/fb-login.png");
 	}
