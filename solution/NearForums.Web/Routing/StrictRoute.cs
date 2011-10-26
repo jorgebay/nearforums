@@ -48,7 +48,7 @@ namespace NearForums.Web.Routing
 					{
 						data = null;
 					}
-					else if (LowerCaseOnly && virtualPath.ToLowerInvariant() != virtualPath)
+					else if (LowerCaseOnly && virtualPath.ToLower() != virtualPath)
 					{
 						data = null;
 					}
@@ -119,7 +119,10 @@ namespace NearForums.Web.Routing
 				#endregion
 
 				//All to lower case
-				data.VirtualPath = data.VirtualPath.ToLower();
+				if (LowerCaseOnly)
+				{
+					data.VirtualPath = data.VirtualPath.ToLower();
+				}
 			}
 
 			return data;

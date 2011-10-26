@@ -80,31 +80,44 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		public static string ToUrlSegment(this string value, int maxLength)
 		{
-			if (value == null)
+			if (String.IsNullOrWhiteSpace(value))
 			{
 				return null;
 			}
-			//Step 1: Replace anything except a-z or -
-			var segment = Regex.Replace(value, @"[^a-z- ]+", "", RegexOptions.IgnoreCase);
-			//Step 2: Replace spaces with -
-			segment = Regex.Replace(segment, @" ", "-");
-			//Step 3: Replace multiple - with just one (in case multiple unwanted chars where replaced in step 1 or step 2)
-			segment = Regex.Replace(segment, @"-+", "-");
-			//Step 4: Replace starting and ending - with nothing
-			segment = Regex.Replace(segment, @"^-+|-+$", "");
-
-			//Handle alfabets that does not have contain ascii chars a-z
-			if (segment == "" && Regex.IsMatch(value, @"\w+"))
+			value = value.Trim();
+			var segment = value;
+			if (value.ContainsAsciiChars())
 			{
-				segment = HttpUtility.UrlEncode(value);
+				segment = segment.ToLower();
+
+				//Step 1: Replace anything except a-z or -
+				segment = Regex.Replace(segment, @"[^a-z0-9\- ]+", "");
+				//Step 2: Replace spaces with -
+				segment = Regex.Replace(segment, @" ", "-");
+				//Step 3: Replace multiple - with just one (in case multiple unwanted chars where replaced in step 1 or step 2)
+				segment = Regex.Replace(segment, @"-+", "-");
+				//Step 4: Replace starting and ending - with nothing
+				segment = Regex.Replace(segment, @"^-+|-+$", "");
 			}
-			else if (segment.Length > maxLength)
+			else
+			{
+				//will be url encoded by browser and encoded / decoded by webserver
+			}
+
+			if (segment.Length > maxLength)
 			{
 				segment = segment.Substring(0, maxLength);
 			}
 
-			segment = segment.ToLowerInvariant();
 			return segment;
+		}
+
+		/// <summary>
+		/// Determines if contains the string contains any ASCII string
+		/// </summary>
+		public static bool ContainsAsciiChars(this string value)
+		{
+			return Regex.IsMatch(value, @"[\u0000-\u007F]");
 		}
 
 		/// <summary>

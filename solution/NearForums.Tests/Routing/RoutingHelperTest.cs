@@ -98,6 +98,28 @@ namespace NearForums.Tests.Routing
 		}
 
 		[TestMethod]
+		public void RoutingHelper_CheckNonAscii_Test()
+		{
+			//This test is to list assertions on the relation of alphabets and ascii table
+
+			var value = "";
+			value = "asdfghjkl"; //English alphabet
+			Assert.IsTrue(value.ContainsAsciiChars());
+
+			value = "voçe abusou";
+			//Portuguese
+			Assert.IsTrue(value.ContainsAsciiChars());
+
+			value = "เที่ยวไทย";
+			//Thai
+			Assert.IsFalse(value.ContainsAsciiChars());
+
+			value = "안넹";
+			//Korean
+			Assert.IsFalse(value.ContainsAsciiChars());
+		}
+
+		[TestMethod]
 		public void RoutingHelper_Segment_Tests()
 		{
 			Assert.AreEqual("yeah", "YEAH!!!!!".ToUrlSegment());
