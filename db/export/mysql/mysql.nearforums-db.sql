@@ -70,7 +70,7 @@ CREATE TABLE `flags` (
   `flagdate` datetime NOT NULL,
   PRIMARY KEY (`flagId`,`topicId`),
   UNIQUE KEY `ix_topicid_messageid_ip` (`topicId`,`messageId`,`ip`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `flags`
@@ -103,7 +103,7 @@ CREATE TABLE `forums` (
   CONSTRAINT `fk_forums_forumscategories` FOREIGN KEY (`categoryid`) REFERENCES `forumscategories` (`categoryid`),
   CONSTRAINT `fk_forums_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
   CONSTRAINT `fk_forums_users_lastedit` FOREIGN KEY (`forumlastedituser`) REFERENCES `users` (`userid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `forums`
@@ -119,7 +119,7 @@ CREATE TABLE `forumscategories` (
   `categoryname` varchar(255) NOT NULL,
   `categoryorder` int(11) NOT NULL,
   PRIMARY KEY (`categoryid`)
-) TYPE=InnoDB AUTO_INCREMENT=2;
+)  AUTO_INCREMENT=2;
 
 --
 -- Dumping data for table `forumscategories`
@@ -146,7 +146,7 @@ CREATE TABLE `messages` (
   KEY `fk_messages_users` (`userid`),
   CONSTRAINT `fk_messages_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
   CONSTRAINT `fk_messages_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `messages`
@@ -164,7 +164,7 @@ CREATE TABLE `pagecontents` (
   `pagecontentshortname` varchar(128) NOT NULL,
   `pagecontenteditdate` datetime NOT NULL,
   PRIMARY KEY (`pagecontentid`)
-) TYPE=InnoDB AUTO_INCREMENT=3;
+)  AUTO_INCREMENT=3;
 
 --
 -- Dumping data for table `pagecontents`
@@ -183,7 +183,7 @@ CREATE TABLE `tags` (
   PRIMARY KEY (`tag`,`topicid`),
   KEY `fk_tags_topics` (`topicid`),
   CONSTRAINT `fk_tags_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `tags`
@@ -201,7 +201,7 @@ CREATE TABLE `templates` (
   `templateiscurrent` tinyint(1) NOT NULL,
   `templatedate` datetime NOT NULL,
   PRIMARY KEY (`templateid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `templates`
@@ -238,7 +238,7 @@ CREATE TABLE `topics` (
   CONSTRAINT `fk_topics_forums` FOREIGN KEY (`forumid`) REFERENCES `forums` (`forumid`),
   CONSTRAINT `fk_topics_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`),
   CONSTRAINT `fk_topics_users_lastedit` FOREIGN KEY (`topiclastedituser`) REFERENCES `users` (`userid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `topics`
@@ -256,7 +256,7 @@ CREATE TABLE `topicssubscriptions` (
   KEY `fk_topicssubscriptions_users` (`userid`),
   CONSTRAINT `fk_topicssubscriptions_topics` FOREIGN KEY (`topicid`) REFERENCES `topics` (`topicid`),
   CONSTRAINT `fk_topicssubscriptions_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `topicssubscriptions`
@@ -291,7 +291,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`userid`),
   KEY `fk_users_usersgroups` (`usergroupid`),
   CONSTRAINT `fk_users_usersgroups` FOREIGN KEY (`usergroupid`) REFERENCES `usersgroups` (`usergroupid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `users`
@@ -306,7 +306,7 @@ CREATE TABLE `usersgroups` (
   `usergroupid` smallint(6) NOT NULL,
   `usergroupname` varchar(50) NOT NULL,
   PRIMARY KEY (`usergroupid`)
-) TYPE=InnoDB;
+) ;
 
 --
 -- Dumping data for table `usersgroups`
