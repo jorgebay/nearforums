@@ -10,6 +10,7 @@ using NearForums.Configuration;
 using NearForums.Web.Extensions;
 using HtmlAgilityPack;
 using System.IO;
+using NearForums.DataAccess;
 
 namespace NearForums.Tests
 {
@@ -115,6 +116,13 @@ namespace NearForums.Tests
 			Assert.IsNotNull(SiteConfiguration.Current.DataAccess.ConnectionString);
 
 			Assert.IsTrue(!String.IsNullOrEmpty(SiteConfiguration.Current.DataAccess.ConnectionString.ProviderName));
+
+			//Open connection to db
+			BaseDataAccess da = new BaseDataAccess();
+			var conn = da.GetConnection();
+			conn.Open();
+			conn.Close();
+
 		}
 
 		[TestMethod]

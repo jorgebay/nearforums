@@ -19,7 +19,7 @@ namespace NearForums.DataAccess
 			}
 		}
 
-		protected BaseDataAccess()
+		public BaseDataAccess()
 		{
 			this.Factory = DbProviderFactories.GetFactory(Config.ConnectionString.ProviderName);
 		}
@@ -28,7 +28,7 @@ namespace NearForums.DataAccess
 		/// Gets a new connection.
 		/// </summary>
 		/// <returns></returns>
-		protected DbConnection GetConnection()
+		public DbConnection GetConnection()
 		{
 			DbConnection conn = this.Factory.CreateConnection();
 			conn.ConnectionString = Config.ConnectionString.ConnectionString;
