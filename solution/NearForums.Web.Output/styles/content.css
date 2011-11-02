@@ -313,6 +313,7 @@ div.msgUser
 	margin-left: 10px;
 	text-align: center;
 	border-left: 1px solid #666666;
+	width: 140px;
 }
 ul div.msgOptions
 {
