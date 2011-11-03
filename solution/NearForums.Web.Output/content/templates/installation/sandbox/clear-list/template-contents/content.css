@@ -288,6 +288,7 @@ div.msgUser
 	margin-left: 10px;
 	text-align: center;
 	border-left: 1px solid #666666;
+	width: 140px;
 }
 ul div.msgOptions
 {
@@ -563,6 +564,7 @@ p.warning
 div.forumDetail h1
 {
 	padding-right: 375px;
+	font-size: 24px;
 }
 input.button
 {
@@ -657,4 +659,10 @@ ul.templateList li.first
 ul.templateList img
 {
 	border: 1px solid #dddddd;
+}
+div.templates .noItems
+{
+	padding: 20px;
+	font-size: 14px;
+	line-height: 18px;
 }

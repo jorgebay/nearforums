@@ -56,31 +56,6 @@ ul.itemsHeader
 {
 	display: none;
 }
-
-/*
-	BEGIN TEST COLUMNS
-ul.items h3
-{
-	float: left;
-	width: 300px;
-}
-ul.items div
-{
-	float: left;
-	width: 50px;
-	padding-top: 10px;
-	font-weight: bold;
-}
-ul.items li p.description
-{
-	clear: left;
-}
-ul.items .separator, ul.items .label
-{
-	display: none;
-}
-	END TEST 
-*/
 div.forumList ul.items p
 {
 	font-size: 14px;
