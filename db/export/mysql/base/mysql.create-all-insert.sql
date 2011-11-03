@@ -434,7 +434,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 FUNCTION `FNCastToInt`(number bigint) RETURNS int(11)
+/*!50003 CREATE*/  /*!50003 FUNCTION `FNCastToInt`(number bigint) RETURNS int(11)
 BEGIN
   return number;
 END */;;
@@ -453,7 +453,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 FUNCTION `FNSplit`(
+/*!50003 CREATE*/  /*!50003 FUNCTION `FNSplit`(
   x VARCHAR(255),
   delim VARCHAR(12),
   pos INT
@@ -476,7 +476,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPCleanDb`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPCleanDb`()
 BEGIN
 
     SET FOREIGN_KEY_CHECKS = 0;
@@ -521,7 +521,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsCategoriesGetAll`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsCategoriesGetAll`()
 BEGIN
 SELECT
 	CategoryId
@@ -547,7 +547,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsDelete`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsDelete`(
   param_ForumShortName varchar(32)
 )
 BEGIN
@@ -572,7 +572,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsGetByCategory`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsGetByCategory`()
 BEGIN
 
 SELECT
@@ -611,7 +611,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsGetByShortName`(param_ShortName varchar(32))
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsGetByShortName`(param_ShortName varchar(32))
 BEGIN
 SELECT
 	F.ForumId
@@ -647,7 +647,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsGetUsedShortNames`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsGetUsedShortNames`(
   param_ForumShortName varchar(32), param_SearchShortName varchar(32)
 )
 BEGIN
@@ -696,7 +696,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsInsert`(
 	param_ForumName varchar(255)
 	,param_ForumShortName varchar(32)
 	,param_ForumDescription longtext
@@ -752,7 +752,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsUpdate`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsUpdate`(
 	param_ForumShortName varchar(32)
 	,param_ForumName varchar(255)
 	,param_ForumDescription longtext
@@ -788,7 +788,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsUpdateLastMessage`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsUpdateLastMessage`(
 	param_TopicId int
 	,param_MessageId int
 )
@@ -818,7 +818,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsUpdateLastTopic`(param_ForumId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsUpdateLastTopic`(param_ForumId int)
 BEGIN
 
 
@@ -844,7 +844,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPForumsUpdateRecount`(param_ForumId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPForumsUpdateRecount`(param_ForumId int)
 BEGIN
 
 /*
@@ -889,7 +889,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesDelete`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesDelete`(
 	param_TopicId int
 	,param_MessageId int
 	,param_UserId int
@@ -922,7 +922,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesFlag`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesFlag`(
 	param_TopicId int
 	,param_MessageId int
 	,param_Ip varchar(15)
@@ -948,7 +948,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesFlagsClear`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesFlagsClear`(
 	param_TopicId int
 	,param_MessageId int
 )
@@ -975,7 +975,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesFlagsGetAll`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesFlagsGetAll`()
 BEGIN
 /*
 	Lists all flagged messages (not topics)
@@ -1030,7 +1030,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesGetByTopic`(param_TopicId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesGetByTopic`(param_TopicId int)
 BEGIN
 
 SELECT
@@ -1071,7 +1071,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesGetByTopicFrom`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesGetByTopicFrom`(
 	param_TopicId int
 	,param_FirstMsg int
 	,param_Amount int
@@ -1128,7 +1128,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesGetByTopicLatest`(param_TopicId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesGetByTopicLatest`(param_TopicId int)
 BEGIN
 
 SELECT
@@ -1168,7 +1168,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesGetByTopicUpTo`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesGetByTopicUpTo`(
   param_TopicId int,
 	param_FirstMsg int,
 	param_LastMsg int
@@ -1217,7 +1217,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPMessagesInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPMessagesInsert`(
 	param_TopicId int
 	,param_MessageBody longtext
 	,param_UserId int
@@ -1293,7 +1293,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPPageContentsDelete`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPPageContentsDelete`(
   param_PageContentShortName varchar(128)
 )
 BEGIN
@@ -1316,7 +1316,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPPageContentsGet`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPPageContentsGet`(
   param_PageContentShortName varchar(128)
 )
 BEGIN
@@ -1345,7 +1345,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPPageContentsGetAll`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPPageContentsGetAll`()
 BEGIN
 SELECT
 	PageContentId
@@ -1372,7 +1372,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPPageContentsGetUsedShortNames`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPPageContentsGetUsedShortNames`(
 	param_PageContentShortName varchar(32),
 	param_SearchShortName varchar(32)
 )
@@ -1420,7 +1420,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPPageContentsInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPPageContentsInsert`(
 	param_PageContentShortName varchar(128)
 	,param_PageContentTitle varchar(128)
 	,param_PageContentBody longtext
@@ -1458,7 +1458,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPPageContentsUpdate`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPPageContentsUpdate`(
 	param_PageContentShortName varchar(128)
 	,param_PageContentTitle varchar(128)
 	,param_PageContentBody longtext
@@ -1487,7 +1487,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTagsGetMostViewed`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTagsGetMostViewed`(
   param_ForumId int
 	,param_Top bigint
 )
@@ -1555,7 +1555,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTagsInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTagsInsert`(
 	param_Tags varchar(256)
 	,param_TopicId int
 	,param_PreviousTags varchar(256)
@@ -1601,7 +1601,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTemplatesDelete`(param_TemplateId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTemplatesDelete`(param_TemplateId int)
 BEGIN
 
 DELETE FROM Templates WHERE TemplateId = param_TemplateId;
@@ -1622,7 +1622,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTemplatesGet`(param_TemplateId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTemplatesGet`(param_TemplateId int)
 BEGIN
 
 
@@ -1653,7 +1653,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTemplatesGetAll`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTemplatesGetAll`()
 BEGIN
 
 SELECT
@@ -1680,7 +1680,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTemplatesGetCurrent`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTemplatesGetCurrent`()
 BEGIN
 SELECT
 	TemplateId
@@ -1706,7 +1706,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTemplatesInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTemplatesInsert`(
 	param_TemplateKey varchar(64)
 	,param_TemplateDescription varchar(256)
 	,OUT param_TemplateId int
@@ -1756,7 +1756,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTemplatesUpdateCurrent`(param_TemplateId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTemplatesUpdateCurrent`(param_TemplateId int)
 BEGIN
 
 
@@ -1780,7 +1780,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsAddVisit`(param_TopicId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsAddVisit`(param_TopicId int)
 BEGIN
 
 UPDATE Topics
@@ -1805,7 +1805,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsClose`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsClose`(
 	param_TopicId int
 	,param_UserId int
 	,param_Ip varchar(15)
@@ -1837,7 +1837,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsDelete`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsDelete`(
 	param_TopicId int
 	,param_UserId int
 	,param_Ip varchar(15)
@@ -1878,7 +1878,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGet`(param_TopicId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGet`(param_TopicId int)
 BEGIN
 
 SELECT
@@ -1919,7 +1919,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetByForum`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetByForum`(
 	param_ForumId int
 	,param_StartIndex int
 	,param_Length int
@@ -1978,7 +1978,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetByForumLatest`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetByForumLatest`(
 	param_ForumId int
 	,param_StartIndex int
 	,param_Length int
@@ -2042,7 +2042,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetByForumUnanswered`(param_ForumId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetByForumUnanswered`(param_ForumId int)
 BEGIN
 
 SELECT
@@ -2091,7 +2091,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetByRelated`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetByRelated`(
   param_Tag1 varchar(50)
 	,param_Tag2 varchar(50)
 	,param_Tag3 varchar(50)
@@ -2171,7 +2171,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetByTag`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetByTag`(
   param_Tag varchar(50),
 	param_ForumId int
 )
@@ -2222,7 +2222,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetByUser`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetByUser`(
 	param_UserId int
 )
 BEGIN
@@ -2265,7 +2265,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetLatest`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetLatest`()
 BEGIN
 
 	SELECT   
@@ -2306,7 +2306,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetMessagesByUser`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetMessagesByUser`(
 	param_UserId int
 )
 BEGIN
@@ -2350,7 +2350,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsGetUnanswered`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsGetUnanswered`()
 BEGIN
 SELECT
 	T.TopicId
@@ -2395,7 +2395,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsInsert`(
 	param_TopicTitle varchar(255)
 	,param_TopicShortName varchar(64)
 	,param_TopicDescription longtext
@@ -2492,7 +2492,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsMove`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsMove`(
 	param_TopicId int
 	,param_ForumId int
 	,param_UserId int
@@ -2541,7 +2541,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsOpen`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsOpen`(
 	param_TopicId int
 	,param_UserId int
 	,param_Ip varchar(15)
@@ -2571,7 +2571,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsSubscriptionsDelete`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsSubscriptionsDelete`(
 	param_TopicId int
 	,param_UserId int
 	,param_Userguid char(32)
@@ -2607,7 +2607,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsSubscriptionsGetByTopic`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsSubscriptionsGetByTopic`(
 	param_TopicId int
 )
 BEGIN
@@ -2641,7 +2641,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsSubscriptionsGetByUser`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsSubscriptionsGetByUser`(
   param_UserId int
 )
 BEGIN
@@ -2677,7 +2677,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsSubscriptionsInsert`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsSubscriptionsInsert`(
 	param_TopicId int
 	,param_UserId int
 )
@@ -2705,7 +2705,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsUpdate`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsUpdate`(
 	param_TopicId int
 	,param_TopicTitle varchar(256)
 	,param_TopicDescription longtext
@@ -2764,7 +2764,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPTopicsUpdateLastMessage`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPTopicsUpdateLastMessage`(
 	param_TopicId int
 	,param_MessageId int
 )
@@ -2794,7 +2794,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersDelete`(param_UserId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersDelete`(param_UserId int)
 BEGIN
 UPDATE Users
 SET
@@ -2817,7 +2817,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersDemote`(param_UserId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersDemote`(param_UserId int)
 BEGIN
 DECLARE var_UserGroupId int;
 SELECT UserGroupId INTO var_UserGroupId FROM Users WHERE UserId = param_UserId;
@@ -2846,7 +2846,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGet`(param_UserId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGet`(param_UserId int)
 BEGIN
 
 SELECT
@@ -2887,7 +2887,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGetAll`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGetAll`()
 BEGIN
 SELECT
 	U.UserId
@@ -2926,7 +2926,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGetByName`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGetByName`(
   param_UserName varchar(50)
 )
 BEGIN
@@ -2970,7 +2970,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGetByPasswordResetGuid`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGetByPasswordResetGuid`(
 	param_Provider varchar(32)
 	,param_PasswordResetGuid varchar(64)
 )
@@ -3009,7 +3009,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGetByProvider`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGetByProvider`(
 	param_Provider varchar(32)
 	,param_ProviderId varchar(64)
 )
@@ -3047,7 +3047,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGetTestUser`()
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGetTestUser`()
 BEGIN
 SELECT
 	U.UserId
@@ -3081,7 +3081,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersGroupsGet`(param_UserGroupId smallint)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersGroupsGet`(param_UserGroupId smallint)
 BEGIN
 
 SELECT
@@ -3108,7 +3108,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersInsertFromProvider`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersInsertFromProvider`(
   param_UserName varchar(50)
 	,param_UserProfile longtext
 	,param_UserSignature longtext
@@ -3205,7 +3205,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersPromote`(param_UserId int)
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersPromote`(param_UserId int)
 BEGIN
 DECLARE var_UserGroupId int;
 SELECT UserGroupId INTO var_UserGroupId FROM Users WHERE UserId = param_UserId;
@@ -3234,7 +3234,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersUpdate`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersUpdate`(
 	param_UserId int
 	,param_UserName varchar(50)
 	,param_UserProfile longtext
@@ -3280,7 +3280,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersUpdateEmail`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersUpdateEmail`(
 	param_UserId int
 	,param_UserEmail varchar(100)
 	,param_UserEmailPolicy int
@@ -3309,7 +3309,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 */ /*!50003 PROCEDURE `SPUsersUpdatePasswordResetGuid`(
+/*!50003 CREATE*/  /*!50003 PROCEDURE `SPUsersUpdatePasswordResetGuid`(
 	param_UserId int
 	,param_PasswordResetGuid varchar(100)
 	,param_PasswordResetGuidExpireDate datetime
@@ -3332,7 +3332,7 @@ DELIMITER ;
 -- Current Database: `forums`
 --
 
-USE `forums`;
+-- USE `forums`;
 
 --
 -- Final view structure for view `messagescomplete`
@@ -3347,7 +3347,6 @@ USE `forums`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `messagescomplete` AS select `m`.`topicid` AS `topicid`,`m`.`messageid` AS `messageid`,`m`.`messagebody` AS `messagebody`,`m`.`messagecreationdate` AS `messagecreationdate`,`m`.`messagelasteditdate` AS `messagelasteditdate`,`m`.`parentid` AS `parentid`,`m`.`userid` AS `userid`,`m`.`active` AS `active`,`u`.`username` AS `username`,`u`.`usersignature` AS `usersignature`,`u`.`usergroupid` AS `usergroupid`,`g`.`usergroupname` AS `usergroupname`,`u`.`userphoto` AS `userphoto`,`u`.`userregistrationdate` AS `userregistrationdate` from (((`messages` `m` join `users` `u` on((`u`.`userid` = `m`.`userid`))) join `usersgroups` `g` on((`g`.`usergroupid` = `u`.`usergroupid`))) left join `messages` `p` on(((`p`.`topicid` = `m`.`topicid`) and (`p`.`messageid` = `m`.`parentid`) and (`p`.`active` = 1)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -3366,7 +3365,6 @@ USE `forums`;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013  SQL SECURITY DEFINER */
 /*!50001 VIEW `topicscomplete` AS select `t`.`topicid` AS `TopicId`,`t`.`topictitle` AS `TopicTitle`,`t`.`topicshortname` AS `TopicShortName`,`t`.`topicdescription` AS `TopicDescription`,`t`.`topiccreationdate` AS `TopicCreationDate`,`t`.`topicviews` AS `TopicViews`,`t`.`topicreplies` AS `TopicReplies`,`t`.`userid` AS `UserId`,`t`.`topictags` AS `TopicTags`,`t`.`topicisclose` AS `TopicIsClose`,`t`.`topicorder` AS `TopicOrder`,`t`.`lastmessageid` AS `LastMessageId`,`u`.`username` AS `UserName`,`f`.`forumid` AS `ForumId`,`f`.`forumname` AS `ForumName`,`f`.`forumshortname` AS `ForumShortName` from ((`topics` `t` join `users` `u` on((`u`.`userid` = `t`.`userid`))) join `forums` `f` on((`f`.`forumid` = `t`.`forumid`))) where (`t`.`active` = 1) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -3381,4 +3379,4 @@ USE `forums`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-10-27 11:03:39
+-- Dump completed on 2011-11-03 12:09:20
