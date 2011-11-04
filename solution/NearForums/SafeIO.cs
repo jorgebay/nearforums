@@ -106,6 +106,12 @@ namespace NearForums
 			return File.Create(fileName);
 		}
 
+		public static bool File_Exists(string fileName)
+		{
+			fileName = fileName.ToLower();
+			return File.Exists(fileName);
+		}
+
 		/// <summary>
 		/// Opens a text file, reads all lines of the file, and then closes the file.
 		/// </summary>

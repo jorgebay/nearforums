@@ -25,5 +25,10 @@ namespace NearForums.Configuration
 				return (ReplacementItem)BaseGet(index);
 			}
 		}
+
+		public override bool IsReadOnly()
+		{
+			return false;
+		}
 	}
 }

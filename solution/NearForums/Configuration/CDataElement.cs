@@ -12,7 +12,7 @@ namespace NearForums.Configuration.Notifications
 	public class CDataElement
 		: CDataConfigurationElement
 	{
-		[ConfigurationProperty("value", IsRequired = true, IsKey = true)]
+		[ConfigurationProperty("value", IsRequired = true)]
 		[CDataConfigurationProperty]
 		public string Value
 		{
@@ -33,6 +33,26 @@ namespace NearForums.Configuration.Notifications
 		public override string ToString()
 		{
 			return this.Value;
+		}
+
+		protected override bool SerializeElement(System.Xml.XmlWriter writer, bool serializeCollectionKey)
+		{
+			return base.SerializeElement(writer, serializeCollectionKey);
+		}
+
+		protected override void PreSerialize(System.Xml.XmlWriter writer)
+		{
+			base.PreSerialize(writer);
+		}
+
+		protected override bool SerializeToXmlElement(System.Xml.XmlWriter writer, string elementName)
+		{
+			return base.SerializeToXmlElement(writer, elementName);
+		}
+
+		public override bool IsReadOnly()
+		{
+			return false;
 		}
 	}
 }

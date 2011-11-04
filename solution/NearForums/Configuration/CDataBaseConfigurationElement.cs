@@ -103,6 +103,10 @@ namespace NearForums
 			System.Xml.XmlWriter writer,
 			bool serializeCollectionKey)
 		{
+			if (writer == null)
+			{
+				return true;
+			}
 			bool returnValue;
 			if (string.IsNullOrEmpty(
 				_cDataConfigurationPropertyName))
