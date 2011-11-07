@@ -12,9 +12,11 @@ namespace NearForums.Configuration
 	public class SiteConfiguration : ConfigurationSection
 	{
 		#region Current
-
 		private static object lockCurrentLoad = new object();
 		private static SiteConfiguration config;
+		/// <summary>
+		/// Gets the site configuration from the configuration section "site". If applies overrides configuration with admin settings.
+		/// </summary>
 		public static SiteConfiguration Current
 		{
 			get
@@ -28,7 +30,10 @@ namespace NearForums.Configuration
 						{
 							throw new System.Configuration.ConfigurationErrorsException("Siteconfiguration not set.");
 						}
-						config.LoadSettings();
+						if (config.UseSettings)
+						{
+							config.LoadSettings();
+						}
 					}
 				}
 				return config;
@@ -114,6 +119,7 @@ namespace NearForums.Configuration
 			}
 		}
 
+		#region Timezone
 		[ConfigurationProperty("timeZoneOffset", IsRequired = false)]
 		private decimal? TimeZoneOffsetHours
 		{
@@ -136,6 +142,23 @@ namespace NearForums.Configuration
 					return null;
 				}
 				return new TimeSpan(0, Convert.ToInt32(this.TimeZoneOffsetHours * 60), 0);
+			}
+		} 
+		#endregion
+
+		/// <summary>
+		/// Determines if the application should store and retrieve admin settings, apart from the site configuration
+		/// </summary>
+		[ConfigurationProperty("useSettings", IsRequired = false, DefaultValue=true)]
+		private bool UseSettings
+		{
+			get
+			{
+				return (bool)this["useSettings"];
+			}
+			set
+			{
+				this["useSettings"] = value;
 			}
 		}
 
@@ -161,6 +184,9 @@ namespace NearForums.Configuration
 		}
 
 		#region Load settings
+		/// <summary>
+		/// Loads settings by overriding configuration with admin settings.
+		/// </summary>
 		protected virtual void LoadSettings()
 		{
 			var settingsFileName = CombinePath(SettingsSource);
@@ -192,6 +218,9 @@ namespace NearForums.Configuration
 		#endregion
 
 		#region Save settings
+		/// <summary>
+		/// Saves current settings.
+		/// </summary>
 		public void SaveSettings()
 		{ 
 			var settingsFileName = CombinePath(SettingsSource);
