@@ -162,12 +162,64 @@ namespace NearForums.Configuration
 			}
 		}
 
-		//[ConfigurationProperty("settingsSource", IsRequired = false, DefaultValue = @"content\settings.txt")]
+		[ConfigurationProperty("settingsSource", IsRequired = false, DefaultValue = @"content\settings.xml")]
 		public string SettingsSource
 		{
 			get
 			{
-				return @"content\settings.xml";
+				return (string)this["settingsSource"];
+			}
+			set
+			{
+				this["settingsSource"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Determines the path of localization files, relative to executing path. Example: content\localization\
+		/// </summary>
+		[ConfigurationProperty("localizationFolder", IsRequired = false, DefaultValue = @"content\localization\")]
+		public string LocalizationFolder
+		{
+			get
+			{
+				return (string)this["localizationFolder"];
+			}
+			set
+			{
+				this["localizationFolder"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the path on disk of the localization files. Example: c:\whatever\content\localization\
+		/// </summary>
+		public string LocalizationFullPath
+		{
+			get
+			{
+				return CombinePath(LocalizationFolder);
+			}
+		}
+
+		/// <summary>
+		/// Determines the path of localization files, relative to executing path. Example: content\localization\
+		/// </summary>
+		[ConfigurationProperty("cultureName", IsRequired = false, DefaultValue = "en-US")]
+		public string CultureName
+		{
+			get
+			{
+				var cultureName = (string)this["cultureName"];
+				if (String.IsNullOrWhiteSpace(cultureName))
+				{
+					return System.Globalization.CultureInfo.CurrentCulture.Name;
+				}
+				return cultureName;
+			}
+			set
+			{
+				this["cultureName"] = value;
 			}
 		}
 
