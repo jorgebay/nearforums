@@ -213,7 +213,7 @@ namespace NearForums.Configuration
 				var cultureName = (string)this["cultureName"];
 				if (String.IsNullOrWhiteSpace(cultureName))
 				{
-					return System.Globalization.CultureInfo.CurrentCulture.Name;
+					cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
 				}
 				return cultureName;
 			}

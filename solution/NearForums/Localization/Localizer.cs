@@ -20,7 +20,7 @@ namespace NearForums.Localization
 					lock (lockCurrentLoad)
 					{
 						var cultureName = SiteConfiguration.Current.CultureName;
-						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFullPath);
+						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFullPath + cultureName + ".po");
 					}
 				}
 				return _current;
@@ -57,14 +57,13 @@ namespace NearForums.Localization
 			set;
 		}
 
-		public Localizer() : this(null, null)
-		{
-
-		}
-
-		public Localizer(string cultureName, string filePath)
+		public Localizer()
 		{
 			_translations = new Dictionary<string, string>();
+		}
+
+		public Localizer(string cultureName, string filePath) : this()
+		{
 			CultureName = cultureName;
 			FilePath = filePath;
 		}
@@ -80,10 +79,23 @@ namespace NearForums.Localization
 
 		public string Get(string neutralValue)
 		{
-			//if contains key
-				//return value
-			//if not check if compiling debug 
-			throw new NotImplementedException();
+			if (neutralValue == null)
+			{
+				throw new ArgumentNullException("neutralValue");
+			}
+			if (_translations.ContainsKey(neutralValue.ToLowerInvariant()))
+			{
+				return _translations[neutralValue.ToLowerInvariant()];
+			}
+			return neutralValue;
+		}
+
+		public string this[string neutralValue]
+		{
+			get
+			{
+				return Get(neutralValue);
+			}
 		}
 	}
 }

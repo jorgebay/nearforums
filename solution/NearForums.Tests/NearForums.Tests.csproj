@@ -124,6 +124,7 @@
     <Compile Include="Fakes\FakeIdentity.cs" />
     <Compile Include="Fakes\FakePrincipal.cs" />
     <Compile Include="Controllers\ForumsControllerTest.cs" />
+    <Compile Include="LocalizationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\RoutingHelperTest.cs" />
     <Compile Include="Routing\StrictRouteTest.cs" />
