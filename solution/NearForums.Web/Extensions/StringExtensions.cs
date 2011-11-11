@@ -8,6 +8,7 @@ using System.Configuration;
 using System.IO;
 using HtmlAgilityPack;
 using System.Web;
+using System.Web.Mvc;
 
 namespace NearForums.Web.Extensions
 {
@@ -139,6 +140,11 @@ namespace NearForums.Web.Extensions
 			{
 				return Convert.ToInt32(value);
 			}
+		}
+
+		public static IHtmlString ToHtmlString(this string value)
+		{
+			return MvcHtmlString.Create(value);
 		}
 	}
 }

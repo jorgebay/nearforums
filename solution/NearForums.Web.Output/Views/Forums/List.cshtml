@@ -1,6 +1,6 @@
 ﻿@model List<ForumCategory>
 @{
-	ViewBag.Title = "Forums";
+	ViewBag.Title = T("Forums");
 }
 <div class="forumList">
 	<h1>@ViewBag.Title</h1>
@@ -11,9 +11,9 @@
 	{
 		<h2>@category.Name</h2>
 		<ul class="itemsHeader">
-			<li class="name">Forum</li>
-			<li class="topicCount">Topics</li>
-			<li class="replies">Posts</li>
+			<li class="name">@T("Forum")</li>
+			<li class="topicCount">@T("Topics")</li>
+			<li class="replies">@T("Posts")</li>
 		</ul>
 		<ul class="items">
 		@foreach (Forum forum in category.Forums)
@@ -23,9 +23,9 @@
 				<h3 class="name">
 					@Html.ActionLink(forum.Name, "Detail", new { forum = forum.ShortName })
 				</h3>
-				<div class="topicCount">@forum.TopicCount <span class="label">thread@(forum.TopicCount != 1 ? "s" : "") </span></div>
+				<div class="topicCount">@(forum.TopicCount != 1 ? T("{0} <span class=\"label\">threads</span>", forum.TopicCount) : T("1 <span class=\"label\">thread</span>"))</div>
 				<div class="separator">/ </div>
-				<div class="replies">@forum.MessageCount <span class="label">post@(forum.MessageCount != 1 ? "s" : "") </span></div>
+				<div class="replies">@(forum.MessageCount != 1 ? T("{0} <span class=\"label\">posts</span>", forum.MessageCount) : T("1 <span class=\"label\">post</span>"))</div>
 				<p class="description">@forum.Description</p>
 			</li>
 		}
@@ -33,6 +33,10 @@
 	}
 	@if (this.Model.Count == 0)
 	{
-		<p>No forums found. Create @Html.ActionLink("a forum", "Add").</p>
+		<p>
+			@T("No forums found"). 
+			<br />
+			@Html.ActionLink(T("Create a forum").ToString(), "Add").
+		</p>
 	}
 </div>

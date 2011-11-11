@@ -20,7 +20,7 @@ namespace NearForums.Localization
 					lock (lockCurrentLoad)
 					{
 						var cultureName = SiteConfiguration.Current.CultureName;
-						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFullPath + cultureName + ".po");
+						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFullPath + cultureName.ToLowerInvariant() + ".po");
 					}
 				}
 				return _current;
@@ -77,24 +77,40 @@ namespace NearForums.Localization
 			_translations = LocalizationParser.ParseFile(FilePath);
 		}
 
-		public string Get(string neutralValue)
+		public virtual string Get(string neutralValue)
 		{
 			if (neutralValue == null)
 			{
 				throw new ArgumentNullException("neutralValue");
 			}
-			if (_translations.ContainsKey(neutralValue.ToLowerInvariant()))
+			if (_translations.ContainsKey(neutralValue))
 			{
-				return _translations[neutralValue.ToLowerInvariant()];
+				return _translations[neutralValue]; 
 			}
 			return neutralValue;
 		}
 
-		public string this[string neutralValue]
+		public virtual string Get(string neutralValue, params object[] args)
+		{
+			return String.Format(Get(neutralValue), args);
+		}
+
+		public virtual string this[string neutralValue]
 		{
 			get
 			{
 				return Get(neutralValue);
+			}
+		}
+
+		/// <summary>
+		/// Gets the number of loaded translations
+		/// </summary>
+		public virtual int Count
+		{
+			get
+			{
+				return _translations.Count;
 			}
 		}
 	}

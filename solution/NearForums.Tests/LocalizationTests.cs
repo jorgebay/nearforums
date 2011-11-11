@@ -50,13 +50,14 @@ namespace NearForums.Tests
 		public void Localizer_Load_Test()
 		{
 			var cultureFilePath = ConfigurationManager.AppSettings["FakeApplicationRoot"];
-			cultureFilePath = Path.Combine(cultureFilePath, @"content\localization\es-es.po");
+			cultureFilePath = Path.Combine(cultureFilePath, @"content\localization\en-US.po");
 
-			var localizer = new Localizer("es-ES", cultureFilePath);
+			var localizer = new Localizer("en-US", cultureFilePath);
 			localizer.LoadCulture();
 
-			Assert.AreEqual("Eliminar", localizer.Get("Delete"));
-			Assert.IsTrue(localizer.Get("Multiline").Contains("\n"));
+			Assert.IsTrue(localizer.Count > 0);
+			Assert.AreEqual("Delete", localizer.Get("Delete"));
+			Assert.AreEqual("Forum", localizer.Get("Forum"));
 		}
 	}
 }

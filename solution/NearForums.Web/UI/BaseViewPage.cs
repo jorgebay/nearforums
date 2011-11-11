@@ -8,6 +8,7 @@ using NearForums.Web.State;
 using System.Web;
 using NearForums.Configuration;
 using NearForums.Web.Extensions;
+using NearForums.Localization;
 
 namespace NearForums.Web.UI
 {
@@ -21,8 +22,9 @@ namespace NearForums.Web.UI
 
 		protected override void InitializePage()
 		{
-			this.Session = new SessionWrapper(this.ViewContext.HttpContext.Session);
-			this.Cache = new CacheWrapper(this.ViewContext.HttpContext.Cache);
+			Session = new SessionWrapper(this.ViewContext.HttpContext.Session);
+			Cache = new CacheWrapper(this.ViewContext.HttpContext.Cache);
+			Localizer = Localizer.Current;
 			base.InitializePage();
 		}
 		#endregion
@@ -35,6 +37,12 @@ namespace NearForums.Web.UI
 		}
 
 		public new CacheWrapper Cache
+		{
+			get;
+			set;
+		}
+
+		public virtual Localizer Localizer
 		{
 			get;
 			set;
@@ -115,6 +123,26 @@ namespace NearForums.Web.UI
 		protected ViewDataDictionary CreateViewData(object values)
 		{
 			return ViewDataExtensions.CreateViewData(values);
+		}
+
+		public virtual IHtmlString T(string neutralValue)
+		{
+			var text = neutralValue;
+			if (Localizer != null)
+			{
+				text = Localizer[neutralValue];
+			}
+			return text.ToHtmlString(); 
+		}
+
+		public virtual IHtmlString T(string neutralValue, params object[] args)
+		{
+			var text = neutralValue;
+			if (Localizer != null)
+			{
+				text = Localizer.Get(neutralValue, args);
+			}
+			return text.ToHtmlString();
 		}
 
 		public override void Execute()

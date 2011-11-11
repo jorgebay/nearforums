@@ -42,7 +42,6 @@ namespace NearForums.Localization
 					#region Add previous key / value
 					if (entryKey != "" && !entries.ContainsKey(entryKey))
 					{
-						entryKey = entryKey.ToLowerInvariant();
 						entries.Add(entryKey, entryValue);
 					}
 					#endregion
@@ -72,7 +71,6 @@ namespace NearForums.Localization
 					#region Add previous key / value
 					if (entryKey != "" && !entries.ContainsKey(entryKey))
 					{
-						entryKey = entryKey.ToLowerInvariant();
 						entries.Add(entryKey, entryValue);
 					}
 					#endregion
@@ -122,7 +120,8 @@ namespace NearForums.Localization
 		public static string Unescape(string value)
 		{
 			value = Regex.Replace(value, "\\\\n", "\n");
-			return value;
+			value = Regex.Replace(value, "\\\\\"", "\"");
+			return value; 
 		}
 	}
 }

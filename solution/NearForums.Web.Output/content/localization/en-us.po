@@ -1,0 +1,43 @@
+﻿# Nearforums PO file - es-ES
+# PO File format: http://www.gnu.org/s/hello/manual/gettext/PO-Files.html
+# This file is distributed under the MIT license: http://nearforums.codeplex.com/license
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Forums"
+msgstr "Forums"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Forum"
+msgstr "Forum"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Topics"
+msgstr "Topics"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Posts"
+msgstr "Posts"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "{0} <span class=\"label\">threads</span>"
+msgstr "{0} <span class=\"label\">threads</span>"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "1 <span class=\"label\">thread</span>"
+msgstr "1 <span class=\"label\">thread</span>"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "{0} <span class=\"label\">posts</span>"
+msgstr "{0} <span class=\"label\">posts</span>"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "1 <span class=\"label\">post</span>"
+msgstr "1 <span class=\"label\">post</span>"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "No forums found"
+msgstr "No forums found"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Create a forum"
+msgstr "Create a forum"
