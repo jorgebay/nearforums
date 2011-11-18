@@ -12,6 +12,7 @@ using System.Security;
 using NearForums.Configuration;
 using System.Collections;
 using System.Linq.Expressions;
+using NearForums.Localization;
 
 namespace NearForums.Web.Extensions
 {
@@ -265,6 +266,44 @@ namespace NearForums.Web.Extensions
 			{
 				throw new ArgumentException("Url must start tilde character '~' or be absolute.", "url");
 			}
+		}
+		#endregion
+
+		#region ActionLink Localized
+		/// <summary>
+		/// Returns an anchor element (a element) that contains the virtual path of the specified action, with localized anchor text.
+		/// </summary>
+		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName, string controllerName)
+		{
+			var linkText = Localizer.Current.Get(neutralLinkText);
+			return htmlHelper.ActionLink(linkText, actionName, controllerName);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) that contains the virtual path of the specified action, with localized anchortext.
+		/// </summary>
+		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName)
+		{
+			var linkText = Localizer.Current.Get(neutralLinkText);
+			return htmlHelper.ActionLink(linkText, actionName);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) that contains the virtual path of the specified action, with localized anchor text.
+		/// </summary>
+		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName, object routeValues)
+		{
+			var linkText = Localizer.Current.Get(neutralLinkText);
+			return htmlHelper.ActionLink(linkText, actionName, routeValues);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) that contains the virtual path of the specified action, with localized anchor text.
+		/// </summary>
+		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName, string controllerName , object routeValues, object htmlAttributes)
+		{
+			var linkText = Localizer.Current.Get(neutralLinkText);
+			return htmlHelper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
 		}
 		#endregion
 	}

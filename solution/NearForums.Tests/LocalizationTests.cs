@@ -14,14 +14,6 @@ namespace NearForums.Tests
 	public class LocalizationTests
 	{
 		[TestMethod]
-		public void LocalizationParser_GetValue_Test()
-		{
-			Assert.AreEqual("key", LocalizationParser.GetValue("msgid \"key\""));
-			Assert.AreEqual("value", LocalizationParser.GetValue("\"value\""));
-			Assert.AreEqual("This is a \\\"quoted\\\" value", LocalizationParser.GetValue("\"This is a \\\"quoted\\\" value\""));
-		}
-
-		[TestMethod]
 		public void LocalizationParser_ParseString_Test()
 		{
 			string entriesText;
