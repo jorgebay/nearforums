@@ -41,3 +41,35 @@ msgstr "No forums found"
 #: NearForums.Web.Output\Views\Forums\List.cshtml
 msgid "Create a forum"
 msgstr "Create a forum"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "{0} - Most viewed"
+msgstr "{0} - Most viewed"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "{0} - Latest activity"
+msgstr "{0} - Latest activity"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "No threads for this forum."
+msgstr "No threads for this forum."
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "Previous"
+msgstr "Previous"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "Next"
+msgstr "Next"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "Post a thread >>"
+msgstr "Post a thread >>"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "Edit"
+msgstr "Edit"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "Manage forums"
+msgstr "Manage forums"

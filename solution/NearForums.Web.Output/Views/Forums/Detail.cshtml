@@ -3,11 +3,11 @@
 	ViewBag.Title = Model.Name;
 	if (IsAction("MostViewedTopics"))
 	{
-		ViewBag.Title += " - Most viewed";
+		ViewBag.Title = T("{0} - Most viewed", Model.Name);
 	}
 	else if (IsAction("LatestTopics"))
 	{
-		ViewBag.Title += " - Latest activity";
+		ViewBag.Title = T("{0} - Latest activity", Model.Name);
 	}
 }
 @section Head
@@ -19,7 +19,7 @@
 }
 <div class="forumDetail">
 	<ul class="path floatContainer">
-		<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	</ul>
 	<h1>@ViewBag.Title</h1>
 	@Html.Partial("ForumOptions")
@@ -33,18 +33,18 @@
 	}
 	else
 	{
-		<p class="warning">No threads for this forum.</p>
+		<p class="warning">@T("No threads for this forum.")</p>
 	}
-	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], "Previous", "Next")
+	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], T("Previous").ToString(), T("Next").ToString())
 	@Html.Partial("TagCloud", ViewData.Get<List<WeightTag>>("Tags"))
-	<p class="action">@Html.ActionLink("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
+	<p class="action">@Html.ActionLinkLocalized("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
 	
 	@if (User != null && User.Group >= UserGroup.Moderator)
 	{
 	<div class="toolbar floatContainer">
 		<ul>
-			<li class="edit">@Html.ActionLink("Edit", "Edit", new{forum=Model.ShortName})</li>
-			<li class="manage">@Html.ActionLink("Manage forums", "Manage")</li>
+			<li class="edit">@Html.ActionLinkLocalized("Edit", "Edit", new { forum = Model.ShortName })</li>
+			<li class="manage">@Html.ActionLinkLocalized("Manage forums", "Manage")</li>
 		</ul>
 	</div>
 	}
