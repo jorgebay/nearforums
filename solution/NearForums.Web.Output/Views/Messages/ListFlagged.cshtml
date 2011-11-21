@@ -1,13 +1,13 @@
 ﻿@model List<Topic>
 @{
-    ViewBag.Title = "Flagged messages";
+    ViewBag.Title = T("Flagged messages");
 }
 @section Head{
 	@Html.Script("~/scripts/common.js")
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 @if (Model.Count > 0)
@@ -26,15 +26,15 @@
 							@Html.ActionLink("#" + m.Id, "ShortUrl", "Topics", null, null, "msg" + m.Id, new{id=t.Id}, null)
 						</strong>
 						<span class="userSep">
-						by
+						@T("by")
 						</span>
 						<strong class="userName">@Html.ActionLink(m.User.UserName, "Detail", "Users", new{id=m.User.Id}, null)</strong>
 					</div>
 					<div class="msgBody">@Html.Raw(m.Body)</div>
 					<div class="msgOptions">
-						@Html.ActionLink("reply", "Reply", "Topics", new{msg=m.Id}, new{rel="nofollow", @class="first"})
-						@Html.Link("remove", "#", new{onclick="return deleteMessage(" + m.Id + ", '" + Url.Action("Delete", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
-						@Html.Link("clear flags", "#", new{title="Remove all flags from the message", onclick="return clearFlags(" + m.Id + ", '" + Url.Action("ClearFlags", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
+						@Html.ActionLinkLocalized("reply", "Reply", "Topics", new{msg=m.Id}, new{rel="nofollow", @class="first"})
+						@Html.Link(S("remove"), "#", new{onclick="return deleteMessage(" + m.Id + ", '" + Url.Action("Delete", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
+						@Html.Link(S("clear flags"), "#", new{title="Remove all flags from the message", onclick="return clearFlags(" + m.Id + ", '" + Url.Action("ClearFlags", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
 					</div>
 				</li>
 			}
@@ -51,7 +51,7 @@
 
 	function clearFlags(mid, url, sender)
 	{
-		if (confirm("Are you sure you want to clear all flags from the message?"))
+		if (confirm('@T("Are you sure you want to clear all flags from the message?")'))
 		{
 			$.post(url, { mid: mid }, function (data)
 			{

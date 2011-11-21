@@ -1,27 +1,27 @@
 ﻿@model PageContent
 @{
-	ViewBag.Title = ViewData.WriteIf("IsEdit", "Edit page", "Create a new content page");
+	ViewBag.Title = ViewData.WriteIf("IsEdit", S("Edit page"), S("Create a new content page"));
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
-	<li>@Html.ActionLink("Pages", "List")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	<li>@Html.ActionLinkLocalized("Pages", "List")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
+@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 {
-	{"Title", "Page title must not be blank."}
-	,{"Body", "Page content must not be blank."}
+	{"Title", S("Page title must not be blank.")}
+	,{"Body", S("Page content must not be blank.")}
 	,{"ShortName", ""}
 }, null)
 @using (Html.BeginForm())
 {
 	<div class="formItem floatContainer">
-		@Html.LabelFor(p => p.Title, "Title")
+		@Html.LabelFor(p => p.Title, S("Title"))
 		@Html.TextBoxFor(p => p.Title)
 	</div>
 	<div class="formItem textarea floatContainer">
-		@Html.LabelFor(p => p.Body, "Content of the page")
+		@Html.LabelFor(p => p.Body, S("Content of the page"))
 		@Html.TextAreaFor(p => p.Body)
 		@Html.Partial("EditorScripts", CreateViewData(new{Name="Body"}))
 	</div>

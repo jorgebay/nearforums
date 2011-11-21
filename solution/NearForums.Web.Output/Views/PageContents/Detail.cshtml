@@ -3,7 +3,7 @@
     ViewBag.Title = Model.Title;
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 <div class="pageContent">
@@ -14,8 +14,8 @@
 	{
 	<div class="toolbar floatContainer">
 		<ul>
-			<li class="edit">@Html.ActionLink("Edit", "Edit", new{name=Model.ShortName})</li>
-			<li class="manage">@Html.ActionLink("Manage pages", "List")</li>
+			<li class="edit">@Html.ActionLinkLocalized("Edit", "Edit", new{name=Model.ShortName})</li>
+			<li class="manage">@Html.ActionLinkLocalized("Manage pages", "List")</li>
 		</ul>
 	</div>
 	}

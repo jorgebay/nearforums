@@ -1,10 +1,10 @@
 ﻿@model List<PageContent>
 @{
-    ViewBag.Title = "Content Pages";
+    ViewBag.Title = T("Content Pages");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 @if (this.Model.Count > 0)
@@ -13,18 +13,18 @@
 	@foreach (PageContent p in this.Model)
 	{
 		<li>
-			<span class="actions">@Html.ActionLink("Edit", "Edit", new{name=p.ShortName}) <a href="#" onclick="return deletePage('@Url.Action("Delete", new{name=p.ShortName})', '@p.Title', this);">Delete</a></span>
+			<span class="actions">@Html.ActionLinkLocalized("Edit", "Edit", new{name=p.ShortName}) <a href="#" onclick="return deletePage('@Url.Action("Delete", new{name=p.ShortName})', '@p.Title', this);">@T("Delete")</a></span>
 			@Html.ActionLink(p.Title, "Detail", new{name=p.ShortName})
 		</li>
 	}
 	</ul>
 }
-<p>@Html.ActionLink("Create a new content page >>", "Add")</p>
+<p>@Html.ActionLinkLocalized("Create a new content page >>", "Add")</p>
 
 <script type="text/javascript">
 	function deletePage(url, title, sender)
 	{
-		if (confirm("Are you sure you want to delete the page '" + title + "'?"))
+		if (confirm('@T("Are you sure you want to delete the page {0}?")'.replace('{0}', title)))
 		{
 			$.post(url, {}, function (data)
 			{
