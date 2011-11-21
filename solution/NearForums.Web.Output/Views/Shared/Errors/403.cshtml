@@ -1,9 +1,8 @@
 ﻿@{
-	ViewBag.Title = "Forbidden";
+	ViewBag.Title = T("Forbidden");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p>The page you requested is forbidden.</p>
-<p>Go to <a href="/">Homepage&gt;&gt;</a></p>
+<p>@T("The page you requested is forbidden.")</p>

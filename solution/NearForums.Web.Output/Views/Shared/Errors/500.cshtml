@@ -1,13 +1,10 @@
 ﻿@{
-	ViewBag.Title = "An error occurred while processing your request";
+	ViewBag.Title = T("An error occurred while processing your request");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
-<h1>An error occurred</h1>
-<br />
-<p>An error occurred on the server when processing your request.</p>
-<p>The error detail was sent to our support team. </p>
-<p>Sorry for the inconvenience.</p>
+<h1>@T("An error occurred")</h1>
+<p>@T("An error occurred on the server when processing your request. <br />The error detail was sent to our support team.<br />Sorry for the inconvenience.")</p>
 <br />
 <p>Go to the <a href="/">homepage</a></p>
