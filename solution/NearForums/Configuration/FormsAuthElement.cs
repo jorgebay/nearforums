@@ -34,5 +34,21 @@ namespace NearForums.Configuration
 				return this.Identifier;
 			}
 		}
+
+		/// <summary>
+		/// Determines the expiration time out (in hours) of the reset password link.
+		/// </summary>
+		[ConfigurationProperty("timeToExpireResetPasswordLink", IsRequired = true)]
+		public int TimeToExpireResetPasswordLink
+		{
+			get
+			{
+				return (int)this["timeToExpireResetPasswordLink"];
+			}
+			set
+			{
+				this["timeToExpireResetPasswordLink"] = value;
+			}
+		}
 	}
 }
