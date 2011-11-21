@@ -1,10 +1,10 @@
 ﻿@model Forum
 @{
-    ViewBag.Title = Model.Name + " - Unanswered threads";
+	ViewBag.Title = T("{0} - Unanswered threads", Model.Name);
 }	
 <div class="forumDetail">
 	<ul class="path floatContainer">
-		<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	</ul>
 	<h1>@ViewBag.Title</h1>
 	@Html.Partial("ForumOptions")
@@ -14,7 +14,6 @@
 	}
 	else
 	{
-		<p class="warning">No unanswered threads for this forum.</p>
+		<p class="warning">@T("No unanswered threads for this forum.")</p>
 	}
-
 </div>

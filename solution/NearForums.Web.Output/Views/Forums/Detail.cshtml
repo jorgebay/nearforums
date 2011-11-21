@@ -35,7 +35,7 @@
 	{
 		<p class="warning">@T("No threads for this forum.")</p>
 	}
-	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], T("Previous").ToString(), T("Next").ToString())
+	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], S("Previous"), S("Next"))
 	@Html.Partial("TagCloud", ViewData.Get<List<WeightTag>>("Tags"))
 	<p class="action">@Html.ActionLinkLocalized("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
 	

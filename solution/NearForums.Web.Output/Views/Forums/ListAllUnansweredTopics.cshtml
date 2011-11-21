@@ -1,11 +1,11 @@
 ﻿@model List<Topic>
 @{
-	ViewBag.Title = "Unanswered Threads";
+	ViewBag.Title = T("Unanswered Threads");
 }
 <div class="listUnansweredAll">
 	<ul class="path floatContainer">
-		<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-		<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 	</ul>
 	<h1>@ViewBag.Title</h1>
 	@if (this.Model.Count > 0)
@@ -16,13 +16,13 @@
 		{
 			<li>
 				@Html.ActionLink(t.Forum.Name, "Detail", "Forums", new{forum=t.Forum.ShortName}, null) &gt; @Html.ActionLink(t.Title, "ShortUrl", "Topics", new{id=t.Id}, null)
-				<span class="details"><strong>@Html.Date(t.Date)</strong> / @t.Views views</span>
+				<span class="details"><strong>@Html.Date(t.Date)</strong> / @t.Views @(t.Views != 1 ? T("views") : T("view"))</span>
 			</li>
 		}
 		</ul>
 	}
 	else
 	{
-		<p class="warning">No unanswered threads, for now :)</p>
+		<p class="warning">@T("No unanswered threads, for now :)")</p>
 	}
 </div>

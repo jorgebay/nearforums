@@ -23,9 +23,9 @@
 				<h3 class="name">
 					@Html.ActionLink(forum.Name, "Detail", new { forum = forum.ShortName })
 				</h3>
-				<div class="topicCount">@(forum.TopicCount != 1 ? T("{0} <span class=\"label\">threads</span>", forum.TopicCount) : T("1 <span class=\"label\">thread</span>"))</div>
+				<div class="topicCount">@forum.TopicCount <span class="label">@(forum.TopicCount != 1 ? T("threads") : T("thread"))</span></div>
 				<div class="separator">/ </div>
-				<div class="replies">@(forum.MessageCount != 1 ? T("{0} <span class=\"label\">posts</span>", forum.MessageCount) : T("1 <span class=\"label\">post</span>"))</div>
+				<div class="replies">@forum.MessageCount  <span class="label">@(forum.MessageCount != 1 ? T("posts") : T("post"))</span></div>
 				<p class="description">@forum.Description</p>
 			</li>
 		}
@@ -34,9 +34,9 @@
 	@if (this.Model.Count == 0)
 	{
 		<p>
-			@T("No forums found"). 
+			@T("No forums found.")
 			<br />
-			@Html.ActionLink(T("Create a forum").ToString(), "Add").
+			@Html.ActionLink(T("Create a forum").ToString(), "Add")
 		</p>
 	}
 </div>

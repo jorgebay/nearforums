@@ -1,16 +1,16 @@
 ﻿@model Forum
 @{
-	ViewBag.Title = "Threads tagged \"" + ViewData["Tag"] + "\"";
+	ViewBag.Title = T("Threads tagged \"{0}\"", ViewData["Tag"]);
 }
 <div class="forumDetail">
 	<ul class="path floatContainer">
-		<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-		<li>@Html.ActionLink(Model.Name, "Detail", "Forums", new{forum=Model.ShortName}, null)</li>
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized(Model.Name, "Detail", "Forums", new{forum=Model.ShortName}, null)</li>
 	</ul>
 	<h1>@ViewBag.Title</h1>
 @{	
 	PagedList<Topic> topics = new PagedList<Topic>(Model.Topics, this.PageIndex, Config.UI.TopicsPerPage);
 }
 	@Html.Partial("ForumTopicList", topics)
-	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, topics.Count, "Previous", "Next")
+	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, topics.Count, S("Previous"), S("Next"))
 </div>

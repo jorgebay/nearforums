@@ -300,10 +300,19 @@ namespace NearForums.Web.Extensions
 		/// <summary>
 		/// Returns an anchor element (a element) that contains the virtual path of the specified action, with localized anchor text.
 		/// </summary>
-		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName, string controllerName , object routeValues, object htmlAttributes)
+		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
 		{
 			var linkText = Localizer.Current.Get(neutralLinkText);
 			return htmlHelper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
+		}
+
+		/// <summary>
+		/// Returns an anchor element (a element) that contains the virtual path of the specified action, with localized anchor text.
+		/// </summary>
+		public static MvcHtmlString ActionLinkLocalized(this HtmlHelper htmlHelper, string neutralLinkText, string actionName, object routeValues, object htmlAttributes)
+		{
+			var linkText = Localizer.Current.Get(neutralLinkText);
+			return htmlHelper.ActionLink(linkText, actionName, routeValues, htmlAttributes);
 		}
 		#endregion
 	}

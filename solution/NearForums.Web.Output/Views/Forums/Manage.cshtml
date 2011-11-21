@@ -1,9 +1,9 @@
 ﻿@{
-	ViewBag.Title = "Manage forums";
+	ViewBag.Title = T("Manage forums");
 }
 	<ul class="path floatContainer">
-		<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-		<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 	</ul>
     <h1>@ViewBag.Title</h1>
     @{Html.BeginForm(null, null, FormMethod.Post, new{@id="manageForm"});}
@@ -16,8 +16,8 @@
 		{
 			<li>
 				<span class="actions">
-					@Html.ActionLink("Edit", "Edit", "Forums", new{forum=f.ShortName}, null)
-					<a href="#" onclick="return deleteForum('@(f.ShortName)');">Delete</a>
+					@Html.ActionLinkLocalized("Edit", "Edit", "Forums", new{forum=f.ShortName}, null)
+					<a href="#" onclick="return deleteForum('@(f.ShortName)');">@T("Delete")</a>
 				</span>
 				 @Html.ActionLink(@category.Name + " > " + f.Name, "Detail", "Forums", new{forum=f.ShortName}, null)
 			</li>
@@ -25,11 +25,11 @@
 	}
 	</ul>
 	@{Html.EndForm();}
-	<p class="action">@Html.ActionLink("Create a new forum >>", "Add", "Forums")</p>
+	<p class="action">@Html.ActionLinkLocalized("Create a new forum >>", "Add", "Forums")</p>
 	<script type="text/javascript">
 		function deleteForum(name)
 		{
-			if (confirm("Are you sure you want to delete this forum?.\nAll threads and posts of this forum will not be accessible."))
+			if (confirm('@T("Are you sure you want to delete this forum?.\\nAll threads and posts of this forum will not be accessible.")'))
 			{
 				$("#shortName").val(name);
 				$('#manageForm').attr('action', '@(Url.Action("Delete", "Forums"))').submit();

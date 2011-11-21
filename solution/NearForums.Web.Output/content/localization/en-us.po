@@ -2,46 +2,6 @@
 # PO File format: http://www.gnu.org/s/hello/manual/gettext/PO-Files.html
 # This file is distributed under the MIT license: http://nearforums.codeplex.com/license
 
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "Forums"
-msgstr "Forums"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "Forum"
-msgstr "Forum"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "Topics"
-msgstr "Topics"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "Posts"
-msgstr "Posts"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "{0} <span class=\"label\">threads</span>"
-msgstr "{0} <span class=\"label\">threads</span>"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "1 <span class=\"label\">thread</span>"
-msgstr "1 <span class=\"label\">thread</span>"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "{0} <span class=\"label\">posts</span>"
-msgstr "{0} <span class=\"label\">posts</span>"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "1 <span class=\"label\">post</span>"
-msgstr "1 <span class=\"label\">post</span>"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "No forums found"
-msgstr "No forums found"
-
-#: NearForums.Web.Output\Views\Forums\List.cshtml
-msgid "Create a forum"
-msgstr "Create a forum"
-
 #: NearForums.Web.Output\Views\Forums\Detail.cshtml
 msgid "{0} - Most viewed"
 msgstr "{0} - Most viewed"
@@ -49,6 +9,10 @@ msgstr "{0} - Most viewed"
 #: NearForums.Web.Output\Views\Forums\Detail.cshtml
 msgid "{0} - Latest activity"
 msgstr "{0} - Latest activity"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "Forums"
+msgstr "Forums"
 
 #: NearForums.Web.Output\Views\Forums\Detail.cshtml
 msgid "No threads for this forum."
@@ -73,3 +37,171 @@ msgstr "Edit"
 #: NearForums.Web.Output\Views\Forums\Detail.cshtml
 msgid "Manage forums"
 msgstr "Manage forums"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Edit forum"
+msgstr "Edit forum"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Create a forum"
+msgstr "Create a forum"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Admin"
+msgstr "Admin"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Description must not be blank."
+msgstr "Description must not be blank."
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Forum name must not be blank."
+msgstr "Forum name must not be blank."
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Category must not be blank."
+msgstr "Category must not be blank."
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Name"
+msgstr "Name"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Category"
+msgstr "Category"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "-Select a Category-"
+msgstr "-Select a Category-"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Message"
+msgstr "Message"
+
+#: NearForums.Web.Output\Views\Forums\ForumOptions.cshtml
+msgid "Most viewed threads"
+msgstr "Most viewed threads"
+
+#: NearForums.Web.Output\Views\Forums\ForumOptions.cshtml
+msgid "Latest activity"
+msgstr "Latest activity"
+
+#: NearForums.Web.Output\Views\Forums\ForumOptions.cshtml
+msgid "Unanswered threads"
+msgstr "Unanswered threads"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "Title"
+msgstr "Title"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "Replies"
+msgstr "Replies"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "Views"
+msgstr "Views"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "Last post"
+msgstr "Last post"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "by"
+msgstr "by"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "replies"
+msgstr "replies"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "reply"
+msgstr "reply"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "views"
+msgstr "views"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "view"
+msgstr "view"
+
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
+msgid "No posts"
+msgstr "No posts"
+
+#: NearForums.Web.Output\Views\Forums\LatestAllTopics.cshtml
+msgid "Latest threads on all forums"
+msgstr "Latest threads on all forums"
+
+#: NearForums.Web.Output\Views\Forums\LatestAllTopics.cshtml
+msgid "Latest threads on all forums at {0}"
+msgstr "Latest threads on all forums at {0}"
+
+#: NearForums.Web.Output\Views\Forums\LatestTopicsRss.cshtml
+msgid "Latest threads on '{0}' forum"
+msgstr "Latest threads on '{0}' forum"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Forum"
+msgstr "Forum"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Topics"
+msgstr "Topics"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Posts"
+msgstr "Posts"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "threads"
+msgstr "threads"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "thread"
+msgstr "thread"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "posts"
+msgstr "posts"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "post"
+msgstr "post"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "No forums found."
+msgstr "No forums found."
+
+#: NearForums.Web.Output\Views\Forums\ListAllUnansweredTopics.cshtml
+msgid "Unanswered Threads"
+msgstr "Unanswered Threads"
+
+#: NearForums.Web.Output\Views\Forums\ListAllUnansweredTopics.cshtml
+msgid "No unanswered threads, for now :)"
+msgstr "No unanswered threads, for now :)"
+
+#: NearForums.Web.Output\Views\Forums\ListUnansweredTopics.cshtml
+msgid "{0} - Unanswered threads"
+msgstr "{0} - Unanswered threads"
+
+#: NearForums.Web.Output\Views\Forums\ListUnansweredTopics.cshtml
+msgid "No unanswered threads for this forum."
+msgstr "No unanswered threads for this forum."
+
+#: NearForums.Web.Output\Views\Forums\Manage.cshtml
+msgid "Delete"
+msgstr "Delete"
+
+#: NearForums.Web.Output\Views\Forums\Manage.cshtml
+msgid "Create a new forum >>"
+msgstr "Create a new forum >>"
+
+#: NearForums.Web.Output\Views\Forums\Manage.cshtml
+msgid "Are you sure you want to delete this forum?.\\nAll threads and posts of this forum will not be accessible."
+msgstr "Are you sure you want to delete this forum?.\\nAll threads and posts of this forum will not be accessible."
+
+#: NearForums.Web.Output\Views\Forums\TagDetail.cshtml
+msgid "Threads tagged \"{0}\""
+msgstr "Threads tagged \"{0}\""

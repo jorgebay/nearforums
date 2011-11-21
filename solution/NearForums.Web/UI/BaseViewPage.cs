@@ -125,24 +125,51 @@ namespace NearForums.Web.UI
 			return ViewDataExtensions.CreateViewData(values);
 		}
 
+		/// <summary>
+		/// Returns an HtmlString containing the localized value
+		/// </summary>
+		/// <param name="neutralValue">The text to be localized</param>
 		public virtual IHtmlString T(string neutralValue)
 		{
-			var text = neutralValue;
-			if (Localizer != null)
-			{
-				text = Localizer[neutralValue];
-			}
-			return text.ToHtmlString(); 
+			return S(neutralValue).ToHtmlString();
 		}
 
+		/// <summary>
+		/// Returns an HtmlString containing the localized value
+		/// </summary>
+		/// <param name="neutralValue">The text to be localized</param>
 		public virtual IHtmlString T(string neutralValue, params object[] args)
+		{
+			return S(neutralValue, args).ToHtmlString();
+		}
+
+
+		/// <summary>
+		/// Returns the localized representation of the string
+		/// </summary>
+		/// <param name="neutralValue">The text to be localized</param>
+		public virtual string S(string neutralValue, params object[] args)
 		{
 			var text = neutralValue;
 			if (Localizer != null)
 			{
 				text = Localizer.Get(neutralValue, args);
 			}
-			return text.ToHtmlString();
+			return text;
+		}
+
+		/// <summary>
+		/// Returns the localized representation of the string
+		/// </summary>
+		/// <param name="neutralValue">The text to be localized</param>
+		public virtual string S(string neutralValue)
+		{
+			var text = neutralValue;
+			if (Localizer != null)
+			{
+				text = Localizer[neutralValue];
+			}
+			return text; 
 		}
 
 		public override void Execute()

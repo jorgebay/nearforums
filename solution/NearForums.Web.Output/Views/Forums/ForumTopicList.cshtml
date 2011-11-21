@@ -2,10 +2,10 @@
 @if (Model.Count > 0)
 {
 	<ul class="itemsHeader">
-		<li class="name">Title</li>
-		<li class="replies">Replies</li>
-		<li class="views">Views</li>
-		<li class="lastPost">Last post</li>
+		<li class="name">@T("Title")</li>
+		<li class="replies">@T("Replies")</li>
+		<li class="views">@T("Views")</li>
+		<li class="lastPost">@T("Last post")</li>
 	</ul>
 	<ul class="items">
 		@foreach (Topic topic in Model)
@@ -14,19 +14,19 @@
 
 			<h3 class="name">
 				@Html.ActionLink(topic.Title, "Detail", "Topics", new { name = topic.ShortName, id = topic.Id, page = 0 }, new { @class="itemTitle"})
-				<span class="label">by</span>
+				<span class="label">@T("by")</span>
 				<span class="user">@Html.ActionLink(topic.User.UserName, "Detail", "Users", new {id=topic.User.Id }, null) </span>
 				<span class="separator">- </span>
 				<span class="date">@Html.Date(topic.Date)</span>
 			</h3>
-			<div class="replies">@topic.Replies <span class="label">@(topic.Replies != 1 ? "replies" : "reply") </span></div>
+			<div class="replies">@topic.Replies <span class="label">@(topic.Replies != 1 ? T("replies") : T("reply")) </span></div>
 			<div class="separator">/ </div>
-			<div class="views">@topic.Views <span class="label">view@(topic.Views != 1 ? "s" : "") </span></div>
+			<div class="views">@topic.Views <span class="label">@(topic.Views != 1 ? T("views") : T("view")) </span></div>
 			<div class="lastPost">
 				@if (topic.LastMessage != null)
 				{
-					<span class="label">Last post</span>
-					<span class="label2">by</span>
+					<span class="label">@T("Last post")</span>
+					<span class="label2">@T("by")</span>
 					<span class="user">@Html.ActionLink(topic.LastMessage.User.UserName, "Detail", "Users", new {id=topic.LastMessage.User.Id }, null) </span>
 					<span class="separator">- </span>
 					<span class="date">
@@ -37,7 +37,7 @@
 				}
 				else
 				{
-					<span class="nomsg">No posts</span>
+					<span class="nomsg">@T("No posts")</span>
 				}
 			</div>
 		</li>
