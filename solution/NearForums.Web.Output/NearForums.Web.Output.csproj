@@ -312,9 +312,6 @@
     <Content Include="Views\Templates\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Admin\Status.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Templates\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>

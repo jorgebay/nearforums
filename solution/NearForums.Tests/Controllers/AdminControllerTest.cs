@@ -72,19 +72,19 @@ namespace NearForums.Tests.Controllers
 		//
 		#endregion
 
-		[TestMethod]
-		public void AdminController_Status_Test()
-		{
-			AdminController controller = new AdminController();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
-			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
-			controller.Status();
+		//[TestMethod]
+		//public void AdminController_Status_Test()
+		//{
+		//    AdminController controller = new AdminController();
+		//    controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
+		//    controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
+		//    controller.Status();
 
-			Assert.IsNotNull(controller.ViewData["Debug"]);
-			Assert.IsNotNull(controller.ViewData["CustomErrors"]);
+		//    Assert.IsNotNull(controller.ViewData["Debug"]);
+		//    Assert.IsNotNull(controller.ViewData["CustomErrors"]);
 
-			Assert.IsNull(controller.ViewData["StatusError"]);
-		}
+		//    Assert.IsNull(controller.ViewData["StatusError"]);
+		//}
 
 
 		//[TestMethod]
