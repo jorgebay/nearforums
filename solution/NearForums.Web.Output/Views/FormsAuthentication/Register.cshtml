@@ -1,48 +1,48 @@
 ﻿@{
-    ViewBag.Title = "Register"; ;
+    ViewBag.Title = T("Register");
 }
 <ul class="path floatContainer">
-    <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+    <li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>()
+@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>()
 	{
 		{"email", new Dictionary<ValidationErrorType, string>(){
-			{ValidationErrorType.NullOrEmpty, "Email must not be blank."}
-			,{ValidationErrorType.Format, "Email format is not valid."}
-			,{ValidationErrorType.DuplicateNotAllowed, "A user account already exists for the email address you entered."}}}
+			{ValidationErrorType.NullOrEmpty, S("Email must not be blank.")}
+			,{ValidationErrorType.Format, S("Email format is not valid.")}
+			,{ValidationErrorType.DuplicateNotAllowed, S("A user account already exists for the email address you entered.")}}}
 		,{"userName", new Dictionary<ValidationErrorType, string>(){
-			{ValidationErrorType.NullOrEmpty, "Username must not be blank."}
-			,{ValidationErrorType.Format, "Username format is not valid."}
-			,{ValidationErrorType.DuplicateNotAllowed, "Username already in use"}}}
+			{ValidationErrorType.NullOrEmpty, S("Username must not be blank.")}
+			,{ValidationErrorType.Format, S("Username format is not valid.")}
+			,{ValidationErrorType.DuplicateNotAllowed, S("Username already in use")}}}
 		,{"password", new Dictionary<ValidationErrorType, string>(){
-			{ValidationErrorType.NullOrEmpty, "Password must not be blank."}
-			,{ValidationErrorType.Format, "Password format is not valid."}
-			,{ValidationErrorType.CompareNotMatch, "Password does not match the confirm password."}}}
+			{ValidationErrorType.NullOrEmpty, S("Password must not be blank.")}
+			,{ValidationErrorType.Format, S("Password format is not valid.")}
+			,{ValidationErrorType.CompareNotMatch, S("Password does not match the confirm password.")}}}
 	}, null)
 @using (Html.BeginForm())
 {
     <fieldset>
-		<legend>Use the form below to create a new account</legend>
+		<legend>@T("Use the form below to create a new account")</legend>
 		<div class="formItem floatContainer">
-			<label for="username">Username</label>
+			<label for="username">@T("Username")</label>
 			@Html.TextBox("username")
 		</div>
 		<div class="formItem floatContainer">
-			<label for="email">Email</label>
+			<label for="email">@T("Email")</label>
 			@Html.TextBox("email")
 		</div>
 		<div class="formItem floatContainer">
-			<label for="password">Password</label>
+			<label for="password">@T("Password")</label>
 			@Html.Password("password")
-			<span class="note">Passwords are required to be a minimum of @ViewData["PasswordLength"] characters in length.</span>
+			<span class="note">@T("Passwords are required to be a minimum of {0} characters in length.", ViewData["PasswordLength"])</span>
 		</div>
 		<div class="formItem floatContainer">
-			<label for="email">Confirm Password:</label>
+			<label for="email">@T("Confirm Password")</label>
 			@Html.Password("confirmPassword")
 		</div>
 		<div class="formItem buttons">
-			<input type="submit" class="button" value="Create a new account" />
+			<input type="submit" class="button" value="@T("Create a new account")" />
 		</div>
     </fieldset>
 }

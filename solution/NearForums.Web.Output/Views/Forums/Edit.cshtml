@@ -8,7 +8,7 @@
 	<li>@Html.ActionLinkLocalized("Manage forums", "Manage", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
+@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 	{
 		{"Description", S("Description must not be blank.")}
 		,{"Name", S("Forum name must not be blank.")}
@@ -31,7 +31,7 @@
 		@Html.TextArea("description")
 	</div>
 	<div class="formItem buttons">
-		<input type="submit" value="Send" />
+		<input type="submit" value="@T("Send")" />
 	</div>
 </fieldset>
 @{Html.EndForm();}

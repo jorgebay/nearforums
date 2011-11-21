@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Sign in";
+    ViewBag.Title = T("Sign in");
 }
 <ul class="path floatContainer">
-    <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+    <li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <div id="login" class="floatContainer">
 	@if (this.User == null)
@@ -11,19 +11,18 @@
 		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
 		{
 			<div class="membership">
-				<h2>Sign in using your existing forum account</h2>
+				<h2>@T("Sign in using your existing forum account")</h2>
 				@Html.Partial("~/Views/FormsAuthentication/LoginForm.cshtml")
 			</div>
 		}
 		if (Config.AuthorizationProviders.Facebook.IsDefined)
 		{
 			<div class="facebook">
-				<h2>Sign in with your Facebook account</h2>
+				<h2>@T("Sign in with your Facebook account")</h2>
 				<p class="button">@Html.Partial("ButtonFacebook")</p>
 				<div class="connectMessage">
 					<p>
-						You should be entering the same email address and password that you would use to
-						log into Facebook homepage. Facebook will not share your password with us.
+						@T("You should be entering the same email address and password that you would use to log into Facebook homepage. Facebook will not share your password with us.")
 					</p>
 				</div>
 			</div>
@@ -31,12 +30,11 @@
 		if (Config.AuthorizationProviders.Twitter.IsDefined)
 		{
 			<div class="twitter">
-				<h2>Sign in with your Twitter account</h2>
+				<h2>@T("Sign in with your Twitter account")</h2>
 				<p class="button">@Html.Partial("ButtonTwitter")</p>
 				<div class="connectMessage">
 					<p>
-						You should be entering your twitter username and password at twitter.com website
-						to login on the forums. Twitter will not share your password with us.
+						@T("You should be entering your twitter username and password at twitter.com website to login on the forums. Twitter will not share your password with us.")
 					</p>
 				</div>
 			</div>
@@ -44,8 +42,8 @@
 		if (Config.AuthorizationProviders.SSOOpenId.IsDefined)
 		{
 			<div class="ssoOpenId">
-				<h2>Sign in with <em title="replace with your site name">your site</em> credentials</h2>
-				<p class="button"><input type="button" class="button" value="Login" onclick="window.location.href='@Url.Action("OpenIdStartLogin", "Authentication", new{returnUrl = this.Request.Url.PathAndQuery})';" /></p>
+				<h2>@T("Sign in with your site credentials")</h2>
+				<p class="button"><input type="button" class="button" value="@T("Login")" onclick="window.location.href='@Url.Action("OpenIdStartLogin", "Authentication", new{returnUrl = this.Request.Url.PathAndQuery})';" /></p>
 				<div class="connectMessage">
 					<p>Sign in using the same username and password information as in the main site.</p>
 				</div>
@@ -54,7 +52,7 @@
 	}
 	else
 	{
-		<h1>Access denied</h1>
-		<p>You must be a user of the group <strong>@ViewData["UserGroupName"]</strong> to perform this action.</p> 
+		<h1>@T("Access denied")</h1>
+		<p>@T("You must be a user of the group {0} to perform this action.", "<strong>" + ViewData["UserGroupName"] + "</strong>")</p> 
     }
 </div>
