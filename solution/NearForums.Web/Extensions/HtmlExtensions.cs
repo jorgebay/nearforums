@@ -127,7 +127,20 @@ namespace NearForums.Web.Extensions
 			}
 			builder.Attributes.Add("href", url);
 			return MvcHtmlString.Create(builder.ToString(TagRenderMode.Normal));
-		} 
+		}
+
+		/// <summary>
+		/// Returns an anchor element with the innerText localized
+		/// </summary>
+		public static MvcHtmlString LinkLocalized(this HtmlHelper htmlHelper, string innerHtml, string url, object htmlAttributes)
+		{
+			IDictionary<string, object> htmlAttributesDictionay = ((IDictionary<string, object>)new RouteValueDictionary(htmlAttributes));
+			TagBuilder builder = new TagBuilder("a");
+			builder.MergeAttributes<string, object>(htmlAttributesDictionay);
+			builder.InnerHtml = Localizer.Current.Get(innerHtml);
+			builder.Attributes.Add("href", url);
+			return MvcHtmlString.Create(builder.ToString(TagRenderMode.Normal));
+		}
 		#endregion
 
 		public static MvcHtmlString CheckBoxBit<T>(this HtmlHelper htmlHelper, string name, T value, T expectedBit) where T : struct, IConvertible

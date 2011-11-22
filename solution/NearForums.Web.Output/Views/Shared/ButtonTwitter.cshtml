@@ -5,4 +5,4 @@
 		imgUrl = "http://a0.twimg.com/images/dev/buttons/sign-in-with-twitter-l-sm.png";
 	}
 }
-<a href="@Url.Action("TwitterStartLogin", "Authentication", new{returnUrl = this.Request.Url.PathAndQuery})" rel="nofollow external"><img src="@imgUrl" alt="Login using twitter" /></a>
+<a href="@Url.Action("TwitterStartLogin", "Authentication", new{returnUrl = this.Request.Url.PathAndQuery})" rel="nofollow external"><img src="@imgUrl" alt="@T("Login using Twitter")" /></a>

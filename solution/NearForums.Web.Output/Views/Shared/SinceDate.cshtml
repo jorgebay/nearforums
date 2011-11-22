@@ -9,23 +9,23 @@ var text = new System.Text.StringBuilder();
 if (years > 0)
 {
 	text.Append(years);
-	text.Append(" year" + (years > 1 ? "s" : ""));
+	text.Append(" " + (years > 1 ? S("years") : S("year")));
 }
 if (months > 0)
 {
 	text.Append(" ");
 	text.Append(months);
-	text.Append(" month" + (months > 1 ? "s" : ""));
+	text.Append(" " + (months > 1 ? S("months") : S("month")));
 }
 if (days > 0)
 {
 	text.Append(" ");
 	text.Append(days);
-	text.Append(" day" + (days > 1 ? "s" : ""));
+	text.Append(" " + (days > 1 ? S("days") : S("day")));
 }
 if (text.Length == 0)
 {
-	text.Append("Less than a day");
+	text.Append(S("Less than a day"));
 }
 @text
 }

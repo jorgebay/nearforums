@@ -33,8 +33,8 @@
 					<div class="msgBody">@Html.Raw(m.Body)</div>
 					<div class="msgOptions">
 						@Html.ActionLinkLocalized("reply", "Reply", "Topics", new{msg=m.Id}, new{rel="nofollow", @class="first"})
-						@Html.Link(S("remove"), "#", new{onclick="return deleteMessage(" + m.Id + ", '" + Url.Action("Delete", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
-						@Html.Link(S("clear flags"), "#", new{title="Remove all flags from the message", onclick="return clearFlags(" + m.Id + ", '" + Url.Action("ClearFlags", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
+						@Html.LinkLocalized("remove", "#", new{onclick="return deleteMessage(" + m.Id + ", '" + Url.Action("Delete", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
+						@Html.LinkLocalized("clear flags", "#", new{title="Remove all flags from the message", onclick="return clearFlags(" + m.Id + ", '" + Url.Action("ClearFlags", "Messages", new{id=t.Id, name=t.ShortName, forum=t.Forum.ShortName}) + "', this);"})
 					</div>
 				</li>
 			}

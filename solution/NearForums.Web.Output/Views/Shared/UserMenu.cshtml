@@ -1,5 +1,5 @@
 ﻿<ul id="userMenu">
-    <li class="toContent"><a href="#content" accesskey="1">Go to content</a></li>
+    <li class="toContent"><a href="#content" accesskey="1">@T("Go to content")</a></li>
 	@if (User == null)
 	{
         if (Config.AuthorizationProviders.Facebook.IsDefined)
@@ -12,17 +12,17 @@
 		}
 		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
 		{
-		<li class="login">@Html.ActionLink("Sign In", "Login", "Authentication", new{returnUrl = ViewBag.ReturnUrl ?? Request.Url.PathAndQuery}, null)</li>
+		<li class="login">@Html.ActionLinkLocalized("Sign In", "Login", "Authentication", new{returnUrl = ViewBag.ReturnUrl ?? Request.Url.PathAndQuery}, null)</li>
 		}
     }
     else
 	{
 		if (this.User.Group >= UserGroup.Moderator)
 		{
-			<li class="admin">@Html.ActionLink("Admin dashboard", "Dashboard", "Admin")</li>
+			<li class="admin">@Html.ActionLinkLocalized("Admin dashboard", "Dashboard", "Admin")</li>
 		}		
 		<li class="userName">@Html.ActionLink(this.User.UserName, "Detail", "Users", new { id = User.Id }, null)</li>
-		<li class="logged">@Html.ActionLink("Account", "Edit", "Users", new { id = User.Id }, null)</li>
-		<li class="logout">@Html.ActionLink("Logout", "Logout", "Authentication")</li>
+		<li class="logged">@Html.ActionLinkLocalized("Account", "Edit", "Users", new { id = User.Id }, null)</li>
+		<li class="logout">@Html.ActionLinkLocalized("Logout", "Logout", "Authentication")</li>
 	}
 </ul>
