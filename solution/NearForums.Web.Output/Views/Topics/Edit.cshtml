@@ -1,46 +1,45 @@
 ﻿@model Topic
 @{
-	ViewBag.Title = ViewData.WriteIf("IsEdit", "Edit thread", "Post new thread");
+	ViewBag.Title = ViewData.WriteIf("IsEdit", S("Edit thread"), S("Post new thread"));
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLink(Model.Forum.Name, "Detail", "Forums", new{forum=Model.Forum.ShortName}, null)</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
+@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 {
-	{"Description", "Thread message must not be blank."}
-	,{"Tags", "Tags must not be blank, separated by spaces and must not contain special characters. The maximum number of tags allowed is 6."}
-	,{"Title", "Subject must not be blank."}
+	{"Description", S("Thread message must not be blank.")}
+	,{"Tags", S("Tags must not be blank, separated by spaces and must not contain special characters. The maximum number of tags allowed is 6.")}
+	,{"Title", S("Subject must not be blank.")}
 	,{"ShortName", ""}
 	,{"email", new Dictionary<ValidationErrorType, string>(){
-		{ValidationErrorType.NullOrEmpty, "Email must not be blank in order to notify of new posts."}
-		,{ValidationErrorType.Format, "Email format is not valid."}}}
+		{ValidationErrorType.NullOrEmpty, S("Email must not be blank in order to notify of new posts.")}
+		,{ValidationErrorType.Format, S("Email format is not valid.")}}}
 }, null)
 @{Html.BeginForm(null, null, null, FormMethod.Post, new{@id="topicEditForm"});}
 <fieldset>
-	<legend>Fill in the fields and submit</legend>
+	<legend>@T("Fill in the fields and submit")</legend>
 	<div class="formItem floatContainer">
-		<label for="title">Subject</label>
+		<label for="title">@T("Subject")</label>
 		@Html.TextBoxFor(p => p.Title, new{@class="text", id="title"})
-		@*Html.TextBox("title", null, new{@class="text"})*@
 	</div>
 	<div class="formItem floatContainer">
-		<label for="tags">Tags </label>
+		<label for="tags">@T("Tags")</label>
 		@Html.TextBox("tags", null, new{@class="text"})
-		<span class="note">Separated by spaces</span>
+		<span class="note">@T("Separated by spaces")</span>
 	</div>
 	<div class="formItem textarea floatContainer">
-		<label for="description">Message</label>
+		<label for="description">@T("Message")</label>
 		@Html.TextArea("description")
 		@Html.Partial("EditorScripts", CreateViewData(new{Name="description"}))
 	</div>
-	@Html.Captcha("Type the text shown in the image")
+	@Html.Captcha(S("Type the text shown in the image"))
 	@if (this.User.Group >= UserGroup.Moderator)
 	{
 	<div class="formItem checkbox">
 		@Html.CheckBox("isSticky")
-		<label for="isSticky">Sticky thread?</label>
+		<label for="isSticky">@T("Sticky thread?")</label>
 	</div>
 	}
 	@if (this.Config.Notifications.Subscription.IsDefined)
@@ -48,7 +47,7 @@
 	<div class="formItem floatContainer">
 		<div class="checkbox">
 			@Html.CheckBox("notify", new{onclick = "toggleEmail();"})
-			<label for="notify">Notify me of new posts on this thread via email</label>
+			<label for="notify">@T("Notify me of new posts on this thread via email")</label>
 			@(this.User.Email == null ? Html.TextBox("email", null, new{@class="notifyEmail", @style="display:none;"}) : MvcHtmlString.Empty)
 		</div>
 	</div>
@@ -58,7 +57,7 @@
 		@Html.Hidden("notify", false)
 	}
 	<div class="formItem buttons">
-		<input type="submit" value="Send" />
+		<input type="submit" value="@T("Send")" />
 	</div>
 </fieldset>
 @{Html.EndForm();}

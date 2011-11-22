@@ -7,7 +7,7 @@
 	@Html.Script("~/scripts/common.js")
 }
 <ul class="path">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLink(Model.Forum.Name, "Detail", "Forums", new{forum=Model.Forum.ShortName}, null)</li>
 </ul>
 <div class="topicDetail">
@@ -16,8 +16,8 @@
 		<a rel="nofollow" href="@Url.Action("LatestMessages")">@Html.Img("~/images/iconrss.gif", "rss")</a>
 	</div>
 	<p class="info">
-		Posted by <strong class="userName">@Html.ActionLink(Model.User.UserName, "Detail", "Users", new{id=Model.User.Id}, new{rel="nofollow"})</strong>
-		at 
+		@T("Posted by") <strong class="userName">@Html.ActionLink(Model.User.UserName, "Detail", "Users", new{id=Model.User.Id}, new{rel="nofollow"})</strong>
+		-
 		@Html.Date(Model.Date)
 	</p>
 	<div class="description">
@@ -38,16 +38,13 @@
 	@if (messages.TotalItemCount > 0)
 	{
 		<div class="pagerSummary">
-			Displaying
-			<span class="firstItem">@(this.PageIndex * Config.UI.MessagesPerPage + 1)</span>
-			to
-			<span class="lastItem">@(this.PageIndex * Config.UI.MessagesPerPage + messages.Count)</span>
-			of
-			<span class="totalItems">@messages.TotalItemCount</span>
-			messages
+			@T("Displaying <span class=\"firstItem\">{0}</span> to <span class=\"lastItem\">{1}</span> of <span class=\"totalItems\">{2}</span> messages",
+				this.PageIndex * Config.UI.MessagesPerPage + 1,
+				this.PageIndex * Config.UI.MessagesPerPage + messages.Count,
+				messages.TotalItemCount)
 		</div>
 	}
-	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">@Html.Img("~/images/loadingMini.gif", "") Show more messages</a></div>
+	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">@Html.Img("~/images/loadingMini.gif", "") @T("Show more messages")</a></div>
 	@Html.Pager(messages)
 	@Html.Partial("Toolbar", this.Model)
 	@Html.Partial("Related", this.Model)
