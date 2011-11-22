@@ -395,9 +395,6 @@
     <Folder Include="Views\Static\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Templates\HowTo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Templates\PreviewPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

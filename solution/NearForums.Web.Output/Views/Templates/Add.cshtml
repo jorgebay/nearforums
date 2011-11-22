@@ -1,47 +1,47 @@
 ﻿@model Template
 @{
-	ViewBag.Title = "Add Template";
+	ViewBag.Title = T("Add Template");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
-	<li>@Html.ActionLink("Templates", "List")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	<li>@Html.ActionLinkLocalized("Templates", "List")</li>
 </ul>
-<h1>Add Template</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
+<h1>@ViewBag.Title</h1>
+@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 	{
 		{"postedFile", new Dictionary<ValidationErrorType, string>()
 					{ 
-						{ValidationErrorType.AccessRights, "The application does not have file Write access on the server's template folder."}
-						,{ValidationErrorType.FileFormat, "File format is invalid. Please include only the allowed files."}
-						,{ValidationErrorType.NullOrEmpty, "File must not be blank."}
-						,{ValidationErrorType.MaxLength, "File size is larger than the maximum size supported (3Mb)."}
-						,{ValidationErrorType.DuplicateNotAllowed, "You can not replace the active template."}
+						{ValidationErrorType.AccessRights, S("The application does not have file Write access on the server's template folder.")}
+						,{ValidationErrorType.FileFormat, S("File format is invalid. Please include only the allowed files.")}
+						,{ValidationErrorType.NullOrEmpty, S("File must not be blank.")}
+						,{ValidationErrorType.MaxLength, S("File size is larger than the maximum size supported (3Mb).")}
+						,{ValidationErrorType.DuplicateNotAllowed, S("You can not replace the active template.")}
 					}}
-		, {"html", "The html template file does not contain the required placeholders: headcontainer and bodycontainer"}
-		, {"Key", "Template key format is not valid. Include a-z 0-9 and up to 64 characters."}
+		, {"html", S("The html template file does not contain the required placeholders: headcontainer and bodycontainer")}
+		, {"Key", S("Template key format is not valid. Include a-z 0-9 and up to 64 characters.")}
 	}, null)
 		
 @{Html.BeginForm(null, null, FormMethod.Post, new{enctype="multipart/form-data"});}
 
 <div class="formItem floatContainer">
-	<label for="txtPostedFile">Template File (.zip)</label>
+	<label for="txtPostedFile">@T("Template File (.zip)")</label>
 	<input type="file" name="postedFile" id="txtPostedFile" />
 </div>
 <div class="formItem textarea">
-	<label for="description">Comments</label>
+	<label for="description">@T("Comments")</label>
 	@Html.TextAreaFor(p=>p.Description)
 </div>
 <div class="formItem checkbox floatContainer">
 	@Html.CheckBox("useDefaultName", true, new { onclick = "$(this).closest('div').hide();$('#keyContainer').slideToggle();" })
-	<label for="useDefaultName">Use default name</label>
+	<label for="useDefaultName">@T("Use default name")</label>
 </div>
 <div class="formItem floatContainer" id="keyContainer" style="display: none;">
-	<label for="key">Name / Key</label>
+	<label for="key">@T("Name / Key")</label>
 	@Html.TextBoxFor(p=>p.Key)
 </div>
 <div class="formItem buttons floatContainer">
-	<input type="submit" value="Submit" />
+	<input type="submit" value="@T("Submit")" />
 </div>
 @{Html.EndForm();}
 <script type="text/javascript">

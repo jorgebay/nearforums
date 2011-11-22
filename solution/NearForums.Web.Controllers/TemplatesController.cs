@@ -145,14 +145,6 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region How to
-		[RequireAuthorization(UserGroup.Admin)]
-		public ActionResult HowTo()
-		{
-			return View();
-		}
-		#endregion
-
 		#region Preview
 		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult Preview(int id)

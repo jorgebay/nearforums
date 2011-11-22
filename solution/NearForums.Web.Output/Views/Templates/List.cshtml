@@ -1,16 +1,22 @@
 ﻿@model List<Template>
 @{
-    ViewBag.Title = "Templates";
+    ViewBag.Title = @T("Templates");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 </ul>
 <div class="templates">
-	<h1>Templates</h1>
-	@ViewData.WriteIf("DeleteCurrent", MvcHtmlString.Create("<p class='error'>You cannot delete the current template.</p>"), MvcHtmlString.Empty)
-	@ViewData.WriteIf("Access", "<p class='error'>The application does not have the necessary file read/write access.</p>", "")
-
+	<h1>@ViewBag.Title</h1>
+	@if (ViewData.GetDefault<bool>("DeleteCurrent"))
+	{ 
+		<p class="error">@T("You cannot delete the current template.")</p>
+	}
+	@if (ViewData.GetDefault<bool>("Access"))
+	{
+		<p class="error">@T("The application does not have the necessary file read/write access.")</p>
+	}
+	
 	@using (Html.BeginForm(null, null, FormMethod.Post, new{@id="mainForm"}))
 	{
 		@Html.AntiForgeryToken()
@@ -28,22 +34,22 @@
 						@if (!t.IsCurrent)
 						{
 							<span>
-								<a href="#" onclick="return activeTemplate(@t.Id);">Activate</a>
+								<a href="#" onclick="return activeTemplate(@t.Id);">@T("Activate")</a>
 								|
-								@Html.ActionLink("Preview", "Preview", new { id = t.Id }, new { target="_blank"})
+								@Html.ActionLinkLocalized("Preview", "Preview", new { id = t.Id }, new { target="_blank"})
 							</span>
 						}
 						else
 						{
-							<strong>Active</strong>
+							<strong>@T("Active")</strong>
 						}
 						|
-						@Html.ActionLink("Export", "Export", new{id=t.Id})
+						@Html.ActionLinkLocalized("Export", "Export", new{id=t.Id})
 						@if (!t.IsCurrent)
 						{
 							<span>
 								|
-								<a href="#" onclick="return deleteTemplate(@t.Id);">Remove</a>
+								<a href="#" onclick="return deleteTemplate(@t.Id);">@T("Remove")</a>
 							</span>
 						}
 					</div>
@@ -54,21 +60,17 @@
 		else
 		{
 			<p class="noItems">
-				No templates found.
+				@T("No templates found.")
 				<br />
-				<a href="#" onclick="return loadDefaultTemplates();">Do you want to load the default templates?</a>
+				<a href="#" onclick="return loadDefaultTemplates();">@T("Do you want to load the default templates?")</a>
 			</p>
 		}
-		<p>@Html.ActionLink("Create your custom template", "HowTo")</p>
-		<p>@Html.ActionLink("Upload a new template >>", "Add")</p>
+		<p>@Html.LinkLocalized("How to create a custom template", "http://www.nearforums.com/templating", new { target="_blank"})</p>
+		<p>@Html.ActionLinkLocalized("Upload a new template >>", "Add")</p>
 		if (!Config.UI.Template.UseTemplates)
 		{
 			<p style="padding-top: 50px;">
-				Templating feature is <strong>disabled</strong> by configuration.
-				<br />
-				In order to enable templating in the site you must configure the template element on your Site.config file.
-				<br />
-				For example: 
+				@T("Templating feature is <strong>disabled</strong> by configuration.")
 			</p>
 			<code>
 				&lt;template useTemplates="true" path="~/content/templates/" /&gt;
@@ -79,7 +81,7 @@
 <script type="text/javascript">
 	function deleteTemplate(id) 
 	{
-		if (confirm("Are you sure you want to REMOVE this template?.\nthis action is not reversible.")) 
+		if (confirm("@T("Are you sure you want to REMOVE this template?.\\nthis action is not reversible.")")) 
 		{
 			$("#templateId").val(id);
 			$('#mainForm').attr('action', '@(Url.Action("Delete"))').submit();
@@ -89,7 +91,7 @@
 
 	function activeTemplate(id)
 	{
-		if (confirm("Are you sure you want to activate this template?")) 
+		if (confirm("@T("Are you sure you want to activate this template?")")) 
 		{
 			$("#templateId").val(id);
 			$('#mainForm').attr('action', '@(Url.Action("SetCurrent"))').submit();

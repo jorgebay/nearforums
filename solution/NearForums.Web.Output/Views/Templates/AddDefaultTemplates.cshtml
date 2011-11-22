@@ -1,15 +1,15 @@
 ﻿@{
-	ViewBag.Title = "Load default templates";
+	ViewBag.Title = T("Load default templates");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
-	<li>@Html.ActionLink("Templates", "List")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	<li>@Html.ActionLinkLocalized("Templates", "List")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p style="padding: 20px;">@ViewBag.TemplateCount templates loaded.</p>
+<p style="padding: 20px;">@T("{0} templates loaded.", ViewBag.TemplateCount)</p>
 @if (ViewBag.ErrorMessage != null)
 {
 	<p style="padding:0 20px 20px 20px;color: red;">@ViewBag.ErrorMessage</p>
 }
-<p>@Html.ActionLink("Continue >>", "List")</p>
+<p>@Html.ActionLinkLocalized("Continue >>", "List")</p>
