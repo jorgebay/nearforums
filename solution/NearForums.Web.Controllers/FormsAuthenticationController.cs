@@ -173,14 +173,15 @@ namespace NearForums.Web.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult Register(string userName, string email, string password, string confirmPassword)
+		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
 		{
 			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-			var createStatus = MembershipCreateStatus.Success;
+			var createStatus = MembershipCreateStatus.ProviderError;
 
 			try
 			{
 				ValidateRegistration(userName, email, password, confirmPassword);
+				ValidateRegistration(agreeTerms);
 				// Attempt to register the user in the membership db
 				createStatus = MembershipService.CreateUser(userName, password, email);
 				ValidateCreateStatus(createStatus);
@@ -335,6 +336,14 @@ namespace NearForums.Web.Controllers
 			if (!String.Equals(password, confirmPassword, StringComparison.Ordinal))
 			{
 				throw new ValidationException(new ValidationError("password", ValidationErrorType.CompareNotMatch));
+			}
+		}
+
+		private void ValidateRegistration(bool agreeTerms)
+		{
+			if (!agreeTerms)
+			{
+				throw new ValidationException(new ValidationError("agreeTerms", ValidationErrorType.NullOrEmpty));
 			}
 		}
 

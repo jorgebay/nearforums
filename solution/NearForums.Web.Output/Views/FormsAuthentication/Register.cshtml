@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = T("Register");
+	ViewBag.Title = T("Register");
 }
 <ul class="path floatContainer">
-    <li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 @Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>()
@@ -19,10 +19,12 @@
 			{ValidationErrorType.NullOrEmpty, S("Password must not be blank.")}
 			,{ValidationErrorType.Format, S("Password format is not valid.")}
 			,{ValidationErrorType.CompareNotMatch, S("Password does not match the confirm password.")}}}
+		,{"agreeTerms", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, "You must agree with the Terms and Conditions in order to create an account."}}}
 	}, null)
 @using (Html.BeginForm())
 {
-    <fieldset>
+	<fieldset>
 		<legend>@T("Use the form below to create a new account")</legend>
 		<div class="formItem floatContainer">
 			<label for="username">@T("Username")</label>
@@ -41,8 +43,12 @@
 			<label for="email">@T("Confirm Password")</label>
 			@Html.Password("confirmPassword")
 		</div>
+		<div class="checkbox" style="padding-top: 10px;">
+			@(Html.CheckBox("agreeTerms", false))
+			@Html.ActionLinkLocalized("I agree with the Terms and Conditions set forth by the Site Owner.", "Detail", "PageContents", new { name = "terms" }, null)
+		</div>
 		<div class="formItem buttons">
 			<input type="submit" class="button" value="@T("Create a new account")" />
 		</div>
-    </fieldset>
+	</fieldset>
 }
