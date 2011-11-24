@@ -1,17 +1,17 @@
 ﻿@model Topic
 @{
-	ViewBag.Title = "Move thread \"" + Model.Title + "\" to another forum";
+	ViewBag.Title = T("Move thread \"{0}\" to another forum", Model.Title);
 }
 <ul class="path">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLink(Model.Forum.Name, "Detail", "Forums", new{forum=Model.Forum.ShortName}, null)</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 @{Html.BeginForm();}
 <fieldset>
-	<legend>Select the destination forum</legend>
+	<legend>@T("Select the destination forum")</legend>
 	<div class="formItem floatContainer">
-		<label for="forum_id">Forum</label>
+		<label for="forum_id">@T("Forum")</label>
 		<select name="forum.id" id="forum_id">
 @{
 		int selectedValue = this.Html.GetStateValue<int>("forum.id");
@@ -35,7 +35,7 @@
 		</select>
 	</div>
 	<div class="formItem buttons">
-		<input type="submit" value="Send" />
+		<input type="submit" value="@T("Send")" />
 	</div>
 </fieldset>
 @{Html.EndForm();}
