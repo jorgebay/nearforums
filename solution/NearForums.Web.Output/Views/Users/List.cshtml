@@ -1,19 +1,19 @@
 ﻿@model List<User>
 @{
-	ViewBag.Title = "Manage users";
+	ViewBag.Title = T("Manage users");
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLink("Admin", "Dashboard", "Admin")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 @{Html.BeginForm(null, null, FormMethod.Get);}
 <div class="formItem floatContainer">
-	<label for="userName">User name</label>
+	<label for="userName">@T("User name")</label>
 	@Html.TextBox("userName")
 </div>
 <div class="formItem buttons floatContainer">
-	<input type="submit" value="Search" />
+	<input type="submit" value="@T("Search")" />
 </div>
 @{Html.EndForm();}
 @if (Model.Count > 0)
@@ -27,10 +27,10 @@
 		<table cellpadding="0" cellspacing="5" class="admin">
 			<thead>
 				<tr>
-					<th><span style="visibility:hidden;">Action</span></th>
-					<th>Name</th>
-					<th>Group</th>
-					<th>Registration date</th>
+					<th><span style="visibility:hidden;">@T("Action")</span></th>
+					<th>@T("Name")</th>
+					<th>@T("Group")</th>
+					<th>@T("Registration date")</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -39,9 +39,9 @@
 				<tr>
 					<td>
 						<span class="actions">
-							<a href="#" onclick="return promoteUser(@u.Id, '@u.UserName');">Promote</a>
-							<a href="#" onclick="return demoteUser(@u.Id, '@u.UserName');">Demote</a>
-							<a href="#" onclick="return deleteUser(@u.Id, '@u.UserName');">Delete</a>
+							<a href="#" onclick="return promoteUser(@u.Id, '@u.UserName');">@T("Promote")</a>
+							<a href="#" onclick="return demoteUser(@u.Id, '@u.UserName');">@T("Demote")</a>
+							<a href="#" onclick="return deleteUser(@u.Id, '@u.UserName');">@T("Delete")</a>
 						</span>
 					</td>
 					<td><strong>@u.UserName</strong></td>
@@ -52,29 +52,29 @@
 			</tbody>
 		</table>
 	}
-	@Html.Pager(list.PageSize, list.PageIndex, list.TotalItemCount, new{userName = ViewData.Get<string>("userName")}, "Previous", "Next")
+	@Html.Pager(list.PageSize, list.PageIndex, list.TotalItemCount, new{userName = ViewData.Get<string>("userName")}, S("Previous"), S("Next"))
 	<script type="text/javascript">
 		function deleteUser(userId, userName)
 		{
-			if (confirm("Are you sure you want to DELETE the user " + userName + "?"))
+			if (confirm('@T("Are you sure you want to DELETE the user {0}?")'.replace('{0}', userName)))
 			{
 				$("#userId").val(userId);
 				$('#manageForm').attr('action', '@(Url.Action("Delete"))').submit();
 			}
 			return false;
 		}
-		function promoteUser(userId, userName)
+		function promoteUser(userId, userName) 
 		{
-			if (confirm("Are you sure you want to promote the user " + userName + "?"))
+			if (confirm('@T("Are you sure you want to Promote the user {0}?")'.replace('{0}', userName)))
 			{
 				$("#userId").val(userId);
 				$('#manageForm').attr('action', '@(Url.Action("Promote"))').submit();
 			}
 			return false;
 		}
-		function demoteUser(userId, userName)
+		function demoteUser(userId, userName) 
 		{
-			if (confirm("Are you sure you want to demote the user " + userName + "?"))
+			if (confirm('@T("Are you sure you want to Demote the user {0}?")'.replace('{0}', userName)))
 			{
 				$("#userId").val(userId);
 				$('#manageForm').attr('action', '@(Url.Action("Demote"))').submit();
@@ -85,5 +85,5 @@
 }
 else
 {
-	<p class="warning">No user found for the username &quot;@ViewBag.UserName&quot;.</p>
+	<p class="warning">@T("No user found for the username &quot;{0}&quot;.", ViewBag.UserName)</p>
 }

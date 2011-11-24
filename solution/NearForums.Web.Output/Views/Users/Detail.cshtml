@@ -1,18 +1,18 @@
 ﻿@model User
 @{
-    ViewBag.Title = Model.UserName + " profile";
+	ViewBag.Title = T("{0} profile", Model.UserName);
 }
 <ul class="path floatContainer">
-	<li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p><strong>Group</strong>: @Model.GroupName</p>
+<p><strong>@T("Group")</strong>: @Model.GroupName</p>
 <p>
-	<strong>Member for</strong>: @Html.Partial("SinceDate", Model.RegistrationDate)
+	<strong>@T("Member for")</strong>: @Html.Partial("SinceDate", Model.RegistrationDate)
 </p>
 @if (Model.ExternalProfileUrl != null)
 {
-<p><strong>@(new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()) profile</strong>: @Html.Link(Model.ExternalProfileUrl, new{@target="_blank"})</p>
+<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase())</strong>: @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
 }
 @if (ViewData.Get<IList>("Topics").Count > 0)
 {
@@ -24,9 +24,9 @@
 	}
 	</ul>
 }
-<h2>Messages posted by @Model.UserName</h2>
-<p class="messageButton"><a href="#" onclick="return getMessages()">Get all messages posted by @Model.UserName</a></p>
-<p class="loading" style="display:none;font-style: italic;">@Html.Img("~/images/loadingMini.gif", "") Loading...</p>
+<h2>@T("Messages posted by {0}", Model.UserName)</h2>
+<p class="messageButton"><a href="#" onclick="return getMessages()">@T("Get all messages posted by {0}", Model.UserName)</a></p>
+<p class="loading" style="display:none;font-style: italic;">@Html.Img("~/images/loadingMini.gif", "") @T("Loading...")</p>
 <div id="messagesResult" style="display:none;"></div>
 <script type="text/javascript">
 	function getMessages()
@@ -48,7 +48,7 @@
 				{
 					$("p.loading").fadeOut(function ()
 					{
-						$("p.loading").html("No messages found posted by this user.").fadeIn();
+						$("p.loading").html('@T("No messages found.")').fadeIn();
 					});
 				}
 			}

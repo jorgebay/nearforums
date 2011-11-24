@@ -1,72 +1,69 @@
 ﻿@model User
 @{
-    ViewBag.Title = "Account";
+    ViewBag.Title = T("Account");
 }
 <ul class="path floatContainer">
-    <li class="first">@Html.ActionLink("Forums", "List", "Forums")</li>
+    <li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-@Html.ValidationSummary("<h3>Please check the following errors:</h3>", new Dictionary<string, object>
+@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 	{
-		{"Email", "Email format is invalid."}
-		,{"Website", "Website url format is invalid."}
-		,{"Photo", "Photo url format is invalid."}
-		,{"Username", "Username is required."}
+		{"Email", S("Email format is invalid.")}
+		,{"Website", S("Website url format is invalid.")}
+		,{"Photo", S("Photo url format is invalid.")}
+		,{"Username", S("Username is required.")}
 	}, null)
 @{Html.BeginForm(null, null, FormMethod.Post, new { @id = "accountForm" });}
 <fieldset>
-    <legend>Change your account information</legend>
+    <legend>@T("Change your account information")</legend>
     <div class="formItem floatContainer">
-		<label for="title">Public name</label>
+		<label for="title">@T("Public name")</label>
 		@Html.TextBox("userName", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
-		<label for="birthDate">Birthdate</label>
+		<label for="birthDate">@T("Birthdate")</label>
         @Html.TextBox("birthDate", this.Model.BirthDate != null ? this.Model.BirthDate.Value.ToString("d") : null, new { @class = "text" })
 	</div>
 	<div class="formItem floatContainer" style="display: none;">
-		<label for="timezone">Timezone</label>
+		<label for="timezone">@T("Timezone")</label>
         @Html.TextBox("timezone", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
-		<label for="photo">Photo url</label>
+		<label for="photo">@T("Photo url")</label>
 		@Html.TextBox("photo", null, new { @class = "text" })
 		@if (!string.IsNullOrWhiteSpace(Model.Photo))
 		{ 
-			<span class="note"><img src="@Model.Photo" alt="Profile image" /></span>
+			<span class="note"><img src="@Model.Photo" alt="@T("Profile image")" /></span>
 		}
     </div>
 	<div class="formItem floatContainer">
-		<label for="website">Website</label>
+		<label for="website">@T("Website")</label>
         @Html.TextBox("website", null, new { @class = "text" })
 	</div>
 	@if (User.Provider == AuthenticationProvider.Membership)
 	{
-		<p class="button"><input type="button" class="button" value="Change Password" onclick="window.location.href='@Url.Action("ChangePassword", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })';" /></p>
+		<p class="button"><input type="button" class="button" value="@T("Change Password")" onclick="window.location.href='@Url.Action("ChangePassword", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })';" /></p>
     }
 </fieldset>
-<h2>Email</h2>
+<h2>@T("Email")</h2>
 <fieldset>
-    <legend>Your email will not be shared with anyone. We will not make a different use
-        than detailed below.</legend>
+    <legend>@T("Your email will not be shared with anyone. We will not make a different use than detailed below.")</legend>
     <div class="formItem floatContainer">
-        <label for="email">Email address</label>
+        <label for="email">@T("Email address")</label>
         @Html.TextBox("email", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
         <div class="checkbox" style="padding-top: 10px;">
             @(Html.CheckBoxBit<EmailPolicy>("policy1", this.Model.EmailPolicy, EmailPolicy.SendFromSubscriptions))
-            <label for="policy1">
-                Use my email to notify me of replies to threads I subscribed to</label>
+            <label for="policy1">@T("Use my email to notify me of replies to threads I subscribed to")</label>
         </div>
         <div class="checkbox" style="padding-top: 10px;">
             @(Html.CheckBoxBit<EmailPolicy>("policy2", this.Model.EmailPolicy, EmailPolicy.SendNewsletter))
-            <label for="policy3">
-                Send me a newsletter</label>
+            <label for="policy3">@T("Send me a newsletter")</label>
             @Html.Hidden("emailPolicy")
         </div>
         <div class="formItem buttons">
-            <input type="submit" value="Send" />
+            <input type="submit" value="@T("Send")" />
         </div>
     </div>
 </fieldset>
