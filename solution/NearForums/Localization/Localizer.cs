@@ -83,7 +83,7 @@ namespace NearForums.Localization
 			{
 				throw new ArgumentNullException("neutralValue");
 			}
-			if (_translations.ContainsKey(neutralValue))
+			if (_translations.ContainsKey(neutralValue) && !String.IsNullOrEmpty(_translations[neutralValue]))
 			{
 				return _translations[neutralValue]; 
 			}

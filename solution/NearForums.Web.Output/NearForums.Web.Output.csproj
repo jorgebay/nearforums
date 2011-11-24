@@ -419,6 +419,7 @@
     <Content Include="content\templates\installation\sample.zip" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\localization\es-es.po" />
     <None Include="content\localization\en-us.po" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
