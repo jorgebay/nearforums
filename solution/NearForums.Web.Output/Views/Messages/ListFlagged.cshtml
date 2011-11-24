@@ -46,6 +46,7 @@
 <script type="text/javascript">
 	$(document).ready(function ()
 	{
+
 		$("#listFlagged > li > ul > li").hover(function () { $(this).addClass("over"); }, function () { $(this).removeClass("over"); });
 	});
 
@@ -59,5 +60,10 @@
 			});
 		}
 		return false;
+	}
+
+	function deleteMessage(mid, url, sender)
+	{
+		return deleteMessageCommon(mid, url, '@T("Are you sure you want to hide the message #{0}?")', '@T("Message removed")', sender);
 	}
 </script>

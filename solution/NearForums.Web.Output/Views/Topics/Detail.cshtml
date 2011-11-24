@@ -60,7 +60,6 @@
 	});
 </script>
 <script type="text/javascript">
-	//$(document).bind("dataLoaded", function ()
 	$(document).ready(function ()
 	{
 		$("#messages li")
@@ -68,4 +67,16 @@
 			.live("mouseenter", function () { $(this).css("background-color","").addClass("over"); })
 			.live("mouseleave", function () { $(this).removeClass("over"); });
 	});
+	function flagMessage(mid, url)
+	{
+		$.post(url, { mid: mid }, function (data)
+		{
+			alert('@T("Thanks you, a moderator will review the message.")');
+		});
+		return false;
+	}
+	function deleteMessage(mid, url)
+	{
+		return deleteMessageCommon(mid, url, '@T("Are you sure you want to hide the message #{0}?")', '@T("Message removed")', null);
+	}
 </script>
