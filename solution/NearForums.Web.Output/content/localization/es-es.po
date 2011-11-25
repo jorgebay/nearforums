@@ -72,11 +72,11 @@ msgstr "Login"
 
 #: NearForums.Web.Output\Views\Authentication\Login.cshtml
 msgid "Sign in using your existing forum account"
-msgstr "Inicia sesión con tu cuenta en el foro"
+msgstr "Inicia sesión con tu cuenta"
 
 #: NearForums.Web.Output\Views\Authentication\Login.cshtml
 msgid "Sign in with your Facebook account"
-msgstr "Conéctate con tu cuenta de Facebook"
+msgstr "Inicia sesión con tu cuenta de Facebook"
 
 #: NearForums.Web.Output\Views\Authentication\Login.cshtml
 msgid "You should be entering the same email address and password that you would use to log into Facebook homepage. Facebook will not share your password with us."
@@ -84,7 +84,7 @@ msgstr "Utiliza tus datos de acceso de Facebook. Facebook no compartirá tu cont
 
 #: NearForums.Web.Output\Views\Authentication\Login.cshtml
 msgid "Sign in with your Twitter account"
-msgstr "Conéctate con tu cuenta de Twitter"
+msgstr "Inicia sesión con tu cuenta de Twitter"
 
 #: NearForums.Web.Output\Views\Authentication\Login.cshtml
 msgid "You should be entering your twitter username and password at twitter.com website to login on the forums. Twitter will not share your password with us."
@@ -160,7 +160,7 @@ msgstr "Volver a Mi cuenta>>"
 
 #: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
 msgid "Enter your username and password. <br />Don't have an account?"
-msgstr "Introduzca su nombre de usuario y contraseña. <br /> ¿Todavía no tienes una cuenta?"
+msgstr "Introduce tu nombre de usuario y contraseña. <br /> ¿Todavía no tienes una cuenta?"
 
 #: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
 msgid "Create one"
@@ -176,7 +176,7 @@ msgstr "Contraseña"
 
 #: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
 msgid "Remember me"
-msgstr "Recordar en este equipo"
+msgstr "Recordar"
 
 #: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
 msgid "Forgot your password?"
@@ -344,7 +344,7 @@ msgstr "Enviar"
 
 #: NearForums.Web.Output\Views\Forums\ForumOptions.cshtml
 msgid "Most viewed threads"
-msgstr "Más vistos"
+msgstr "Más visitados"
 
 #: NearForums.Web.Output\Views\Forums\ForumOptions.cshtml
 msgid "Latest activity"
@@ -360,7 +360,7 @@ msgstr "Respuestas"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "Views"
-msgstr "Vistas"
+msgstr "Visitas"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "Last post"
@@ -380,11 +380,11 @@ msgstr "respuesta"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "views"
-msgstr "vistas"
+msgstr "visitas"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "view"
-msgstr "vista"
+msgstr "visitas"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "No posts"
@@ -440,11 +440,11 @@ msgstr "Temas sin respuestas"
 
 #: NearForums.Web.Output\Views\Forums\ListAllUnansweredTopics.cshtml
 msgid "No unanswered threads, for now :)"
-msgstr "No temas sin respuesta, por ahora:)"
+msgstr "No hay temas sin respuesta, por ahora:)"
 
 #: NearForums.Web.Output\Views\Forums\ListUnansweredTopics.cshtml
 msgid "{0} - Unanswered threads"
-msgstr "{0} - Temas sin respuesta"
+msgstr "{0} - Sin respuesta"
 
 #: NearForums.Web.Output\Views\Forums\ListUnansweredTopics.cshtml
 msgid "No unanswered threads for this forum."
@@ -820,7 +820,7 @@ msgstr "Sticky?"
 
 #: NearForums.Web.Output\Views\Topics\Edit.cshtml
 msgid "Notify me of new posts on this thread via email"
-msgstr "Notificarme de nuevos mensajes de este tema a través de correo electrónico"
+msgstr "Notificarme de nuevos mensajes en este tema a través de correo electrónico"
 
 #: NearForums.Web.Output\Views\Topics\LatestMessages.cshtml
 msgid "Latest messages on &apos;{0}&apos; thread"
