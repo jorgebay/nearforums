@@ -40,13 +40,5 @@ namespace NearForums.Web.Output
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
 		}
-
-		protected void Application_AuthenticateRequest()
-		{
-			if (SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsDefined == true && HttpContext.Current.User != null)
-			{
-				Membership.GetUser(true);
-			}
-		}
 	}
 }
