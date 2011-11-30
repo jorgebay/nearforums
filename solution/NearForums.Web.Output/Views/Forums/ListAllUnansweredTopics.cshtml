@@ -16,7 +16,7 @@
 		{
 			<li>
 				@Html.ActionLink(t.Forum.Name, "Detail", "Forums", new{forum=t.Forum.ShortName}, null) &gt; @Html.ActionLink(t.Title, "ShortUrl", "Topics", new{id=t.Id}, null)
-				<span class="details"><strong>@Html.Date(t.Date)</strong> / @t.Views @(t.Views != 1 ? T("views") : T("view"))</span>
+				<span class="details"><strong>@Html.Date(t.Date)</strong> / @(t.Views != 1 ? T("{0} <span class=\"label\">views</span>", t.Views) : T("1 <span class=\"label\">view</span>"))</span>
 			</li>
 		}
 		</ul>

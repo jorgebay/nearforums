@@ -19,9 +19,9 @@
 				<span class="separator">- </span>
 				<span class="date">@Html.Date(topic.Date)</span>
 			</h3>
-			<div class="replies">@(topic.Replies != 1 ? T("{0} <span class=\"label\">replies</span>") : T("1 <span class=\"label\">reply</span>"))</div>
+			<div class="replies">@(topic.Replies != 1 ? T("{0} <span class=\"label\">replies</span>", topic.Replies) : T("1 <span class=\"label\">reply</span>"))</div>
 			<div class="separator">/ </div>
-			<div class="views">@topic.Views <span class="label">@(topic.Views != 1 ? T("views") : T("view")) </span></div>
+			<div class="views">@(topic.Views != 1 ? T("{0} <span class=\"label\">views</span>", topic.Views) : T("1 <span class=\"label\">view</span>"))</div>
 			<div class="lastPost">
 				@if (topic.LastMessage != null)
 				{

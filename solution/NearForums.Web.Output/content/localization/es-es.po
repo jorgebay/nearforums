@@ -378,13 +378,13 @@ msgstr "{0} <span class=\"label\">respuestas</span>"
 msgid "1 <span class=\"label\">reply</span>"
 msgstr "1 <span class=\"label\">respuesta</span>"
 
-#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
-msgid "views"
-msgstr "visitas"
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml, NearForums.Web.Output\Views\Forums\ListAllUnansweredTopics.cshtml
+msgid "{0} <span class=\"label\">views</span>"
+msgstr "{0} <span class=\"label\">visitas</span>"
 
-#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
-msgid "view"
-msgstr "visitas"
+#: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml, NearForums.Web.Output\Views\Forums\ListAllUnansweredTopics.cshtml
+msgid "1 <span class=\"label\">view</span>"
+msgstr "1 <span class=\"label\">visita</span>"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "No posts"
