@@ -17,7 +17,7 @@
 @using (Html.BeginForm())
 {
 	<div class="formItem floatContainer">
-		@Html.LabelFor(p => p.Title, S("Title"))
+		@Html.LabelFor(p => p.Title, S("Page title"))
 		@Html.TextBoxFor(p => p.Title)
 	</div>
 	<div class="formItem textarea floatContainer">
@@ -26,6 +26,6 @@
 		@Html.Partial("EditorScripts", CreateViewData(new{Name="Body"}))
 	</div>
 	<div class="formItem buttons">
-		<input type="submit" value="Send" />
+		<input type="submit" value="@T("Send")" />
 	</div>
 }

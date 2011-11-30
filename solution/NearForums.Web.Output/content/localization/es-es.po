@@ -504,7 +504,11 @@ msgstr "El título de la página no debe estar en blanco."
 
 #: NearForums.Web.Output\Views\PageContents\Edit.cshtml
 msgid "Page content must not be blank."
-msgstr "Contenido de la página no debe estar en blanco."
+msgstr "El contenido de la página no debe estar en blanco."
+
+#: NearForums.Web.Output\Views\PageContents\Edit.cshtml
+msgid "Page title"
+msgstr "Título"
 
 #: NearForums.Web.Output\Views\PageContents\Edit.cshtml
 msgid "Content of the page"

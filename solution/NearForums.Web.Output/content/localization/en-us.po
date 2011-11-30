@@ -507,6 +507,10 @@ msgid "Page content must not be blank."
 msgstr "Page content must not be blank."
 
 #: NearForums.Web.Output\Views\PageContents\Edit.cshtml
+msgid "Page title"
+msgstr "Page title"
+
+#: NearForums.Web.Output\Views\PageContents\Edit.cshtml
 msgid "Content of the page"
 msgstr "Content of the page"
 
