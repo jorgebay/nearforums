@@ -66,14 +66,6 @@ msgstr "Manage templates"
 msgid "Manage the site templates for the forum."
 msgstr "Manage the site templates for the forum."
 
-#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
-msgid "Website status"
-msgstr "Website status"
-
-#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
-msgid "View the status of the webserver/db/website/configuration..."
-msgstr "View the status of the webserver/db/website/configuration..."
-
 #: NearForums.Web.Output\Views\Authentication\Login.cshtml
 msgid "Sign in"
 msgstr "Sign in"
@@ -379,12 +371,12 @@ msgid "by"
 msgstr "by"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
-msgid "replies"
-msgstr "replies"
+msgid "{0} <span class=\"label\">replies</span>"
+msgstr "{0} <span class=\"label\">replies</span>"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
-msgid "reply"
-msgstr "reply"
+msgid "1 <span class=\"label\">reply</span>"
+msgstr "1 <span class=\"label\">reply</span>"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "views"
@@ -561,6 +553,10 @@ msgstr "link"
 #: NearForums.Web.Output\Views\Shared\MessageItem.cshtml
 msgid "flag"
 msgstr "flag"
+
+#: NearForums.Web.Output\Views\Shared\MessageItem.cshtml, NearForums.Web.Output\Views\Messages\ListFlagged.cshtml
+msgid "reply"
+msgstr "reply"
 
 #: NearForums.Web.Output\Views\Shared\SinceDate.cshtml
 msgid "years"

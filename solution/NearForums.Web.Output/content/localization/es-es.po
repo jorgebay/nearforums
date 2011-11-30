@@ -371,12 +371,12 @@ msgid "by"
 msgstr "por"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
-msgid "replies"
-msgstr "respuestas"
+msgid "{0} <span class=\"label\">replies</span>"
+msgstr "{0} <span class=\"label\">respuestas</span>"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
-msgid "reply"
-msgstr "respuesta"
+msgid "1 <span class=\"label\">reply</span>"
+msgstr "1 <span class=\"label\">respuesta</span>"
 
 #: NearForums.Web.Output\Views\Forums\ForumTopicList.cshtml
 msgid "views"
@@ -549,6 +549,10 @@ msgstr "El mensaje fue eliminado por un moderador del foro."
 #: NearForums.Web.Output\Views\Shared\MessageItem.cshtml
 msgid "link"
 msgstr "enlace"
+
+#: NearForums.Web.Output\Views\Shared\MessageItem.cshtml, NearForums.Web.Output\Views\Messages\ListFlagged.cshtml
+msgid "reply"
+msgstr "responder"
 
 #: NearForums.Web.Output\Views\Shared\MessageItem.cshtml
 msgid "flag"
