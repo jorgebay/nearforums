@@ -39,6 +39,17 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
+		public void LocalizationParser_Unescape_Test()
+		{
+			//Line breaks
+			Assert.AreEqual("Line1\nLine2", LocalizationParser.Unescape("Line1\\nLine2"));
+			Assert.AreEqual("FakeLine1\\nFakeLine2", LocalizationParser.Unescape("FakeLine1\\\\nFakeLine2"));
+
+			//Quots
+			Assert.AreEqual("start\"quoted\"", LocalizationParser.Unescape("start\\\"quoted\\\""));
+		}
+
+		[TestMethod]
 		public void Localizer_Load_Test()
 		{
 			var cultureFilePath = ConfigurationManager.AppSettings["FakeApplicationRoot"];

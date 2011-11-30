@@ -119,7 +119,19 @@ namespace NearForums.Localization
 		/// </summary>
 		public static string Unescape(string value)
 		{
-			value = Regex.Replace(value, "\\\\n", "\n");
+			//	Replace \n (1 char \ + 1 char n)
+			//	into
+			//	line breaks (1 char \n)
+			value = Regex.Replace(value, "(?<!\\\\)\\\\n", "\n");
+			
+			//	Replace \\n (1 char \ + 1 char \ + 1 char n)
+			//	into 
+			//	\n (1 char \ + 1 char n)
+			value = Regex.Replace(value, "\\\\\\\\n", "\\n");
+			
+			//	Replace \" (1 char \ + 1 char ")
+			//	into 
+			//	" (1 char ")
 			value = Regex.Replace(value, "\\\\\"", "\"");
 			return value; 
 		}
