@@ -38,7 +38,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines the expiration time out (in hours) of the reset password link.
 		/// </summary>
-		[ConfigurationProperty("timeToExpireResetPasswordLink", IsRequired = true)]
+		[ConfigurationProperty("timeToExpireResetPasswordLink", DefaultValue=24)]
 		public int TimeToExpireResetPasswordLink
 		{
 			get
