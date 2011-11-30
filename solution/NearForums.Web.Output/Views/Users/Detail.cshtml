@@ -6,13 +6,13 @@
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p><strong>@T("Group")</strong>: @Model.GroupName</p>
+<p><strong>@T("Group"):</strong> @Model.GroupName</p>
 <p>
-	<strong>@T("Member for")</strong>: @Html.Partial("SinceDate", Model.RegistrationDate)
+	<strong>@T("Member for:")</strong> @Html.Partial("SinceDate", Model.RegistrationDate)
 </p>
 @if (Model.ExternalProfileUrl != null)
 {
-<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase())</strong>: @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
+<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()):</strong> @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
 }
 @if (ViewData.Get<IList>("Topics").Count > 0)
 {

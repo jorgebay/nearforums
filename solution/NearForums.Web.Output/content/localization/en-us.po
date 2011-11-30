@@ -538,7 +538,7 @@ msgstr "About"
 msgid "Terms and conditions"
 msgstr "Terms and conditions"
 
-#: NearForums.Web.Output\Views\Shared\MessageItem.cshtml
+#: NearForums.Web.Output\Views\Shared\MessageItem.cshtml, NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "Member for:"
 msgstr "Member for:"
 
@@ -905,10 +905,6 @@ msgstr "{0} profile"
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "Group"
 msgstr "Group"
-
-#: NearForums.Web.Output\Views\Users\Detail.cshtml
-msgid "Member for"
-msgstr "Member for"
 
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "Messages posted by {0}"
