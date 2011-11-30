@@ -27,7 +27,7 @@ namespace NearForums.Web.Controllers.Helpers
         /// <summary>
         /// Checks if a external provider is trying to post a login on this website.
         /// </summary>
-        public static bool TryLoginFromProviders(SessionWrapper session, CacheWrapper cache, HttpRequestBase request, HttpResponseBase response)
+        public static bool TryLoginFromProviders(SessionWrapper session, CacheWrapper cache, HttpContextBase context)
         {
             bool logged = false;
 
@@ -35,20 +35,14 @@ namespace NearForums.Web.Controllers.Helpers
             {
                 logged = true;
             }
-			//else if (TryLoginFromFacebook(session, request, response))
-			//{
-			//    logged = true;
-			//}
             else if (TryFinishLoginFromTwitter(session, cache))
             {
                 logged = true;
             }
-            //else if (TryFinishMembershipLogin(session, Membership.GetUser()))
-            //{
-            //    logged = true;
-            //}
-            //Do I really need the above piece of code with forms auth?
-
+			else if (TryFinishMembershipLogin(context, session))
+			{
+				logged = true;
+			}
             return logged;
         }
 
@@ -215,6 +209,20 @@ namespace NearForums.Web.Controllers.Helpers
 
         #region Membership
 		/// <summary>
+		/// If enabled by configuration, tries to login the current membership user (reading cookie / identity) as nearforums user
+		/// </summary>
+		public static bool TryFinishMembershipLogin(HttpContextBase context, SessionWrapper session)
+		{
+			if (SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsDefined && (!String.IsNullOrEmpty(context.User.Identity.Name)))
+			{
+				return TryFinishMembershipLogin(session, Membership.GetUser());
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Logs the user in or creates the a site user account if the user does not exist, based on membership user.
 		/// Sets the logged user in the session.
 		/// </summary>
@@ -223,28 +231,22 @@ namespace NearForums.Web.Controllers.Helpers
         {
             bool logged = false;
 
-
-            User siteUser;
-
             if (MembershipUser != null)
             {
-                siteUser = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, MembershipUser.ProviderUserKey.ToString());
-            }
-            else
-            {
-                siteUser = null;
+                var siteUser = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, MembershipUser.ProviderUserKey.ToString());
+
+				if (siteUser == null)
+				{
+					//User does not exist on Nearforums db
+					siteUser = new User();
+					siteUser.UserName = MembershipUser.UserName;
+					siteUser.Email = MembershipUser.Email;
+					siteUser = UsersServiceClient.Add(siteUser, AuthenticationProvider.Membership, MembershipUser.ProviderUserKey.ToString());
+				}
+				session.User = new UserState(siteUser, AuthenticationProvider.Membership);
+				logged = true;
             }
 
-            if (siteUser == null && MembershipUser != null)
-            {
-                siteUser = new User();
-                siteUser.UserName = MembershipUser.UserName;
-				siteUser.Email = MembershipUser.Email;
-                siteUser = UsersServiceClient.Add(siteUser, AuthenticationProvider.Membership, MembershipUser.ProviderUserKey.ToString());
-            }
-
-            session.User = new UserState(siteUser, AuthenticationProvider.Membership);
-            logged = true;
             return logged;
         }
 
