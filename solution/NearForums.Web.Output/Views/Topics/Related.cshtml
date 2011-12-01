@@ -1,7 +1,7 @@
 ﻿@model Topic
 @if (this.Model.Related.Count > 0)
 { 
-	<h2>@T("Related thread")</h2>
+	<h2>@T("Related threads")</h2>
 	<ul class="related">
 		@foreach (Topic t in this.Model.Related)
 		{

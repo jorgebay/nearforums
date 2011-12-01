@@ -486,6 +486,10 @@ msgstr "¿Está seguro que desea ocultar el mensaje #{0}?"
 msgid "Message removed"
 msgstr "Mensaje eliminado"
 
+#: NearForums.Web.Output\Views\Messages\ListFlagged.cshtml
+msgid "No flagged messages found."
+msgstr "No se han encontrado mensajes marcados como inadecuado."
+
 #: NearForums.Web.Output\Views\PageContents\Edit.cshtml
 msgid "Edit page"
 msgstr "Editar página"
@@ -840,10 +844,10 @@ msgstr "Mover tema \"{0}\" a otro foro"
 
 #: NearForums.Web.Output\Views\Topics\Move.cshtml
 msgid "Select the destination forum"
-msgstr "Seleccionar el foro destino"
+msgstr "Seleccionar el foro de destino"
 
 #: NearForums.Web.Output\Views\Topics\Related.cshtml
-msgid "Related thread"
+msgid "Related threads"
 msgstr "Temas relacionados"
 
 #: NearForums.Web.Output\Views\Topics\Reply.cshtml

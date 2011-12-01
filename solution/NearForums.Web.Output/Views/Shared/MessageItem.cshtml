@@ -19,7 +19,7 @@
 				onclick="window.location.hash='#msg@(Model.Id)';return false;">#@(Model.Id)</a>
 		</strong>
 		<span class="userSep">
-		by
+		@T("by")
 		</span>
 		<strong class="userName">@Html.ActionLink(Model.User.UserName, "Detail", "Users", new{id=Model.User.Id}, new{rel="nofollow"})</strong>
 		<span class="dateSep">

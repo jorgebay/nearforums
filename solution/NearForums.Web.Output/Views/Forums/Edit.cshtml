@@ -17,7 +17,7 @@
 	}, null)
 @{Html.BeginForm(null, null, this.Model == null ? null : new{forum=this.Model.ShortName}, FormMethod.Post, new{@id="forumEditForm"});}
 <fieldset>
-	<legend>Fill in the fields and submit</legend>
+	<legend>@T("Fill in the fields and submit")</legend>
 	<div class="formItem floatContainer">
 		<label for="name">@T("Name")</label>
 		@Html.TextBox("name", null, new{@class="text"})
