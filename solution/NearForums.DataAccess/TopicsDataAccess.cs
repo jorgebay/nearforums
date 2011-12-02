@@ -141,7 +141,7 @@ namespace NearForums.DataAccess
 			{
 				Topic t = ParseBasicTopicDataRow(dr);
 				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
-				if (!dr.IsNull("LastMessageId"))
+				if (!dr.IsNull("MessageCreationDate"))
 				{
 					t.LastMessage = new Message(dr.Get<int>("LastMessageId"), dr.GetDate("MessageCreationDate"));
 					t.LastMessage.User = new User(dr.Get<int>("MessageUserId"), dr.GetString("MessageUserName"));
