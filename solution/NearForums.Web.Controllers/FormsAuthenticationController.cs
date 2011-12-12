@@ -68,28 +68,31 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpPost]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings",
-			Justification = "Needs to take same parameter type as Controller.Redirect()")]
 		public ActionResult Login(string userName, string password, bool rememberMe, string returnUrl)
 		{
-			if (!ValidateLogOn(userName, password))
+			try
 			{
+				ValidateLogOn(userName, password);
+
+				FormsAuth.SignIn(userName, rememberMe);
+
+				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
+
+				if (!String.IsNullOrEmpty(returnUrl))
+				{
+					return Redirect(returnUrl);
+				}
+				else
+				{
+					return RedirectToAction("List", "Forums");
+				}
+			}
+			catch (ValidationException ex)
+			{
+				AddErrors(ModelState, ex);
 				ViewBag.ReturnUrl = returnUrl;
-				return View();
 			}
-
-			FormsAuth.SignIn(userName, rememberMe);
-
-			SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
-
-			if (!String.IsNullOrEmpty(returnUrl))
-			{
-				return Redirect(returnUrl);
-			}
-			else
-			{
-				return RedirectToAction("List", "Forums");
-			}
+			return View();
 		}
 
 		public ActionResult Register()
@@ -279,23 +282,31 @@ namespace NearForums.Web.Controllers
 				throw new ValidationException(errors);
 			}
 		}
-		[NonAction]
-		private bool ValidateLogOn(string userName, string password)
+		
+		/// <summary>
+		/// Validates the username and password, and check if the username exists
+		/// </summary>
+		/// <exception cref="ValidationException">Throws a ValidationException when any field is not valid.</exception>
+		protected virtual void ValidateLogOn(string userName, string password)
 		{
+			var errors = new List<ValidationError>();
 			if (String.IsNullOrEmpty(userName))
 			{
-				ModelState.AddModelError("username", "You must specify a username.");
+				errors.Add(new ValidationError("userName", ValidationErrorType.NullOrEmpty));
 			}
 			if (String.IsNullOrEmpty(password))
 			{
-				ModelState.AddModelError("password", "You must specify a password.");
+				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
 			}
-			if (!MembershipService.ValidateUser(userName, password))
+			if (errors.Count == 0 && !MembershipService.ValidateUser(userName, password))
 			{
-				ModelState.AddModelError("_FORM", "The username or password provided is incorrect.");
+				errors.Add(new ValidationError("userName", ValidationErrorType.CompareNotMatch));
 			}
 
-			return ModelState.IsValid;
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
 		}
 
 		/// <summary>

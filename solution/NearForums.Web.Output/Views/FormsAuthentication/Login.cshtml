@@ -6,5 +6,13 @@
 </ul>
 <div id="login">
 	<h1>@ViewBag.Title</h1>
+	@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>()
+	{
+		{"userName", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, S("Username must not be blank.")}
+			,{ValidationErrorType.CompareNotMatch, S("The username or password provided is incorrect.")}}}
+		,{"password", new Dictionary<ValidationErrorType, string>(){
+			{ValidationErrorType.NullOrEmpty, S("Password must not be blank.")}}}
+	}, null)
 	@Html.Partial("~/Views/FormsAuthentication/LoginForm.cshtml")
 </div>
