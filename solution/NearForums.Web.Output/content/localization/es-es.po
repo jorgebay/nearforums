@@ -158,6 +158,10 @@ msgstr "Su contraseña ha sido cambiada con éxito."
 msgid "Back to my account >>"
 msgstr "Volver a Mi cuenta>>"
 
+#: \NearForums.Web.Output\Views\FormsAuthentication\Login.cshtml
+msgid "The username or password provided is incorrect."
+msgstr "El nombre de usuario o contraseña no son correctos."
+
 #: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
 msgid "Enter your username and password. <br />Don't have an account?"
 msgstr "Introduce tu nombre de usuario y contraseña. <br /> ¿Todavía no tienes una cuenta?"
@@ -890,6 +894,14 @@ msgstr "Cerrar"
 msgid "Open to replies"
 msgstr "Abrir tema a nuevas respuestas"
 
+#: \NearForums.Web.Output\Views\Topics\Toolbar.cshtml
+msgid "Are you sure you want to DELETE this thread?"
+msgstr "¿Estás seguro que deseas ELIMINAR este tema?"
+
+#: \NearForums.Web.Output\Views\Topics\Toolbar.cshtml
+msgid "Are you sure you want to CLOSE this thread for further replies?"
+msgstr "¿Estás seguro que deseas CERRAR este tema para nuevos mensajes?"
+
 #: NearForums.Web.Output\Views\TopicsSubscriptions\Unsubscribe.cshtml
 msgid "Unsubscribe"
 msgstr "Cancelar la suscripción"
@@ -929,6 +941,10 @@ msgstr "Cargando..."
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "No messages found."
 msgstr "No se han encontrado mensajes"
+
+#: \NearForums.Web.Output\Views\Users\Detail.cshtml
+msgid "Threads posted by {0}"
+msgstr "Temas enviados por {0}"
 
 #: NearForums.Web.Output\Views\Users\Edit.cshtml
 msgid "Email format is invalid."

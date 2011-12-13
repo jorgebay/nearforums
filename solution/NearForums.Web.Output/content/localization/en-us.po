@@ -1,4 +1,4 @@
-﻿# Nearforums PO file - en-US
+# Nearforums PO file - en-US
 # PO File format: http://www.gnu.org/s/hello/manual/gettext/PO-Files.html
 # This file is distributed under the MIT license: http://nearforums.codeplex.com/license
 
@@ -157,6 +157,10 @@ msgstr "Your password has been changed successfully."
 #: NearForums.Web.Output\Views\FormsAuthentication\ChangePasswordSuccess.cshtml
 msgid "Back to my account >>"
 msgstr "Back to my account >>"
+
+#: \NearForums.Web.Output\Views\FormsAuthentication\Login.cshtml
+msgid "The username or password provided is incorrect."
+msgstr "The username or password provided is incorrect."
 
 #: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
 msgid "Enter your username and password. <br />Don't have an account?"
@@ -890,6 +894,14 @@ msgstr "Close"
 msgid "Open to replies"
 msgstr "Open to replies"
 
+#: \NearForums.Web.Output\Views\Topics\Toolbar.cshtml
+msgid "Are you sure you want to DELETE this thread?"
+msgstr "Are you sure you want to DELETE this thread?"
+
+#: \NearForums.Web.Output\Views\Topics\Toolbar.cshtml
+msgid "Are you sure you want to CLOSE this thread for further replies?"
+msgstr "Are you sure you want to CLOSE this thread for further replies?"
+
 #: NearForums.Web.Output\Views\TopicsSubscriptions\Unsubscribe.cshtml
 msgid "Unsubscribe"
 msgstr "Unsubscribe"
@@ -929,6 +941,10 @@ msgstr "Loading..."
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "No messages found."
 msgstr "No messages found."
+
+#: \NearForums.Web.Output\Views\Users\Detail.cshtml
+msgid "Threads posted by {0}"
+msgstr "Threads posted by {0}"
 
 #: NearForums.Web.Output\Views\Users\Edit.cshtml
 msgid "Email format is invalid."
