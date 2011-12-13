@@ -16,7 +16,7 @@
 }
 @if (ViewData.Get<IList>("Topics").Count > 0)
 {
-	<h2>Threads posted by @Model.UserName</h2>
+	<h2>@T("Threads posted by {0}", Model.UserName)</h2>
 	<ul>
 	@foreach (Topic t in (IList)ViewData["Topics"])
 	{

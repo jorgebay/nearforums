@@ -908,7 +908,7 @@ msgstr "Gracias."
 
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "{0} profile"
-msgstr "{0} perfil"
+msgstr "Perfil de {0}"
 
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "Group"
