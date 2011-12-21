@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCopyright("MIT License (MIT) from solution")]
+[assembly: AssemblyCopyright("Copyright © Outercurve Foundation 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("NearForums.Tests")]
