@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using NearForums.Validation;
 
 namespace NearForums.Configuration
 {
-	public class UIElement : ConfigurationElement
+	public class UIElement : ConfigurationElement, IEnsureValidation
 	{
 		/// <summary>
 		/// Determines the amount of messages per page are shown on the topic detail page
@@ -125,5 +126,14 @@ namespace NearForums.Configuration
 				this["defaultForumSort"] = value;
 			}
 		}
+
+		#region IEnsureValidation Members
+
+		public void ValidateFields()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }
