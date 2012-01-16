@@ -64,7 +64,7 @@ namespace NearForums.Web.Controllers
 			}
 			ViewBag.ReturnUrl = returnUrl;
 
-			return View();
+			return View("LoginFormFull");
 		}
 
 		[HttpPost]
@@ -92,7 +92,7 @@ namespace NearForums.Web.Controllers
 				AddErrors(ModelState, ex);
 				ViewBag.ReturnUrl = returnUrl;
 			}
-			return View();
+			return View("LoginFormFull");
 		}
 
 		public ActionResult Register()

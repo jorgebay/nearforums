@@ -353,7 +353,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormsAuthentication\Login.cshtml" />
+    <Content Include="Views\Shared\LoginFormFull.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FormsAuthentication\Register.cshtml" />
