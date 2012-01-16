@@ -380,7 +380,7 @@
     <Content Include="Views\FormsAuthentication\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormsAuthentication\LoginForm.cshtml" />
+    <Content Include="Views\Shared\LoginForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\ButtonFacebook.cshtml" />

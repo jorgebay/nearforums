@@ -162,27 +162,27 @@ msgstr "Back to my account >>"
 msgid "The username or password provided is incorrect."
 msgstr "The username or password provided is incorrect."
 
-#: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
+#: NearForums.Web.Output\Views\Shared\LoginForm.cshtml
 msgid "Enter your username and password. <br />Don't have an account?"
 msgstr "Enter your username and password. <br />Don't have an account?"
 
-#: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
+#: NearForums.Web.Output\Views\Shared\LoginForm.cshtml
 msgid "Create one"
 msgstr "Create one"
 
-#: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
+#: NearForums.Web.Output\Views\Shared\LoginForm.cshtml
 msgid "Username"
 msgstr "Username"
 
-#: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
+#: NearForums.Web.Output\Views\Shared\LoginForm.cshtml
 msgid "Password"
 msgstr "Password"
 
-#: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
+#: NearForums.Web.Output\Views\Shared\LoginForm.cshtml
 msgid "Remember me"
 msgstr "Remember me"
 
-#: NearForums.Web.Output\Views\FormsAuthentication\LoginForm.cshtml
+#: NearForums.Web.Output\Views\Shared\LoginForm.cshtml
 msgid "Forgot your password?"
 msgstr "Forgot your password?"
 

@@ -1,0 +1,32 @@
+﻿@* Default values *@
+@{
+	ViewBag.ForgotPasswordUrl = ViewBag.ForgotPasswordUrl ?? Url.Action("ResetPassword", "FormsAuthentication");
+	ViewBag.RegisterUrl = ViewBag.RegisterUrl ?? Url.Action("Register", "FormsAuthentication");
+	ViewBag.FormAction = ViewBag.FormAction ?? Url.RouteUrl(new { action = "Login", controller = "FormsAuthentication", returnUrl = ViewBag.ReturnUrl });
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { action=ViewBag.FormAction}))
+{
+	<fieldset>
+		<legend>
+			@T("Enter your username and password. <br />Don't have an account?") @Html.LinkLocalized("Create one", (string)ViewBag.RegisterUrl, null)
+		</legend>
+		<div class="formItem floatContainer">
+			<label for="username">@T("Username")</label>
+			@Html.TextBox("username")
+		</div>
+		<div class="formItem floatContainer">
+			<label for="password">@T("Password")</label>
+			@Html.Password("password")
+		</div>
+		<div class="formItem checkbox aligned">
+			@Html.CheckBox("rememberMe")
+			<label class="inline" for="rememberMe">@T("Remember me")</label>
+		</div>
+		<legend>
+			@Html.LinkLocalized("Forgot your password?", (string)ViewBag.ForgotPasswordUrl, null)
+		</legend>
+		<div class="formItem buttons">
+			<input type="submit" class="button" value="@T("Sign in")" />
+		</div>
+	</fieldset>
+}
