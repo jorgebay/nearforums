@@ -207,5 +207,39 @@ namespace NearForums.Web.Controllers
 			}
 		}
 		#endregion
+
+		#region Custom provider
+		[HttpGet]
+		public ActionResult CustomLogin()
+		{
+			if (!Config.AuthenticationProviders.Custom.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			var provider = Config.AuthenticationProviders.Custom;
+			ViewBag.ForgotPasswordUrl = provider.ForgotPasswordUrl;
+			ViewBag.RegisterUrl = provider.RegisterUrl;
+			ViewBag.FormAction = Url.Action("CustomLogin");
+			ViewBag.AllowRemember = false;
+
+			return View("LoginFormFull");
+		}
+
+		[HttpPost]
+		public ActionResult CustomLogin(string userName, string password, string returnUrl)
+		{
+			if (!Config.AuthenticationProviders.Custom.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			var provider = Config.AuthenticationProviders.Custom;
+			ViewBag.ForgotPasswordUrl = provider.ForgotPasswordUrl;
+			ViewBag.RegisterUrl = provider.RegisterUrl;
+			ViewBag.FormAction = Url.Action("CustomLogin");
+			ViewBag.AllowRemember = false;
+
+			return View("LoginFormFull");
+		}
+		#endregion
 	}
 }

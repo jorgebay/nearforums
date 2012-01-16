@@ -52,11 +52,24 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return (FormsAuthElement)this["formsAuth"];//TODO: probably can get this info from the web.config better!
+				return (FormsAuthElement)this["formsAuth"];
 			}
 			set
 			{
 				this["formsAuth"] = value;
+			}
+		}
+
+		[ConfigurationProperty("custom", IsRequired = false)]
+		public CustomAuthenticationProviderElement Custom
+		{
+			get
+			{
+				return (CustomAuthenticationProviderElement)this["custom"];
+			}
+			set
+			{
+				this["custom"] = value;
 			}
 		}
 
