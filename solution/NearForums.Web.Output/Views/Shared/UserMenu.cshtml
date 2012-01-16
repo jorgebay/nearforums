@@ -2,15 +2,15 @@
     <li class="toContent"><a href="#content" accesskey="1">@T("Go to content")</a></li>
 	@if (User == null)
 	{
-        if (Config.AuthorizationProviders.Facebook.IsDefined)
+		if (Config.AuthenticationProviders.Facebook.IsDefined)
         {
 		<li class="login facebook">@Html.Partial("ButtonFacebook", new{size="small"}, true)</li>
         }
-		if (Config.AuthorizationProviders.Twitter.IsDefined)
+		if (Config.AuthenticationProviders.Twitter.IsDefined)
 		{
 		<li class="login twitter">@Html.Partial("ButtonTwitter", new{size="small"}, true)</li>
 		}
-		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
+		if (Config.AuthenticationProviders.FormsAuth.IsDefined)
 		{
 		<li class="login">@Html.ActionLinkLocalized("Sign In", "Login", "Authentication", new{returnUrl = ViewBag.ReturnUrl ?? Request.Url.PathAndQuery}, null)</li>
 		}

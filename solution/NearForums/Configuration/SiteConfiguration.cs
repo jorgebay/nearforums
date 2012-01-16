@@ -54,16 +54,16 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("authorizationProviders", IsRequired = true)]
-		public AuthorizationProvidersElement AuthorizationProviders
+		[ConfigurationProperty("authenticationProviders", IsRequired = true)]
+		public AuthenticationProvidersElement AuthenticationProviders
 		{
 			get
 			{
-				return (AuthorizationProvidersElement)this["authorizationProviders"];
+				return (AuthenticationProvidersElement)this["authenticationProviders"];
 			}
 			set
 			{
-				this["authorizationProviders"] = value;
+				this["authenticationProviders"] = value;
 			}
 		}
 

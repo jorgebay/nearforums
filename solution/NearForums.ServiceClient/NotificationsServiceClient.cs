@@ -28,7 +28,7 @@ namespace NearForums.ServiceClient
 			message.IsBodyHtml = true;
 			#region Replace body values
 			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName" });
-			body = Utils.ReplaceBodyValues(body, SiteConfiguration.Current.AuthorizationProviders.FormsAuth, new[] { "TimeToExpireResetPasswordLink" });
+			body = Utils.ReplaceBodyValues(body, SiteConfiguration.Current.AuthenticationProviders.FormsAuth, new[] { "TimeToExpireResetPasswordLink" });
 			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>() {{ "url", url } });
 			#endregion
 			message.Body = body;

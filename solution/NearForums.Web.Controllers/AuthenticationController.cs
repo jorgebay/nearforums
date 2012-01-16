@@ -52,7 +52,7 @@ namespace NearForums.Web.Controllers
 			{
 				return Redirect(returnUrl);
 			}
-			if (!this.Config.AuthorizationProviders.Twitter.IsDefined)
+			if (!this.Config.AuthenticationProviders.Twitter.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
@@ -67,12 +67,12 @@ namespace NearForums.Web.Controllers
 		#region Facebook OAuth 2.0
 		public ActionResult FacebookStartLogin(string returnUrl)
 		{
-			if (!this.Config.AuthorizationProviders.Facebook.IsDefined)
+			if (!this.Config.AuthenticationProviders.Facebook.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
 			var oAuthClient = new FacebookOAuthClient();
-			oAuthClient.AppId = this.Config.AuthorizationProviders.Facebook.ApiKey;
+			oAuthClient.AppId = this.Config.AuthenticationProviders.Facebook.ApiKey;
 			oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
 			var loginUri = oAuthClient.GetLoginUrl(new Dictionary<string, object>(){{"state", Session.SessionToken}});
 
@@ -83,7 +83,7 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult FacebookFinishLogin(string code, string state)
 		{
-			if (!this.Config.AuthorizationProviders.Facebook.IsDefined)
+			if (!this.Config.AuthenticationProviders.Facebook.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
@@ -93,8 +93,8 @@ namespace NearForums.Web.Controllers
 				if (oauthResult.IsSuccess)
 				{
 					var oAuthClient = new FacebookOAuthClient();
-					oAuthClient.AppId = this.Config.AuthorizationProviders.Facebook.ApiKey;
-					oAuthClient.AppSecret = this.Config.AuthorizationProviders.Facebook.SecretKey;
+					oAuthClient.AppId = this.Config.AuthenticationProviders.Facebook.ApiKey;
+					oAuthClient.AppSecret = this.Config.AuthenticationProviders.Facebook.SecretKey;
 					oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
 					
 					//Could throw an OAuth exception if validation fails.
@@ -130,14 +130,14 @@ namespace NearForums.Web.Controllers
 		#region OpenId
 		public ActionResult OpenIdStartLogin(string openidIdentifier, string returnUrl)
 		{
-			if (!this.Config.AuthorizationProviders.SSOOpenId.IsDefined)
+			if (!this.Config.AuthenticationProviders.SSOOpenId.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
 
-			if (!String.IsNullOrEmpty(this.Config.AuthorizationProviders.SSOOpenId.Identifier))
+			if (!String.IsNullOrEmpty(this.Config.AuthenticationProviders.SSOOpenId.Identifier))
 			{
-				openidIdentifier = this.Config.AuthorizationProviders.SSOOpenId.Identifier;
+				openidIdentifier = this.Config.AuthenticationProviders.SSOOpenId.Identifier;
 			}
 
 			Identifier id;
@@ -162,7 +162,7 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult OpenIdFinishLogin(string returnUrl)
 		{
-			if (!this.Config.AuthorizationProviders.SSOOpenId.IsDefined)
+			if (!this.Config.AuthenticationProviders.SSOOpenId.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}

@@ -21,7 +21,7 @@ namespace NearForums.Web.Controllers.Filters
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			var session = new SessionWrapper(filterContext.HttpContext);
-			if (!Config.AuthorizationProviders.FormsAuth.IsDefined)
+			if (!Config.AuthenticationProviders.FormsAuth.IsDefined)
 			{
 				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller);
 			}

@@ -155,7 +155,7 @@ namespace NearForums.Web.Controllers
 				MembershipUser membershipUser = Membership.GetUser(userName);
 				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
 				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
-				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(Config.AuthorizationProviders.FormsAuth.TimeToExpireResetPasswordLink));
+				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(Config.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
 				if (ModelState.IsValid)
 				{
 					string linkUrl = this.Domain + this.Url.RouteUrl(new

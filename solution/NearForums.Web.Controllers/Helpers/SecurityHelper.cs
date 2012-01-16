@@ -54,7 +54,7 @@ namespace NearForums.Web.Controllers.Helpers
         /// <returns></returns>
         private static bool TryLoginFromFake(SessionWrapper session)
         {
-            if (SiteConfiguration.Current.AuthorizationProviders.FakeProvider)
+			if (SiteConfiguration.Current.AuthenticationProviders.FakeProvider)
             {
                 //Fake facebook id
                 const int fakeFacebookUserId = -1000;
@@ -70,7 +70,7 @@ namespace NearForums.Web.Controllers.Helpers
                 session.User = new UserState(user, AuthenticationProvider.Facebook);
             }
 
-            return SiteConfiguration.Current.AuthorizationProviders.FakeProvider;
+			return SiteConfiguration.Current.AuthenticationProviders.FakeProvider;
         }
         #endregion
 
@@ -136,16 +136,16 @@ namespace NearForums.Web.Controllers.Helpers
         #region Twitter
         public static void TwitterStartLogin(CacheWrapper cache)
         {
-            IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthorizationProviders.Twitter);
+			IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthenticationProviders.Twitter);
             TwitterConsumer.StartOAuthFlow(tokenManager);
         }
 
         private static bool TryFinishLoginFromTwitter(SessionWrapper session, CacheWrapper cache)
         {
             bool logged = false;
-            if (SiteConfiguration.Current.AuthorizationProviders.Twitter.IsDefined)
+			if (SiteConfiguration.Current.AuthenticationProviders.Twitter.IsDefined)
             {
-                IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthorizationProviders.Twitter);
+				IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthenticationProviders.Twitter);
                 long twitterUserId;
                 string accessToken;
                 if (TwitterConsumer.TryFinishOAuthFlow(tokenManager, true, out twitterUserId, out accessToken))
@@ -213,7 +213,7 @@ namespace NearForums.Web.Controllers.Helpers
 		/// </summary>
 		public static bool TryFinishMembershipLogin(HttpContextBase context, SessionWrapper session)
 		{
-			if (SiteConfiguration.Current.AuthorizationProviders.FormsAuth.IsDefined && (!String.IsNullOrEmpty(context.User.Identity.Name)))
+			if (SiteConfiguration.Current.AuthenticationProviders.FormsAuth.IsDefined && (!String.IsNullOrEmpty(context.User.Identity.Name)))
 			{
 				return TryFinishMembershipLogin(session, Membership.GetUser());
 			}

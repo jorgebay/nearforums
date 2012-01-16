@@ -8,14 +8,14 @@
 	@if (this.User == null)
 	{
 		<h1>@ViewBag.Title</h1>
-		if (Config.AuthorizationProviders.FormsAuth.IsDefined)
+		if (Config.AuthenticationProviders.FormsAuth.IsDefined)
 		{
 			<div class="membership">
 				<h2>@T("Sign in using your existing forum account")</h2>
 				@Html.Partial("~/Views/FormsAuthentication/LoginForm.cshtml")
 			</div>
 		}
-		if (Config.AuthorizationProviders.Facebook.IsDefined)
+		if (Config.AuthenticationProviders.Facebook.IsDefined)
 		{
 			<div class="facebook">
 				<h2>@T("Sign in with your Facebook account")</h2>
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		}
-		if (Config.AuthorizationProviders.Twitter.IsDefined)
+		if (Config.AuthenticationProviders.Twitter.IsDefined)
 		{
 			<div class="twitter">
 				<h2>@T("Sign in with your Twitter account")</h2>
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 		}
-		if (Config.AuthorizationProviders.SSOOpenId.IsDefined)
+		if (Config.AuthenticationProviders.SSOOpenId.IsDefined)
 		{
 			<div class="ssoOpenId">
 				<h2>@T("Sign in with your site credentials")</h2>
