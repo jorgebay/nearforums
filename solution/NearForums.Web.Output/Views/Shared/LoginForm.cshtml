@@ -3,6 +3,7 @@
 	ViewBag.ForgotPasswordUrl = ViewBag.ForgotPasswordUrl ?? Url.Action("ResetPassword", "FormsAuthentication");
 	ViewBag.RegisterUrl = ViewBag.RegisterUrl ?? Url.Action("Register", "FormsAuthentication");
 	ViewBag.FormAction = ViewBag.FormAction ?? Url.RouteUrl(new { action = "Login", controller = "FormsAuthentication", returnUrl = ViewBag.ReturnUrl });
+	ViewBag.AllowRemember = ViewBag.AllowRemember ?? true;
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { action=ViewBag.FormAction}))
 {
@@ -18,10 +19,13 @@
 			<label for="password">@T("Password")</label>
 			@Html.Password("password")
 		</div>
+		@if (ViewBag.AllowRemember == true)
+		{
 		<div class="formItem checkbox aligned">
 			@Html.CheckBox("rememberMe")
 			<label class="inline" for="rememberMe">@T("Remember me")</label>
 		</div>
+		}
 		<legend>
 			@Html.LinkLocalized("Forgot your password?", (string)ViewBag.ForgotPasswordUrl, null)
 		</legend>

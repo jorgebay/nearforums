@@ -66,43 +66,43 @@ msgstr "Templates: Administrar plantillas"
 msgid "Manage the site templates for the forum."
 msgstr "Administrar las plantillas de sitio."
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "Sign in"
 msgstr "Login"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "Sign in using your existing forum account"
 msgstr "Inicia sesión con tu cuenta"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "Sign in with your Facebook account"
 msgstr "Inicia sesión con tu cuenta de Facebook"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "You should be entering the same email address and password that you would use to log into Facebook homepage. Facebook will not share your password with us."
 msgstr "Utiliza tus datos de acceso de Facebook. Facebook no compartirá tu contraseña con nosotros."
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "Sign in with your Twitter account"
 msgstr "Inicia sesión con tu cuenta de Twitter"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "You should be entering your twitter username and password at twitter.com website to login on the forums. Twitter will not share your password with us."
 msgstr "Utiliza tus datos de acceso de Twitter. Facebook no compartirá tu contraseña con nosotros."
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "Sign in with your site credentials"
 msgstr "Iniciar sesión con las credenciales de este	sitio"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
 msgid "Login"
 msgstr "Login"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\NotAuthorized.cshtml
 msgid "Access denied"
 msgstr "Acceso denegado"
 
-#: NearForums.Web.Output\Views\Authentication\Login.cshtml
+#: NearForums.Web.Output\Views\Authentication\NotAuthorized.cshtml
 msgid "You must be a user of the group {0} to perform this action."
 msgstr "Debes ser un usuario del grupo {0} para realizar esta acción."
 

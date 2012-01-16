@@ -275,7 +275,7 @@
     <Content Include="Views\Topics\Move.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Authentication\Login.cshtml" />
+    <Content Include="Views\Authentication\ProviderSelect.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Topics\Edit.cshtml" />
@@ -421,6 +421,7 @@
   <ItemGroup>
     <None Include="content\localization\es-es.po" />
     <None Include="content\localization\en-us.po" />
+    <Content Include="Views\Authentication\NotAuthorized.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -21,6 +21,13 @@ namespace NearForums.Web.Controllers
 {
 	public class AuthenticationController : BaseController
 	{
+		/// <summary>
+		/// If the user is not logged in, it ask the user to login using any of the provider.
+		/// If the user is logged in and not authorized, it shows a message to the user.
+		/// </summary>
+		/// <param name="returnUrl"></param>
+		/// <param name="group"></param>
+		/// <returns>ProviderSelect view result or </returns>
 		public ActionResult Login(string returnUrl, UserGroup? group)
 		{
 			if (User != null)
@@ -31,9 +38,10 @@ namespace NearForums.Web.Controllers
 				}
 				ViewBag.UserGroup = group;
 				ViewBag.UserGroupName = UsersServiceClient.GetGroupName(group.Value);
+				return View("NotAuthorized");
 			}
 			ViewBag.ReturnUrl = returnUrl;
-			return View();
+			return View("ProviderSelect");
 		}
 
 		public ActionResult Logout(string returnUrl)
@@ -46,6 +54,9 @@ namespace NearForums.Web.Controllers
 		}
 
 		#region Twitter
+		/// <summary>
+		/// Starts the OAuth flow by requesting a token and redirecting to twitter
+		/// </summary>
 		public ActionResult TwitterStartLogin(string returnUrl)
 		{
 			if (this.User != null)
@@ -65,6 +76,9 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Facebook OAuth 2.0
+		/// <summary>
+		/// Starts the authentication flow and redirects to Facebook
+		/// </summary>
 		public ActionResult FacebookStartLogin(string returnUrl)
 		{
 			if (!this.Config.AuthenticationProviders.Facebook.IsDefined)
@@ -128,6 +142,9 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region OpenId
+		/// <summary>
+		/// Starts the OpenId flow
+		/// </summary>
 		public ActionResult OpenIdStartLogin(string openidIdentifier, string returnUrl)
 		{
 			if (!this.Config.AuthenticationProviders.SSOOpenId.IsDefined)
