@@ -41,6 +41,15 @@ namespace NearForums.DataAccess
 			return param;
 		}
 
+		/// <summary>
+		/// Adds a parameter to the DbCommand, mapping the object Type to the DbType.
+		/// </summary>
+		/// <typeparam name="T">Type of the parameter</typeparam>
+		/// <param name="comm"></param>
+		/// <param name="factory"></param>
+		/// <param name="parameterName"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public static DbParameter AddParameter<T>(this DbCommand comm, DbProviderFactory factory, string parameterName, T value)
 		{
 			Type type = typeof(T);

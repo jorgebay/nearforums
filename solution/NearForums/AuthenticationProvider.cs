@@ -10,6 +10,13 @@ namespace NearForums
 		Facebook,
 		Twitter,
 		OpenId,
-		Membership
+		/// <summary>
+		/// ASP.NET Membership
+		/// </summary>
+		Membership,
+		/// <summary>
+		/// Custom provider database
+		/// </summary>
+		Custom
 	}
 }

@@ -2,10 +2,10 @@
 @{
 	ViewBag.ForgotPasswordUrl = ViewBag.ForgotPasswordUrl ?? Url.Action("ResetPassword", "FormsAuthentication");
 	ViewBag.RegisterUrl = ViewBag.RegisterUrl ?? Url.Action("Register", "FormsAuthentication");
-	ViewBag.FormAction = ViewBag.FormAction ?? Url.RouteUrl(new { action = "Login", controller = "FormsAuthentication", returnUrl = ViewBag.ReturnUrl });
+	ViewBag.LoginFormAction = ViewBag.LoginFormAction ?? Url.RouteUrl(new { action = "Login", controller = "FormsAuthentication", returnUrl = ViewBag.ReturnUrl });
 	ViewBag.AllowRemember = ViewBag.AllowRemember ?? true;
 }
-@using (Html.BeginForm(null, null, FormMethod.Post, new { action=ViewBag.FormAction}))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { action = ViewBag.LoginFormAction}))
 {
 	<fieldset>
 		<legend>

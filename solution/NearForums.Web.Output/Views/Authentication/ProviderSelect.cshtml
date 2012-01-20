@@ -6,10 +6,17 @@
 </ul>
 <div id="login" class="floatContainer">
 	<h1>@ViewBag.Title</h1>
-	@if (Config.AuthenticationProviders.FormsAuth.IsDefined)
+	@if (Config.AuthenticationProviders.Custom.IsDefined)
 	{
 		<div class="membership">
-			<h2>@T("Sign in using your existing forum account")</h2>
+			<h2>@T("Sign in using your existing account")</h2>
+			@Html.Partial("LoginForm")
+		</div>
+	}
+	else if (Config.AuthenticationProviders.FormsAuth.IsDefined)
+	{
+		<div class="membership">
+			<h2>@T("Sign in using your existing account")</h2>
 			@Html.Partial("LoginForm")
 		</div>
 	}

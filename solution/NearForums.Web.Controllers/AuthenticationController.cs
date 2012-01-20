@@ -16,6 +16,7 @@ using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 using Facebook;
 using NearForums.Web.State;
 using System.Web.Routing;
+using NearForums.Validation;
 
 namespace NearForums.Web.Controllers
 {
@@ -28,6 +29,7 @@ namespace NearForums.Web.Controllers
 		/// <param name="returnUrl"></param>
 		/// <param name="group"></param>
 		/// <returns>ProviderSelect view result or </returns>
+		[HttpGet]
 		public ActionResult Login(string returnUrl, UserGroup? group)
 		{
 			if (User != null)
@@ -41,6 +43,10 @@ namespace NearForums.Web.Controllers
 				return View("NotAuthorized");
 			}
 			ViewBag.ReturnUrl = returnUrl;
+			if (Config.AuthenticationProviders.Custom.IsDefined)
+			{
+				SpecifyParametersForCustom();
+			}
 			return View("ProviderSelect");
 		}
 
@@ -216,11 +222,7 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
-			var provider = Config.AuthenticationProviders.Custom;
-			ViewBag.ForgotPasswordUrl = provider.ForgotPasswordUrl;
-			ViewBag.RegisterUrl = provider.RegisterUrl;
-			ViewBag.FormAction = Url.Action("CustomLogin");
-			ViewBag.AllowRemember = false;
+			SpecifyParametersForCustom();
 
 			return View("LoginFormFull");
 		}
@@ -232,13 +234,35 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
+
+			try
+			{
+				var user = UsersServiceClient.AuthenticateWithCustomProvider(userName, password);
+				if (user != null)
+				{
+					Session.User = new UserState(user, AuthenticationProvider.Custom);
+					return Redirect(returnUrl);
+				}
+			}
+			catch (ValidationException ex)
+			{
+				AddErrors(ModelState, ex);
+			}
+			SpecifyParametersForCustom();
+
+			return View("LoginFormFull");
+		}
+
+		/// <summary>
+		/// Sets the parameters used by the custom authentication provider
+		/// </summary>
+		public void SpecifyParametersForCustom()
+		{
 			var provider = Config.AuthenticationProviders.Custom;
 			ViewBag.ForgotPasswordUrl = provider.ForgotPasswordUrl;
 			ViewBag.RegisterUrl = provider.RegisterUrl;
-			ViewBag.FormAction = Url.Action("CustomLogin");
+			ViewBag.LoginFormAction = Url.Action("CustomLogin");
 			ViewBag.AllowRemember = false;
-
-			return View("LoginFormFull");
 		}
 		#endregion
 	}

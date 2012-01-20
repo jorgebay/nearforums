@@ -73,19 +73,9 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				ValidateLogOn(userName, password);
-
 				FormsAuth.SignIn(userName, rememberMe);
-
 				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
-
-				if (!String.IsNullOrEmpty(returnUrl))
-				{
-					return Redirect(returnUrl);
-				}
-				else
-				{
-					return RedirectToAction("List", "Forums");
-				}
+				return Redirect(returnUrl);
 			}
 			catch (ValidationException ex)
 			{

@@ -71,7 +71,7 @@ msgid "Sign in"
 msgstr "Login"
 
 #: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml
-msgid "Sign in using your existing forum account"
+msgid "Sign in using your existing account"
 msgstr "Inicia sesión con tu cuenta"
 
 #: NearForums.Web.Output\Views\Authentication\ProviderSelect.cshtml

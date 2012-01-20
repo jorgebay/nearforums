@@ -126,5 +126,50 @@ namespace NearForums.ServiceClient
 			UsersDataAccess da = new UsersDataAccess();
 			da.UpdatePasswordResetGuid(id, Guid, expireDate);
 		}
+
+		/// <summary>
+		/// Tries to authenticate against the custom provider. If success, it gets or creates an application user
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
+		public static User AuthenticateWithCustomProvider(string userName, string password)
+		{
+			User user = null;
+			ValidateUserAndPassword(userName, password);
+
+			var customProviderDataAccess = new CustomAuthenticationDataAccess();
+			var providerUser = customProviderDataAccess.GetUser(userName, password);
+			if (providerUser != null)
+			{
+				user = GetByProviderId(AuthenticationProvider.Custom, providerUser.Id.ToString());
+				if (user == null)
+				{
+					user = Add(providerUser, AuthenticationProvider.Custom, providerUser.Id.ToString());
+				}
+			}
+
+			return user;
+		}
+
+		/// <summary>
+		/// Validates username and password
+		/// </summary>
+		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
+		public static void ValidateUserAndPassword(string userName, string password)
+		{
+			var errors = new List<ValidationError>();
+			if (String.IsNullOrWhiteSpace(userName))
+			{
+				errors.Add(new ValidationError("userName", ValidationErrorType.NullOrEmpty));
+			}
+			if (String.IsNullOrWhiteSpace(password))
+			{
+				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
+			}
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
+		}
 	}
 }

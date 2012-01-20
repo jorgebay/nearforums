@@ -9,37 +9,45 @@ using NearForums.Configuration;
 
 namespace NearForums.DataAccess
 {
+	/// <summary>
+	/// Represents a set of methods to get data from the db and convert into app entities
+	/// </summary>
 	public class BaseDataAccess
 	{
-		protected virtual DataAccessElement Config
+		/// <summary>
+		/// Current configuration
+		/// </summary>
+		protected virtual SiteConfiguration Config
 		{
 			get
 			{
-				return SiteConfiguration.Current.DataAccess;
+				return SiteConfiguration.Current;
 			}
 		}
 
 		public BaseDataAccess()
 		{
-			this.Factory = DbProviderFactories.GetFactory(Config.ConnectionString.ProviderName);
+			this.Factory = DbProviderFactories.GetFactory(Config.DataAccess.ConnectionString.ProviderName);
 		}
 
 		/// <summary>
 		/// Gets a new connection.
 		/// </summary>
 		/// <returns></returns>
-		public DbConnection GetConnection()
+		public virtual DbConnection GetConnection()
 		{
 			DbConnection conn = this.Factory.CreateConnection();
-			conn.ConnectionString = Config.ConnectionString.ConnectionString;
+			conn.ConnectionString = Config.DataAccess.ConnectionString.ConnectionString;
 			return conn;
 		}
 
-
+		/// <summary>
+		/// The database provider factory to create the connections and commands to access the db.
+		/// </summary>
 		protected DbProviderFactory Factory
 		{
 			get;
-			private set;
+			set;
 		}
 
 		/// <summary>

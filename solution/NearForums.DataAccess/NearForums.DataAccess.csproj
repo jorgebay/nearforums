@@ -47,6 +47,7 @@
     </Compile>
     <Compile Include="AdoExtensions.cs" />
     <Compile Include="BaseDataAccess.cs" />
+    <Compile Include="CustomAuthenticationDataAccess.cs" />
     <Compile Include="ForumsDataAccess.cs" />
     <Compile Include="MessagesDataAccess.cs" />
     <Compile Include="PageContentsDataAccess.cs" />

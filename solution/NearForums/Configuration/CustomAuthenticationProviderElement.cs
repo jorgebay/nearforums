@@ -41,7 +41,7 @@ namespace NearForums.Configuration
 
 					if (conn == null)
 					{
-						throw new ConfigurationErrorsException("You must specify a SQL Connection string in the configuration file, with the name " + ConnectionStringName + ".");
+						throw new ConfigurationErrorsException("A connection string with the name '" + ConnectionStringName + "' was not found in the web configuration file.");
 					}
 
 					if (!String.IsNullOrEmpty(conn.ProviderName))
