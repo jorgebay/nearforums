@@ -45,29 +45,36 @@
 		<p class="button"><input type="button" class="button" value="@T("Change Password")" onclick="window.location.href='@Url.Action("ChangePassword", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })';" /></p>
     }
 </fieldset>
-<h2>@T("Email")</h2>
-<fieldset>
-    <legend>@T("Your email will not be shared with anyone. We will not make a different use than detailed below.")</legend>
-    <div class="formItem floatContainer">
-        <label for="email">@T("Email address")</label>
-        @Html.TextBox("email", null, new { @class = "text" })
-    </div>
-    <div class="formItem floatContainer">
-        <div class="checkbox" style="padding-top: 10px;">
-            @(Html.CheckBoxBit<EmailPolicy>("policy1", this.Model.EmailPolicy, EmailPolicy.SendFromSubscriptions))
-            <label for="policy1">@T("Use my email to notify me of replies to threads I subscribed to")</label>
-        </div>
-        <div class="checkbox" style="padding-top: 10px;">
-            @(Html.CheckBoxBit<EmailPolicy>("policy2", this.Model.EmailPolicy, EmailPolicy.SendNewsletter))
-            <label for="policy3">@T("Send me a newsletter")</label>
-            @Html.Hidden("emailPolicy")
-        </div>
-        <div class="formItem buttons">
-            <input type="submit" value="@T("Send")" />
-        </div>
-    </div>
-</fieldset>
+@if (User.ProviderInfo.AllowChangeEmail)
+{
+	<h2>@T("Email")</h2>
+	<fieldset>
+		<legend>@T("Your email will not be shared with anyone. We will not make a different use than detailed below.")</legend>
+		<div class="formItem floatContainer">
+			<label for="email">@T("Email address")</label>
+			@Html.TextBox("email", null, new { @class = "text" })
+		</div>
+		<div class="formItem floatContainer">
+			<div class="checkbox" style="padding-top: 10px;">
+				@(Html.CheckBoxBit<EmailPolicy>("policy1", this.Model.EmailPolicy, EmailPolicy.SendFromSubscriptions))
+				<label for="policy1">@T("Use my email to notify me of replies to threads I subscribed to")</label>
+			</div>
+			<div class="checkbox" style="padding-top: 10px;">
+				@(Html.CheckBoxBit<EmailPolicy>("policy2", this.Model.EmailPolicy, EmailPolicy.SendNewsletter))
+				<label for="policy3">@T("Send me a newsletter")</label>
+				@Html.Hidden("emailPolicy")
+			</div>
+		</div>
+	</fieldset>
+}
+<div class="formItem buttons">
+	<input type="submit" value="@T("Submit")" />
+</div>
 @{Html.EndForm();}
+@if (!String.IsNullOrEmpty(User.ProviderInfo.EditAccountUrl))
+{
+	<p class="action"><a href="@User.ProviderInfo.EditAccountUrl">@T("To edit your account settings, click here")</a></p>
+}
 <script type="text/javascript">
     $(document).ready(function () {
         $("#accountForm").submit(function () {

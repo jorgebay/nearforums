@@ -87,6 +87,7 @@
     <Compile Include="Routing\RegexConstraint.cs" />
     <Compile Include="Routing\StrictRoute.cs" />
     <Compile Include="State\CacheWrapper.cs" />
+    <Compile Include="State\ProviderInfo.cs" />
     <Compile Include="State\SessionWrapper.cs" />
     <Compile Include="State\TemplateState.cs" />
     <Compile Include="State\UserState.cs" />

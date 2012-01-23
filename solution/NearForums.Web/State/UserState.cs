@@ -2,21 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NearForums.Configuration;
 
 namespace NearForums.Web.State
 {
 	public class UserState
 	{
-		public UserState(User user, AuthenticationProvider provider)
+		public UserState(User user, AuthenticationProvider provider) : this(user, provider, SiteConfiguration.Current.AuthenticationProviders)
 		{
-			this.Id = user.Id;
-			this.UserName = user.UserName;
-			this.Group = user.Group;
-			this.Guid = user.Guid;
-			this.TimeZone = user.TimeZone;
-			this.ExternalProfileUrl = user.ExternalProfileUrl;
-			this.Provider = provider;
-			this.Email = user.Email;
+
+		}
+
+		public UserState(User user, AuthenticationProvider provider, AuthenticationProvidersElement config)
+		{
+			Id = user.Id;
+			UserName = user.UserName;
+			Group = user.Group;
+			Guid = user.Guid;
+			TimeZone = user.TimeZone;
+			ExternalProfileUrl = user.ExternalProfileUrl;
+			Provider = provider;
+			Email = user.Email;
+			Config = config;
+			ProviderInfo = new ProviderInfo();
+
+			if (provider == AuthenticationProvider.Custom)
+			{
+				ProviderInfo.AllowChangeEmail = Config.Custom.AllowChangeEmail;
+				ProviderInfo.EditAccountUrl = Config.Custom.AccountEditUrl;
+			}
+		}
+
+		protected AuthenticationProvidersElement Config
+		{
+			get;
+			set;
 		}
 
 		public int Id
@@ -76,6 +96,15 @@ namespace NearForums.Web.State
 		{
 			get;
 			set;
+		}
+
+		/// <summary>
+		/// Gets the info from the authentication provider that authenticated this account.
+		/// </summary>
+		public ProviderInfo ProviderInfo
+		{
+			get;
+			protected set;
 		}
 
 		public User ToUser()

@@ -147,6 +147,10 @@ namespace NearForums.ServiceClient
 					user = Add(providerUser, AuthenticationProvider.Custom, providerUser.Id.ToString());
 				}
 			}
+			else
+			{
+				throw new ValidationException(new ValidationError("userName", ValidationErrorType.CompareNotMatch));
+			}
 
 			return user;
 		}

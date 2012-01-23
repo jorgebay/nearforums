@@ -103,6 +103,38 @@ namespace NearForums.Configuration
 			}
 		}
 
+		/// <summary>
+		/// Gets / sets the url of the page to edit user account settings
+		/// </summary>
+		[ConfigurationProperty("accountEditUrl", IsRequired = false)]
+		public string AccountEditUrl
+		{
+			get
+			{
+				return (string)this["accountEditUrl"];
+			}
+			set
+			{
+				this["accountEditUrl"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Determines if the authentication provider allows the forum application to change the email information.
+		/// </summary>
+		[ConfigurationProperty("allowChangeEmail", DefaultValue=true)]
+		public bool AllowChangeEmail
+		{
+			get
+			{
+				return (bool)this["allowChangeEmail"];
+			}
+			set
+			{
+				this["allowChangeEmail"] = value;
+			}
+		}
+
 		#region IOptionalElement Members
 		public bool IsDefined
 		{

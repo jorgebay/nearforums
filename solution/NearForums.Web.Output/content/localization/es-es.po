@@ -1006,6 +1006,10 @@ msgstr "Enviadme correo electrónicos para notificarme acerca de nuevos mensajes
 msgid "Send me a newsletter"
 msgstr "Enviadme la newsletter"
 
+#: NearForums.Web.Output\Views\Users\Edit.cshtml
+msgid "To edit your account settings, click here"
+msgstr "Para editar los datos de tu cuenta, haz clic aquí"
+
 #: NearForums.Web.Output\Views\Users\List.cshtml
 msgid "User name"
 msgstr "Nombre de usuario"

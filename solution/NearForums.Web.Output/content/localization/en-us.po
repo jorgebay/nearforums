@@ -1,4 +1,4 @@
-# Nearforums PO file - en-US
+﻿# Nearforums PO file - en-US
 # PO File format: http://www.gnu.org/s/hello/manual/gettext/PO-Files.html
 # This file is distributed under the MIT license: http://nearforums.codeplex.com/license
 
@@ -1005,6 +1005,10 @@ msgstr "Use my email to notify me of replies to threads I subscribed to"
 #: NearForums.Web.Output\Views\Users\Edit.cshtml
 msgid "Send me a newsletter"
 msgstr "Send me a newsletter"
+
+#: NearForums.Web.Output\Views\Users\Edit.cshtml
+msgid "To edit your account settings, click here"
+msgstr "To edit your account settings, click here"
 
 #: NearForums.Web.Output\Views\Users\List.cshtml
 msgid "User name"
