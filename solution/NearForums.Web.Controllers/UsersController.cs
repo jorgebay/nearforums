@@ -84,9 +84,9 @@ namespace NearForums.Web.Controllers
 				user.Id = id;
 				UsersServiceClient.Edit(user);
 				#region Update membership data
-				MembershipUser membershipUser = Membership.GetUser();
-				if (Config.AuthorizationProviders.FormsAuth.IsDefined && membershipUser != null && Session.User.Provider == AuthenticationProvider.Membership)
+				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
 				{
+					var membershipUser = Membership.GetUser();
 					membershipUser.Email = user.Email;
 					Membership.UpdateUser(membershipUser);
 				}
