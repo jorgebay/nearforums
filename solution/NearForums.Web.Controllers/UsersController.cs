@@ -7,6 +7,7 @@ using NearForums.Web.Controllers.Filters;
 using NearForums.ServiceClient;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
+using System.Web.Security;
 
 namespace NearForums.Web.Controllers
 {
@@ -24,7 +25,7 @@ namespace NearForums.Web.Controllers
 
 			return View(user);
 		}
-		
+
 		[RequireAuthorization(UserGroup.Admin)]
 		public ActionResult List(string userName, int page)
 		{
@@ -82,18 +83,26 @@ namespace NearForums.Web.Controllers
 			{
 				user.Id = id;
 				UsersServiceClient.Edit(user);
+				#region Update membership data
+				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
+				{
+					var membershipUser = Membership.GetUser();
+					membershipUser.Email = user.Email;
+					Membership.UpdateUser(membershipUser);
+				}
+				#endregion
 				#region Adapt values
 				this.User.UserName = user.UserName;
 				this.User.Email = Utils.EmptyToNull(user.Email);
 				#endregion
-				return RedirectToAction("Detail", new{id=id});
+				return RedirectToAction("Detail", new { id = id });
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
 			return View(user);
-		} 
+		}
 		#endregion
 
 		#region Promote / Demote / Delete
@@ -119,7 +128,7 @@ namespace NearForums.Web.Controllers
 			return RedirectToAction("List", new
 			{
 				userName = searched,
-				page=0
+				page = 0
 			});
 		}
 
