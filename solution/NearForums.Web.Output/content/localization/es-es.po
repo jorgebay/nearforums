@@ -103,8 +103,8 @@ msgid "Access denied"
 msgstr "Acceso denegado"
 
 #: NearForums.Web.Output\Views\Authentication\NotAuthorized.cshtml
-msgid "You must be a user of the group {0} to perform this action."
-msgstr "Debes ser un usuario del grupo {0} para realizar esta acción."
+msgid "You must belong to the role {0} to perform this action."
+msgstr "Debes ser un usuario del rol {0} para realizar esta acción."
 
 #: NearForums.Web.Output\Views\FormsAuthentication\ChangePassword.cshtml
 msgid "Change Password"
@@ -923,8 +923,8 @@ msgid "{0} profile"
 msgstr "Perfil de {0}"
 
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
-msgid "Group"
-msgstr "Grupo"
+msgid "Role"
+msgstr "Rol"
 
 #: NearForums.Web.Output\Views\Users\Detail.cshtml
 msgid "Messages posted by {0}"
