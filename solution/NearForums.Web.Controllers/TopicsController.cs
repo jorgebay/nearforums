@@ -102,7 +102,7 @@ namespace NearForums.Web.Controllers
 				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = topic.Title.ToUrlSegment(64);
-				topic.IsSticky = (topic.IsSticky && this.User.Group >= UserGroup.Moderator);
+				topic.IsSticky = (topic.IsSticky && this.User.Role >= UserRole.Moderator);
 				if (topic.Description != null)
 				{
 					topic.Description = topic.Description.SafeHtml().ReplaceValues();
@@ -149,7 +149,7 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.NotFoundResult(this);
 			}
 			#region Check if user can edit
-			if (this.User.Group < UserGroup.Moderator && this.User.Id != topic.User.Id)
+			if (this.User.Role < UserRole.Moderator && this.User.Id != topic.User.Id)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
@@ -170,7 +170,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				#region Check if user can edit
-				if (this.User.Group < UserGroup.Moderator)
+				if (this.User.Role < UserRole.Moderator)
 				{
 					//The user is not moderator or admin
 					//Check if the user that created of the topic is the same as the logged user
@@ -353,7 +353,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Delete(int id, string name, string forum)
 		{
 			#region Check if user can edit
-			if (this.User.Group < UserGroup.Moderator)
+			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
 				Topic originalTopic = TopicsServiceClient.Get(id);
@@ -375,7 +375,7 @@ namespace NearForums.Web.Controllers
 
 		#region Move topic
 		[AcceptVerbs(HttpVerbs.Get)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Move(int id, string name)
 		{
 			Topic topic = TopicsServiceClient.Get(id);
@@ -397,7 +397,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Move(int id, string name, [Bind(Prefix = "", Exclude = "Id")] Topic t)
 		{
 			Topic savedTopic = TopicsServiceClient.Move(id, t.Forum.Id, this.User.Id, Request.UserHostAddress);
@@ -416,7 +416,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult CloseReplies(int id, string name)
 		{
 			#region Check if user can edit
-			if (this.User.Group < UserGroup.Moderator)
+			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
 				Topic originalTopic = TopicsServiceClient.Get(id);
@@ -439,7 +439,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult OpenReplies(int id, string name)
 		{
 			#region Check if user can edit
-			if (this.User.Group < UserGroup.Moderator)
+			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
 				Topic originalTopic = TopicsServiceClient.Get(id);

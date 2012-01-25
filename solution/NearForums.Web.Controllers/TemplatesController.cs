@@ -22,7 +22,7 @@ namespace NearForums.Web.Controllers
 	public class TemplatesController : BaseController
 	{
 		#region Add template
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[AcceptVerbs(HttpVerbs.Get)]
 		public ActionResult Add()
 		{
@@ -30,7 +30,7 @@ namespace NearForums.Web.Controllers
 		}
 
 
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[HttpPost]
 		[ValidateInput(true)]
 		public ActionResult Add([Bind(Prefix = "")] Template template, HttpPostedFileBase postedFile, bool useDefaultName)
@@ -60,7 +60,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region List templates
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List(TemplateActionError? error)
 		{
 			var list = TemplatesServiceClient.GetAll();
@@ -84,7 +84,7 @@ namespace NearForums.Web.Controllers
 		#endregion 
 
 		#region Set current
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public ActionResult SetCurrent(int id)
@@ -98,7 +98,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Delete Template
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public ActionResult Delete(int id)
@@ -133,7 +133,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Export
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Export(int id)
 		{
 			var template = TemplatesServiceClient.Get(id);
@@ -146,7 +146,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Preview
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Preview(int id)
 		{
 			Session.IsTemplatePreview = true;
@@ -158,7 +158,7 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Loads all templates delivered on install
 		/// </summary>
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public ActionResult AddDefaultTemplates()

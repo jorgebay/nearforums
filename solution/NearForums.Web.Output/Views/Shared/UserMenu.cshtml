@@ -17,7 +17,7 @@
     }
     else
 	{
-		if (this.User.Group >= UserGroup.Moderator)
+		if (this.User.HasModeratorPriviledges)
 		{
 			<li class="admin">@Html.ActionLinkLocalized("Admin dashboard", "Dashboard", "Admin")</li>
 		}		

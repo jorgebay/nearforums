@@ -12,7 +12,7 @@ namespace NearForums.Web.Controllers
 {
 	public class PageContentsController : BaseController
 	{
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List()
 		{
 			var list = PageContentsServiceClient.GetAll();
@@ -30,14 +30,14 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpGet]
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Add()
 		{
 			return View("Edit");
 		}
 
 		[HttpPost]
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[ValidateInput(false)]
 		public ActionResult Add([Bind] PageContent content)
 		{
@@ -61,7 +61,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpGet]
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Edit(string name)
 		{
 			var content = PageContentsServiceClient.Get(name);
@@ -74,7 +74,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpPost]
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[ValidateInput(false)]
 		public ActionResult Edit(string name, [Bind] PageContent content)
 		{
@@ -99,7 +99,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpPost]
-		[RequireAuthorization(UserGroup.Admin, RefuseOnFail=true)]
+		[RequireAuthorization(UserRole.Admin, RefuseOnFail=true)]
 		public ActionResult Delete(string name)
 		{
 			bool deleted = PageContentsServiceClient.Delete(name);

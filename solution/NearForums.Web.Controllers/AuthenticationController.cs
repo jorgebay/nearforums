@@ -30,16 +30,16 @@ namespace NearForums.Web.Controllers
 		/// <param name="group"></param>
 		/// <returns>ProviderSelect view result or </returns>
 		[HttpGet]
-		public ActionResult Login(string returnUrl, UserGroup? group)
+		public ActionResult Login(string returnUrl, UserRole? role)
 		{
 			if (User != null)
 			{
-				if (group == null || User.Group >= group)
+				if (role == null || User.Role >= role)
 				{
 					return Redirect(returnUrl);
 				}
-				ViewBag.UserGroup = group;
-				ViewBag.UserGroupName = UsersServiceClient.GetGroupName(group.Value);
+				ViewBag.UserRole = role;
+				ViewBag.UserRoleName = UsersServiceClient.GetRoleName(role.Value);
 				return View("NotAuthorized");
 			}
 			ViewBag.ReturnUrl = returnUrl;

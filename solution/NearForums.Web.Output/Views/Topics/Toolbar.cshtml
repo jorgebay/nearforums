@@ -7,7 +7,7 @@
 		}
 		<li class="showAll"><a href="#" onclick="return pager.showAll();">@T("Show all messages")</a></li>
 		<li class="print"><a href="#" onclick="window.print();return false;">@T("Print")</a></li>
-		@if (this.User!= null && (this.User.Group >= UserGroup.Moderator || this.User.Id == Model.User.Id))
+		@if (this.User!= null && (this.User.HasModeratorPriviledges || this.User.Id == Model.User.Id))
 		{
 			<li class="edit">@Html.ActionLinkLocalized("Edit", "Edit")</li>
 			<li class="move">@Html.ActionLinkLocalized("Move thread", "Move", new{forumName=Model.Forum.ShortName})</li>

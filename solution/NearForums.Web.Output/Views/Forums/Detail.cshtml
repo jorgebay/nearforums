@@ -39,7 +39,7 @@
 	@Html.Partial("TagCloud", ViewData.Get<List<WeightTag>>("Tags"))
 	<p class="action">@Html.ActionLinkLocalized("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
 	
-	@if (User != null && User.Group >= UserGroup.Moderator)
+	@if (User != null && User.Role >= UserRole.Moderator)
 	{
 	<div class="toolbar floatContainer">
 		<ul>

@@ -6,7 +6,7 @@
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
-<p><strong>@T("Group"):</strong> @Model.GroupName</p>
+<p><strong>@T("Group"):</strong> @Model.RoleName</p>
 <p>
 	<strong>@T("Member for:")</strong> @Html.Partial("SinceDate", Model.RegistrationDate)
 </p>

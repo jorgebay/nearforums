@@ -17,7 +17,7 @@ namespace NearForums.Web.Controllers
 		/// <param name="mid">message id</param>
 		/// <param name="id">topic id</param>
 		[HttpPost]
-		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail = true)]
+		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult Delete(int mid, int id, string forum, string name)
 		{
 			MessagesServiceClient.Delete(id, mid, this.User.Id);
@@ -45,7 +45,7 @@ namespace NearForums.Web.Controllers
 		/// Gets a list of flagged messages
 		/// </summary>
 		/// <returns></returns>
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult ListFlagged()
 		{
 			var topics = MessagesServiceClient.ListFlagged();
@@ -55,7 +55,7 @@ namespace NearForums.Web.Controllers
 
 		#region ClearFlags
 		[HttpPost]
-		[RequireAuthorization(UserGroup.Moderator, RefuseOnFail = true)]
+		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult ClearFlags(int mid, int id, string forum, string name)
 		{
 			bool cleared = MessagesServiceClient.ClearFlags(id, mid);

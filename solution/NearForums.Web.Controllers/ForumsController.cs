@@ -25,7 +25,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Manage
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Manage()
 		{
 			List<ForumCategory> list = ForumsServiceClient.GetList();
@@ -111,7 +111,7 @@ namespace NearForums.Web.Controllers
 			return View(f);
 		}
 
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult ListAllUnansweredTopics()
 		{
 			List<Topic> topics = TopicsServiceClient.GetUnanswered();
@@ -122,7 +122,7 @@ namespace NearForums.Web.Controllers
 		#region Add / Edit / Delete
 		#region Add
 		[AcceptVerbs(HttpVerbs.Get)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Add()
 		{
 			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
@@ -131,7 +131,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Forum forum)
 		{
 			try
@@ -164,7 +164,7 @@ namespace NearForums.Web.Controllers
 
 		#region Edit
 		[AcceptVerbs(HttpVerbs.Get)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Edit(string forum)
 		{
 			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
@@ -179,7 +179,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Edit(string forum, [Bind(Prefix = "")] Forum f)
 		{
 			try
@@ -211,7 +211,7 @@ namespace NearForums.Web.Controllers
 
 		#region Delete
 		[AcceptVerbs(HttpVerbs.Post)]
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(string forum)
 		{

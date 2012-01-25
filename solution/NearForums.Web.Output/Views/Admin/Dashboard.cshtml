@@ -25,7 +25,7 @@
 			<p>@T("Promote, demote and delete forum users.")</p>
 		</li>
 	</ul>
-	@if (this.User.Group == UserGroup.Admin)
+	@if (this.User.Role == UserRole.Admin)
 	{
 		<h2>@T("Administration")</h2>
 		<ul class="itemsBasic">

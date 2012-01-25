@@ -29,7 +29,7 @@ namespace NearForums.Web.Controllers
 	public class AdminController : BaseController
 	{
 		#region Dashboard
-		[RequireAuthorization(UserGroup.Moderator)]
+		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Dashboard()
 		{
 			return View();

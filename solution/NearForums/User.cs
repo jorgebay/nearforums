@@ -10,7 +10,7 @@ namespace NearForums
 	{
 		public User()
 		{
-			this.Group = UserGroup.Level1;
+			this.Role = UserRole.Member;
 		}
 
 		public User(int id, string userName) : this()
@@ -32,16 +32,16 @@ namespace NearForums
 			set;
 		}
 
-		public UserGroup Group
+		public UserRole Role
 		{
 			get;
 			set;
 		}
 
 		/// <summary>
-		/// Name of the group the user is in (from db)
+		/// Name of the role the user is in (from db)
 		/// </summary>
-		public string GroupName
+		public string RoleName
 		{
 			get;
 			set;

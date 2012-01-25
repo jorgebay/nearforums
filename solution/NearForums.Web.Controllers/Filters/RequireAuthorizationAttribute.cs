@@ -15,9 +15,9 @@ namespace NearForums.Web.Controllers.Filters
 	public class RequireAuthorizationAttribute : AuthorizeAttribute
 	{
 		/// <summary>
-		/// Required minimal UserGroup
+		/// Required minimal User role
 		/// </summary>
-		public UserGroup? UserGroup
+		public UserRole? UserRole
 		{
 			get;
 			set;
@@ -37,11 +37,11 @@ namespace NearForums.Web.Controllers.Filters
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="userGroup">Required minimal UserGroup</param>
-		public RequireAuthorizationAttribute(UserGroup userGroup)
+		/// <param name="userRole">Required minimal role to access</param>
+		public RequireAuthorizationAttribute(UserRole userRole)
 			: this()
 		{
-			this.UserGroup = userGroup;
+			this.UserRole = userRole;
 		}
 
 		/// <summary>
@@ -70,9 +70,9 @@ namespace NearForums.Web.Controllers.Filters
 			{
 				return false;
 			}
-			if (this.UserGroup != null)
+			if (this.UserRole != null)
 			{
-				if (user.Group < this.UserGroup.Value)
+				if (user.Role < this.UserRole.Value)
 				{
 					return false;
 				}
@@ -97,7 +97,7 @@ namespace NearForums.Web.Controllers.Filters
 					controller = "Authentication",
 					action = "Login",
 					returnUrl = redirectOnSuccess,
-					group = this.UserGroup
+					role = this.UserRole
 				}));
 				if (path == null)
 				{

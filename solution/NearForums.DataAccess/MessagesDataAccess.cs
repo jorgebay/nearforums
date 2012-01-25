@@ -59,8 +59,8 @@ namespace NearForums.DataAccess
 			m.Date = dr.GetDate("MessageCreationDate");
 			m.User = new User(dr.Get<int>("UserId"), dr.GetString("UserName"));
 			m.User.Signature = dr.GetNullableString("UserSignature");
-			m.User.Group = dr.Get<UserGroup>("UserGroupId");
-			m.User.GroupName = dr.GetString("UserGroupName");
+			m.User.Role = dr.Get<UserRole>("UserGroupId");
+			m.User.RoleName = dr.GetString("UserGroupName");
 			m.Topic = new Topic(dr.Get<int>("TopicId"));
 			m.Active = dr.Get<bool>("Active");
 

@@ -26,7 +26,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		public ActionResult Error()
 		{
-			if (this.User != null && this.User.Group == UserGroup.Admin)
+			if (this.User != null && this.User.Role == UserRole.Admin)
 			{
 				throw new Exception("This is a dummy exception thrown by the nearforums application.");
 			}

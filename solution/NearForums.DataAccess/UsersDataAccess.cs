@@ -69,7 +69,7 @@ namespace NearForums.DataAccess
 			User user = new User();
 			user.Id = dr.Get<int>("UserId");
 			user.UserName = dr.GetString("UserName");
-			user.Group = dr.Get<UserGroup>("UserGroupId");
+			user.Role = dr.Get<UserRole>("UserGroupId");
 			user.Guid = dr.Get<Guid>("UserGuid");
 			user.ExternalProfileUrl = dr.GetString("UserExternalProfileUrl");
 			user.ProviderLastCall = dr.GetDate("UserProviderLastCall");
@@ -87,8 +87,8 @@ namespace NearForums.DataAccess
 			User user = new User();
 			user.Id = dr.Get<int>("UserId");
 			user.UserName = dr.GetString("UserName");
-			user.Group = dr.Get<UserGroup>("UserGroupId");
-			user.GroupName = dr.GetString("UserGroupName");
+			user.Role = dr.Get<UserRole>("UserGroupId");
+			user.RoleName = dr.GetString("UserGroupName");
 			user.RegistrationDate = dr.GetDate("UserRegistrationDate");
 
 			decimal offSet = dr.Get<decimal>("UserTimeZone");
@@ -105,7 +105,7 @@ namespace NearForums.DataAccess
 			comm.AddParameter<string>(this.Factory, "UserName", user.UserName);
 			comm.AddParameter<string>(this.Factory, "UserProfile", user.Profile);
 			comm.AddParameter<string>(this.Factory, "UserSignature", user.Signature);
-			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)user.Group);
+			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)user.Role);
 			comm.AddParameter(this.Factory, "UserBirthDate", DbType.DateTime, user.BirthDate);
 			comm.AddParameter<string>(this.Factory, "UserWebsite", user.Website);
 			comm.AddParameter<Guid>(this.Factory, "UserGuid", Guid.NewGuid());
@@ -185,7 +185,7 @@ namespace NearForums.DataAccess
 		}
 
 		/// <summary>
-		/// Assigns the next (up) user group to the user
+		/// Assigns the next (up) user role to the user
 		/// </summary>
 		/// <param name="id"></param>
 		public void Promote(int id)
@@ -197,7 +197,7 @@ namespace NearForums.DataAccess
 		}
 
 		/// <summary>
-		/// Assigns the previous (down) user group to the user
+		/// Assigns the previous (down) user role to the user
 		/// </summary>
 		/// <param name="id"></param>
 		public void Demote(int id)
@@ -231,12 +231,12 @@ namespace NearForums.DataAccess
 		} 
 		#endregion
 
-		#region Get Group
-		public string GetGroupName(UserGroup userGroup)
+		#region Get Role
+		public string GetRoleName(UserRole userRole)
 		{
 			string result = null;
 			DbCommand comm = GetCommand("SPUsersGroupsGet");
-			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)userGroup);
+			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)userRole);
 
 			DataRow dr = GetFirstRow(comm);
 			if (dr != null)

@@ -79,10 +79,10 @@ namespace NearForums.ServiceClient
 			return da.Get(userId);
 		}
 
-		public static string GetGroupName(UserGroup userGroup)
+		public static string GetRoleName(UserRole userRole)
 		{
 			UsersDataAccess da = new UsersDataAccess();
-			return da.GetGroupName(userGroup);
+			return da.GetRoleName(userRole);
 		}
 		
 		/// <exception cref="ValidationException"></exception>

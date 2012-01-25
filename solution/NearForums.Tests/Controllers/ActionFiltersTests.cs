@@ -72,7 +72,7 @@ namespace NearForums.Tests.Controllers
 			var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
 			var controllerContext = new FakeControllerContext(new TopicsController(), "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
 			var context = new AuthorizationContext(controllerContext);
-			var att = new RequireAuthorizationAttribute(UserGroup.Level1);
+			var att = new RequireAuthorizationAttribute(UserRole.Member);
 			att.Routes.Add(new StrictRoute("login", new MvcRouteHandler())
 			{
 				Url = "login",

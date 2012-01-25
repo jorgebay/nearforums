@@ -2,13 +2,13 @@
 <li id="msg@(Model.Id)">
 	@if (Config.UI.ShowUserDetailsOnList)
 	{
-		<div class="msgUser group@((int)Model.User.Group)">
+		<div class="msgUser group@((int)Model.User.Role)">
 			@if (Model.User.Photo != null)
 			{
 				<div class="photo"><img src="@Model.User.Photo" alt="@Model.User.UserName" /></div>
 			}
 			<div class="userName"><strong>@Model.User.UserName</strong></div>
-			<div class="groupName"><span>@Model.User.GroupName</span></div>
+			<div class="groupName"><span>@Model.User.RoleName</span></div>
 			<div class="memberSince">@T("Member for:") @Html.Partial("SinceDate", Model.User.RegistrationDate)</div>
 		</div>
 	}
@@ -42,7 +42,7 @@
 		@Html.ActionLinkLocalized("reply", "Reply", new { msg = Model.Id }, new { rel = "nofollow" })
 		@if (Model.Active)
 		{
-			if (this.User != null && this.User.Group >= UserGroup.Moderator)
+			if (this.User != null && this.User.Role >= UserRole.Moderator)
 			{
 				@Html.LinkLocalized("remove", "#", new { onclick = "return deleteMessage(" + Model.Id + ", '" + @Url.Action("Delete", "Messages") + "');" })
 			}

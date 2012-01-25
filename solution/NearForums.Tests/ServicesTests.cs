@@ -57,7 +57,7 @@ namespace NearForums.Tests
 		public void UsersServiceClient_Add_Get_Delete()
 		{
 			User user = new User(0, "UNITTEST USERNAME EMPTY");
-			user.Group = UserGroup.Level1;
+			user.Role = UserRole.Member;
 			string providerId = "00" + new Random().Next(int.MaxValue / 2, int.MaxValue).ToString();
 
 			UsersServiceClient.Add(user, AuthenticationProvider.Twitter, providerId);
@@ -73,7 +73,7 @@ namespace NearForums.Tests
 
 			//Perform the same test but with all properties populated.
 			user = new User(0, "UNITTEST USERNAME FULL");
-			user.Group = UserGroup.Level1;
+			user.Role = UserRole.Member;
 			user.BirthDate = new DateTime(1960, 12, 31);
 			user.ExternalProfileUrl = "http://twitter.com/jorgebg";
 			user.Photo = "http://twitter.com/jorgebg.png";

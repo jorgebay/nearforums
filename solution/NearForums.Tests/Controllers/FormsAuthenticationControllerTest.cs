@@ -25,9 +25,9 @@ namespace NearForums.Tests.Controllers
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
 			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
 
-			#region Get a test user to reset the password
 			try
 			{
+				#region Get a test user to reset the password
 				var users = Membership.GetAllUsers();
 
 				if (users.Count == 0)

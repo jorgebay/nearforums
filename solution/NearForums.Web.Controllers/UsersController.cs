@@ -26,7 +26,7 @@ namespace NearForums.Web.Controllers
 			return View(user);
 		}
 
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List(string userName, int page)
 		{
 			List<User> users = null;
@@ -106,7 +106,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Promote / Demote / Delete
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Promote(int id, string searched)
@@ -119,7 +119,7 @@ namespace NearForums.Web.Controllers
 			});
 		}
 
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Demote(int id, string searched)
@@ -132,7 +132,7 @@ namespace NearForums.Web.Controllers
 			});
 		}
 
-		[RequireAuthorization(UserGroup.Admin)]
+		[RequireAuthorization(UserRole.Admin)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, string searched)

@@ -35,7 +35,7 @@
 		@Html.Partial("EditorScripts", CreateViewData(new{Name="description"}))
 	</div>
 	@Html.Captcha(S("Type the text shown in the image"))
-	@if (this.User.Group >= UserGroup.Moderator)
+	@if (this.User.HasModeratorPriviledges)
 	{
 	<div class="formItem checkbox">
 		@Html.CheckBox("isSticky")

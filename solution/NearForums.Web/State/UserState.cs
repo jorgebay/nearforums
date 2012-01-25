@@ -17,7 +17,7 @@ namespace NearForums.Web.State
 		{
 			Id = user.Id;
 			UserName = user.UserName;
-			Group = user.Group;
+			Role = user.Role;
 			Guid = user.Guid;
 			TimeZone = user.TimeZone;
 			ExternalProfileUrl = user.ExternalProfileUrl;
@@ -51,17 +51,31 @@ namespace NearForums.Web.State
 			set;
 		}
 
-		public UserGroup Group
+		public UserRole Role
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Determines if the user is in role admin
+		/// </summary>
 		public bool IsAdmin 
 		{
 			get
 			{
-				return Group == UserGroup.Admin;
+				return Role == UserRole.Admin;
+			}
+		}
+
+		/// <summary>
+		/// Determines if the user has the priviledges of a moderator (is moderator or admin)
+		/// </summary>
+		public bool HasModeratorPriviledges
+		{
+			get
+			{
+				return Role >= UserRole.Moderator;
 			}
 		}
 
