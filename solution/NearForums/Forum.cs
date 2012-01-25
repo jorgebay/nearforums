@@ -8,6 +8,11 @@ namespace NearForums
 {
 	public class Forum : Entity
 	{
+		public Forum()
+		{
+			PostAccessRole = UserRole.Member;
+		}
+
 		public int Id
 		{
 			get;
@@ -53,6 +58,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Amount of topics posted in this forum
+		/// </summary>
 		public int TopicCount
 		{
 			get;	
@@ -60,6 +68,24 @@ namespace NearForums
 		}
 
 		public int MessageCount
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Minimal role to view this forum and its posts
+		/// </summary>
+		public UserRole? ReadAccessRole
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Minimal role to post a topic in this forum
+		/// </summary>
+		public UserRole PostAccessRole
 		{
 			get;
 			set;

@@ -65,6 +65,8 @@ namespace NearForums.DataAccess
 			comm.AddParameter(this.Factory, "ForumDescription", DbType.String, f.Description);
 			comm.AddParameter(this.Factory, "CategoryId", DbType.String, f.Category.Id);
 			comm.AddParameter(this.Factory, "UserId", DbType.String, userId);
+			comm.AddParameter(this.Factory, "ReadAccessGroupId", DbType.Int16, f.ReadAccessRole);
+			comm.AddParameter(this.Factory, "PostAccessGroupId", DbType.Int16, f.PostAccessRole);
 
 			comm.SafeExecuteNonQuery();
 		}
@@ -92,6 +94,8 @@ namespace NearForums.DataAccess
 			{
 				forum = this.ParseForumDataRow(dr);
 				forum.Category = new ForumCategory(dr.Get<int>("CategoryId"), dr.GetString("CategoryName"));
+				forum.ReadAccessRole = dr.GetNullable<UserRole?>("ReadAccessGroupId");
+				forum.PostAccessRole = dr.Get<UserRole>("PostAccessGroupId");
 			}
 
 			return forum;
@@ -110,6 +114,8 @@ namespace NearForums.DataAccess
 			comm.AddParameter(this.Factory, "ForumDescription", DbType.String, f.Description);
 			comm.AddParameter(this.Factory, "CategoryId", DbType.String, f.Category.Id);
 			comm.AddParameter(this.Factory, "UserId", DbType.Int32, userId);
+			comm.AddParameter(this.Factory, "ReadAccessGroupId", DbType.Int16, f.ReadAccessRole);
+			comm.AddParameter(this.Factory, "PostAccessGroupId", DbType.Int16, f.PostAccessRole);
 
 			comm.SafeExecuteNonQuery();
 		}
