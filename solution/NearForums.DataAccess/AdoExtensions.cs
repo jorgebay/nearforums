@@ -174,19 +174,21 @@ namespace NearForums.DataAccess
 				{
 					throw new NoNullAllowedException("Column " + columnName + " has a null value.");
 				}
-				else if (typeof(T) == typeof(DateTime))
+				Type type = typeof(T);
+				if (type == typeof(DateTime))
 				{
 					throw new ArgumentException("Date time not supported.");
 				}
-				else if (typeof(T) == typeof(Guid))
+				else if (type == typeof(Guid))
 				{
 					return (T)(object) new Guid(dr[columnName].ToString());
 				}
+				
 				return (T)dr[columnName];
 			}
 			catch (InvalidCastException ex)
 			{
-				throw new InvalidCastException("Specified cast is not valid, field: " + columnName, ex);
+				throw new InvalidCastException("Specified cast is not valid, field: " + columnName + ", Type: " + typeof(T).FullName, ex);
 			}
 		}
 

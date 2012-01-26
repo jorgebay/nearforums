@@ -94,7 +94,7 @@ namespace NearForums.DataAccess
 			{
 				forum = this.ParseForumDataRow(dr);
 				forum.Category = new ForumCategory(dr.Get<int>("CategoryId"), dr.GetString("CategoryName"));
-				forum.ReadAccessRole = dr.GetNullable<UserRole?>("ReadAccessGroupId");
+				forum.ReadAccessRole = dr["ReadAccessGroupId"] != DBNull.Value ? (UserRole)dr["ReadAccessGroupId"] : (UserRole?)null;
 				forum.PostAccessRole = dr.Get<UserRole>("PostAccessGroupId");
 			}
 

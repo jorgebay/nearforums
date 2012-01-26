@@ -34,6 +34,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Detail
+		[ForumReadAccess]
 		public ActionResult Detail(string forum, int page)
 		{
 			if (Config.UI.DefaultForumSort == ForumSort.LatestActivity)
@@ -45,6 +46,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Most Viewed topics
+		[ForumReadAccess]
 		public ActionResult MostViewedTopics(string forum, int page)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
@@ -65,6 +67,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Latest topics
+		[ForumReadAccess]
 		public ActionResult LatestTopics(string forum, int page, ResultFormat format)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
