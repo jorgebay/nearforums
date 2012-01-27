@@ -11,15 +11,15 @@ namespace NearForums.DataAccess
 	public class ForumsDataAccess : BaseDataAccess
 	{
 		/// <summary>
-		/// Gets a list of ForumCategories with the list forums.
+		/// Gets a list of ForumCategories with the list forums, dependant of the user role.
 		/// </summary>
-		/// <returns></returns>
-		public List<ForumCategory> GetList()
+		public List<ForumCategory> GetList(UserRole? role)
 		{
-			DbCommand comm = GetCommand("SPForumsGetByCategory");
-			DataTable dt = GetTable(comm);
+			var comm = GetCommand("SPForumsGetByCategory");
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, (short?)role);
+			var dt = GetTable(comm);
 
-			List<ForumCategory> categoryList = new List<ForumCategory>();
+			var categoryList = new List<ForumCategory>();
 			ForumCategory category = null;
 			foreach (DataRow dr in dt.Rows)
 			{

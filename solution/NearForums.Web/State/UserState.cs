@@ -51,6 +51,9 @@ namespace NearForums.Web.State
 			set;
 		}
 
+		/// <summary>
+		/// The hierarchical role of the user
+		/// </summary>
 		public UserRole Role
 		{
 			get;

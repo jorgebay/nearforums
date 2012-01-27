@@ -10,12 +10,12 @@ namespace NearForums.ServiceClient
 	public static class ForumsServiceClient
 	{
 		/// <summary>
-		/// Gets a list of ForumCategories with the list forums.
+		/// Gets a list of ForumCategories with the list forums, dependant of the user role.
 		/// </summary>
-		public static List<ForumCategory> GetList()
+		public static List<ForumCategory> GetList(UserRole? role)
 		{
-			ForumsDataAccess da = new ForumsDataAccess();
-			return da.GetList();
+			var da = new ForumsDataAccess();
+			return da.GetList(role);
 		}
 
 		/// <summary>

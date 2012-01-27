@@ -17,8 +17,7 @@ namespace NearForums.Web.Controllers
 		#region List
 		public ActionResult List()
 		{
-			List<ForumCategory> list = null;
-			list = ForumsServiceClient.GetList();
+			var list = ForumsServiceClient.GetList(Role);
 			ViewData["IsSiteSet"] = IsSiteSet;
 			return View(list);
 		}
@@ -28,7 +27,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Manage()
 		{
-			List<ForumCategory> list = ForumsServiceClient.GetList();
+			var list = ForumsServiceClient.GetList(Role);
 			return View(list);
 		} 
 		#endregion
@@ -49,7 +48,7 @@ namespace NearForums.Web.Controllers
 		[ForumReadAccess]
 		public ActionResult MostViewedTopics(string forum, int page)
 		{
-			Forum f = ForumsServiceClient.Get(forum);
+			var f = ForumsServiceClient.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -70,7 +69,7 @@ namespace NearForums.Web.Controllers
 		[ForumReadAccess]
 		public ActionResult LatestTopics(string forum, int page, ResultFormat format)
 		{
-			Forum f = ForumsServiceClient.Get(forum);
+			var f = ForumsServiceClient.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -95,13 +94,14 @@ namespace NearForums.Web.Controllers
 		/// <returns></returns>
 		public ActionResult LatestAllTopics()
 		{
-			List<Topic> topics = TopicsServiceClient.GetLatest();
+			var topics = TopicsServiceClient.GetLatest();
 
 			return ResultHelper.XmlViewResult(this, topics);
 		} 
 		#endregion
 
 		#region Unanswered topics
+		[ForumReadAccess]
 		public ActionResult ListUnansweredTopics(string forum)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
@@ -226,6 +226,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Tag detail
+		[ForumReadAccess]
 		public ActionResult TagDetail(string forum, string tag, int page)
 		{
 			Forum f = ForumsServiceClient.Get(forum);

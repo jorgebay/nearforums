@@ -391,7 +391,7 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.NotFoundResult(this);
 			}
 
-			ViewData["Categories"] = ForumsServiceClient.GetList();
+			ViewData["Categories"] = ForumsServiceClient.GetList(Role);
 
 			return View(topic);
 		}

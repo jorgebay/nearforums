@@ -63,7 +63,23 @@ namespace NearForums.Web.Controllers
 			{
 				return Session.User;
 			}
-		} 
+		}
+
+		/// <summary>
+		/// Gets the role of user making the request
+		/// </summary>
+		public UserRole? Role
+		{
+			get
+			{
+				UserRole? role = null;
+				if (Session.User != null)
+				{
+					role = Session.User.Role;
+				}
+				return role;
+			}
+		}
 		#endregion
 
 		#region Config
