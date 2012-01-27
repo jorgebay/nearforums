@@ -163,6 +163,8 @@ namespace NearForums.DataAccess
 			comm.AddParameter<string>(this.Factory, "Forum", topic.Forum.ShortName);
 			comm.AddParameter(this.Factory, "TopicOrder", DbType.Int32, topic.IsSticky ? 1 : (int?)null);
 			comm.AddParameter<string>(this.Factory, "Ip", ip);
+			comm.AddParameter(this.Factory, "ReadAccessGroupId", DbType.Int16, topic.ReadAccessRole);
+			comm.AddParameter(this.Factory, "PostAccessGroupId", DbType.Int16, topic.PostAccessRole);
 
 			DbParameter idParameter = comm.AddParameter(this.Factory, "TopicId", DbType.Int32, null);
 			idParameter.Direction = ParameterDirection.Output;
@@ -188,6 +190,8 @@ namespace NearForums.DataAccess
 			comm.AddParameter<string>(this.Factory, "TopicTags", topic.Tags.ToString());
 			comm.AddParameter(this.Factory, "TopicOrder", DbType.Int32, topic.IsSticky ? 1 : (int?) null);
 			comm.AddParameter<string>(this.Factory, "Ip", ip);
+			comm.AddParameter(this.Factory, "ReadAccessGroupId", DbType.Int16, topic.ReadAccessRole);
+			comm.AddParameter(this.Factory, "PostAccessGroupId", DbType.Int16, topic.PostAccessRole);
 
 			this.SafeExecuteNonQuery(comm);
 		}

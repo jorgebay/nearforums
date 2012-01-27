@@ -11,7 +11,8 @@ namespace NearForums
 	{
 		public Topic()
 		{
-			this.Messages = new List<Message>();
+			Messages = new List<Message>();
+			PostAccessRole = UserRole.Member;
 		}
 
 		public Topic(int id)
@@ -132,6 +133,24 @@ namespace NearForums
 		/// Determines if the topic is fixed ordered
 		/// </summary>
 		public bool IsSticky
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Minimal role to view this topic and its posts (inherits read access from the forum if its higher)
+		/// </summary>
+		public UserRole? ReadAccessRole
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Minimal role to post a message in this topic (inherits post access from the forum if its higher)
+		/// </summary>
+		public UserRole PostAccessRole
 		{
 			get;
 			set;

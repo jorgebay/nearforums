@@ -17,45 +17,9 @@ namespace NearForums.Tests.Fakes
 		}
 
         public FakeControllerContext(IController controller, string url)
-            : this(controller, url, null, null, null, null, null, null)
+            : this(controller, url, null, null, new NameValueCollection(), new NameValueCollection(), new HttpCookieCollection(), new SessionStateItemCollection())
         {
         }
-
-        public FakeControllerContext(IController controller, string url, HttpCookieCollection cookies)
-            : this(controller, url, null, null, null, null, cookies, null)
-        {
-        }
-
-        public FakeControllerContext(IController controller, string url, SessionStateItemCollection sessionItems)
-            : this(controller, url, null, null, null, null, null, sessionItems)
-        {
-        }
-
-
-        public FakeControllerContext(IController controller, string url, NameValueCollection formParams) 
-            : this(controller, url, null, null, formParams, null, null, null)
-        {
-        }
-
-
-        public FakeControllerContext(IController controller, string url, NameValueCollection formParams, NameValueCollection queryStringParams)
-            : this(controller, url, null, null, formParams, queryStringParams, null, null)
-        {
-        }
-
-
-
-        public FakeControllerContext(IController controller, string url, string userName)
-            : this(controller, url, userName, null, null, null, null, null)
-        {
-        }
-
-
-        public FakeControllerContext(IController controller, string url, string userName, string[] roles)
-            : this(controller, url, userName, roles, null, null, null, null)
-        {
-        }
-
 
         public FakeControllerContext
             (

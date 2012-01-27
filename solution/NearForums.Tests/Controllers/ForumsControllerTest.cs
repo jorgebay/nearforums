@@ -71,7 +71,8 @@ namespace NearForums.Tests
 		public static Forum GetAForum()
 		{
 			Forum forum = null;
-			ForumsController controller = new ForumsController();
+			var controller = new ForumsController();
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost");
 
 			controller.List();
 			List<ForumCategory> forumCategoryList = (List<ForumCategory>)controller.ViewData.Model;
