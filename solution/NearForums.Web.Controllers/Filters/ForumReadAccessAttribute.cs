@@ -14,6 +14,9 @@ namespace NearForums.Web.Controllers.Filters
 	/// </summary>
 	public class ForumReadAccessAttribute : BaseActionFilterAttribute
 	{
+		/// <summary>
+		/// Current route table used in the application
+		/// </summary>
 		public RouteCollection Routes
 		{
 			get;
@@ -33,11 +36,7 @@ namespace NearForums.Web.Controllers.Filters
 			var model = filterContext.Controller.ViewData.Model;
 			if (model != null)
 			{
-				var forum = model as Forum;
-				if (forum == null)
-				{
-					throw new ArgumentException("Model must be an instance of the class Forum.");
-				}
+				var forum = GetForum(model);
 				if (forum.ReadAccessRole != null)
 				{
 					var session = new SessionWrapper(filterContext.HttpContext);
@@ -53,6 +52,7 @@ namespace NearForums.Web.Controllers.Filters
 		protected virtual void HandleUnauthorizedRequest(ActionExecutedContext filterContext, UserRole role)
 		{
 			string redirectOnSuccess = filterContext.HttpContext.Request.Url.PathAndQuery;
+			filterContext.Canceled = true;
 			filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
 			{
 				controller = "Authentication",
@@ -60,6 +60,26 @@ namespace NearForums.Web.Controllers.Filters
 				returnUrl = redirectOnSuccess,
 				role = role
 			}));
+		}
+
+		/// <summary>
+		/// Gets the forum from the view data model
+		/// </summary>
+		/// <param name="context">Current controller/filter context</param>
+		/// <returns></returns>
+		protected virtual Forum GetForum(object model)
+		{
+			if (model == null)
+			{
+				throw new ArgumentNullException("model");
+			}
+			Forum forum = model as Forum;
+
+			if (forum == null)
+			{
+				throw new ArgumentException("Model must be an instance of the class Forum.");
+			}
+			return forum;
 		}
 	}
 }
