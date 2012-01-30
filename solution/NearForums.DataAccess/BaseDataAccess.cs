@@ -69,8 +69,8 @@ namespace NearForums.DataAccess
 		/// </summary>
 		protected DataTable GetTable(DbCommand command)
 		{
-			DataTable dt = new DataTable();
-			DbDataAdapter da = this.Factory.CreateDataAdapter();
+			var dt = new DataTable();
+			var da = this.Factory.CreateDataAdapter();
 			da.SelectCommand = command;
 			da.Fill(dt);
 

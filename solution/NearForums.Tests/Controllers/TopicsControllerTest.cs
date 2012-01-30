@@ -69,7 +69,7 @@ namespace NearForums.Tests.Controllers
 
 		public static Topic GetATopic(Forum forum)
 		{
-			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1);
+			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1, null);
 
 			if (topicList.Count == 0)
 			{

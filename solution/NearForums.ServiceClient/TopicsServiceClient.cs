@@ -11,20 +11,20 @@ namespace NearForums.ServiceClient
 		/// <summary>
 		/// Gets a list of topics of a forum ordered by views
 		/// </summary>
-		public static List<Topic> GetByForum(int forumId, int startIndex, int length)
+		public static List<Topic> GetByForum(int forumId, int startIndex, int length, UserRole? role)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();
-			return da.GetByForum(forumId, startIndex, length);
+			return da.GetByForum(forumId, startIndex, length, role);
 		}
 
 		/// <summary>
 		/// Gets the topics tagged in a certain forum
 		/// </summary>
 		/// <returns></returns>
-		public static List<Topic> GetByTag(string tag, int forumId)
+		public static List<Topic> GetByTag(string tag, int forumId, UserRole? role)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();
-			return da.GetByTag(tag, forumId);
+			return da.GetByTag(tag, forumId, role);
 		}
 
 		/// <summary>
@@ -98,10 +98,10 @@ namespace NearForums.ServiceClient
 			da.AddVisit(topicId);
 		}
 
-		public static List<Topic> GetLatest(int forumId, int startIndex, int length)
+		public static List<Topic> GetLatest(int forumId, int startIndex, int length, UserRole? role)
 		{
 			TopicsDataAccess da = new TopicsDataAccess();
-			return da.GetByForumLatest(forumId, startIndex, length);
+			return da.GetByForumLatest(forumId, startIndex, length, role);
 		}
 
 		public static List<Topic> GetLatest()
@@ -143,10 +143,10 @@ namespace NearForums.ServiceClient
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns></returns>
-		public static List<Topic> GetUnanswered(int forumId)
+		public static List<Topic> GetUnanswered(int forumId, UserRole? role)
 		{
-			TopicsDataAccess da = new TopicsDataAccess();
-			return da.GetUnanswered(forumId);
+			var da = new TopicsDataAccess();
+			return da.GetUnanswered(forumId, role);
 		}
 
 		/// <summary>
@@ -155,7 +155,7 @@ namespace NearForums.ServiceClient
 		/// <returns></returns>
 		public static List<Topic> GetUnanswered()
 		{
-			TopicsDataAccess da = new TopicsDataAccess();
+			var da = new TopicsDataAccess();
 			return da.GetUnanswered();
 		}
 
@@ -164,17 +164,18 @@ namespace NearForums.ServiceClient
 		/// </summary>
 		public static void Delete(int id, int userId, string ip)
 		{
-			TopicsDataAccess da = new TopicsDataAccess();
+			var da = new TopicsDataAccess();
 			da.Delete(id, userId, ip);
 		}
 
 		/// <summary>
 		/// Gets a list of topics posted by the user
 		/// </summary>
-		public static List<Topic> GetByUser(int userId)
+		/// <param name="role">Role of the user requesting the page</param>
+		public static List<Topic> GetByUser(int userId, UserRole? role)
 		{
-			TopicsDataAccess da = new TopicsDataAccess();
-			return da.GetByUser(userId);
+			var da = new TopicsDataAccess();
+			return da.GetByUser(userId, role);
 		}
 
 		/// <summary>

@@ -10,42 +10,46 @@ namespace NearForums.DataAccess
 {
 	public class TopicsDataAccess : BaseDataAccess
 	{
-		public List<Topic> GetByForum(int forumId, int startIndex, int length)
+		public List<Topic> GetByForum(int forumId, int startIndex, int length, UserRole? role)
 		{
 			DbCommand comm = this.GetCommand("SPTopicsGetByForum");
 			comm.AddParameter(this.Factory, "ForumId", DbType.Int32, forumId);
 			comm.AddParameter(this.Factory, "StartIndex", DbType.Int32, startIndex);
 			comm.AddParameter(this.Factory, "Length", DbType.Int32, length);
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, (short?) role);
 
 			var list = ParseTopicsForFullList(comm);
 			return list;
 		}
 
-		public List<Topic> GetByTag(string tag, int forumId)
+		public List<Topic> GetByTag(string tag, int forumId, UserRole? role)
 		{
 			DbCommand comm = this.GetCommand("SPTopicsGetByTag");
 			comm.AddParameter<string>(this.Factory, "Tag", tag);
 			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, (short?) role);
 
 			var list = ParseTopicsForFullList(comm);
 			return list;
 		}
 
-		public List<Topic> GetByForumLatest(int forumId, int startIndex, int length)
+		public List<Topic> GetByForumLatest(int forumId, int startIndex, int length, UserRole? role)
 		{
-			DbCommand comm = this.GetCommand("SPTopicsGetByForumLatest");
-			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
-			comm.AddParameter<int>(this.Factory, "StartIndex", startIndex);
-			comm.AddParameter<int>(this.Factory, "Length", length);
+			var comm = this.GetCommand("SPTopicsGetByForumLatest");
+			comm.AddParameter<int>(Factory, "ForumId", forumId);
+			comm.AddParameter<int>(Factory, "StartIndex", startIndex);
+			comm.AddParameter<int>(Factory, "Length", length);
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, (short?) role);
 
 			var list = ParseTopicsForFullList(comm);
 			return list;
 		}
 
-		public List<Topic> GetUnanswered(int forumId)
+		public List<Topic> GetUnanswered(int forumId, UserRole? role)
 		{
-			DbCommand comm = this.GetCommand("SPTopicsGetByForumUnanswered");
-			comm.AddParameter<int>(this.Factory, "ForumId", forumId);
+			var comm = this.GetCommand("SPTopicsGetByForumUnanswered");
+			comm.AddParameter<int>(Factory, "ForumId", forumId);
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, (short?) role);
 
 			var list = ParseTopicsForFullList(comm);
 			return list;
@@ -57,9 +61,10 @@ namespace NearForums.DataAccess
 			DbCommand comm = this.GetCommand("SPTopicsGetLatest");
 
 			DataTable dt = this.GetTable(comm);
+			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			foreach (DataRow dr in dt.Rows)
 			{
-				Topic t = ParseBasicTopicDataRow(dr);
+				Topic t = ParseBasicTopicDataRow(dr, parseAccessRights);
 				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
 
 				list.Add(t);
@@ -75,7 +80,7 @@ namespace NearForums.DataAccess
 			DataRow dr = this.GetFirstRow(comm);
 			if (dr != null)
 			{
-				t = ParseBasicTopicDataRow(dr);
+				t = ParseBasicTopicDataRow(dr, dr.Table.Columns.IndexOf("ReadAccessGroupId") >= 0);
 				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
 				t.Forum = new Forum();
 				t.Forum.Id = dr.Get<int>("ForumId");
@@ -103,9 +108,10 @@ namespace NearForums.DataAccess
 			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topic.Id);
 			comm.AddParameter(this.Factory, "Amount", DbType.Int32, amount);
 			DataTable dt = this.GetTable(comm);
+			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			foreach (DataRow dr in dt.Rows)
 			{
-				Topic t = ParseBasicTopicDataRow(dr);
+				Topic t = ParseBasicTopicDataRow(dr, parseAccessRights);
 				t.Forum = new Forum();
 				t.Forum.Id = dr.Get<int>("ForumId");
 				t.Forum.Name = dr.GetString("ForumName");
@@ -117,7 +123,7 @@ namespace NearForums.DataAccess
 		}
 
 		#region Parsing
-		public virtual Topic ParseBasicTopicDataRow(DataRow dr)
+		public virtual Topic ParseBasicTopicDataRow(DataRow dr, bool parseAccessRights)
 		{
 			Topic t = new Topic();
 			t.Id = dr.Get<int>("TopicId");
@@ -129,7 +135,7 @@ namespace NearForums.DataAccess
 			t.Views = dr.Get<int>("TopicViews");
 			t.IsClosed = dr.Get<bool>("TopicIsClose");
 			t.IsSticky = dr.GetNullable<int?>("TopicOrder") >= 0;
-			if (dr.Table.Columns.IndexOf("ReadAccessGroupId") >= 0)
+			if (parseAccessRights)
 			{
 				t.ReadAccessRole = dr.GetNullableStruct<UserRole>("ReadAccessGroupId");
 				t.PostAccessRole = dr.Get<UserRole>("PostAccessGroupId");
@@ -141,10 +147,11 @@ namespace NearForums.DataAccess
 		protected virtual List<Topic> ParseTopicsForFullList(DbCommand comm)
 		{
 			var list = new List<Topic>();
-			DataTable dt = this.GetTable(comm);
+			DataTable dt = GetTable(comm);
+			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			foreach (DataRow dr in dt.Rows)
 			{
-				Topic t = ParseBasicTopicDataRow(dr);
+				Topic t = ParseBasicTopicDataRow(dr, parseAccessRights);
 				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
 				if (!dr.IsNull("MessageCreationDate"))
 				{
@@ -255,10 +262,11 @@ namespace NearForums.DataAccess
 			List<Topic> list = new List<Topic>();
 			DbCommand comm = this.GetCommand("SPTopicsGetUnanswered");
 
-			DataTable dt = this.GetTable(comm);
+			var dt = GetTable(comm);
+			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			foreach (DataRow dr in dt.Rows)
 			{
-				Topic t = ParseBasicTopicDataRow(dr);
+				Topic t = ParseBasicTopicDataRow(dr, parseAccessRights);
 				t.User = new User(dr.Get<int>("UserId"), dr.Get<string>("UserName"));
 				t.Forum = new Forum();
 				t.Forum.Id = dr.Get<int>("ForumId");
@@ -273,16 +281,18 @@ namespace NearForums.DataAccess
 		/// <summary>
 		/// Gets a list of topics posted by the user
 		/// </summary>
-		public List<Topic> GetByUser(int userId)
+		public List<Topic> GetByUser(int userId, UserRole? role)
 		{
 			List<Topic> list = new List<Topic>();
 			DbCommand comm = this.GetCommand("SPTopicsGetByUser");
 			comm.AddParameter<int>(this.Factory, "UserId", userId);
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, (short?) role);
 
-			DataTable dt = this.GetTable(comm);
+			var dt = GetTable(comm);
+			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			foreach (DataRow dr in dt.Rows)
 			{
-				Topic t = ParseBasicTopicDataRow(dr);
+				Topic t = ParseBasicTopicDataRow(dr, parseAccessRights);
 				list.Add(t);
 			}
 			return list;
@@ -297,13 +307,14 @@ namespace NearForums.DataAccess
 			DbCommand comm = this.GetCommand("SPTopicsGetMessagesByUser");
 			comm.AddParameter<int>(this.Factory, "UserId", userId);
 
-			DataTable dt = this.GetTable(comm);
+			var dt = GetTable(comm);
+			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			Topic t = null;
 			foreach (DataRow dr in dt.Rows)
 			{
 				if (t == null || t.Id != Convert.ToInt32(dr["TopicId"]))
 				{
-					t = ParseBasicTopicDataRow(dr);
+					t = ParseBasicTopicDataRow(dr, parseAccessRights);
 					list.Add(t);
 				}
 				t.Messages.Add(new Message(dr.Get<int>("MessageId"), dr.GetDate("MessageCreationDate")));

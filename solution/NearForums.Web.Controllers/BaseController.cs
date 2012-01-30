@@ -27,7 +27,7 @@ namespace NearForums.Web.Controllers
 			{
 				if (_session == null)
 				{
-					_session = new SessionWrapper(this.ControllerContext.HttpContext.Session);
+					_session = new SessionWrapper(ControllerContext.HttpContext.Session);
 				}
 				return _session;
 			}

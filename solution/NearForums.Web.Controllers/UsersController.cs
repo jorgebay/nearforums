@@ -21,7 +21,7 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get posted topics
-			ViewData["Topics"] = TopicsServiceClient.GetByUser(id);
+			ViewData["Topics"] = TopicsServiceClient.GetByUser(id, Role);
 
 			return View(user);
 		}

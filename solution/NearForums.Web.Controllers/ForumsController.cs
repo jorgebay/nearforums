@@ -55,7 +55,7 @@ namespace NearForums.Web.Controllers
 			}
 			//Get the topics of the forum
 			//Must Paginate the topics on the backend (Can be too many topics)
-			f.Topics = TopicsServiceClient.GetByForum(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage);
+			f.Topics = TopicsServiceClient.GetByForum(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage, Role);
 
 			ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
 			ViewData["Page"] = page;
@@ -76,7 +76,7 @@ namespace NearForums.Web.Controllers
 			}
 			//Get the topics of the forum
 			//Must Page the topics on the backend (Can be too many topics)
-			f.Topics = TopicsServiceClient.GetLatest(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage);
+			f.Topics = TopicsServiceClient.GetLatest(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage, Role);
 			if (format == ResultFormat.Html)
 			{
 				ViewData["Tags"] = TagsServiceClient.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
@@ -109,7 +109,7 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			f.Topics = TopicsServiceClient.GetUnanswered(f.Id);
+			f.Topics = TopicsServiceClient.GetUnanswered(f.Id, Role);
 
 			return View(f);
 		}
@@ -234,7 +234,7 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			f.Topics = TopicsServiceClient.GetByTag(tag, f.Id);
+			f.Topics = TopicsServiceClient.GetByTag(tag, f.Id, Role);
 			ViewData["Page"] = page;
 			ViewData["Tag"] = tag;
 			return View(f);
