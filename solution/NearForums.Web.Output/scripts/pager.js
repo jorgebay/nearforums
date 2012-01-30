@@ -2,20 +2,15 @@
 var pager = 
 {
 	firstItem : -1
+	, totalItems : -1
+	, lastItem : -1
+	, tempText : null
+	, enabled : false
+	, postUrl : null
+	, postUrlToId : null
+	, forbiddenMessage : ""
 	,
-	totalItems : -1
-	,
-	lastItem : -1
-	,
-	tempText : null
-	,
-	enabled : false
-	,
-	postUrl : null
-	,
-	postUrlToId : null
-	,
-	init : function(postUrl,postUrlToId)
+	init : function(postUrl, postUrlToId, forbiddenMessage)
 	{
 		if ($(".firstItem").length > 0)
 		{
@@ -23,6 +18,7 @@ var pager =
 			pager.lastItem = parseInt($(".lastItem").text(), 10);
 			pager.totalItems = parseInt($(".totalItems").text(), 10);
 			pager.enabled = true;
+			pager.forbiddenMessage = forbiddenMessage;
 			
 			pager.postUrl = postUrl;
 			pager.postUrlToId = postUrlToId;
@@ -73,7 +69,7 @@ var pager =
 		if (pager.enabled && pager.lastItem < pager.totalItems)
 		{
 			var fromId = $("#messages > li:last").attr("id").substring(3);
-			$.post(pager.postUrl, {from:fromId, initIndex:$("#messages > li").length}, pager.moreCallback);
+			pager.post(pager.postUrl, {from:fromId, initIndex:$("#messages > li").length}, pager.moreCallback);
 			pager.loadingStart();
 		}
 	}
@@ -97,7 +93,7 @@ var pager =
 				pager.loadingStart();
 				var lastMsg = window.location.hash.substring(4);
 				var firstMsg = $("#messages > li:last").attr("id").substring(3);
-				$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.navigateToIdCallback);
+				pager.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.navigateToIdCallback);
 			}
 		}
 		else if ($(window.location.hash).length == 1)
@@ -137,7 +133,7 @@ var pager =
 			pager.loadingStart();
 			var lastMsg = 1000;
 			var firstMsg = $("#messages > li:last").attr("id").substring(3);
-			$.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.showAllCallback);
+			pager.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.showAllCallback);
 		}
 		return false;
 	}
@@ -149,5 +145,25 @@ var pager =
 		pager.loadingEnd();
 		pager.showCurrentStatus();
 		$(document).trigger("dataLoaded");
+	}
+	,
+	post : function (url, data, callback)
+	{
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: data,
+			success: callback,
+			dataType: "html",
+			statusCode: {
+			403: function() {
+					if (pager.forbiddenMessage)
+					{
+						alert(pager.forbiddenMessage);
+					}
+					window.location.reload();
+				}
+			}
+		});
 	}
 }	

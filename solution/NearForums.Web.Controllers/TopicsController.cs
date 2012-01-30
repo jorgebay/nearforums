@@ -19,30 +19,19 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult Detail(int id, string name, string forum, int page)
 		{
-			Topic topic = TopicsServiceClient.Get(id);
-
-			#region The shortname must match
-			if (topic != null)
-			{
-				if (topic.ShortName != name)
-				{
-					topic = null;
-				}
-				else if(topic.Forum.ShortName != forum)
-				{
-					//The topic could have been moved to another forum
-					//Move permanently to the other forum's topic
-					return ResultHelper.MovedPermanentlyResult(this, new{action="Detail", controller="Topics", id=id, name=name, forum=topic.Forum.ShortName});
-				}
-			}
-			#endregion
+			var topic = TopicsServiceClient.Get(id, name);
 
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
+			if (topic.Forum.ShortName != forum)
+			{
+				//The topic could have been moved to another forum
+				//Move permanently to the other forum's topic
+				return ResultHelper.MovedPermanentlyResult(this, new{action="Detail", controller="Topics", id=id, name=name, forum=topic.Forum.ShortName});
+			}
 
-			//get messages
 			topic.Messages = MessagesServiceClient.GetByTopic(id);
 			//load related topics
 			TopicsServiceClient.LoadRelatedTopics(topic, 5);
@@ -56,15 +45,10 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Latest Messages
+		[ValidateReadAccess]
 		public ActionResult LatestMessages(int id, string name)
 		{
-			Topic topic = TopicsServiceClient.Get(id);
-			#region The shortname must match
-			if (topic != null && topic.ShortName.ToUpper() != name.ToUpper())
-			{
-				topic = null;
-			}
-			#endregion
+			var topic = TopicsServiceClient.Get(id, name);
 
 			if (topic == null)
 			{
@@ -78,7 +62,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Add
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		[RequireAuthorization]
 		[PreventFlood]
 		public ActionResult Add(string forum)
@@ -90,7 +74,7 @@ namespace NearForums.Web.Controllers
 			return View("Edit", topic);
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization]
 		[ValidateInput(false)]
 		[PreventFlood(typeof(RedirectToRouteResult))]
@@ -212,30 +196,48 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Client Paging
-		[AcceptVerbs(HttpVerbs.Post)]
+		/// <summary>
+		/// Gets an amount (by config) of message items starting from initIndex
+		/// </summary>
+		[HttpPost]
+		[ValidateReadAccess(RefuseOnFail=true)]
 		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
 		{
-			//load messages
-			List<Message> messages = MessagesServiceClient.GetByTopicFrom(id, from, Config.UI.MessagesPerPage, initIndex);
+			//load topic that contains messages
+			var topic = TopicsServiceClient.GetMessagesFrom(id, from, Config.UI.MessagesPerPage, initIndex);
+			if (topic == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			//Defines that the message url just be the anchor name
 			ViewData["FullUrl"] = false;
 
-			return View(false, messages);
+			return View(false, topic);
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
+		[ValidateReadAccess(RefuseOnFail = true)]
 		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg, int initIndex)
 		{
-			//load messages
-			List<Message> messages = MessagesServiceClient.GetByTopic(id, firstMsg, lastMsg, initIndex);
+			//load topic that contains messages
+			var topic = TopicsServiceClient.GetMessages(id, firstMsg, lastMsg, initIndex);
+			if (topic == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
 			//Defines that the message url just be the anchor name
 			ViewData["FullUrl"] = false;
 
-			return View(false, "PageMore", messages);
-		} 
+			return View(false, "PageMore", topic);
+		}
 		#endregion
 
 		#region Short Urls
+		/// <summary>
+		/// Gets the topic by id and redirects to the long relative url
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult ShortUrl(int id)
 		{
 			Topic t = TopicsServiceClient.Get(id);
@@ -254,27 +256,20 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		/// <param name="id">thread id</param>
 		/// <param name="msg">Message id of the message being quoted.</param>
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		[RequireAuthorization]
 		[PreventFlood]
 		public ActionResult Reply(int id, string name, int? msg)
 		{
 			Message message = new Message();
-			message.Topic = TopicsServiceClient.Get(id);
-			if (msg != null)
-			{
-				message.InReplyOf = new Message(msg.Value);
-			}
-			#region Shortname must match
-			if (message.Topic != null && message.Topic.ShortName.ToUpper() != name.ToUpper())
-			{
-				message.Topic = null;
-			}
-			#endregion
-
+			message.Topic = TopicsServiceClient.Get(id, name);
 			if (message.Topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
+			}
+			if (msg != null)
+			{
+				message.InReplyOf = new Message(msg.Value);
 			}
 
 			#region Check if topic is closed for replies
@@ -294,7 +289,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		/// <param name="id">thread id</param>
 		/// <param name="msg">Message id of the message being quoted.</param>
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization]
 		[ValidateInput(false)]
 		[PreventFlood(SuccessResultType=typeof(RedirectToRouteResult))]
@@ -375,17 +370,11 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Move topic
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Move(int id, string name)
 		{
-			Topic topic = TopicsServiceClient.Get(id);
-			#region Shortname must match
-			if (topic != null && topic.ShortName.ToUpper() != name.ToUpper())
-			{
-				topic = null;
-			} 
-			#endregion
+			Topic topic = TopicsServiceClient.Get(id, name);
 
 			if (topic == null)
 			{
@@ -397,7 +386,7 @@ namespace NearForums.Web.Controllers
 			return View(topic);
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Move(int id, string name, [Bind(Prefix = "", Exclude = "Id")] Topic t)
 		{

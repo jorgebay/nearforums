@@ -13,7 +13,7 @@ namespace NearForums.Web.Extensions
 		/// <summary>
 		/// Returns a status 404 to the client and the error 404 view.
 		/// </summary>
-		/// <param name="emptyBody">false: the response ends</param>
+		/// <param name="emptyBody">true: the response ends</param>
 		public static ActionResult NotFoundResult(ControllerBase controller, bool emptyBody)
 		{
 			controller.ControllerContext.HttpContext.Response.StatusCode = 404;
@@ -27,22 +27,40 @@ namespace NearForums.Web.Extensions
 			return viewResult;
 		}
 
+		/// <summary>
+		/// Returns a status 404 to the client and the error 404 view.
+		/// </summary>
+		/// <param name="controller"></param>
+		/// <returns></returns>
 		public static ActionResult NotFoundResult(ControllerBase controller)
 		{
 			return NotFoundResult(controller, false);
 		}
 
+
+		/// <summary>
+		/// Returns a http status 403 to the client and the error 403 view.
+		/// </summary>
+		/// <param name="controller"></param>
+		/// <returns></returns>
 		public static ActionResult ForbiddenResult(ControllerBase controller)
 		{
 			return ForbiddenResult(controller, false);
 		}
 
+		/// <summary>
+		/// Returns a http status 403 to the client and the error 403 view.
+		/// </summary>
+		/// <param name="controller">current controller</param>
+		/// <param name="emptyBody">true: the http response end without body</param>
+		/// <returns></returns>
 		public static ActionResult ForbiddenResult(ControllerBase controller, bool emptyBody)
 		{
 			controller.ControllerContext.HttpContext.Response.StatusCode = 403;
 			if (emptyBody)
 			{
 				controller.ControllerContext.HttpContext.Response.End();
+				return new EmptyResult();
 			}
 
 			ViewResult viewResult = new ViewResult();

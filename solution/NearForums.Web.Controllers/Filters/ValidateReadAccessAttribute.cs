@@ -23,9 +23,18 @@ namespace NearForums.Web.Controllers.Filters
 			set;
 		}
 
+		/// <summary>
+		/// Determines if the filter must return forbidden http status with an empty result in the case the user hasn't got the access rights
+		/// </summary>
+		public bool RefuseOnFail
+		{
+			get;
+			set;
+		}
+
 		public ValidateReadAccessAttribute()
 		{
-			Routes = RouteTable.Routes;
+			Routes = RouteTable.Routes; 
 		}
 
 		/// <summary>
@@ -51,15 +60,22 @@ namespace NearForums.Web.Controllers.Filters
 
 		protected virtual void HandleUnauthorizedRequest(ActionExecutedContext filterContext, UserRole role)
 		{
-			string redirectOnSuccess = filterContext.HttpContext.Request.Url.PathAndQuery;
 			filterContext.Canceled = true;
-			filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+			if (RefuseOnFail)
 			{
-				controller = "Authentication",
-				action = "Login",
-				returnUrl = redirectOnSuccess,
-				role = role
-			}));
+				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller, true);
+			}
+			else
+			{
+				string redirectOnSuccess = filterContext.HttpContext.Request.Url.PathAndQuery;
+				filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+				{
+					controller = "Authentication",
+					action = "Login",
+					returnUrl = redirectOnSuccess,
+					role = role
+				}));
+			}
 		}
 
 		/// <summary>

@@ -27,10 +27,28 @@ namespace NearForums.ServiceClient
 			return da.GetByTag(tag, forumId);
 		}
 
+		/// <summary>
+		/// Gets a topic by id
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <returns></returns>
 		public static Topic Get(int topicId)
 		{
-			TopicsDataAccess da = new TopicsDataAccess();
+			var da = new TopicsDataAccess();
 			return da.Get(topicId);
+		}
+		
+		/// <summary>
+		/// Gets a topic by id, validating that the shortName matches
+		/// </summary>
+		public static Topic Get(int id, string shortName)
+		{
+			var topic = Get(id);
+			if (topic != null && topic.ShortName.ToUpper() != shortName.ToUpper())
+			{
+				topic = null;
+			}
+			return topic;
 		}
 
 		public static void LoadRelatedTopics(Topic topic, int amount)
@@ -164,8 +182,34 @@ namespace NearForums.ServiceClient
 		/// </summary>
 		public static List<Topic> GetTopicsAndMessagesByUser(int userId)
 		{
-			TopicsDataAccess da = new TopicsDataAccess();
+			var da = new TopicsDataAccess();
 			return da.GetTopicsAndMessagesByUser(userId);
+		}
+
+		/// <summary>
+		/// Get a topic containing an specific amount of messages starting from firstMsg
+		/// </summary>
+		public static Topic GetMessagesFrom(int topicId, int firstMsg, int amount, int initIndex)
+		{
+			var topic = Get(topicId);
+			if (topic != null)
+			{
+				topic.Messages = MessagesServiceClient.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
+			}
+			return topic;
+		}
+		
+		/// <summary>
+		/// Gets a topic containing messages from firstMsg to lastMsg
+		/// </summary>
+		public static Topic GetMessages(int topicId, int firstMsg, int lastMsg, int initIndex)
+		{
+			var topic = Get(topicId);
+			if (topic != null)
+			{
+				topic.Messages = MessagesServiceClient.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
+			}
+			return topic;
 		}
 	}
 }

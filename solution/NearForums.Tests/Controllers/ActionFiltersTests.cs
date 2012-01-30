@@ -71,7 +71,7 @@ namespace NearForums.Tests.Controllers
 		{
 			var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
 			var controllerContext = new FakeControllerContext(new TopicsController(), "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
-			var context = new AuthorizationContext(controllerContext);
+			var context = new AuthorizationContext(controllerContext, new FakeActionDescriptor());
 			var att = new RequireAuthorizationAttribute(UserRole.Member);
 			att.Routes.Add(new StrictRoute("login", new MvcRouteHandler())
 			{
@@ -92,6 +92,27 @@ namespace NearForums.Tests.Controllers
 			context.Result = null;
 			att.OnAuthorization(context);
 			Assert.IsNull(context.Result);
+		}
+
+		[TestMethod]
+		public void ValidateReadAccessAttribute_Test()
+		{
+			var controller = new TopicsController();
+			var controllerContext = new FakeControllerContext(controller, "http://localhost");
+			var filterContext = new ActionExecutedContext(controllerContext, new FakeActionDescriptor(), false, null);
+			var att = new ValidateReadAccessAttribute();
+
+			filterContext.Result = new ViewResult();
+			controller.ViewData.Model = new Topic();
+			att.OnActionExecuted(filterContext);
+			//The user should see the content
+			Assert.IsTrue(filterContext.Result is ViewResult);
+
+			filterContext.Result = new ViewResult();
+			controller.ViewData.Model = new Topic() { ReadAccessRole = UserRole.Moderator};
+			att.OnActionExecuted(filterContext);
+			//The user should be redirected
+			Assert.IsTrue(filterContext.Result is RedirectToRouteResult);
 		}
 	}
 }

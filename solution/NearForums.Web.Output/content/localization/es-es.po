@@ -786,6 +786,10 @@ msgstr "Mostrar más mensajes"
 msgid "Thanks you, a moderator will review the message."
 msgstr "Gracias, un moderador revisará el mensaje."
 
+#: NearForums.Web.Output\Views\Topics\Detail.cshtml
+msgid "The browser has lost session, click ok to return to the login page"
+msgstr "El navegador a perdido la sesión, haz clic en OK para ir a la página de login"
+
 #: NearForums.Web.Output\Views\Topics\Edit.cshtml
 msgid "Edit thread"
 msgstr "Editar tema"

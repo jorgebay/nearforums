@@ -23,15 +23,27 @@ namespace NearForums.ServiceClient
 			return da.GetByTopicLatest(topicId);
 		}
 
-		public static List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex)
+		/// <summary>
+		/// Gets a list of messages from firstMsg to lastMsg
+		/// </summary>
+		internal static List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex)
 		{
 			MessagesDataAccess da = new MessagesDataAccess();
 			return da.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
 		}
 
-		public static List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex)
+
+		/// <summary>
+		/// Gets an specific amount of messages starting from firstMsg
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <param name="firstMsg"></param>
+		/// <param name="amount"></param>
+		/// <param name="initIndex"></param>
+		/// <returns></returns>
+		internal static List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex)
 		{
-			MessagesDataAccess da = new MessagesDataAccess();
+			var da = new MessagesDataAccess();
 			return da.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
 		}
 
