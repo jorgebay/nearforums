@@ -10,7 +10,7 @@ using NearForums.ServiceClient;
 namespace NearForums.Web.Controllers.Filters
 {
 	/// <summary>
-	/// Adds an unique visit to a topic by IP
+	/// Adds an unique visit to a topic by IP (Default order 100)
 	/// </summary>
 	public class AddVisitAttribute : BaseActionFilterAttribute
 	{

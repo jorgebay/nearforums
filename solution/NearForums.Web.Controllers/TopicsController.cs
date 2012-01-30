@@ -16,6 +16,7 @@ namespace NearForums.Web.Controllers
 	{
 		#region Detail
 		[AddVisit]
+		[ValidateReadAccess]
 		public ActionResult Detail(int id, string name, string forum, int page)
 		{
 			Topic topic = TopicsServiceClient.Get(id);

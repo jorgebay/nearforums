@@ -129,6 +129,11 @@ namespace NearForums.DataAccess
 			t.Views = dr.Get<int>("TopicViews");
 			t.IsClosed = dr.Get<bool>("TopicIsClose");
 			t.IsSticky = dr.GetNullable<int?>("TopicOrder") >= 0;
+			if (dr.Table.Columns.IndexOf("ReadAccessGroupId") >= 0)
+			{
+				t.ReadAccessRole = dr.GetNullableStruct<UserRole>("ReadAccessGroupId");
+				t.PostAccessRole = dr.Get<UserRole>("PostAccessGroupId");
+			}
 
 			return t;
 		}

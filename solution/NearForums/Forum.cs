@@ -6,7 +6,7 @@ using NearForums.Validation;
 
 namespace NearForums
 {
-	public class Forum : Entity
+	public class Forum : Entity, IAccessRightContainer
 	{
 		public Forum()
 		{
@@ -73,6 +73,7 @@ namespace NearForums
 			set;
 		}
 
+		#region IAccessRightContainer Members
 		/// <summary>
 		/// Minimal role to view this forum and its posts
 		/// </summary>
@@ -90,5 +91,6 @@ namespace NearForums
 			get;
 			set;
 		}
+		#endregion
 	}
 }

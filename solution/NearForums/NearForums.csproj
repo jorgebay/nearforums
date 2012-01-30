@@ -81,6 +81,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumCategory.cs" />
+    <Compile Include="IAccessRightContainer.cs" />
     <Compile Include="Localization\LocalizationParser.cs" />
     <Compile Include="Localization\Localizer.cs" />
     <Compile Include="Message.cs" />

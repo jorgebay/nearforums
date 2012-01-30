@@ -33,7 +33,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Detail
-		[ForumReadAccess]
+		[ValidateReadAccess]
 		public ActionResult Detail(string forum, int page)
 		{
 			if (Config.UI.DefaultForumSort == ForumSort.LatestActivity)
@@ -45,7 +45,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Most Viewed topics
-		[ForumReadAccess]
+		[ValidateReadAccess]
 		public ActionResult MostViewedTopics(string forum, int page)
 		{
 			var f = ForumsServiceClient.Get(forum);
@@ -66,7 +66,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Latest topics
-		[ForumReadAccess]
+		[ValidateReadAccess]
 		public ActionResult LatestTopics(string forum, int page, ResultFormat format)
 		{
 			var f = ForumsServiceClient.Get(forum);
@@ -101,7 +101,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Unanswered topics
-		[ForumReadAccess]
+		[ValidateReadAccess]
 		public ActionResult ListUnansweredTopics(string forum)
 		{
 			Forum f = ForumsServiceClient.Get(forum);
@@ -226,7 +226,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Tag detail
-		[ForumReadAccess]
+		[ValidateReadAccess]
 		public ActionResult TagDetail(string forum, string tag, int page)
 		{
 			Forum f = ForumsServiceClient.Get(forum);

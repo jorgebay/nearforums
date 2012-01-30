@@ -10,9 +10,9 @@ using NearForums.Web.Extensions;
 namespace NearForums.Web.Controllers.Filters
 {
 	/// <summary>
-	/// Represents an attribute that is used to restrict access by callers to an action method that shows Forum information
+	/// Represents an attribute that is used to restrict access by callers to an action method that shows IAccessRightContainer (Forum/Topic) information
 	/// </summary>
-	public class ForumReadAccessAttribute : BaseActionFilterAttribute
+	public class ValidateReadAccessAttribute : BaseActionFilterAttribute
 	{
 		/// <summary>
 		/// Current route table used in the application
@@ -23,7 +23,7 @@ namespace NearForums.Web.Controllers.Filters
 			set;
 		}
 
-		public ForumReadAccessAttribute()
+		public ValidateReadAccessAttribute()
 		{
 			Routes = RouteTable.Routes;
 		}
@@ -36,13 +36,13 @@ namespace NearForums.Web.Controllers.Filters
 			var model = filterContext.Controller.ViewData.Model;
 			if (model != null)
 			{
-				var forum = GetForum(model);
-				if (forum.ReadAccessRole != null)
+				var modelAccessRights = GetAccessRightsEntity(model);
+				if (modelAccessRights.ReadAccessRole != null)
 				{
 					var session = new SessionWrapper(filterContext.HttpContext);
-					if (session.User == null || session.User.Role < forum.ReadAccessRole.Value)
+					if (session.User == null || session.User.Role < modelAccessRights.ReadAccessRole.Value)
 					{
-						HandleUnauthorizedRequest(filterContext, forum.ReadAccessRole.Value);
+						HandleUnauthorizedRequest(filterContext, modelAccessRights.ReadAccessRole.Value);
 					}
 				}
 			}
@@ -63,23 +63,23 @@ namespace NearForums.Web.Controllers.Filters
 		}
 
 		/// <summary>
-		/// Gets the forum from the view data model
+		/// Gets the IAccessRightContainer (forum / topic) from the view data model
 		/// </summary>
-		/// <param name="context">Current controller/filter context</param>
+		/// <param name="model">Model</param>
 		/// <returns></returns>
-		protected virtual Forum GetForum(object model)
+		protected virtual IAccessRightContainer GetAccessRightsEntity(object model)
 		{
 			if (model == null)
 			{
 				throw new ArgumentNullException("model");
 			}
-			Forum forum = model as Forum;
+			var container = model as IAccessRightContainer;
 
-			if (forum == null)
+			if (container == null)
 			{
-				throw new ArgumentException("Model must be an instance of the class Forum.");
+				throw new ArgumentException("Model must be an instance of IAccessRightContainer (forum/topic).");
 			}
-			return forum;
+			return container;
 		}
 	}
 }

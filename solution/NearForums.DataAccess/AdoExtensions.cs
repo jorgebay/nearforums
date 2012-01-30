@@ -139,6 +139,16 @@ namespace NearForums.DataAccess
 			return value.ToString();
 		}
 
+		public static T? GetNullableStruct<T>(this DataRow dr, string columnName) where T : struct, IConvertible
+		{
+			var value = dr[columnName];
+			if (value == DBNull.Value)
+			{
+				return (T?)null;
+			}
+			return (T) value;
+		}
+
 		public static string GetString(this DataRow dr, string columnName)
 		{
 			return dr.GetNullable<string>(columnName);

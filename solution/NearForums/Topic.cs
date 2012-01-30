@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace NearForums
 {
-	public class Topic : Entity
+	public class Topic : Entity, IAccessRightContainer
 	{
 		public Topic()
 		{
@@ -94,6 +94,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Las message posted
+		/// </summary>
 		public Message LastMessage
 		{
 			get;
@@ -123,6 +126,9 @@ namespace NearForums
 			set;
 		}
 
+		/// <summary>
+		/// Determines if the topic is closed for replies
+		/// </summary>
 		public bool IsClosed
 		{
 			get;
@@ -138,6 +144,7 @@ namespace NearForums
 			set;
 		}
 
+		#region IAccessRightContainer Members
 		/// <summary>
 		/// Minimal role to view this topic and its posts (inherits read access from the forum if its higher)
 		/// </summary>
@@ -148,12 +155,13 @@ namespace NearForums
 		}
 
 		/// <summary>
-		/// Minimal role to post a message in this topic (inherits post access from the forum if its higher)
+		/// Minimal role to post a message in this topic (inherits post access from the forum read access if its higher)
 		/// </summary>
 		public UserRole PostAccessRole
 		{
 			get;
 			set;
 		}
+		#endregion
 	}
 }
