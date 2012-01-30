@@ -42,7 +42,6 @@ namespace NearForums.Web.Controllers
 				ViewBag.UserRoleName = UsersServiceClient.GetRoleName(role.Value);
 				return View("NotAuthorized");
 			}
-			ViewBag.ReturnUrl = returnUrl;
 			if (Config.AuthenticationProviders.Custom.IsDefined)
 			{
 				SpecifyParametersForCustom();
@@ -216,7 +215,7 @@ namespace NearForums.Web.Controllers
 
 		#region Custom provider
 		[HttpGet]
-		public ActionResult CustomLogin()
+		public ActionResult CustomLogin(string returnUrl)
 		{
 			if (!Config.AuthenticationProviders.Custom.IsDefined)
 			{

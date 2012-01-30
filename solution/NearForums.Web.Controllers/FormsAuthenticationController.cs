@@ -62,7 +62,6 @@ namespace NearForums.Web.Controllers
 			{
 				return Redirect(returnUrl);
 			}
-			ViewBag.ReturnUrl = returnUrl;
 
 			return View("LoginFormFull");
 		}

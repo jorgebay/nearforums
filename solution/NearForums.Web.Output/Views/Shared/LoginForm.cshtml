@@ -2,11 +2,12 @@
 @{
 	ViewBag.ForgotPasswordUrl = ViewBag.ForgotPasswordUrl ?? Url.Action("ResetPassword", "FormsAuthentication");
 	ViewBag.RegisterUrl = ViewBag.RegisterUrl ?? Url.Action("Register", "FormsAuthentication");
-	ViewBag.LoginFormAction = ViewBag.LoginFormAction ?? Url.RouteUrl(new { action = "Login", controller = "FormsAuthentication", returnUrl = ViewBag.ReturnUrl });
+	ViewBag.LoginFormAction = ViewBag.LoginFormAction ?? Url.RouteUrl(new { action = "Login", controller = "FormsAuthentication" });
 	ViewBag.AllowRemember = ViewBag.AllowRemember ?? true;
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { action = ViewBag.LoginFormAction}))
 {
+	@Html.Hidden("returnUrl")
 	<fieldset>
 		<legend>
 			@T("Enter your username and password. <br />Don't have an account?") @Html.LinkLocalized("Create one", (string)ViewBag.RegisterUrl, null)
