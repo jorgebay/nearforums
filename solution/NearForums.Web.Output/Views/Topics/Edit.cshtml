@@ -18,6 +18,7 @@
 		,{ValidationErrorType.Format, S("Email format is not valid.")}}}
 }, null)
 @{Html.BeginForm(null, null, null, FormMethod.Post, new{@id="topicEditForm"});}
+@Html.AntiForgeryToken()
 <fieldset>
 	<legend>@T("Fill in the fields and submit")</legend>
 	<div class="formItem floatContainer">

@@ -65,12 +65,17 @@ namespace NearForums.Web.Controllers
 		[HttpGet]
 		[RequireAuthorization]
 		[PreventFlood]
+		[ValidateAntiForgeryToken]
 		public ActionResult Add(string forum)
 		{
-			Forum f = ForumsServiceClient.Get(forum);
-			Topic topic = new Topic();
-			topic.Forum = f;
+			var f = ForumsServiceClient.Get(forum);
+			if (!f.HasPostAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
 
+			var topic = new Topic();
+			topic.Forum = f;
 			return View("Edit", topic);
 		}
 
@@ -83,8 +88,17 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				
+				topic.Forum = ForumsServiceClient.Get(forum);
+				if (topic.Forum == null)
+				{
+					return ResultHelper.NotFoundResult(this);
+				}
+				if (!topic.Forum.HasPostAccess(Role))
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
 
-				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = topic.Title.ToUrlSegment(64);
 				topic.IsSticky = (topic.IsSticky && this.User.Role >= UserRole.Moderator);
@@ -108,26 +122,16 @@ namespace NearForums.Web.Controllers
 			{
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
 			}
-			else
-			{
-				topic.Forum = ForumsServiceClient.Get(forum);
-				return View("Edit", topic);
-			}
+			return View("Edit", topic);
 		}
 		#endregion
 
 		#region Edit
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		[RequireAuthorization]
-		public ActionResult Edit(int id, string name)
+		public ActionResult Edit(int id, string name, string forum)
 		{
-			Topic topic = TopicsServiceClient.Get(id);
-			#region The shortname must match
-			if (topic != null && topic.ShortName.ToUpper() != name.ToUpper())
-			{
-				topic = null;
-			}
-			#endregion
+			Topic topic = TopicsServiceClient.Get(id, name);
 
 			if (topic == null)
 			{
@@ -146,32 +150,41 @@ namespace NearForums.Web.Controllers
 			return View(topic);
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization]
 		[ValidateInput(false)]
+		[ValidateAntiForgeryToken]
 		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "", Exclude = "Forum")] Topic topic, bool notify, string email)
 		{
 			topic.Id = id;
+			topic.Forum = ForumsServiceClient.Get(forum);
+			if (topic.Forum == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+			if (!topic.Forum.HasPostAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+
+			#region Check if user can edit
+			if (this.User.Role < UserRole.Moderator)
+			{
+				//If the user is not moderator or admin: Check if the user that created of the topic is the same as the logged user
+				var originalTopic = TopicsServiceClient.Get(id);
+				if (User.Id != originalTopic.User.Id)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+				//The user cannot edit the sticky property
+				topic.IsSticky = originalTopic.IsSticky;
+			}
+			#endregion
+
 			try
 			{
-				#region Check if user can edit
-				if (this.User.Role < UserRole.Moderator)
-				{
-					//The user is not moderator or admin
-					//Check if the user that created of the topic is the same as the logged user
-					Topic originalTopic = TopicsServiceClient.Get(id);
-					if (this.User.Id != originalTopic.User.Id)
-					{
-						return ResultHelper.ForbiddenResult(this);
-					}
-					//The user can not edit the sticky property
-					topic.IsSticky = originalTopic.IsSticky;
-				}
-				#endregion
-
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
 
-				topic.Forum = new Forum(){ShortName=forum};
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
 				if (topic.Description != null)
@@ -180,7 +193,7 @@ namespace NearForums.Web.Controllers
 				}
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
 
-				SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config);
 
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
 			}
@@ -188,7 +201,6 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			topic.Forum = ForumsServiceClient.Get(forum);
 			ViewData["IsEdit"] = true;
 
 			return View(topic);

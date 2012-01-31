@@ -91,6 +91,19 @@ namespace NearForums
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Determines if with the role supplied has access to post in this forum
+		/// </summary>
+		/// <returns></returns>
+		public bool HasPostAccess(UserRole? userRole)
+		{
+			if (userRole >= PostAccessRole)
+			{
+				return true;
+			}
+			return false;
+		}
 		#endregion
 	}
 }

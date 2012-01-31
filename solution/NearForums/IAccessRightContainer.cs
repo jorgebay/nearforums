@@ -19,5 +19,12 @@ namespace NearForums
 		/// Minimal role to post
 		/// </summary>
 		UserRole PostAccessRole { get; set;}
+
+		/// <summary>
+		/// Determines if with the role supplied has access to post
+		/// </summary>
+		/// <param name="userRole"></param>
+		/// <returns></returns>
+		bool HasPostAccess(UserRole? userRole);
 	}
 }
