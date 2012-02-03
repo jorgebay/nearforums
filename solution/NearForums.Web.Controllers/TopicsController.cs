@@ -65,7 +65,6 @@ namespace NearForums.Web.Controllers
 		[HttpGet]
 		[RequireAuthorization]
 		[PreventFlood]
-		[ValidateAntiForgeryToken]
 		public ActionResult Add(string forum)
 		{
 			var f = ForumsServiceClient.Get(forum);
@@ -83,6 +82,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization]
 		[ValidateInput(false)]
 		[PreventFlood(typeof(RedirectToRouteResult))]
+		[ValidateAntiForgeryToken]
 		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id,Forum")] Topic topic, bool notify, string email)
 		{
 			try

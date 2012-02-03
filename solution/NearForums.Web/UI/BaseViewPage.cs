@@ -22,24 +22,44 @@ namespace NearForums.Web.UI
 
 		protected override void InitializePage()
 		{
-			Session = new SessionWrapper(this.ViewContext.HttpContext.Session);
-			Cache = new CacheWrapper(this.ViewContext.HttpContext.Cache);
 			Localizer = Localizer.Current;
 			base.InitializePage();
 		}
 		#endregion
 
 		#region Properties
+		private SessionWrapper _session;
 		public new SessionWrapper Session
 		{
-			get;
-			set;
+			get
+			{
+				if (_session == null && Context != null)
+				{
+					_session = new SessionWrapper(Context.Session);
+				}
+				return _session;
+			}
+			set
+			{
+				_session = value;
+			}
 		}
 
+		private CacheWrapper _cache; 
 		public new CacheWrapper Cache
 		{
-			get;
-			set;
+			get
+			{
+				if (_cache == null && Context != null)
+				{
+					_cache = new CacheWrapper(Context.Cache);
+				}
+				return _cache;
+			}
+			set
+			{
+				_cache = value;
+			}
 		}
 
 		public virtual Localizer Localizer
