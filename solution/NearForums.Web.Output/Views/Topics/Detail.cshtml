@@ -4,7 +4,6 @@
 }
 @section Head{
 	@Html.MetaDescription(Utils.Summarize(Utils.RemoveTags(Model.Description), 160, ""))
-	@Html.Script("~/scripts/common.js")
 }
 <ul class="path">
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>

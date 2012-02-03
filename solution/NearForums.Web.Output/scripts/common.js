@@ -14,3 +14,9 @@
     }
     return false;
 }
+function preventMultipleSubmit() {
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+}

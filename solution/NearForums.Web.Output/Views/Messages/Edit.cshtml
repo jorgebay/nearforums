@@ -3,23 +3,8 @@
     ViewBag.Title = T("Reply");
 }
 <script type="text/javascript">
-	var submitted = false;
-	$(document).ready(function ()
-	{
-		//prevent multiple posts
-		$("form#topicReplyForm").submit(function ()
-		{
-			if (!submitted)
-			{
-				submitted = true;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
-	});
+	$("form#topicReplyForm").submit(preventMultipleSubmit);
+	
 	function toggleEmail()
 	{
 		if ($("#notify").is(":checked"))

@@ -36,21 +36,5 @@
 </fieldset>
 @{Html.EndForm();}
 <script type="text/javascript">
-	var submitted = false;
-	$(document).ready(function ()
-	{
-		//prevent multiple posts
-		$("form#forumEditForm").submit(function ()
-		{
-			if (!submitted)
-			{
-				submitted = true;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
-	});
+	$("form#forumEditForm").submit(preventMultipleSubmit);
 </script>

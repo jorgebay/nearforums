@@ -63,23 +63,8 @@
 </fieldset>
 @{Html.EndForm();}
 <script type="text/javascript">
-	var submitted = false;
-	$(document).ready(function ()
-	{
-		//prevent multiple posts
-		$("form#topicEditForm").submit(function ()
-		{
-			if (!submitted)
-			{
-				submitted = true;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
-	});
+	$("form#topicEditForm").submit(preventMultipleSubmit);
+
 	function toggleEmail()
 	{
 		if ($("#notify").is(":checked"))
