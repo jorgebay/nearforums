@@ -194,37 +194,6 @@ namespace NearForums.Tests.Controllers
 
 			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
 		}
-		/// <summary>
-		/// Tests the reply
-		/// </summary>
-		[TestMethod]
-		public void Topic_Reply_Subscribe_Unsubscribe_Test()
-		{
-			var controller = new TopicsController();
-			var subscriptionsController = new TopicsSubscriptionsController();
-			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
-			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
-			subscriptionsController.ControllerContext = controller.ControllerContext;
-			subscriptionsController.Url = controller.Url;
-
-			ActionResult result = null;
-
-			Forum forum = ForumsControllerTest.GetAForum();
-			Topic topic = TopicsControllerTest.GetATopic(forum);
-
-			result = controller.Reply(topic.Id, topic.ShortName, null);
-			Assert.IsTrue(result is ViewResult);
-
-			Message message = (Message)controller.ViewData.Model;
-			message.Body = "<p>Unit testing....</p>";
-
-			result = controller.Reply(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null, true, "admin@admin.com");
-			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
-
-			subscriptionsController.Unsubscribe(controller.User.Id, controller.User.Guid.ToString("N"), topic.Id);
-
-			Assert.IsNotNull(subscriptionsController.ViewData.Model);
-		}
 
 		[TestMethod]
 		public void Topic_OpenClose_Test()

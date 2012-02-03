@@ -5,11 +5,101 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
 using NearForums.ServiceClient;
+using NearForums.Web.Extensions;
+using NearForums.Web.Controllers.Helpers;
+using NearForums.Validation;
 
 namespace NearForums.Web.Controllers
 {
 	public class MessagesController : BaseController
 	{
+		#region Add
+		/// <summary>
+		/// Loads the "reply to a topic" form
+		/// </summary>
+		/// <param name="id">thread id</param>
+		/// <param name="name">thread short name</param>
+		/// <param name="msg">Message id of the message being quoted.</param>
+		[HttpGet]
+		[RequireAuthorization]
+		[PreventFlood]
+		public ActionResult Add(int id, string name, int? msg)
+		{
+			var message = new Message();
+			message.Topic = TopicsServiceClient.Get(id, name);
+			if (message.Topic == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+			if (msg != null)
+			{
+				message.InReplyOf = new Message(msg.Value);
+			}
+
+			#region Check if topic is closed for replies
+			if (message.Topic.IsClosed)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			#endregion
+
+			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+
+			return View("Edit", message);
+		}
+
+		/// <summary>
+		/// Saves the message or Loads the reply form to allow the user to clear error messages
+		/// </summary>
+		/// <param name="id">thread id</param>
+		/// <param name="msg">Message id of the message being quoted.</param>
+		[HttpPost]
+		[RequireAuthorization]
+		[ValidateInput(false)]
+		[PreventFlood(SuccessResultType = typeof(RedirectToRouteResult))]
+		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
+		{
+			message.Topic = TopicsServiceClient.Get(id);
+			try
+			{
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config);
+
+				#region Check topic
+				if (message.Topic == null)
+				{
+					return ResultHelper.NotFoundResult(this);
+				}
+				if (message.Topic.IsClosed)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+				#endregion
+				if (message.Body != null)
+				{
+					message.Body = message.Body.SafeHtml().ReplaceValues();
+				}
+				message.User = Session.User.ToUser();
+				if (msg != null)
+				{
+					message.InReplyOf = new Message(msg.Value);
+				}
+				if (ModelState.IsValid)
+				{
+					MessagesServiceClient.Add(message, Request.UserHostAddress);
+					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
+					//Redirect to the message posted
+					return new RedirectToRouteExtraResult(new { action = "Detail", controller = "Topics", id = id, name = name, forum = forum }, "#msg" + message.Id);
+				}
+			}
+			catch (ValidationException ex)
+			{
+				this.AddErrors(ModelState, ex);
+			}
+			return View("Edit", message);
+		}
+		#endregion
+
 		#region Delete
 		/// <summary>
 		/// Removes a message

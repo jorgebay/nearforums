@@ -858,23 +858,23 @@ msgstr "Select the destination forum"
 msgid "Related threads"
 msgstr "Related threads"
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Reply"
 msgstr "Reply"
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Body must not be blank."
 msgstr "Body must not be blank."
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Captcha must not be blank."
 msgstr "Captcha must not be blank."
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Captcha does not match the image value. Please retry."
 msgstr "Captcha does not match the image value. Please retry."
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Description"
 msgstr "Description"
 

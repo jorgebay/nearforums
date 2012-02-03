@@ -3,7 +3,7 @@
 	<ul>
 		@if (!this.Model.IsClosed)
 		{
-			<li class="reply">@Html.ActionLinkLocalized("Reply", "Reply", null, new{rel="nofollow"})</li>
+			<li class="reply">@Html.ActionLinkLocalized("Reply", "Add", "Messages", null, new{rel="nofollow"})</li>
 		}
 		<li class="showAll"><a href="#" onclick="return pager.showAll();">@T("Show all messages")</a></li>
 		<li class="print"><a href="#" onclick="window.print();return false;">@T("Print")</a></li>

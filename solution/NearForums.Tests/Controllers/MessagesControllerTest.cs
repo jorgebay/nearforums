@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NearForums.Web.Controllers;
 using System.Web.Mvc;
+using NearForums.Tests.Fakes;
 
 namespace NearForums.Tests.Controllers
 {
@@ -67,6 +68,38 @@ namespace NearForums.Tests.Controllers
 
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.IsInstanceOfType(controller.ViewData.Model, typeof(List<Topic>));
+		}
+
+		/// <summary>
+		/// Tests the reply
+		/// </summary>
+		[TestMethod]
+		public void Topic_Reply_Subscribe_Unsubscribe_Test()
+		{
+			var controller = new MessagesController();
+			var subscriptionsController = new TopicsSubscriptionsController();
+			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
+			subscriptionsController.ControllerContext = controller.ControllerContext;
+			subscriptionsController.Url = controller.Url;
+
+			ActionResult result = null;
+
+			Forum forum = ForumsControllerTest.GetAForum();
+			Topic topic = TopicsControllerTest.GetATopic(forum);
+
+			result = controller.Add(topic.Id, topic.ShortName, null);
+			Assert.IsTrue(result is ViewResult);
+
+			var message = (Message)controller.ViewData.Model;
+			message.Body = "<p>Unit testing....</p>";
+
+			result = controller.Add(message, topic.Id, topic.ShortName, topic.Forum.ShortName, null, true, "admin@admin.com");
+			Assert.IsTrue(result is RedirectToRouteResult || result is RedirectResult);
+
+			subscriptionsController.Unsubscribe(controller.User.Id, controller.User.Guid.ToString("N"), topic.Id);
+
+			Assert.IsNotNull(subscriptionsController.ViewData.Model);
 		}
 	}
 }

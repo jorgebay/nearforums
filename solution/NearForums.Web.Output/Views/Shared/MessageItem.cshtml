@@ -39,7 +39,7 @@
 	</div>
 	<div class="msgOptions">
 		@Html.LinkLocalized("link", (ViewData.Get<bool>("FullUrl", false) ? Url.Action(null, null, new { page = 0 }) : "") + "#msg" + Model.Id, new { @class = "first" })
-		@Html.ActionLinkLocalized("reply", "Reply", new { msg = Model.Id }, new { rel = "nofollow" })
+		@Html.ActionLinkLocalized("reply", "Add", "Messages", new { msg = Model.Id }, new { rel = "nofollow" })
 		@if (Model.Active)
 		{
 			if (Role >= UserRole.Moderator)

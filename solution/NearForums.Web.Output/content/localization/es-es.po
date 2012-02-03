@@ -858,23 +858,23 @@ msgstr "Seleccionar el foro de destino"
 msgid "Related threads"
 msgstr "Temas relacionados"
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Reply"
 msgstr "Responder"
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Body must not be blank."
 msgstr "El cuerpo del mensaje no debe estar en blanco."
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Captcha must not be blank."
 msgstr "Codigo de seguridad no debe estar en blanco."
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Captcha does not match the image value. Please retry."
 msgstr "Codigo de seguridad no coincide con el valor de la imagen. Por favor, inténtelo de nuevo."
 
-#: NearForums.Web.Output\Views\Topics\Reply.cshtml
+#: NearForums.Web.Output\Views\Messages\Edit.cshtml
 msgid "Description"
 msgstr "Descripción"
 

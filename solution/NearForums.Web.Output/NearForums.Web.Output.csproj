@@ -287,7 +287,7 @@
     <Content Include="Views\Topics\LatestMessages.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Topics\Reply.cshtml" />
+    <Content Include="Views\Messages\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Forums\Edit.cshtml" />

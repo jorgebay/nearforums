@@ -47,9 +47,14 @@ namespace NearForums.ServiceClient
 			return da.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
 		}
 
-		internal static void Add(Message message, string ip)
+		/// <summary>
+		/// Adds a new message to the topic
+		/// </summary>
+		/// <exception cref="ValidationException">If the model is not valid</exception>
+		public static void Add(Message message, string ip)
 		{
-			MessagesDataAccess da = new MessagesDataAccess();
+			message.ValidateFields();
+			var da = new MessagesDataAccess();
 			da.Add(message, ip);
 		}
 
