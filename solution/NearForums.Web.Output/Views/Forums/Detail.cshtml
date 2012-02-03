@@ -37,9 +37,12 @@
 	}
 	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, (int)ViewData["TotalTopics"], S("Previous"), S("Next"))
 	@Html.Partial("TagCloud", ViewData.Get<List<WeightTag>>("Tags"))
-	<p class="action">@Html.ActionLinkLocalized("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
+	@if (Model.HasPostAccess(Role))
+	{
+		<p class="action">@Html.ActionLinkLocalized("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
+	}
 	
-	@if (User != null && User.Role >= UserRole.Moderator)
+	@if (Role >= UserRole.Moderator)
 	{
 	<div class="toolbar floatContainer">
 		<ul>

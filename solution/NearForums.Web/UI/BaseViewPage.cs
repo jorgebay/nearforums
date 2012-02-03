@@ -76,7 +76,25 @@ namespace NearForums.Web.UI
 			}
 		}
 
+		/// <summary>
+		/// Gets the role of the current user
+		/// </summary>
+		public UserRole? Role
+		{
+			get
+			{
+				UserRole? role = null;
+				if (User != null)
+				{
+					role = User.Role;
+				}
+				return role;
+			}
+		}
 
+		/// <summary>
+		/// Gets the current configuration
+		/// </summary>
 		public SiteConfiguration Config
 		{
 			get

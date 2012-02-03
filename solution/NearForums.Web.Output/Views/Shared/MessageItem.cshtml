@@ -42,7 +42,7 @@
 		@Html.ActionLinkLocalized("reply", "Reply", new { msg = Model.Id }, new { rel = "nofollow" })
 		@if (Model.Active)
 		{
-			if (this.User != null && this.User.Role >= UserRole.Moderator)
+			if (Role >= UserRole.Moderator)
 			{
 				@Html.LinkLocalized("remove", "#", new { onclick = "return deleteMessage(" + Model.Id + ", '" + @Url.Action("Delete", "Messages") + "');" })
 			}

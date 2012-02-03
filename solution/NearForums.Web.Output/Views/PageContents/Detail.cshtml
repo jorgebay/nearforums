@@ -10,7 +10,7 @@
 	<div class="page-@Model.ShortName">
 		@Html.Raw(Model.Body)
 	</div>
-	@if (User != null && User.Role == UserRole.Admin)
+	@if (Role == UserRole.Admin)
 	{
 	<div class="toolbar floatContainer">
 		<ul>
