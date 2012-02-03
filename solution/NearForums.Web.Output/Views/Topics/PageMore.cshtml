@@ -7,7 +7,7 @@
 	{
 		foreach (Message m in Model.Messages)
 		{
-			Html.RenderPartial("MessageItem", m);
+			Html.RenderPartial("MessageItem", m, ViewData.Append(new { HasPostAccess = Model.HasPostAccess(Role) }));
 		}
 	}
 }

@@ -27,21 +27,25 @@ namespace NearForums.Web.Controllers
 		{
 			var message = new Message();
 			message.Topic = TopicsServiceClient.Get(id, name);
+			#region Check topic
 			if (message.Topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
+			if (!message.Topic.HasPostAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			if (message.Topic.IsClosed)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			} 
+			#endregion
 			if (msg != null)
 			{
 				message.InReplyOf = new Message(msg.Value);
 			}
 
-			#region Check if topic is closed for replies
-			if (message.Topic.IsClosed)
-			{
-				return ResultHelper.ForbiddenResult(this);
-			}
-			#endregion
 
 			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
 
@@ -59,22 +63,26 @@ namespace NearForums.Web.Controllers
 		[PreventFlood(SuccessResultType = typeof(RedirectToRouteResult))]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
 		{
-			message.Topic = TopicsServiceClient.Get(id);
+			message.Topic = TopicsServiceClient.Get(id, name);
+			#region Check topic
+			if (message.Topic == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+			if (!message.Topic.HasPostAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			if (message.Topic.IsClosed)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			#endregion
 			try
 			{
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
 				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config);
 
-				#region Check topic
-				if (message.Topic == null)
-				{
-					return ResultHelper.NotFoundResult(this);
-				}
-				if (message.Topic.IsClosed)
-				{
-					return ResultHelper.ForbiddenResult(this);
-				}
-				#endregion
 				if (message.Body != null)
 				{
 					message.Body = message.Body.SafeHtml().ReplaceValues();

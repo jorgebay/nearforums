@@ -31,7 +31,7 @@
 		<ul id="messages">
 		@foreach (Message m in messages)
 		{
-			Html.RenderPartial("MessageItem", m);
+			Html.RenderPartial("MessageItem", m, ViewData.Append(new {HasPostAccess = Model.HasPostAccess(Role)}));
 		}
 		</ul>
 	}
@@ -46,8 +46,8 @@
 	}
 	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">@Html.Img("~/images/loadingMini.gif", "") @T("Show more messages")</a></div>
 	@Html.Pager(messages)
-	@Html.Partial("Toolbar", this.Model)
-	@Html.Partial("Related", this.Model)
+	@Html.Partial("Toolbar")
+	@Html.Partial("Related")
 </div>
 @Html.Script("~/scripts/overtip.js")
 @Html.Script("~/scripts/pager.js")
