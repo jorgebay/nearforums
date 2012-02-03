@@ -231,11 +231,15 @@ namespace NearForums.DataAccess
 		} 
 		#endregion
 
-		#region Get Role
+		#region Roles
+		/// <summary>
+		/// Gets the name of the user role
+		/// </summary>
+		/// <returns></returns>
 		public string GetRoleName(UserRole userRole)
 		{
 			string result = null;
-			DbCommand comm = GetCommand("SPUsersGroupsGet");
+			var comm = GetCommand("SPUsersGroupsGet");
 			comm.AddParameter<short>(this.Factory, "UserGroupId", (short)userRole);
 
 			DataRow dr = GetFirstRow(comm);
@@ -244,6 +248,22 @@ namespace NearForums.DataAccess
 				result = dr.GetString("UserGroupName");
 			}
 			return result;
+		}
+
+		/// <summary>
+		/// Gets a dictionary containing the user roles and its names.
+		/// </summary>
+		/// <returns></returns>
+		public Dictionary<UserRole, string> GetRoles()
+		{
+			var comm = GetCommand("SPUsersGroupsGetAll");
+			var dt = GetTable(comm);
+			var roles = new Dictionary<UserRole, string>();
+			foreach (DataRow dr in dt.Rows)
+			{
+				roles.Add(dr.Get<UserRole>("UserGroupId"), dr.GetString("UserGroupName"));
+			}
+			return roles;
 		} 
 		#endregion
 

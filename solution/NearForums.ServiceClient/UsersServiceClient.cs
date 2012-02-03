@@ -175,5 +175,15 @@ namespace NearForums.ServiceClient
 				throw new ValidationException(errors);
 			}
 		}
+
+		/// <summary>
+		/// Gets a dictionary containing the user roles and its names.
+		/// </summary>
+		/// <returns></returns>
+		public static Dictionary<UserRole, string> GetRoles()
+		{
+			var da = new UsersDataAccess();
+			return da.GetRoles();
+		}
 	}
 }

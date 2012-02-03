@@ -16,6 +16,7 @@
 		,{"Category.Id", S("Category must not be blank.")}
 	}, null)
 @{Html.BeginForm(null, null, this.Model == null ? null : new{forum=this.Model.ShortName}, FormMethod.Post, new{@id="forumEditForm"});}
+@Html.AntiForgeryToken()
 <fieldset>
 	<legend>@T("Fill in the fields and submit")</legend>
 	<div class="formItem floatContainer">
@@ -30,6 +31,17 @@
 		<label for="description">@T("Description")</label>
 		@Html.TextArea("description")
 	</div>
+	@*
+	<div class="formItem floatContainer">
+		<label for="ReadAccessRole">@T("Read access")</label>
+		@Html.DropDownListDefault("ReadAccessRole", ViewData.Get<SelectList>("UserRoles"), "", S("Everybody"))
+	</div>
+	<div class="formItem floatContainer">
+		<label for="PostAccessRole">@T("Access to post a new thread")</label>
+		@Html.DropDownList("PostAccessRole", ViewData.Get<SelectList>("UserRoles"))
+		<span class="note">@T("Notice that roles are hierarchical")</span>
+	</div>
+	*@
 	<div class="formItem buttons">
 		<input type="submit" value="@T("Send")" />
 	</div>

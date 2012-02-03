@@ -124,17 +124,19 @@ namespace NearForums.Web.Controllers
 
 		#region Add / Edit / Delete
 		#region Add
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Add()
 		{
-			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
-			ViewData["Categories"] = categories;
+			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 			return View("Edit");
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
+		[ValidateAntiForgeryToken]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Forum forum)
 		{
 			try
@@ -166,7 +168,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Edit
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Edit(string forum)
 		{
@@ -181,8 +183,9 @@ namespace NearForums.Web.Controllers
 			return View("Edit", f);
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
+		[ValidateAntiForgeryToken]
 		public ActionResult Edit(string forum, [Bind(Prefix = "")] Forum f)
 		{
 			try
