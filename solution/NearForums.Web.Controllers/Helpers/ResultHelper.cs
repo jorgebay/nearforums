@@ -24,6 +24,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 			ViewResult viewResult = new ViewResult();
 			viewResult.ViewName = "Errors/404";
+			viewResult.MasterName = controller.GetDefaultMasterName();
 			return viewResult;
 		}
 
@@ -65,6 +66,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 			ViewResult viewResult = new ViewResult();
 			viewResult.ViewName = "Errors/403";
+			viewResult.MasterName = controller.GetDefaultMasterName();
 			return viewResult;
 		}
 
