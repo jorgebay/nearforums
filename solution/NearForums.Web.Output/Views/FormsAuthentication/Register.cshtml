@@ -31,10 +31,6 @@
 			@Html.TextBox("username")
 		</div>
 		<div class="formItem floatContainer">
-			<label for="email">@T("Email")</label>
-			@Html.TextBox("email")
-		</div>
-		<div class="formItem floatContainer">
 			<label for="password">@T("Password")</label>
 			@Html.Password("password")
 			<span class="note">@T("Passwords are required to be a minimum of {0} characters in length.", ViewData["PasswordLength"])</span>
@@ -42,6 +38,10 @@
 		<div class="formItem floatContainer">
 			<label for="email">@T("Confirm Password")</label>
 			@Html.Password("confirmPassword")
+		</div>
+		<div class="formItem floatContainer">
+			<label for="email">@T("Email")</label>
+			@Html.TextBox("email")
 		</div>
 		<div class="checkbox" style="padding-top: 10px;">
 			@(Html.CheckBox("agreeTerms", false))
