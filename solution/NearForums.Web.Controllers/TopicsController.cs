@@ -75,7 +75,9 @@ namespace NearForums.Web.Controllers
 
 			var topic = new Topic();
 			topic.Forum = f;
-			//Default the post access to its parent, it can be less than the parent.
+			//Default the right access to its parent. If less it will be overriden.
+			topic.ReadAccessRole = f.ReadAccessRole;
+			//Default, It can be less than its parent
 			topic.PostAccessRole = f.PostAccessRole;
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
@@ -272,7 +274,9 @@ namespace NearForums.Web.Controllers
 
 		#region Move / Close / Delete
 		#region Delete
+		[HttpPost]
 		[RequireAuthorization]
+		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, string name, string forum)
 		{
 			#region Check if user can edit
@@ -293,10 +297,7 @@ namespace NearForums.Web.Controllers
 
 			TopicsServiceClient.Delete(id, this.User.Id, Request.UserHostAddress);
 
-			return RedirectToAction("Detail", "Forums", new
-			{
-				forum = forum
-			});
+			return Json(new { nextUrl=Url.Action("Detail", "Forums", new{ forum = forum})});
 		}
 		#endregion
 
@@ -318,6 +319,7 @@ namespace NearForums.Web.Controllers
 
 		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
+		[ValidateAntiForgeryToken]
 		public ActionResult Move(int id, string name, [Bind(Prefix = "", Exclude = "Id")] Topic t)
 		{
 			Topic savedTopic = TopicsServiceClient.Move(id, t.Forum.Id, this.User.Id, Request.UserHostAddress);
@@ -332,7 +334,9 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Disallow replies on the topic
 		/// </summary>
+		[HttpPost]
 		[RequireAuthorization]
+		[ValidateAntiForgeryToken]
 		public ActionResult CloseReplies(int id, string name)
 		{
 			#region Check if user can edit
@@ -353,13 +357,15 @@ namespace NearForums.Web.Controllers
 
 			TopicsServiceClient.Close(id, this.User.Id, Request.UserHostAddress);
 
-			return RedirectToAction("Detail");
+			return new EmptyResult();
 		}
 
 		/// <summary>
 		/// Allow replies on the topic
 		/// </summary>
+		[HttpPost]
 		[RequireAuthorization]
+		[ValidateAntiForgeryToken]
 		public ActionResult OpenReplies(int id, string name)
 		{
 			#region Check if user can edit
@@ -380,7 +386,7 @@ namespace NearForums.Web.Controllers
 
 			TopicsServiceClient.Open(id, this.User.Id, Request.UserHostAddress);
 
-			return RedirectToAction("Detail");
+			return new EmptyResult();
 		}
 		#endregion
 		#endregion

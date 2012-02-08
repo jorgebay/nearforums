@@ -1,6 +1,7 @@
 ﻿@model Topic
 @{
-    ViewBag.Title = Model.Title;
+	ViewBag.Title = Model.Title;
+	ViewBag.HasPostAccess = Model.HasPostAccess(Role);
 }
 @section Head{
 	@Html.MetaDescription(Utils.Summarize(Utils.RemoveTags(Model.Description), 160, ""))
@@ -30,7 +31,7 @@
 		<ul id="messages">
 		@foreach (Message m in messages)
 		{
-			Html.RenderPartial("MessageItem", m, ViewData.Append(new {HasPostAccess = Model.HasPostAccess(Role)}));
+			Html.RenderPartial("MessageItem", m);
 		}
 		</ul>
 	}

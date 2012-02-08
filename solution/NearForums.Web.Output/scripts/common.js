@@ -20,3 +20,21 @@ function preventMultipleSubmit() {
     });
     return true;
 }
+function postAndContinue(sender, data, confirmMessage)
+{
+	if ((!confirmMessage) || confirm(confirmMessage))
+	{
+		data.__RequestVerificationToken = $("input[name='__RequestVerificationToken']").val();
+		$.post($(sender).attr("href"), data, function(responseData){
+			if (responseData && responseData.nextUrl)
+			{
+				document.location.href = responseData.nextUrl;
+			}
+			else
+			{
+				window.location.reload();
+			}
+		});
+	}
+	return false;
+}

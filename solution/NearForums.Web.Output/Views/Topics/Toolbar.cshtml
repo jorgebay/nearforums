@@ -11,15 +11,16 @@
 		{
 			<li class="edit">@Html.ActionLinkLocalized("Edit", "Edit")</li>
 			<li class="move">@Html.ActionLinkLocalized("Move thread", "Move", new{forumName=Model.Forum.ShortName})</li>
-			<li class="delete">@Html.ActionLinkLocalized("Delete", "Delete", null, new{@onclick="return confirm('" + S("Are you sure you want to DELETE this thread?") + "');"})</li>
+			<li class="delete">@Html.ActionLinkLocalized("Delete", "Delete", null, new { @onclick = "return postAndContinue(this, {}, '" + S("Are you sure you want to DELETE this thread?") + "');", rel = "nofollow" })</li>
 			if (!this.Model.IsClosed)
 			{
-				<li class="close">@Html.ActionLinkLocalized("Close", "CloseReplies", null, new{@onclick="return confirm('" + S("Are you sure you want to CLOSE this thread for further replies?") + "');"})</li>
+				<li class="close">@Html.ActionLinkLocalized("Close", "CloseReplies", null, new { @onclick = "return postAndContinue(this, {}, '" + S("Are you sure you want to CLOSE this thread for further replies?") + "');", rel = "nofollow"})</li>
 			}
 			else
 			{
-				<li class="open">@Html.ActionLinkLocalized("Open to replies", "OpenReplies")</li>
+				<li class="open">@Html.ActionLinkLocalized("Open to replies", "OpenReplies", null, new { @onclick = "return postAndContinue(this, {});", rel = "nofollow"})</li>
 			}
 		}
 	</ul>
 </div>
+@Html.AntiForgeryToken()
