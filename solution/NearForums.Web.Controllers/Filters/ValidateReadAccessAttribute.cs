@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using NearForums.Web.State;
 using System.Web.Routing;
 using NearForums.Web.Extensions;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers.Filters
 {
@@ -63,7 +64,7 @@ namespace NearForums.Web.Controllers.Filters
 			filterContext.Canceled = true;
 			if (RefuseOnFail)
 			{
-				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller, true);
+				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller as BaseController, true);
 			}
 			else
 			{

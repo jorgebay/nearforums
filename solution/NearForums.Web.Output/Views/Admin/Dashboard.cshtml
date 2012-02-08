@@ -20,15 +20,15 @@
 			<h3>@Html.ActionLinkLocalized("Flagged messages", "ListFlagged", "Messages")</h3>
 			<p>@T("Manage all flagged messages.")</p>
 		</li>
-		<li>
-			<h3>@Html.ActionLinkLocalized("Manage users", "List", "Users")</h3>
-			<p>@T("Promote, demote and delete forum users.")</p>
-		</li>
 	</ul>
 	@if (this.User.Role == UserRole.Admin)
 	{
 		<h2>@T("Administration")</h2>
 		<ul class="itemsBasic">
+			<li>
+				<h3>@Html.ActionLinkLocalized("Manage users", "List", "Users")</h3>
+				<p>@T("Promote, demote and delete forum users.")</p>
+			</li>
 			<li>
 				<h3>@Html.ActionLinkLocalized("Manage pages", "List", "PageContents")</h3>
 				<p>@T("Manage content pages like about / privacy / ...")</p>

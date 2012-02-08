@@ -8,6 +8,7 @@ using NearForums.ServiceClient;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
 using System.Web.Security;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers
 {

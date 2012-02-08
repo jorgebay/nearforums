@@ -75,7 +75,6 @@
     <Compile Include="Extensions\MovedPermanentlyResult.cs" />
     <Compile Include="Extensions\PagerExtensions.cs" />
     <Compile Include="Extensions\RedirectToRouteExtraResult.cs" />
-    <Compile Include="Extensions\ResultHelper.cs" />
     <Compile Include="Extensions\RoutingHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewDataExtensions.cs" />

@@ -124,8 +124,8 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forums_List_Detail()
 		{
-			ForumsController controller = new ForumsController();
-
+			var controller = new ForumsController();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			Forum forum = GetAForum();
 
 			controller.ViewData = new ViewDataDictionary();

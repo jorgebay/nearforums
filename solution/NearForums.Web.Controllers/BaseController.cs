@@ -73,7 +73,7 @@ namespace NearForums.Web.Controllers
 			get
 			{
 				UserRole? role = null;
-				if (Session.User != null)
+				if (HttpContext != null && Session.User != null)
 				{
 					role = Session.User.Role;
 				}
@@ -239,7 +239,7 @@ namespace NearForums.Web.Controllers
 			set;
 		}
 
-		protected virtual string GetDefaultMasterName()
+		public virtual string GetDefaultMasterName()
 		{
 			var masterName = "Site";
 			if (IsMobileRequest)

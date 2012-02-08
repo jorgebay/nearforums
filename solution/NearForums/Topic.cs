@@ -157,6 +157,7 @@ namespace NearForums
 		/// <summary>
 		/// Minimal role to post a message in this topic (inherits post access from the forum read access if its higher)
 		/// </summary>
+		[PostGreaterThanReadRights]
 		public UserRole PostAccessRole
 		{
 			get;

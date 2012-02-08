@@ -8,6 +8,7 @@ using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
 using System.Web.Mvc;
 using System.Web.Routing;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers
 {

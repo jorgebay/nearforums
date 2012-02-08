@@ -90,6 +90,7 @@
     <Compile Include="ForumsController.cs" />
     <Compile Include="Helpers\OAuth\InMemoryTokenManager.cs" />
     <Compile Include="Helpers\OAuth\TwitterConsumer.cs" />
+    <Compile Include="Helpers\ResultHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\SubscriptionHelper.cs" />
     <Compile Include="Helpers\TemplateHelper.cs" />

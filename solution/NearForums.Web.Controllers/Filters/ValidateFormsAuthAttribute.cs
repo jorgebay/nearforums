@@ -10,6 +10,7 @@ using NearForums;
 using NearForums.Web.Extensions;
 using System.Web.Routing;
 using NearForums.Configuration;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers.Filters
 {
@@ -23,13 +24,13 @@ namespace NearForums.Web.Controllers.Filters
 			var session = new SessionWrapper(filterContext.HttpContext);
 			if (!Config.AuthenticationProviders.FormsAuth.IsDefined)
 			{
-				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller);
+				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller as BaseController);
 			}
 			else
 			{
 				if (session.User != null && session.User.Provider != AuthenticationProvider.Membership)
 				{
-					filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller);
+					filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller as BaseController);
 				}
 			}
 			base.OnActionExecuting(filterContext);

@@ -9,6 +9,7 @@ using NearForums.Web.State;
 using NearForums;
 using NearForums.Web.Extensions;
 using System.Web.Routing;
+using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers.Filters
 {
@@ -87,7 +88,7 @@ namespace NearForums.Web.Controllers.Filters
 		{
 			if (RefuseOnFail)
 			{
-				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller);
+				filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller as BaseController);
 			}
 			else
 			{

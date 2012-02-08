@@ -13,6 +13,7 @@
 	,{"Tags", S("Tags must not be blank, separated by spaces and must not contain special characters. The maximum number of tags allowed is 6.")}
 	,{"Title", S("Subject must not be blank.")}
 	,{"ShortName", ""}
+	,{"PostAccessRole", S("The role required to post should be greater than the required to read.")}
 	,{"email", new Dictionary<ValidationErrorType, string>(){
 		{ValidationErrorType.NullOrEmpty, S("Email must not be blank in order to notify of new posts.")}
 		,{ValidationErrorType.Format, S("Email format is not valid.")}}}
@@ -35,6 +36,18 @@
 		@Html.TextArea("description")
 		@Html.Partial("EditorScripts", CreateViewData(new{Name="description"}))
 	</div>
+	@if (Role > UserRole.Member)
+	{	 
+		<div class="formItem floatContainer">
+			<label for="ReadAccessRole">@T("Read access")</label>
+			@Html.DropDownListDefault("ReadAccessRole", ViewData.Get<SelectList>("UserRoles"), "", S("Everybody"))
+		</div>
+		<div class="formItem floatContainer">
+			<label for="PostAccessRole">@T("Access to post a message in this thread")</label>
+			@Html.DropDownList("PostAccessRole", ViewData.Get<SelectList>("UserRoles"))
+			<span class="note">@T("Notice that roles are hierarchical")</span>
+		</div>
+	}
 	@Html.Captcha(S("Type the text shown in the image"))
 	@if (this.User.HasModeratorPriviledges)
 	{

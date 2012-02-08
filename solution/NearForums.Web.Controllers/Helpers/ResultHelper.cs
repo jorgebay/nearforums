@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Collections;
 using System.Web.Routing;
 
-namespace NearForums.Web.Extensions
+namespace NearForums.Web.Controllers.Helpers
 {
 	public static class ResultHelper
 	{
@@ -14,7 +14,7 @@ namespace NearForums.Web.Extensions
 		/// Returns a status 404 to the client and the error 404 view.
 		/// </summary>
 		/// <param name="emptyBody">true: the response ends</param>
-		public static ActionResult NotFoundResult(ControllerBase controller, bool emptyBody)
+		public static ActionResult NotFoundResult(BaseController controller, bool emptyBody)
 		{
 			controller.ControllerContext.HttpContext.Response.StatusCode = 404;
 			if (emptyBody)
@@ -32,7 +32,7 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		/// <param name="controller"></param>
 		/// <returns></returns>
-		public static ActionResult NotFoundResult(ControllerBase controller)
+		public static ActionResult NotFoundResult(BaseController controller)
 		{
 			return NotFoundResult(controller, false);
 		}
@@ -43,7 +43,7 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		/// <param name="controller"></param>
 		/// <returns></returns>
-		public static ActionResult ForbiddenResult(ControllerBase controller)
+		public static ActionResult ForbiddenResult(BaseController controller)
 		{
 			return ForbiddenResult(controller, false);
 		}
@@ -54,7 +54,7 @@ namespace NearForums.Web.Extensions
 		/// <param name="controller">current controller</param>
 		/// <param name="emptyBody">true: the http response end without body</param>
 		/// <returns></returns>
-		public static ActionResult ForbiddenResult(ControllerBase controller, bool emptyBody)
+		public static ActionResult ForbiddenResult(BaseController controller, bool emptyBody)
 		{
 			controller.ControllerContext.HttpContext.Response.StatusCode = 403;
 			if (emptyBody)
@@ -68,15 +68,15 @@ namespace NearForums.Web.Extensions
 			return viewResult;
 		}
 
-		public static ActionResult MovedPermanentlyResult(ControllerBase controller, object routeValues)
+		public static ActionResult MovedPermanentlyResult(BaseController controller, object routeValues)
 		{
-			return new MovedPermanentlyResult(routeValues);
+			return new NearForums.Web.Extensions.MovedPermanentlyResult(routeValues);
 		}
 
 		/// <summary>
 		/// Returns a ViewResult with content type set as xml
 		/// </summary>
-		public static ActionResult XmlViewResult(ControllerBase controller, object model, string viewName=null)
+		public static ActionResult XmlViewResult(BaseController controller, object model, string viewName = null)
 		{
 			controller.ControllerContext.HttpContext.Response.ContentType = "text/xml; charset=UTF-8";
 			if (model != null)

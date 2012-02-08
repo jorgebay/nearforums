@@ -75,6 +75,8 @@ namespace NearForums.Web.Controllers
 
 			var topic = new Topic();
 			topic.Forum = f;
+			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 			return View("Edit", topic);
 		}
 
@@ -83,6 +85,7 @@ namespace NearForums.Web.Controllers
 		[ValidateInput(false)]
 		[PreventFlood(typeof(RedirectToRouteResult))]
 		[ValidateAntiForgeryToken]
+		[ValidateReadAccess]
 		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id,Forum")] Topic topic, bool notify, string email)
 		{
 			try
@@ -111,17 +114,15 @@ namespace NearForums.Web.Controllers
 				{
 					TopicsServiceClient.Create(topic, Request.UserHostAddress);
 					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+					return RedirectToRoute(new { action = "Detail", controller = "Topics", id = topic.Id, name = topic.ShortName, forum = forum, page = 0 });
 				}
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-
-			if (ModelState.IsValid)
-			{
-				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=topic.ShortName,forum=forum,page=0});
-			}
+			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 			return View("Edit", topic);
 		}
 		#endregion
@@ -143,9 +144,10 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 			#endregion
-			ViewData["IsEdit"] = true;
-
-			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+			ViewBag.IsEdit = true;
+			ViewBag.notify = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 
 			return View(topic);
 		}
@@ -154,6 +156,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization]
 		[ValidateInput(false)]
 		[ValidateAntiForgeryToken]
+		[ValidateReadAccess]
 		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "", Exclude = "Forum")] Topic topic, bool notify, string email)
 		{
 			topic.Id = id;
@@ -192,16 +195,16 @@ namespace NearForums.Web.Controllers
 					topic.Description = topic.Description.SafeHtml().ReplaceValues();
 				}
 				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
-
 				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config);
-
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
 			}
 			catch (ValidationException ex)
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			ViewData["IsEdit"] = true;
+			ViewBag.IsEdit = true;
+			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 
 			return View(topic);
 		}
