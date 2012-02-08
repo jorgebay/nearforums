@@ -130,5 +130,28 @@ namespace NearForums.Tests
 		{
 			string value = SiteConfiguration.Current.Notifications.Subscription.Body.Value;
 		}
+
+		[TestMethod]
+		public void IAccessRightContainer_HasReadAccess_Test()
+		{
+			IAccessRightContainer container = new Topic();
+			UserRole? userRole = null;
+
+			container.ReadAccessRole = null;
+			userRole = null;
+			Assert.IsTrue(container.HasReadAccess(userRole));
+
+			container.ReadAccessRole = UserRole.Member;
+			userRole = null;
+			Assert.IsFalse(container.HasReadAccess(userRole));
+
+			container.ReadAccessRole = UserRole.Member;
+			userRole = UserRole.TrustedMember;
+			Assert.IsTrue(container.HasReadAccess(userRole));
+
+			container.ReadAccessRole = UserRole.TrustedMember;
+			userRole = UserRole.Member;
+			Assert.IsFalse(container.HasReadAccess(userRole));
+		}
 	}
 }

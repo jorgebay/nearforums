@@ -26,5 +26,12 @@ namespace NearForums
 		/// <param name="userRole"></param>
 		/// <returns></returns>
 		bool HasPostAccess(UserRole? userRole);
+
+		/// <summary>
+		/// Determines if with the role supplied has access to read
+		/// </summary>
+		/// <param name="userRole"></param>
+		/// <returns></returns>
+		bool HasReadAccess(UserRole? userRole);
 	}
 }

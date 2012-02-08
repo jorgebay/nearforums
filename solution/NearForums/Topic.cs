@@ -176,6 +176,19 @@ namespace NearForums
 			}
 			return false;
 		}
+
+		/// <summary>
+		/// Determines if with the role supplied has access to read this topic
+		/// </summary>
+		/// <returns></returns>
+		public bool HasReadAccess(UserRole? userRole)
+		{
+			if (ReadAccessRole == null || userRole >= ReadAccessRole)
+			{
+				return true;
+			}
+			return false;
+		}
 		#endregion
 	}
 }

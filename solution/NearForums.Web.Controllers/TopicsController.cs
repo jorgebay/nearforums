@@ -75,6 +75,8 @@ namespace NearForums.Web.Controllers
 
 			var topic = new Topic();
 			topic.Forum = f;
+			//Default the post access to its parent, it can be less than the parent.
+			topic.PostAccessRole = f.PostAccessRole;
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 			return View("Edit", topic);
@@ -85,7 +87,6 @@ namespace NearForums.Web.Controllers
 		[ValidateInput(false)]
 		[PreventFlood(typeof(RedirectToRouteResult))]
 		[ValidateAntiForgeryToken]
-		[ValidateReadAccess]
 		public ActionResult Add(string forum, [Bind(Prefix = "", Exclude = "Id,Forum")] Topic topic, bool notify, string email)
 		{
 			try
@@ -130,6 +131,7 @@ namespace NearForums.Web.Controllers
 		#region Edit
 		[HttpGet]
 		[RequireAuthorization]
+		[ValidateReadAccess]
 		public ActionResult Edit(int id, string name, string forum)
 		{
 			Topic topic = TopicsServiceClient.Get(id, name);
@@ -156,7 +158,6 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization]
 		[ValidateInput(false)]
 		[ValidateAntiForgeryToken]
-		[ValidateReadAccess]
 		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "", Exclude = "Forum")] Topic topic, bool notify, string email)
 		{
 			topic.Id = id;
@@ -171,16 +172,20 @@ namespace NearForums.Web.Controllers
 			}
 
 			#region Check if user can edit
-			if (this.User.Role < UserRole.Moderator)
+			var originalTopic = TopicsServiceClient.Get(id);
+			if (User.Role < UserRole.Moderator)
 			{
 				//If the user is not moderator or admin: Check if the user that created of the topic is the same as the logged user
-				var originalTopic = TopicsServiceClient.Get(id);
 				if (User.Id != originalTopic.User.Id)
 				{
 					return ResultHelper.ForbiddenResult(this);
 				}
 				//The user cannot edit the sticky property
 				topic.IsSticky = originalTopic.IsSticky;
+			}
+			else if (!originalTopic.HasReadAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
 			}
 			#endregion
 
@@ -271,15 +276,19 @@ namespace NearForums.Web.Controllers
 		public ActionResult Delete(int id, string name, string forum)
 		{
 			#region Check if user can edit
+			var originalTopic = TopicsServiceClient.Get(id);
 			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
-				Topic originalTopic = TopicsServiceClient.Get(id);
 				if (this.User.Id != originalTopic.User.Id)
 				{
 					return ResultHelper.ForbiddenResult(this);
 				}
 			}
+			else if (!originalTopic.HasReadAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}			
 			#endregion
 
 			TopicsServiceClient.Delete(id, this.User.Id, Request.UserHostAddress);
@@ -294,17 +303,16 @@ namespace NearForums.Web.Controllers
 		#region Move topic
 		[HttpGet]
 		[RequireAuthorization(UserRole.Moderator)]
+		[ValidateReadAccess]
 		public ActionResult Move(int id, string name)
 		{
-			Topic topic = TopicsServiceClient.Get(id, name);
-
+			var topic = TopicsServiceClient.Get(id, name);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 
-			ViewData["Categories"] = ForumsServiceClient.GetList(Role);
-
+			ViewBag.Categories = ForumsServiceClient.GetList(Role);
 			return View(topic);
 		}
 
@@ -328,14 +336,18 @@ namespace NearForums.Web.Controllers
 		public ActionResult CloseReplies(int id, string name)
 		{
 			#region Check if user can edit
-			if (this.User.Role < UserRole.Moderator)
+			var originalTopic = TopicsServiceClient.Get(id);
+			if (Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
-				Topic originalTopic = TopicsServiceClient.Get(id);
 				if (this.User.Id != originalTopic.User.Id)
 				{
 					return ResultHelper.ForbiddenResult(this);
 				}
+			}
+			else if (!originalTopic.HasReadAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
 			}
 			#endregion
 
@@ -356,6 +368,10 @@ namespace NearForums.Web.Controllers
 				//Check if the user that created of the topic is the same as the logged user
 				Topic originalTopic = TopicsServiceClient.Get(id);
 				if (this.User.Id != originalTopic.User.Id)
+				{
+					return ResultHelper.ForbiddenResult(this);
+				}
+				else if (!originalTopic.HasReadAccess(Role))
 				{
 					return ResultHelper.ForbiddenResult(this);
 				}

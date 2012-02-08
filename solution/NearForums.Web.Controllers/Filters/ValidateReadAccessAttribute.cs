@@ -50,7 +50,7 @@ namespace NearForums.Web.Controllers.Filters
 				if (modelAccessRights.ReadAccessRole != null)
 				{
 					var session = new SessionWrapper(filterContext.HttpContext);
-					if (session.User == null || session.User.Role < modelAccessRights.ReadAccessRole.Value)
+					if (session.User == null || !modelAccessRights.HasReadAccess(session.User.Role))
 					{
 						HandleUnauthorizedRequest(filterContext, modelAccessRights.ReadAccessRole.Value);
 					}
