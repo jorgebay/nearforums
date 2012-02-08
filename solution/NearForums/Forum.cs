@@ -86,6 +86,7 @@ namespace NearForums
 		/// <summary>
 		/// Minimal role to post a topic in this forum
 		/// </summary>
+		[PostGreaterThanReadRights]
 		public UserRole PostAccessRole
 		{
 			get;

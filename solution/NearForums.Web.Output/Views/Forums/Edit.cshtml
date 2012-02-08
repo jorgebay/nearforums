@@ -14,6 +14,7 @@
 		,{"Name", S("Forum name must not be blank.")}
 		,{"ShortName", ""}
 		,{"Category.Id", S("Category must not be blank.")}
+		,{"PostAccessRole", S("The role required to post should be greater than the required to read.")}
 	}, null)
 @{Html.BeginForm(null, null, this.Model == null ? null : new{forum=this.Model.ShortName}, FormMethod.Post, new{@id="forumEditForm"});}
 @Html.AntiForgeryToken()
@@ -31,7 +32,6 @@
 		<label for="description">@T("Description")</label>
 		@Html.TextArea("description")
 	</div>
-	@*
 	<div class="formItem floatContainer">
 		<label for="ReadAccessRole">@T("Read access")</label>
 		@Html.DropDownListDefault("ReadAccessRole", ViewData.Get<SelectList>("UserRoles"), "", S("Everybody"))
@@ -41,7 +41,6 @@
 		@Html.DropDownList("PostAccessRole", ViewData.Get<SelectList>("UserRoles"))
 		<span class="note">@T("Notice that roles are hierarchical")</span>
 	</div>
-	*@
 	<div class="formItem buttons">
 		<input type="submit" value="@T("Send")" />
 	</div>

@@ -107,6 +107,13 @@ namespace NearForums
 							}
 							#endregion
 						}
+						else if (attribute is PostGreaterThanReadRightsAttribute)
+						{
+							if (!((PostGreaterThanReadRightsAttribute)attribute).IsValid(value, this))
+							{
+								errors.Add(new ValidationError(property.Name, ValidationErrorType.CompareNotMatch));
+							}
+						}
 					}
 				}
 			}

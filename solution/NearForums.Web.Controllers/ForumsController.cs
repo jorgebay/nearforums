@@ -128,14 +128,15 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Add()
 		{
-			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
+			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 			return View("Edit");
 		}
 
 		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
+		[ValidateReadAccess] //Read access role posted can not be greater than user role
 		[ValidateAntiForgeryToken]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Forum forum)
 		{
@@ -160,8 +161,9 @@ namespace NearForums.Web.Controllers
 			}
 			else
 			{
-				SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
-				ViewData["Categories"] = categories;
+				var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+				ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
+				ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 				return View("Edit", forum);
 			}
 		} 
@@ -172,19 +174,21 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Edit(string forum)
 		{
-			SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
-			ViewData["Categories"] = categories;
-			Forum f = ForumsServiceClient.Get(forum);
+			var f = ForumsServiceClient.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			ViewData["IsEdit"] = true;
+			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
+			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+			ViewBag.IsEdit = true;
 			return View("Edit", f);
 		}
 
 		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
+		[ValidateReadAccess] //Read access role posted can not be greater than user role
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(string forum, [Bind(Prefix = "")] Forum f)
 		{
@@ -207,12 +211,13 @@ namespace NearForums.Web.Controllers
 			}
 			else
 			{
-				SelectList categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
-				ViewData["Categories"] = categories;
+				var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+				ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
+				ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
 				ViewData["IsEdit"] = true;
 				return View("Edit", f);
 			}
-		} 
+		}
 		#endregion
 
 		#region Delete

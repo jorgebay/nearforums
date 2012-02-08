@@ -119,4 +119,25 @@ namespace NearForums.Validation
 
 		}
 	}
+
+	public class PostGreaterThanReadRightsAttribute : ValidationAttribute
+	{
+		public bool IsValid(object value, object containerInstance)
+		{
+			if (containerInstance == null)
+			{
+				throw new ArgumentNullException("containerInstance");
+			}
+			var instance = containerInstance as IAccessRightContainer;
+			if (instance == null)
+			{
+				throw new InvalidCastException("PostGreaterThanReadRights validation only applies for instance of IAccessRightContainer");
+			}
+			if (instance.ReadAccessRole > instance.PostAccessRole)
+			{
+				return false;
+			}
+			return true;
+		}
+	}
 }
