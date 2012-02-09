@@ -40,6 +40,7 @@ ul.items
 	border-bottom: 1px solid #DDDDDD; /*@color-header*/
 	padding: 0;
 	margin: 0;
+	list-style-type: none;
 }
 ul.items li
 {
@@ -324,7 +325,7 @@ div.pager a, div.pager span, div.pager a
 	border-bottom:3px solid #5A93D2;
 	text-decoration:none;
 }
-#content div.pager a:hover, #content div.pagerClient a:hover, #content div.tagCloud a:hover
+#content div.pager a:hover, #content #pagerClient a:hover, #content div.tagCloud a:hover
 {
 	text-decoration: none;
 }
