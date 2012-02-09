@@ -7,6 +7,10 @@
 			{
 				<div class="photo"><img src="@Model.User.Photo" alt="@Model.User.UserName" /></div>
 			}
+			else
+			{
+				<div class="nophoto"><span></span></div>
+			}
 			<div class="userName"><strong>@Model.User.UserName</strong></div>
 			<div class="groupName"><span>@Model.User.RoleName</span></div>
 			<div class="memberSince">@T("Member for:") @Html.Partial("SinceDate", Model.User.RegistrationDate)</div>
