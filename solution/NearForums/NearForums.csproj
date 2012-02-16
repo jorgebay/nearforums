@@ -50,7 +50,7 @@
     <Compile Include="Configuration\CDataBaseConfigurationElement.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />
-    <Compile Include="Configuration\CustomAuthenticationProviderElement.cs" />
+    <Compile Include="Configuration\CustomDbAuthenticationProviderElement.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\ForumSorting.cs" />
     <Compile Include="Configuration\HtmlInputElement.cs" />

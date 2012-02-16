@@ -15,17 +15,17 @@ namespace NearForums.DataAccess
 	{
 		public CustomAuthenticationDataAccess()
 		{
-			if (!Config.AuthenticationProviders.Custom.IsDefined)
+			if (!Config.AuthenticationProviders.CustomDb.IsDefined)
 			{
 				throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
 			}
-			Factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.Custom.ConnectionString.ProviderName);
+			Factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
 		}
 
 		public override DbConnection GetConnection()
 		{
 			var conn = this.Factory.CreateConnection();
-			conn.ConnectionString = Config.AuthenticationProviders.Custom.ConnectionString.ConnectionString;
+			conn.ConnectionString = Config.AuthenticationProviders.CustomDb.ConnectionString.ConnectionString;
 			return conn;
 		}
 
@@ -36,7 +36,7 @@ namespace NearForums.DataAccess
 		public User GetUser(string userName, string password)
 		{
 			User user = null;
-			DbCommand comm = GetCommand(Config.AuthenticationProviders.Custom.StoredProcedure);
+			DbCommand comm = GetCommand(Config.AuthenticationProviders.CustomDb.StoredProcedure);
 			comm.AddParameter<string>(this.Factory, "username", userName);
 			comm.AddParameter<string>(this.Factory, "password", password);
 

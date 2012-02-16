@@ -82,18 +82,18 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void Topic_Add_Delete_Test()
 		{
-			TopicsController controller = new TopicsController();
+			var controller = new TopicsController();
 			var controllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			controller.ControllerContext = controllerContext;
 			ActionResult result = null;
 
-			Forum forum = ForumsControllerTest.GetAForum();
+			var forum = ForumsControllerTest.GetAForum();
 
 			result = controller.Add(forum.ShortName, new Topic(), true, "admin@admin.com");
 			Assert.IsFalse(result is RedirectToRouteResult); //controller should display the same page to correct error.
 
 			//Create a valid topic
-			Topic t = new Topic();
+			var t = new Topic();
 			t.Title = "Unit testing " + TestContext.TestName;
 			t.Description = "This is a sample topic from unit testing project.";
 			t.Tags = new TagList("test");
@@ -101,9 +101,9 @@ namespace NearForums.Tests.Controllers
 			t.User = controller.User.ToUser();
 			t.Forum = forum;
 
-
 			controller = new TopicsController();
 			controller.ControllerContext = controllerContext;
+			controller.Url = new UrlHelper(controllerContext.RequestContext);
 			result = controller.Add(forum.ShortName, t, true, "admin@admin.com");
 			int topicId = t.Id;
 
@@ -111,7 +111,7 @@ namespace NearForums.Tests.Controllers
 
 			result = controller.Delete(topicId, t.ShortName, t.Forum.ShortName);
 
-			Assert.IsTrue(result is RedirectToRouteResult);
+			Assert.IsTrue(result is JsonResult);
 
 			t = TopicsServiceClient.Get(topicId);
 
@@ -126,6 +126,7 @@ namespace NearForums.Tests.Controllers
 			TopicsController controller = new TopicsController();
 			var controllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			controller.ControllerContext = controllerContext;
+			controller.Url = new UrlHelper(controllerContext.RequestContext);
 
 			Forum forum = ForumsControllerTest.GetAForum();
 
@@ -158,6 +159,7 @@ namespace NearForums.Tests.Controllers
 
 			controller = new TopicsController();
 			controller.ControllerContext = context;
+			controller.Url = new UrlHelper(context.RequestContext);
 			
 			t.Id = 0;
 			t.Tags = new TagList(tags);

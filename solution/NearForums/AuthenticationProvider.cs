@@ -15,8 +15,8 @@ namespace NearForums
 		/// </summary>
 		Membership,
 		/// <summary>
-		/// Custom provider database
+		/// Custom database provider
 		/// </summary>
-		Custom
+		CustomDb
 	}
 }

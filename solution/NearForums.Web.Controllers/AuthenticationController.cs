@@ -42,7 +42,7 @@ namespace NearForums.Web.Controllers
 				ViewBag.UserRoleName = UsersServiceClient.GetRoleName(role.Value);
 				return View("NotAuthorized");
 			}
-			if (Config.AuthenticationProviders.Custom.IsDefined)
+			if (Config.AuthenticationProviders.CustomDb.IsDefined)
 			{
 				SpecifyParametersForCustom();
 			}
@@ -217,7 +217,7 @@ namespace NearForums.Web.Controllers
 		[HttpGet]
 		public ActionResult CustomLogin(string returnUrl)
 		{
-			if (!Config.AuthenticationProviders.Custom.IsDefined)
+			if (!Config.AuthenticationProviders.CustomDb.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
@@ -229,7 +229,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult CustomLogin(string userName, string password, string returnUrl)
 		{
-			if (!Config.AuthenticationProviders.Custom.IsDefined)
+			if (!Config.AuthenticationProviders.CustomDb.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
@@ -239,7 +239,7 @@ namespace NearForums.Web.Controllers
 				var user = UsersServiceClient.AuthenticateWithCustomProvider(userName, password);
 				if (user != null)
 				{
-					Session.User = new UserState(user, AuthenticationProvider.Custom);
+					Session.User = new UserState(user, AuthenticationProvider.CustomDb);
 					return Redirect(returnUrl);
 				}
 			}
@@ -257,7 +257,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		public void SpecifyParametersForCustom()
 		{
-			var provider = Config.AuthenticationProviders.Custom;
+			var provider = Config.AuthenticationProviders.CustomDb;
 			ViewBag.ForgotPasswordUrl = provider.ForgotPasswordUrl;
 			ViewBag.RegisterUrl = provider.RegisterUrl;
 			ViewBag.LoginFormAction = Url.Action("CustomLogin");

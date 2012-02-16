@@ -118,7 +118,7 @@ namespace NearForums.Tests
 			Assert.IsTrue(!String.IsNullOrEmpty(SiteConfiguration.Current.DataAccess.ConnectionString.ProviderName));
 
 			//Open connection to db
-			BaseDataAccess da = new BaseDataAccess();
+			var da = new BaseDataAccess();
 			var conn = da.GetConnection();
 			conn.Open();
 			conn.Close();

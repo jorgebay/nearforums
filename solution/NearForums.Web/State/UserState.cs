@@ -26,10 +26,10 @@ namespace NearForums.Web.State
 			Config = config;
 			ProviderInfo = new ProviderInfo();
 
-			if (provider == AuthenticationProvider.Custom)
+			if (provider == AuthenticationProvider.CustomDb)
 			{
-				ProviderInfo.AllowChangeEmail = Config.Custom.AllowChangeEmail;
-				ProviderInfo.EditAccountUrl = Config.Custom.AccountEditUrl;
+				ProviderInfo.AllowChangeEmail = Config.CustomDb.AllowChangeEmail;
+				ProviderInfo.EditAccountUrl = Config.CustomDb.AccountEditUrl;
 			}
 		}
 

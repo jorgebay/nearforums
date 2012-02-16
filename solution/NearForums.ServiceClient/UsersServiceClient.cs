@@ -141,10 +141,10 @@ namespace NearForums.ServiceClient
 			var providerUser = customProviderDataAccess.GetUser(userName, password);
 			if (providerUser != null)
 			{
-				user = GetByProviderId(AuthenticationProvider.Custom, providerUser.Id.ToString());
+				user = GetByProviderId(AuthenticationProvider.CustomDb, providerUser.Id.ToString());
 				if (user == null)
 				{
-					user = Add(providerUser, AuthenticationProvider.Custom, providerUser.Id.ToString());
+					user = Add(providerUser, AuthenticationProvider.CustomDb, providerUser.Id.ToString());
 				}
 			}
 			else

@@ -60,16 +60,16 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("custom", IsRequired = false)]
-		public CustomAuthenticationProviderElement Custom
+		[ConfigurationProperty("customDb", IsRequired = false)]
+		public CustomDbAuthenticationProviderElement CustomDb
 		{
 			get
 			{
-				return (CustomAuthenticationProviderElement)this["custom"];
+				return (CustomDbAuthenticationProviderElement)this["customDb"];
 			}
 			set
 			{
-				this["custom"] = value;
+				this["customDb"] = value;
 			}
 		}
 

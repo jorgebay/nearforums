@@ -9,7 +9,7 @@ namespace NearForums.Configuration
 	/// <summary>
 	/// Represents a configuration element for a custom Authorization Provider.
 	/// </summary>
-	public class CustomAuthenticationProviderElement : ConfigurationElement, IOptionalElement
+	public class CustomDbAuthenticationProviderElement : ConfigurationElement, IOptionalElement
 	{
 		#region Connection string
 		/// <summary>
