@@ -151,6 +151,16 @@ namespace NearForums.Tests
 			controller.ListUnansweredTopics(forum.ShortName);
 			Assert.IsNotNull(controller.ViewData.Model);
 		}
+		
+		[TestMethod]
+		public void Forum_LatestAllTopics()
+		{
+			var controller = new ForumsController();
+			controller.ControllerContext = new FakeControllerContext(controller);
+			var result = controller.LatestAllTopics();
+
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+		}
 
 		[TestMethod]
 		public void Forum_Edit()
