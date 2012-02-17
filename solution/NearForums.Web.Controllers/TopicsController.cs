@@ -369,18 +369,18 @@ namespace NearForums.Web.Controllers
 		public ActionResult OpenReplies(int id, string name)
 		{
 			#region Check if user can edit
+			var originalTopic = TopicsServiceClient.Get(id);
 			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
-				Topic originalTopic = TopicsServiceClient.Get(id);
 				if (this.User.Id != originalTopic.User.Id)
 				{
 					return ResultHelper.ForbiddenResult(this);
 				}
-				else if (!originalTopic.HasReadAccess(Role))
-				{
-					return ResultHelper.ForbiddenResult(this);
-				}
+			}
+			else if (!originalTopic.HasReadAccess(Role))
+			{
+				return ResultHelper.ForbiddenResult(this);
 			}
 			#endregion
 
