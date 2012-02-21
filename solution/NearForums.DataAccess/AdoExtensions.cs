@@ -193,6 +193,10 @@ namespace NearForums.DataAccess
 				{
 					return (T)(object) new Guid(dr[columnName].ToString());
 				}
+				else if (type.IsEnum)
+				{
+					return (T)Enum.Parse(type, dr[columnName].ToString());
+				}
 				
 				return (T)dr[columnName];
 			}

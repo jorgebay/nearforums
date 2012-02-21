@@ -57,8 +57,9 @@ namespace NearForums.DataAccess
 
 		public List<Topic> GetLatest()
 		{
-			List<Topic> list = new List<Topic>();
-			DbCommand comm = this.GetCommand("SPTopicsGetLatest");
+			var list = new List<Topic>();
+			var comm = this.GetCommand("SPTopicsGetLatest");
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, null);
 
 			DataTable dt = this.GetTable(comm);
 			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
@@ -93,20 +94,22 @@ namespace NearForums.DataAccess
 
 		public List<Topic> GetRelatedTopics(Topic topic, int amount)
 		{
-			List<Topic> list = new List<Topic>();
-			DbCommand comm = GetCommand("SPTopicsGetByRelated");
-			comm.AddParameter(this.Factory, "Tag1", DbType.String, null);
-			comm.AddParameter(this.Factory, "Tag2", DbType.String, null);
-			comm.AddParameter(this.Factory, "Tag3", DbType.String, null);
-			comm.AddParameter(this.Factory, "Tag4", DbType.String, null);
-			comm.AddParameter(this.Factory, "Tag5", DbType.String, null);
-			comm.AddParameter(this.Factory, "Tag6", DbType.String, null);
+			var list = new List<Topic>();
+			var comm = GetCommand("SPTopicsGetByRelated");
+			comm.AddParameter(Factory, "Tag1", DbType.String, null);
+			comm.AddParameter(Factory, "Tag2", DbType.String, null);
+			comm.AddParameter(Factory, "Tag3", DbType.String, null);
+			comm.AddParameter(Factory, "Tag4", DbType.String, null);
+			comm.AddParameter(Factory, "Tag5", DbType.String, null);
+			comm.AddParameter(Factory, "Tag6", DbType.String, null);
 			for (int i = 0; i < topic.Tags.Count && i < 6; i++)
 			{
 				comm.Parameters[i].Value = topic.Tags[i];
 			}
-			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topic.Id);
-			comm.AddParameter(this.Factory, "Amount", DbType.Int32, amount);
+			comm.AddParameter(Factory, "TopicId", DbType.Int32, topic.Id);
+			comm.AddParameter(Factory, "Amount", DbType.Int32, amount);
+			comm.AddParameter(Factory, "UserGroupId", DbType.Int16, null);
+
 			DataTable dt = this.GetTable(comm);
 			bool parseAccessRights = dt.Columns.IndexOf("ReadAccessGroupId") >= 0;
 			foreach (DataRow dr in dt.Rows)
