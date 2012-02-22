@@ -346,6 +346,26 @@ msgstr "Mensaje"
 msgid "Send"
 msgstr "Enviar"
 
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "The role required to post should be greater than the required to read."
+msgstr "El rol requerido para publicar debe ser un rol superior al de lectura."
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Read access"
+msgstr "Acceso de lectura"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Everybody"
+msgstr "Todos"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Access to post a new thread"
+msgstr "Acceso a publicar un nuevo tema"
+
+#: NearForums.Web.Output\Views\Forums\Edit.cshtml
+msgid "Notice that roles are hierarchical"
+msgstr "Tenga en cuenta que los roles son jerárquicos"
+
 #: NearForums.Web.Output\Views\Forums\ForumOptions.cshtml
 msgid "Most viewed threads"
 msgstr "Más visitados"
@@ -437,6 +457,18 @@ msgstr "mensaje"
 #: NearForums.Web.Output\Views\Forums\List.cshtml
 msgid "No forums found."
 msgstr "No hay ningún foro."
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Welcome to Nearforums!"
+msgstr "Bienvenido a Nearforums!"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "You've successfully setup your Nearforums site"
+msgstr "Has instalado Nearforums correctamente"
+
+#: NearForums.Web.Output\Views\Forums\List.cshtml
+msgid "Here are a few things you can do to get started"
+msgstr "Hay aquí algunas cosas que podrás hacer para empezar"
 
 #: NearForums.Web.Output\Views\Forums\ListAllUnansweredTopics.cshtml
 msgid "Unanswered Threads"
@@ -841,6 +873,10 @@ msgstr "Sticky?"
 #: NearForums.Web.Output\Views\Topics\Edit.cshtml
 msgid "Notify me of new posts on this thread via email"
 msgstr "Notificarme de nuevos mensajes en este tema a través de correo electrónico"
+
+#: NearForums.Web.Output\Views\Topics\Edit.cshtml
+msgid "Access to post a message in this thread"
+msgstr ""
 
 #: NearForums.Web.Output\Views\Topics\LatestMessages.cshtml
 msgid "Latest messages on &apos;{0}&apos; thread"
