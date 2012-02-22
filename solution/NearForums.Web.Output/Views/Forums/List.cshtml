@@ -2,41 +2,52 @@
 @{
 	ViewBag.Title = T("Forums");
 }
-<div class="forumList">
-	<h1>@ViewBag.Title</h1>
-	<div class="options">
-		<a rel="nofollow" href="@Url.Action("LatestAllTopics")">@Html.Img("~/images/iconrss.gif", "rss")</a>
-	</div>
-	@foreach (ForumCategory category in this.Model)
-	{
-		<h2>@category.Name</h2>
-		<ul class="itemsHeader">
-			<li class="name">@T("Forum")</li>
-			<li class="topicCount">@T("Topics")</li>
-			<li class="replies">@T("Posts")</li>
-		</ul>
-		<ul class="items">
-		@foreach (Forum forum in category.Forums)
+@if (!ViewData.GetDefault<bool>("ShowFirstSteps"))
+{
+	<div class="forumList">
+		<h1>@ViewBag.Title</h1>
+		<div class="options">
+			<a rel="nofollow" href="@Url.Action("LatestAllTopics")">@Html.Img("~/images/iconrss.gif", "rss")</a>
+		</div>
+		@foreach (ForumCategory category in Model)
 		{
+			<h2>@category.Name</h2>
+			<ul class="itemsHeader">
+				<li class="name">@T("Forum")</li>
+				<li class="topicCount">@T("Topics")</li>
+				<li class="replies">@T("Posts")</li>
+			</ul>
+			<ul class="items">
+			@foreach (Forum forum in category.Forums)
+			{
 
-			<li>
-				<h3 class="name">
-					@Html.ActionLink(forum.Name, "Detail", new { forum = forum.ShortName })
-				</h3>
-				<div class="topicCount">@forum.TopicCount <span class="label">@(forum.TopicCount != 1 ? T("threads") : T("thread"))</span></div>
-				<div class="separator">/ </div>
-				<div class="replies">@forum.MessageCount  <span class="label">@(forum.MessageCount != 1 ? T("posts") : T("post"))</span></div>
-				<p class="description">@forum.Description</p>
-			</li>
+				<li>
+					<h3 class="name">
+						@Html.ActionLink(forum.Name, "Detail", new { forum = forum.ShortName })
+					</h3>
+					<div class="topicCount">@forum.TopicCount <span class="label">@(forum.TopicCount != 1 ? T("threads") : T("thread"))</span></div>
+					<div class="separator">/ </div>
+					<div class="replies">@forum.MessageCount  <span class="label">@(forum.MessageCount != 1 ? T("posts") : T("post"))</span></div>
+					<p class="description">@forum.Description</p>
+				</li>
+			}
+			</ul>
 		}
-		</ul>
-	}
-	@if (this.Model.Count == 0)
-	{
-		<p>
-			@T("No forums found.")
-			<br />
-			@Html.ActionLink(T("Create a forum").ToString(), "Add")
-		</p>
-	}
-</div>
+ 		@if (Model.Count == 0)
+		{
+			<p>
+				@T("No forums found.")
+				<br />
+				@Html.ActionLinkLocalized("Create a forum", "Add")
+			</p>
+		}
+	</div>
+}
+else
+{
+	<div class="first-steps">
+		<h1>@T("Welcome to Nearforums!")</h1>
+		<p><strong>@T("You've successfully setup your Nearforums site")</strong></p>
+		<p><a href="http://www.nearforums.com/admin-first-steps" target="_blank">@T("Here are a few things you can do to get started")</a>.</p>
+	</div>
+}

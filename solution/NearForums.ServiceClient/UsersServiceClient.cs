@@ -185,5 +185,25 @@ namespace NearForums.ServiceClient
 			var da = new UsersDataAccess();
 			return da.GetRoles();
 		}
+
+		/// <summary>
+		/// Determines if a user exist of the application
+		/// </summary>
+		/// <returns></returns>
+		public static bool IsThereAnyUser()
+		{
+			bool result = false;
+			try
+			{
+				if (GetTestUser() != null)
+				{
+					result = true;
+				}
+			}
+			catch
+			{
+			}
+			return result;
+		}
 	}
 }

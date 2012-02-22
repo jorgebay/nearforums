@@ -19,7 +19,10 @@ namespace NearForums.Web.Controllers
 		public ActionResult List()
 		{
 			var list = ForumsServiceClient.GetList(Role);
-			ViewData["IsSiteSet"] = IsSiteSet;
+			if (list.Count == 0)
+			{
+				ViewBag.ShowFirstSteps = !UsersServiceClient.IsThereAnyUser();
+			}
 			return View(list);
 		}
 		#endregion

@@ -132,30 +132,6 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region Site Setup
-		/// <summary>
-		/// Determines if the site is correctly setup.
-		/// </summary>
-		public bool IsSiteSet
-		{
-			get
-			{
-				bool result = false;
-				try
-				{
-					if (UsersServiceClient.GetTestUser() != null)
-					{
-						result = true;
-					}
-				}
-				catch
-				{
-				}
-				return result;
-			}
-		}
-		#endregion
-
 		#region Is Mobile Request
 		/// <summary>
 		/// Check if the current request' user agent is a mobile device.
