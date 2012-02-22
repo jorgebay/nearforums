@@ -190,7 +190,11 @@ namespace NearForums.Web.Controllers.Filters
 		/// </summary>
 		protected virtual bool IsSuccess(ActionResult actionResult)
 		{
-			return SuccessResultType != null && actionResult != null && actionResult.GetType().IsSubclassOf(SuccessResultType);
+			if (actionResult == null)
+			{
+				throw new ArgumentNullException("actionResult");
+			}
+			return SuccessResultType != null && SuccessResultType.IsAssignableFrom(actionResult.GetType());
 		} 
 		#endregion
 	}
