@@ -1,152 +1,152 @@
--- MySQL dump 10.13  Distrib 5.5.15, for Win32 (x86)
+-- mysql dump 10.13  distrib 5.5.15, for win32 (x86)
 --
--- Host: localhost    Database: forums_working
+-- host: localhost    database: forums_working
 -- ------------------------------------------------------
--- Server version	5.5.17
+-- server version	5.5.17
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `flags`
---
-
-DROP TABLE IF EXISTS flags;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE flags (
-  flagId int(11) NOT NULL AUTO_INCREMENT,
-  topicId int(11) NOT NULL,
-  messageId int(11) NOT NULL,
-  ip varchar(39) NOT NULL,
-  flagdate datetime NOT NULL,
-  PRIMARY KEY (flagId,topicId),
-  UNIQUE KEY ix_topicid_messageid_ip (topicId,messageId,ip)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 set @old_character_set_client=@@character_set_client */;
+/*!40101 set @old_character_set_results=@@character_set_results */;
+/*!40101 set @old_collation_connection=@@collation_connection */;
+/*!40101 set names utf8 */;
+/*!40014 set @old_unique_checks=@@unique_checks, unique_checks=0 */;
+/*!40014 set @old_foreign_key_checks=@@foreign_key_checks, foreign_key_checks=0 */;
+/*!40101 set @old_sql_mode=@@sql_mode, sql_mode='no_auto_value_on_zero' */;
+/*!40111 set @old_sql_notes=@@sql_notes, sql_notes=0 */;
 
 --
--- Dumping data for table `flags`
+-- table structure for table `flags`
 --
 
-/*!40000 ALTER TABLE flags DISABLE KEYS */;
-/*!40000 ALTER TABLE flags ENABLE KEYS */;
+drop table if exists flags;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table flags (
+  flagid int(11) not null auto_increment,
+  topicid int(11) not null,
+  messageid int(11) not null,
+  ip varchar(39) not null,
+  flagdate datetime not null,
+  primary key (flagid,topicid),
+  unique key ix_topicid_messageid_ip (topicid,messageid,ip)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `forums`
+-- dumping data for table `flags`
 --
 
-DROP TABLE IF EXISTS forums;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE forums (
-  forumid int(11) NOT NULL AUTO_INCREMENT,
-  forumname varchar(255) NOT NULL,
-  forumshortname varchar(32) NOT NULL,
-  forumdescription longtext NOT NULL,
-  categoryid int(11) NOT NULL,
-  userid int(11) NOT NULL,
-  forumcreationdate datetime NOT NULL,
-  forumlasteditdate datetime NOT NULL,
-  forumlastedituser int(11) NOT NULL,
-  active tinyint(1) NOT NULL,
-  forumtopiccount int(11) NOT NULL,
-  forummessagecount int(11) NOT NULL,
-  forumorder int(11) NOT NULL,
-  ReadAccessGroupId smallint(6) DEFAULT NULL,
-  PostAccessGroupId smallint(6) NOT NULL,
-  PRIMARY KEY (forumid),
-  UNIQUE KEY ix_forums_forumshortname (forumshortname),
-  KEY fk_forums_forumscategories (categoryid),
-  KEY fk_forums_users (userid),
-  KEY fk_forums_users_lastedit (forumlastedituser),
-  KEY FK_Forums_UsersGroups_Read (ReadAccessGroupId),
-  KEY FK_Forums_UsersGroups_Post (PostAccessGroupId),
-  CONSTRAINT fk_forums_forumscategories FOREIGN KEY (categoryid) REFERENCES forumscategories (categoryid),
-  CONSTRAINT fk_forums_users FOREIGN KEY (userid) REFERENCES `users` (userid),
-  CONSTRAINT FK_Forums_UsersGroups_Post FOREIGN KEY (PostAccessGroupId) REFERENCES usersgroups (usergroupid) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT FK_Forums_UsersGroups_Read FOREIGN KEY (ReadAccessGroupId) REFERENCES usersgroups (usergroupid) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT fk_forums_users_lastedit FOREIGN KEY (forumlastedituser) REFERENCES `users` (userid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40000 alter table flags disable keys */;
+/*!40000 alter table flags enable keys */;
 
 --
--- Dumping data for table `forums`
+-- table structure for table `forums`
 --
 
-/*!40000 ALTER TABLE forums DISABLE KEYS */;
-/*!40000 ALTER TABLE forums ENABLE KEYS */;
+drop table if exists forums;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table forums (
+  forumid int(11) not null auto_increment,
+  forumname varchar(255) not null,
+  forumshortname varchar(32) not null,
+  forumdescription longtext not null,
+  categoryid int(11) not null,
+  userid int(11) not null,
+  forumcreationdate datetime not null,
+  forumlasteditdate datetime not null,
+  forumlastedituser int(11) not null,
+  active tinyint(1) not null,
+  forumtopiccount int(11) not null,
+  forummessagecount int(11) not null,
+  forumorder int(11) not null,
+  readaccessgroupid smallint(6) default null,
+  postaccessgroupid smallint(6) not null,
+  primary key (forumid),
+  unique key ix_forums_forumshortname (forumshortname),
+  key fk_forums_forumscategories (categoryid),
+  key fk_forums_users (userid),
+  key fk_forums_users_lastedit (forumlastedituser),
+  key fk_forums_usersgroups_read (readaccessgroupid),
+  key fk_forums_usersgroups_post (postaccessgroupid),
+  constraint fk_forums_forumscategories foreign key (categoryid) references forumscategories (categoryid),
+  constraint fk_forums_users foreign key (userid) references `users` (userid),
+  constraint fk_forums_usersgroups_post foreign key (postaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
+  constraint fk_forums_usersgroups_read foreign key (readaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
+  constraint fk_forums_users_lastedit foreign key (forumlastedituser) references `users` (userid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `forumscategories`
+-- dumping data for table `forums`
 --
 
-DROP TABLE IF EXISTS forumscategories;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE forumscategories (
-  categoryid int(11) NOT NULL AUTO_INCREMENT,
-  categoryname varchar(255) NOT NULL,
-  categoryorder int(11) NOT NULL,
-  PRIMARY KEY (categoryid)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40000 alter table forums disable keys */;
+/*!40000 alter table forums enable keys */;
 
 --
--- Dumping data for table `forumscategories`
+-- table structure for table `forumscategories`
 --
 
-/*!40000 ALTER TABLE forumscategories DISABLE KEYS */;
-INSERT INTO forumscategories VALUES (1,'General',10);
-/*!40000 ALTER TABLE forumscategories ENABLE KEYS */;
+drop table if exists forumscategories;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table forumscategories (
+  categoryid int(11) not null auto_increment,
+  categoryname varchar(255) not null,
+  categoryorder int(11) not null,
+  primary key (categoryid)
+) engine=innodb auto_increment=2 default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `messages`
+-- dumping data for table `forumscategories`
 --
 
-DROP TABLE IF EXISTS messages;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE messages (
-  topicid int(11) NOT NULL,
-  messageid int(11) NOT NULL,
-  messagebody longtext NOT NULL,
-  messagecreationdate datetime NOT NULL,
-  messagelasteditdate datetime NOT NULL,
-  messagelastedituser int(11) NOT NULL,
-  userid int(11) NOT NULL,
-  parentid int(11) DEFAULT NULL,
-  active tinyint(1) NOT NULL,
-  editip varchar(39) DEFAULT NULL,
-  PRIMARY KEY (topicid,messageid),
-  KEY fk_messages_users (userid),
-  CONSTRAINT fk_messages_topics FOREIGN KEY (topicid) REFERENCES topics (topicid),
-  CONSTRAINT fk_messages_users FOREIGN KEY (userid) REFERENCES `users` (userid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40000 alter table forumscategories disable keys */;
+insert into forumscategories values (1,'general',10);
+/*!40000 alter table forumscategories enable keys */;
 
 --
--- Dumping data for table `messages`
+-- table structure for table `messages`
 --
 
-/*!40000 ALTER TABLE messages DISABLE KEYS */;
-/*!40000 ALTER TABLE messages ENABLE KEYS */;
+drop table if exists messages;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table messages (
+  topicid int(11) not null,
+  messageid int(11) not null,
+  messagebody longtext not null,
+  messagecreationdate datetime not null,
+  messagelasteditdate datetime not null,
+  messagelastedituser int(11) not null,
+  userid int(11) not null,
+  parentid int(11) default null,
+  active tinyint(1) not null,
+  editip varchar(39) default null,
+  primary key (topicid,messageid),
+  key fk_messages_users (userid),
+  constraint fk_messages_topics foreign key (topicid) references topics (topicid),
+  constraint fk_messages_users foreign key (userid) references `users` (userid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Temporary table structure for view `messagescomplete`
+-- dumping data for table `messages`
 --
 
-DROP TABLE IF EXISTS messagescomplete;
-/*!50001 DROP VIEW IF EXISTS messagescomplete*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `messagescomplete` (
+/*!40000 alter table messages disable keys */;
+/*!40000 alter table messages enable keys */;
+
+--
+-- temporary table structure for view `messagescomplete`
+--
+
+drop table if exists messagescomplete;
+/*!50001 drop view if exists messagescomplete*/;
+set @saved_cs_client     = @@character_set_client;
+set character_set_client = utf8;
+/*!50001 create table `messagescomplete` (
   topicid int(11),
   messageid int(11),
   messagebody longtext,
@@ -161,3297 +161,3297 @@ SET character_set_client = utf8;
   usergroupname varchar(50),
   userphoto varchar(1024),
   userregistrationdate datetime
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
+) engine=myisam */;
+set character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `pagecontents`
+-- table structure for table `pagecontents`
 --
 
-DROP TABLE IF EXISTS pagecontents;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE pagecontents (
-  pagecontentid int(11) NOT NULL AUTO_INCREMENT,
-  pagecontenttitle varchar(128) NOT NULL,
-  pagecontentbody longtext NOT NULL,
-  pagecontentshortname varchar(128) NOT NULL,
-  pagecontenteditdate datetime NOT NULL,
-  PRIMARY KEY (pagecontentid)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists pagecontents;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table pagecontents (
+  pagecontentid int(11) not null auto_increment,
+  pagecontenttitle varchar(128) not null,
+  pagecontentbody longtext not null,
+  pagecontentshortname varchar(128) not null,
+  pagecontenteditdate datetime not null,
+  primary key (pagecontentid)
+) engine=innodb auto_increment=3 default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pagecontents`
+-- dumping data for table `pagecontents`
 --
 
-/*!40000 ALTER TABLE pagecontents DISABLE KEYS */;
-INSERT INTO pagecontents VALUES (1,'About','\n	<p>This forum is powered by <a href=\"http://www.nearforums.com\">Nearforums</a>, an open source forum engine.</p>\n	<p>Nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">MIT License</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2012-02-21 11:21:51'),(2,'Terms and conditions','<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the \"User\") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our <span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “Agreement”) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person\'s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website\'s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users\' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users\' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users\' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users\' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users\' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users\' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post (\"Contributions\") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it\'s likely that you\'re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operators’s current <span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys\' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN \"AS IS\" AND \"AS AVAILABLE\" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS\'S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please <span>contact</span> us.</p>','terms','2012-02-21 11:21:51');
-/*!40000 ALTER TABLE pagecontents ENABLE KEYS */;
+/*!40000 alter table pagecontents disable keys */;
+insert into pagecontents values (1,'about','\n	<p>this forum is powered by <a href=\"http://www.nearforums.com\">nearforums</a>, an open source forum engine.</p>\n	<p>nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">mit license</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2012-02-21 11:21:51'),(2,'terms and conditions','<h2>legal notices</h2>  <p>we, the operators of this website, provide it as a public service to our users.</p>  <p>please carefully review the following basic rules that govern your use of the website. please note that your use of the website constitutes your unconditional agreement to follow and be bound by these terms and conditions of use. if you (the \"user\") do not agree to them, do not use the website, provide any materials to the website or download any materials from them.</p>  <p>the operators reserve the right to update or modify these terms and conditions at any time without prior notice to user. your use of the website following any such change constitutes your unconditional agreement to follow and be bound by these terms and conditions as changed. for this reason, we encourage you to review these terms and conditions of use whenever you use the website.</p>  <p>these terms and conditions of use apply to the use of the website and do not extend to any linked third party sites. these terms and conditions and our <span>privacy policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “agreement”) between you and the operators with respect to the website. any rights not expressly granted herein are reserved.</p>  <h2><span>permitted and prohibited uses</span></h2>  <p>you may use the the website for the sole purpose of sharing and exchanging ideas with other users. you may not use the the website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the u.s. securities and exchange commission, any rules of any national or other securities exchange, and any u.s. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>you may not upload or transmit any material that infringes or misappropriates any person\'s copyright, patent, trademark, or trade secret, or disclose via the the website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>you may not upload any viruses, worms, trojan horses, or other forms of harmful computer code, nor subject the website\'s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the website.</p>  <p>you are strictly prohibited from communicating on or through the website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>you are expressly prohibited from compiling and using other users\' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>you also are expressly prohibited from distributing users\' personal information to third-party parties for marketing purposes. the operators shall deem the compiling of marketing and mailing lists using users\' personal information, the sending of unsolicited marketing materials to users, or the distribution of users\' personal information to third parties for marketing purposes as a material breach of these terms and conditions of use, and the operators reserve the right to terminate or suspend your access to and use of the website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>the operators note that unauthorized use of users\' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. the operators reserve the right to report the abuse of users\' personal information to the appropriate law enforcement and government authorities, and the operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>user submissions</span></h2>  <p>the operators do not want to receive confidential or proprietary information from you through the website. any material, information, or other communication you transmit or post (\"contributions\") to the website will be considered non-confidential.</p>  <p>all contributions to this site are licensed by you under the mit license to anyone who wishes to use them, including the operators.</p>  <p>if you work for a company or at a university, it\'s likely that you\'re not the copyright holder of anything you make, even in your free time. before making contributions to this site, get written permission from your employer.</p>  <h2><span>user discussion lists and forums</span></h2>  <p>the operators may, but are not obligated to, monitor or review any areas on the website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. the operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. the operators may edit or remove content on the the website at their discretion at any time.</p>  <h2><span>use of personally identifiable information</span></h2>  <p>information submitted to the website is governed according to the operators’s current <span>privacy policy</span> and the stated license of this website.</p>  <p>you agree to provide true, accurate, current, and complete information when registering with the website. it is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. if you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website.</p>  <p>although sections of the website may be viewed simply by visiting the website, in order to access some content and/or additional features offered at the website, you may need to sign on as a guest or register as a member. if you create an account on the website, you may be asked to supply your name, address, a user id and password. you are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. you agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. you further agree that you will not permit others, including those whose accounts have been terminated, to access the website using your account or user id. you grant the operators and all other persons or entities involved in the operation of the website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the website and in the provision of services to you. the operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. to learn more about how we protect the privacy of the personal information in your account, please visit our<span>privacy policy</span>.</p>  <h2><span>indemnification</span></h2>  <p>you agree to defend, indemnify and hold harmless the operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys\' fees, arising from or related to your use or misuse of the website, including, without limitation, your violation of these terms and conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>termination</span></h2>  <p>these terms and conditions of use are effective until terminated by either party. if you no longer agree to be bound by these terms and conditions, you must cease use of the website. if you are dissatisfied with the website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the website. the operators reserve the right to terminate or suspend your access to and use of the website, or parts of the website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the operators have reason to believe that you are in violation of these terms and conditions of use.</p>  <h2><span>warranty disclaimer</span></h2>  <p>the website and associated materials are provided on an \"as is\" and \"as available\" basis. to the full extent permissible by applicable law, the operators disclaim all warranties, express or implied, including, but not limited to, implied warranties of merchantability and fitness for a particular purpose, or non-infringementof intellectual property. the operators make no representations or warranty that the website will meet your requirements, or that your use of the website will be uninterrupted, timely, secure, or error free; nor do the operators make any representation or warranty as to the results that may be obtained from the use of the website. the operators make no representations or warranties of any kind, express or implied, as to the operation of the website or the information, content, materials, or products included on the website.</p>  <p>in no event shall the operators or any of their agents, vendors or suppliers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information) arising out of the use, misuse of or inability to use the website, even if the operators have been advised of the possibility of such damages. this disclaimer constitutes an essential part of this agreement. because some jurisdictions prohibit the exclusion or limitation of liability for consequential or incidental damages, the above limitation may not apply to you.</p>  <p>you understand and agree that any content downloaded or otherwise obtained through the use of the website is at your own discretion and risk and that you will be solely responsible for any damage to your computer system or loss of data or business interruption that results from the download of content. the operators shall not be responsible for any loss or damage caused, or alleged to have been caused, directly or indirectly, by the information or ideas contained, suggested or referenced in or appearing on the website. your participation in the website is solely at your own risk. no advice or information, whether oral or written, obtained by you from the operators or through the operators, their employees, or third parties shall create any warranty not expressly made herein. you acknowledge, by your use of the the website, that your use of the website is at your sole risk.</p>  <p>liability limitation. under no circumstances and under no legal or equitable theory, whether in tort, contract, negligence, strict liability or otherwise, shall the operators or any of their agents, vendors or suppliers be liable to user or to any other person for any indirect, special, incidental or consequential losses or damages of any nature arising out of or in connection with the use of or inability to use the the website or for any breach of security associated with the transmission of sensitive information through the website or for any information obtained through the website, including, without limitation, damages for lost profits, loss of goodwill, loss or corruption of data, work stoppage, accuracy of results, or computer failure or malfunction, even if an authorized representative of the operators has been advised of or should have known of the possibility of such damages.</p>  <p>the operators\'s total cumulative liability for any and all claims in connection with the website will not exceed five u.s. dollars ($5.00). user agrees and acknowledges that the foregoing limitations on liability are an essential basis of the bargain and that the operators would not provide the website absent such limitation.</p>  <h2>links to other materials.</h2>  <p>the website may contain links to sites owned or operated by independent third parties. these links are provided for your convenience and reference only. we do not control such sites and, therefore, we are not responsible for any content posted on these sites. the fact that the operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the website. if you decide to access any of the third party sites linked to by the website, you do this entirely at your own risk. because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>notification of possible copyright infringement</span></h2>  <p>in the event you believe that material or content published on the website may infringe on your copyright or that of another, please <span>contact</span> us.</p>','terms','2012-02-21 11:21:51');
+/*!40000 alter table pagecontents enable keys */;
 
 --
--- Table structure for table `tags`
+-- table structure for table `tags`
 --
 
-DROP TABLE IF EXISTS tags;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE tags (
-  tag varchar(50) NOT NULL,
-  topicid int(11) NOT NULL,
-  PRIMARY KEY (tag,topicid),
-  KEY fk_tags_topics (topicid),
-  CONSTRAINT fk_tags_topics FOREIGN KEY (topicid) REFERENCES topics (topicid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists tags;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table tags (
+  tag varchar(50) not null,
+  topicid int(11) not null,
+  primary key (tag,topicid),
+  key fk_tags_topics (topicid),
+  constraint fk_tags_topics foreign key (topicid) references topics (topicid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tags`
+-- dumping data for table `tags`
 --
 
-/*!40000 ALTER TABLE tags DISABLE KEYS */;
-/*!40000 ALTER TABLE tags ENABLE KEYS */;
+/*!40000 alter table tags disable keys */;
+/*!40000 alter table tags enable keys */;
 
 --
--- Table structure for table `templates`
+-- table structure for table `templates`
 --
 
-DROP TABLE IF EXISTS templates;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE templates (
-  templateid int(11) NOT NULL AUTO_INCREMENT,
-  templatekey varchar(64) NOT NULL,
-  templatedescription varchar(256) DEFAULT NULL,
-  templateiscurrent tinyint(1) NOT NULL,
-  templatedate datetime NOT NULL,
-  PRIMARY KEY (templateid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists templates;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table templates (
+  templateid int(11) not null auto_increment,
+  templatekey varchar(64) not null,
+  templatedescription varchar(256) default null,
+  templateiscurrent tinyint(1) not null,
+  templatedate datetime not null,
+  primary key (templateid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `templates`
+-- dumping data for table `templates`
 --
 
-/*!40000 ALTER TABLE templates DISABLE KEYS */;
-/*!40000 ALTER TABLE templates ENABLE KEYS */;
+/*!40000 alter table templates disable keys */;
+/*!40000 alter table templates enable keys */;
 
 --
--- Table structure for table `topics`
+-- table structure for table `topics`
 --
 
-DROP TABLE IF EXISTS topics;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE topics (
-  topicid int(11) NOT NULL AUTO_INCREMENT,
-  topictitle varchar(256) NOT NULL,
-  topicshortname varchar(64) NOT NULL,
-  topicdescription longtext NOT NULL,
-  topiccreationdate datetime NOT NULL,
-  topiclasteditdate datetime NOT NULL,
-  topicviews int(11) NOT NULL,
-  topicreplies int(11) NOT NULL,
-  userid int(11) NOT NULL,
-  topictags varchar(256) NOT NULL,
-  forumid int(11) NOT NULL,
-  topiclastedituser int(11) NOT NULL,
-  topiclasteditip varchar(39) NOT NULL,
-  active tinyint(1) NOT NULL,
-  topicisclose tinyint(1) NOT NULL,
-  topicorder int(11) DEFAULT NULL,
-  lastmessageid int(11) DEFAULT NULL,
-  messagesidentity int(11) NOT NULL,
-  ReadAccessGroupId smallint(6) DEFAULT NULL,
-  PostAccessGroupId smallint(6) NOT NULL,
-  PRIMARY KEY (topicid),
-  KEY fk_topics_forums (forumid),
-  KEY fk_topics_users (userid),
-  KEY fk_topics_users_lastedit (topiclastedituser),
-  KEY ix_topics_forumid_active (active,forumid),
-  KEY FK_Topics_UsersGroups_Read (ReadAccessGroupId),
-  KEY FK_Topics_UsersGroups_Post (PostAccessGroupId),
-  CONSTRAINT fk_topics_forums FOREIGN KEY (forumid) REFERENCES forums (forumid),
-  CONSTRAINT fk_topics_users FOREIGN KEY (userid) REFERENCES `users` (userid),
-  CONSTRAINT FK_Topics_UsersGroups_Post FOREIGN KEY (PostAccessGroupId) REFERENCES usersgroups (usergroupid) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT FK_Topics_UsersGroups_Read FOREIGN KEY (ReadAccessGroupId) REFERENCES usersgroups (usergroupid) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT fk_topics_users_lastedit FOREIGN KEY (topiclastedituser) REFERENCES `users` (userid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists topics;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table topics (
+  topicid int(11) not null auto_increment,
+  topictitle varchar(256) not null,
+  topicshortname varchar(64) not null,
+  topicdescription longtext not null,
+  topiccreationdate datetime not null,
+  topiclasteditdate datetime not null,
+  topicviews int(11) not null,
+  topicreplies int(11) not null,
+  userid int(11) not null,
+  topictags varchar(256) not null,
+  forumid int(11) not null,
+  topiclastedituser int(11) not null,
+  topiclasteditip varchar(39) not null,
+  active tinyint(1) not null,
+  topicisclose tinyint(1) not null,
+  topicorder int(11) default null,
+  lastmessageid int(11) default null,
+  messagesidentity int(11) not null,
+  readaccessgroupid smallint(6) default null,
+  postaccessgroupid smallint(6) not null,
+  primary key (topicid),
+  key fk_topics_forums (forumid),
+  key fk_topics_users (userid),
+  key fk_topics_users_lastedit (topiclastedituser),
+  key ix_topics_forumid_active (active,forumid),
+  key fk_topics_usersgroups_read (readaccessgroupid),
+  key fk_topics_usersgroups_post (postaccessgroupid),
+  constraint fk_topics_forums foreign key (forumid) references forums (forumid),
+  constraint fk_topics_users foreign key (userid) references `users` (userid),
+  constraint fk_topics_usersgroups_post foreign key (postaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
+  constraint fk_topics_usersgroups_read foreign key (readaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
+  constraint fk_topics_users_lastedit foreign key (topiclastedituser) references `users` (userid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `topics`
+-- dumping data for table `topics`
 --
 
-/*!40000 ALTER TABLE topics DISABLE KEYS */;
-/*!40000 ALTER TABLE topics ENABLE KEYS */;
+/*!40000 alter table topics disable keys */;
+/*!40000 alter table topics enable keys */;
 
 --
--- Temporary table structure for view `topicscomplete`
+-- temporary table structure for view `topicscomplete`
 --
 
-DROP TABLE IF EXISTS topicscomplete;
-/*!50001 DROP VIEW IF EXISTS topicscomplete*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `topicscomplete` (
-  TopicId int(11),
-  TopicTitle varchar(256),
-  TopicShortName varchar(64),
-  TopicDescription longtext,
-  TopicCreationDate datetime,
-  TopicViews int(11),
-  TopicReplies int(11),
-  UserId int(11),
-  TopicTags varchar(256),
-  TopicIsClose tinyint(1),
-  TopicOrder int(11),
-  LastMessageId int(11),
-  UserName varchar(50),
-  ForumId int(11),
-  ForumName varchar(255),
-  ForumShortName varchar(32),
-  ReadAccessGroupId int(6),
-  PostAccessGroupId int(6)
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
+drop table if exists topicscomplete;
+/*!50001 drop view if exists topicscomplete*/;
+set @saved_cs_client     = @@character_set_client;
+set character_set_client = utf8;
+/*!50001 create table `topicscomplete` (
+  topicid int(11),
+  topictitle varchar(256),
+  topicshortname varchar(64),
+  topicdescription longtext,
+  topiccreationdate datetime,
+  topicviews int(11),
+  topicreplies int(11),
+  userid int(11),
+  topictags varchar(256),
+  topicisclose tinyint(1),
+  topicorder int(11),
+  lastmessageid int(11),
+  username varchar(50),
+  forumid int(11),
+  forumname varchar(255),
+  forumshortname varchar(32),
+  readaccessgroupid int(6),
+  postaccessgroupid int(6)
+) engine=myisam */;
+set character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `topicssubscriptions`
+-- table structure for table `topicssubscriptions`
 --
 
-DROP TABLE IF EXISTS topicssubscriptions;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE topicssubscriptions (
-  topicid int(11) NOT NULL,
-  userid int(11) NOT NULL,
-  PRIMARY KEY (topicid,userid),
-  KEY fk_topicssubscriptions_users (userid),
-  CONSTRAINT fk_topicssubscriptions_topics FOREIGN KEY (topicid) REFERENCES topics (topicid),
-  CONSTRAINT fk_topicssubscriptions_users FOREIGN KEY (userid) REFERENCES `users` (userid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists topicssubscriptions;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table topicssubscriptions (
+  topicid int(11) not null,
+  userid int(11) not null,
+  primary key (topicid,userid),
+  key fk_topicssubscriptions_users (userid),
+  constraint fk_topicssubscriptions_topics foreign key (topicid) references topics (topicid),
+  constraint fk_topicssubscriptions_users foreign key (userid) references `users` (userid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `topicssubscriptions`
+-- dumping data for table `topicssubscriptions`
 --
 
-/*!40000 ALTER TABLE topicssubscriptions DISABLE KEYS */;
-/*!40000 ALTER TABLE topicssubscriptions ENABLE KEYS */;
+/*!40000 alter table topicssubscriptions disable keys */;
+/*!40000 alter table topicssubscriptions enable keys */;
 
 --
--- Table structure for table `users`
+-- table structure for table `users`
 --
 
-DROP TABLE IF EXISTS users;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE users (
-  userid int(11) NOT NULL AUTO_INCREMENT,
-  username varchar(50) NOT NULL,
+drop table if exists users;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table users (
+  userid int(11) not null auto_increment,
+  username varchar(50) not null,
   userprofile longtext,
   usersignature longtext,
-  usergroupid smallint(6) NOT NULL,
-  active tinyint(1) NOT NULL,
-  userbirthdate datetime DEFAULT NULL,
-  userwebsite varchar(255) DEFAULT NULL,
-  userguid char(32) NOT NULL,
-  usertimezone decimal(9,2) NOT NULL,
-  useremail varchar(100) DEFAULT NULL,
-  useremailpolicy int(11) DEFAULT NULL,
-  userphoto varchar(1024) DEFAULT NULL,
-  userregistrationdate datetime NOT NULL,
-  userexternalprofileurl varchar(255) DEFAULT NULL,
-  UserProvider varchar(32) NOT NULL,
-  UserProviderId varchar(64) NOT NULL,
-  UserProviderLastCall datetime NOT NULL,
-  PasswordResetGuid varchar(100) DEFAULT NULL,
-  PasswordResetGuidExpireDate datetime DEFAULT NULL,
-  PRIMARY KEY (userid),
-  KEY fk_users_usersgroups (usergroupid),
-  CONSTRAINT fk_users_usersgroups FOREIGN KEY (usergroupid) REFERENCES usersgroups (usergroupid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  usergroupid smallint(6) not null,
+  active tinyint(1) not null,
+  userbirthdate datetime default null,
+  userwebsite varchar(255) default null,
+  userguid char(32) not null,
+  usertimezone decimal(9,2) not null,
+  useremail varchar(100) default null,
+  useremailpolicy int(11) default null,
+  userphoto varchar(1024) default null,
+  userregistrationdate datetime not null,
+  userexternalprofileurl varchar(255) default null,
+  userprovider varchar(32) not null,
+  userproviderid varchar(64) not null,
+  userproviderlastcall datetime not null,
+  passwordresetguid varchar(100) default null,
+  passwordresetguidexpiredate datetime default null,
+  primary key (userid),
+  key fk_users_usersgroups (usergroupid),
+  constraint fk_users_usersgroups foreign key (usergroupid) references usersgroups (usergroupid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- dumping data for table `users`
 --
 
-/*!40000 ALTER TABLE users DISABLE KEYS */;
-/*!40000 ALTER TABLE users ENABLE KEYS */;
+/*!40000 alter table users disable keys */;
+/*!40000 alter table users enable keys */;
 
 --
--- Table structure for table `usersgroups`
+-- table structure for table `usersgroups`
 --
 
-DROP TABLE IF EXISTS usersgroups;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE usersgroups (
-  usergroupid smallint(6) NOT NULL,
-  usergroupname varchar(50) NOT NULL,
-  PRIMARY KEY (usergroupid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+drop table if exists usersgroups;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table usersgroups (
+  usergroupid smallint(6) not null,
+  usergroupname varchar(50) not null,
+  primary key (usergroupid)
+) engine=innodb default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usersgroups`
+-- dumping data for table `usersgroups`
 --
 
-/*!40000 ALTER TABLE usersgroups DISABLE KEYS */;
-INSERT INTO usersgroups VALUES (1,'Member'),(2,'Trusted member'),(3,'Moderator'),(10,'Admin');
-/*!40000 ALTER TABLE usersgroups ENABLE KEYS */;
+/*!40000 alter table usersgroups disable keys */;
+insert into usersgroups values (1,'member'),(2,'trusted member'),(3,'moderator'),(10,'admin');
+/*!40000 alter table usersgroups enable keys */;
 
 --
--- Dumping routines for database 'forums_working'
+-- dumping routines for database 'forums_working'
 --
-/*!50003 DROP FUNCTION IF EXISTS FNCastToInt */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 FUNCTION FNCastToInt(number bigint) RETURNS int(11)
-BEGIN
+/*!50003 drop function if exists fncasttoint */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 function fncasttoint(number bigint) returns int(11)
+begin
   return number;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP FUNCTION IF EXISTS FNSplit */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 FUNCTION FNSplit(
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop function if exists fnsplit */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 function fnsplit(
   x nvarchar(255),
   delim nvarchar(12),
-  pos INT
-) RETURNS varchar(255) CHARSET utf8
-RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
-       LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
+  pos int
+) returns varchar(255) charset utf8
+return replace(substring(substring_index(x, delim, pos),
+       length(substring_index(x, delim, pos -1)) + 1),
        delim, '') */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPCleanDb */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPCleanDb()
-BEGIN
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spcleandb */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spcleandb()
+begin
 
-    SET FOREIGN_KEY_CHECKS = 0;
+    set foreign_key_checks = 0;
 
-  TRUNCATE TABLE Tags;
-  TRUNCATE TABLE Messages;
-  TRUNCATE TABLE topicssubscriptions;
-  TRUNCATE TABLE Topics;
-  TRUNCATE TABLE Templates;
-  TRUNCATE TABLE Forums;
-  TRUNCATE TABLE Users;
-  TRUNCATE TABLE PageContents;
-  TRUNCATE TABLE Flags;
+  truncate table tags;
+  truncate table messages;
+  truncate table topicssubscriptions;
+  truncate table topics;
+  truncate table templates;
+  truncate table forums;
+  truncate table users;
+  truncate table pagecontents;
+  truncate table flags;
   
-    SET FOREIGN_KEY_CHECKS = 1;
+    set foreign_key_checks = 1;
   
 /*
-DEFAULT VALUES
+default values
 */
-INSERT INTO PageContents (PageContentTitle, PageContentShortName, PageContentEditDate, PageContentBody)
-	VALUES ('About', 'about', UTC_TIMESTAMP(), '
-	<p>This forum is powered by <a href="http://www.nearforums.com">Nearforums</a>, an open source forum engine.</p>
-	<p>Nearforums is released under <a href="http://nearforums.codeplex.com/license" target="_blank">MIT License</a>, you can get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.</p>');
-INSERT INTO PageContents (PageContentTitle, PageContentShortName, PageContentEditDate, PageContentBody)
-	VALUES ('Terms and conditions', 'terms', UTC_TIMESTAMP(),
-	'<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the "User") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our <span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “Agreement”) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person''s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website''s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users'' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users'' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users'' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users'' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users'' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users'' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post ("Contributions") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it''s likely that you''re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operators’s current <span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys'' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS''S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please <span>contact</span> us.</p>');
+insert into pagecontents (pagecontenttitle, pagecontentshortname, pagecontenteditdate, pagecontentbody)
+	values ('about', 'about', utc_timestamp(), '
+	<p>this forum is powered by <a href="http://www.nearforums.com">nearforums</a>, an open source forum engine.</p>
+	<p>nearforums is released under <a href="http://nearforums.codeplex.com/license" target="_blank">mit license</a>, you can get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.</p>');
+insert into pagecontents (pagecontenttitle, pagecontentshortname, pagecontenteditdate, pagecontentbody)
+	values ('terms and conditions', 'terms', utc_timestamp(),
+	'<h2>legal notices</h2>  <p>we, the operators of this website, provide it as a public service to our users.</p>  <p>please carefully review the following basic rules that govern your use of the website. please note that your use of the website constitutes your unconditional agreement to follow and be bound by these terms and conditions of use. if you (the "user") do not agree to them, do not use the website, provide any materials to the website or download any materials from them.</p>  <p>the operators reserve the right to update or modify these terms and conditions at any time without prior notice to user. your use of the website following any such change constitutes your unconditional agreement to follow and be bound by these terms and conditions as changed. for this reason, we encourage you to review these terms and conditions of use whenever you use the website.</p>  <p>these terms and conditions of use apply to the use of the website and do not extend to any linked third party sites. these terms and conditions and our <span>privacy policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “agreement”) between you and the operators with respect to the website. any rights not expressly granted herein are reserved.</p>  <h2><span>permitted and prohibited uses</span></h2>  <p>you may use the the website for the sole purpose of sharing and exchanging ideas with other users. you may not use the the website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the u.s. securities and exchange commission, any rules of any national or other securities exchange, and any u.s. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>you may not upload or transmit any material that infringes or misappropriates any person''s copyright, patent, trademark, or trade secret, or disclose via the the website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>you may not upload any viruses, worms, trojan horses, or other forms of harmful computer code, nor subject the website''s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the website.</p>  <p>you are strictly prohibited from communicating on or through the website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>you are expressly prohibited from compiling and using other users'' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>you also are expressly prohibited from distributing users'' personal information to third-party parties for marketing purposes. the operators shall deem the compiling of marketing and mailing lists using users'' personal information, the sending of unsolicited marketing materials to users, or the distribution of users'' personal information to third parties for marketing purposes as a material breach of these terms and conditions of use, and the operators reserve the right to terminate or suspend your access to and use of the website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>the operators note that unauthorized use of users'' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. the operators reserve the right to report the abuse of users'' personal information to the appropriate law enforcement and government authorities, and the operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>user submissions</span></h2>  <p>the operators do not want to receive confidential or proprietary information from you through the website. any material, information, or other communication you transmit or post ("contributions") to the website will be considered non-confidential.</p>  <p>all contributions to this site are licensed by you under the mit license to anyone who wishes to use them, including the operators.</p>  <p>if you work for a company or at a university, it''s likely that you''re not the copyright holder of anything you make, even in your free time. before making contributions to this site, get written permission from your employer.</p>  <h2><span>user discussion lists and forums</span></h2>  <p>the operators may, but are not obligated to, monitor or review any areas on the website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. the operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. the operators may edit or remove content on the the website at their discretion at any time.</p>  <h2><span>use of personally identifiable information</span></h2>  <p>information submitted to the website is governed according to the operators’s current <span>privacy policy</span> and the stated license of this website.</p>  <p>you agree to provide true, accurate, current, and complete information when registering with the website. it is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. if you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website.</p>  <p>although sections of the website may be viewed simply by visiting the website, in order to access some content and/or additional features offered at the website, you may need to sign on as a guest or register as a member. if you create an account on the website, you may be asked to supply your name, address, a user id and password. you are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. you agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. you further agree that you will not permit others, including those whose accounts have been terminated, to access the website using your account or user id. you grant the operators and all other persons or entities involved in the operation of the website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the website and in the provision of services to you. the operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. to learn more about how we protect the privacy of the personal information in your account, please visit our<span>privacy policy</span>.</p>  <h2><span>indemnification</span></h2>  <p>you agree to defend, indemnify and hold harmless the operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys'' fees, arising from or related to your use or misuse of the website, including, without limitation, your violation of these terms and conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>termination</span></h2>  <p>these terms and conditions of use are effective until terminated by either party. if you no longer agree to be bound by these terms and conditions, you must cease use of the website. if you are dissatisfied with the website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the website. the operators reserve the right to terminate or suspend your access to and use of the website, or parts of the website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the operators have reason to believe that you are in violation of these terms and conditions of use.</p>  <h2><span>warranty disclaimer</span></h2>  <p>the website and associated materials are provided on an "as is" and "as available" basis. to the full extent permissible by applicable law, the operators disclaim all warranties, express or implied, including, but not limited to, implied warranties of merchantability and fitness for a particular purpose, or non-infringementof intellectual property. the operators make no representations or warranty that the website will meet your requirements, or that your use of the website will be uninterrupted, timely, secure, or error free; nor do the operators make any representation or warranty as to the results that may be obtained from the use of the website. the operators make no representations or warranties of any kind, express or implied, as to the operation of the website or the information, content, materials, or products included on the website.</p>  <p>in no event shall the operators or any of their agents, vendors or suppliers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information) arising out of the use, misuse of or inability to use the website, even if the operators have been advised of the possibility of such damages. this disclaimer constitutes an essential part of this agreement. because some jurisdictions prohibit the exclusion or limitation of liability for consequential or incidental damages, the above limitation may not apply to you.</p>  <p>you understand and agree that any content downloaded or otherwise obtained through the use of the website is at your own discretion and risk and that you will be solely responsible for any damage to your computer system or loss of data or business interruption that results from the download of content. the operators shall not be responsible for any loss or damage caused, or alleged to have been caused, directly or indirectly, by the information or ideas contained, suggested or referenced in or appearing on the website. your participation in the website is solely at your own risk. no advice or information, whether oral or written, obtained by you from the operators or through the operators, their employees, or third parties shall create any warranty not expressly made herein. you acknowledge, by your use of the the website, that your use of the website is at your sole risk.</p>  <p>liability limitation. under no circumstances and under no legal or equitable theory, whether in tort, contract, negligence, strict liability or otherwise, shall the operators or any of their agents, vendors or suppliers be liable to user or to any other person for any indirect, special, incidental or consequential losses or damages of any nature arising out of or in connection with the use of or inability to use the the website or for any breach of security associated with the transmission of sensitive information through the website or for any information obtained through the website, including, without limitation, damages for lost profits, loss of goodwill, loss or corruption of data, work stoppage, accuracy of results, or computer failure or malfunction, even if an authorized representative of the operators has been advised of or should have known of the possibility of such damages.</p>  <p>the operators''s total cumulative liability for any and all claims in connection with the website will not exceed five u.s. dollars ($5.00). user agrees and acknowledges that the foregoing limitations on liability are an essential basis of the bargain and that the operators would not provide the website absent such limitation.</p>  <h2>links to other materials.</h2>  <p>the website may contain links to sites owned or operated by independent third parties. these links are provided for your convenience and reference only. we do not control such sites and, therefore, we are not responsible for any content posted on these sites. the fact that the operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the website. if you decide to access any of the third party sites linked to by the website, you do this entirely at your own risk. because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>notification of possible copyright infringement</span></h2>  <p>in the event you believe that material or content published on the website may infringe on your copyright or that of another, please <span>contact</span> us.</p>');
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsCategoriesGetAll */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsCategoriesGetAll()
-BEGIN
-SELECT
-	CategoryId
-	,CategoryName
-	,CategoryOrder
-FROM
-	ForumsCategories
-ORDER BY
-	CategoryOrder;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsDelete(
-  param_ForumShortName nvarchar(32)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumscategoriesgetall */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumscategoriesgetall()
+begin
+select
+	categoryid
+	,categoryname
+	,categoryorder
+from
+	forumscategories
+order by
+	categoryorder;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsdelete(
+  param_forumshortname nvarchar(32)
 )
-BEGIN
-UPDATE Forums
-SET
-	Active = 0
-WHERE
-	ForumShortName = param_ForumShortName;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsGetByCategory */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsGetByCategory(
+begin
+update forums
+set
+	active = 0
+where
+	forumshortname = param_forumshortname;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsgetbycategory */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsgetbycategory(
     param_usergroupid smallint
 )
-BEGIN
+begin
 
-SELECT
-	F.ForumId
-	,F.ForumName
-	,F.ForumShortName
-	,F.ForumDescription
-	,F.UserId
-	,F.ForumCreationDate
-	,F.ForumTopicCount
-	,F.ForumMessageCount
-	,C.CategoryId
-	,C.CategoryName
-FROM
-	ForumsCategories C
-	INNER JOIN Forums F ON F.CategoryId = C.CategoryId
-WHERE
-    F.Active = 1
-    AND
-    IFNULL(F.ReadAccessGroupId,-1) <= IFNULL(param_UserGroupId,-1)
-ORDER BY
-	C.CategoryOrder,
-	F.ForumOrder;
+select
+	f.forumid
+	,f.forumname
+	,f.forumshortname
+	,f.forumdescription
+	,f.userid
+	,f.forumcreationdate
+	,f.forumtopiccount
+	,f.forummessagecount
+	,c.categoryid
+	,c.categoryname
+from
+	forumscategories c
+	inner join forums f on f.categoryid = c.categoryid
+where
+    f.active = 1
+    and
+    ifnull(f.readaccessgroupid,-1) <= ifnull(param_usergroupid,-1)
+order by
+	c.categoryorder,
+	f.forumorder;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsGetByShortName */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsGetByShortName(param_ShortName nvarchar(32))
-BEGIN
-SELECT
-	F.ForumId
-	,F.ForumName
-	,F.ForumShortName
-	,F.ForumDescription
-	,F.UserId
-	,F.ForumCreationDate
-	,F.ForumTopicCount
-	,F.ForumMessageCount
-	,C.CategoryId
-	,C.CategoryName
-	,F.ReadAccessGroupId
-	,F.PostAccessGroupId
-FROM
-	Forums F
-	INNER JOIN ForumsCategories C ON F.CategoryId = C.CategoryId
-WHERE
-	F.ForumShortName = param_ShortName
-	AND
-	F.Active = 1;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsGetUsedShortNames */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsGetUsedShortNames(
-  param_ForumShortName nvarchar(32), param_SearchShortName nvarchar(32)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsgetbyshortname */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsgetbyshortname(param_shortname nvarchar(32))
+begin
+select
+	f.forumid
+	,f.forumname
+	,f.forumshortname
+	,f.forumdescription
+	,f.userid
+	,f.forumcreationdate
+	,f.forumtopiccount
+	,f.forummessagecount
+	,c.categoryid
+	,c.categoryname
+	,f.readaccessgroupid
+	,f.postaccessgroupid
+from
+	forums f
+	inner join forumscategories c on f.categoryid = c.categoryid
+where
+	f.forumshortname = param_shortname
+	and
+	f.active = 1;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsgetusedshortnames */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsgetusedshortnames(
+  param_forumshortname nvarchar(32), param_searchshortname nvarchar(32)
 )
-BEGIN
+begin
 /*
-	Gets used short names for forums
+	gets used short names for forums
 	returns:
-		IF NOT USED SHORTNAME: empty result set
-		IF USED SHORTNAME: resultset with amount of rows used
+		if not used shortname: empty result set
+		if used shortname: resultset with amount of rows used
 */
 
-DECLARE CurrentValue nvarchar(32);
-SELECT
-	ForumShortName INTO CurrentValue
-FROM
-	Forums
-WHERE
-	ForumShortName = param_ForumShortName;
+declare currentvalue nvarchar(32);
+select
+	forumshortname into currentvalue
+from
+	forums
+where
+	forumshortname = param_forumshortname;
 
 
-IF CurrentValue IS NULL THEN
-	SELECT NULL As ForumShortName FROM Forums WHERE 1=0;
-ELSE
-	SELECT
-		ForumShortName
-	FROM
-		Forums
-	WHERE
-		ForumShortName LIKE CONCAT(param_SearchShortName, '%')
-    OR
-		ForumShortName = param_ForumShortName;
+if currentvalue is null then
+	select null as forumshortname from forums where 1=0;
+else
+	select
+		forumshortname
+	from
+		forums
+	where
+		forumshortname like concat(param_searchshortname, '%')
+    or
+		forumshortname = param_forumshortname;
 
-END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsInsert(
-	param_ForumName nvarchar(255)
-	,param_ForumShortName nvarchar(32)
-	,param_ForumDescription longtext
-	,param_CategoryId int
-	,param_UserId int
-	,param_ReadAccessGroupId smallint
-	,param_PostAccessGroupId smallint
+end if;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsinsert(
+	param_forumname nvarchar(255)
+	,param_forumshortname nvarchar(32)
+	,param_forumdescription longtext
+	,param_categoryid int
+	,param_userid int
+	,param_readaccessgroupid smallint
+	,param_postaccessgroupid smallint
 )
-BEGIN
+begin
 
-INSERT INTO Forums
+insert into forums
 (
-	ForumName
-	,ForumShortName
-	,ForumDescription
-	,CategoryId
-	,UserId
-	,ForumCreationDate
-	,ForumLastEditDate
-	,ForumLastEditUser
-	,Active
-	,ForumTopicCount
-	,ForumMessageCount
-	,ForumOrder
-	,ReadAccessGroupId
-	,PostAccessGroupId
+	forumname
+	,forumshortname
+	,forumdescription
+	,categoryid
+	,userid
+	,forumcreationdate
+	,forumlasteditdate
+	,forumlastedituser
+	,active
+	,forumtopiccount
+	,forummessagecount
+	,forumorder
+	,readaccessgroupid
+	,postaccessgroupid
 )
-VALUES
+values
 (
-	param_ForumName
-	,param_ForumShortName
-	,param_ForumDescription
-	,param_CategoryId
-	,param_UserId
-	,UTC_TIMESTAMP()
-	,UTC_TIMESTAMP()
-	,param_UserId
+	param_forumname
+	,param_forumshortname
+	,param_forumdescription
+	,param_categoryid
+	,param_userid
+	,utc_timestamp()
+	,utc_timestamp()
+	,param_userid
 	,1
 	,0
 	,0
 	,0
-	,param_ReadAccessGroupId
-	,param_PostAccessGroupId
+	,param_readaccessgroupid
+	,param_postaccessgroupid
 );
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsUpdate */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsUpdate(
-	param_ForumShortName nvarchar(32)
-	,param_ForumName nvarchar(255)
-	,param_ForumDescription longtext
-	,param_CategoryId int
-	,param_UserId int
-	,param_ReadAccessGroupId smallint
-	,param_PostAccessGroupId smallint
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsupdate */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsupdate(
+	param_forumshortname nvarchar(32)
+	,param_forumname nvarchar(255)
+	,param_forumdescription longtext
+	,param_categoryid int
+	,param_userid int
+	,param_readaccessgroupid smallint
+	,param_postaccessgroupid smallint
 )
-BEGIN
+begin
 
 
-UPDATE Forums
-SET
-	ForumName = param_ForumName
-	,ForumDescription = param_ForumDescription
-	,CategoryId = param_CategoryId
-	,ForumLastEditDate = UTC_TIMESTAMP()
-	,ForumLastEditUser = param_UserId
-	,ReadAccessGroupId = param_ReadAccessGroupId
-	,PostAccessGroupId = param_PostAccessGroupId
-WHERE
-	ForumShortName = param_ForumShortName;
+update forums
+set
+	forumname = param_forumname
+	,forumdescription = param_forumdescription
+	,categoryid = param_categoryid
+	,forumlasteditdate = utc_timestamp()
+	,forumlastedituser = param_userid
+	,readaccessgroupid = param_readaccessgroupid
+	,postaccessgroupid = param_postaccessgroupid
+where
+	forumshortname = param_forumshortname;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsUpdateLastMessage */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsUpdateLastMessage(
-	param_TopicId int
-	,param_MessageId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsupdatelastmessage */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsupdatelastmessage(
+	param_topicid int
+	,param_messageid int
 )
-BEGIN
+begin
 
-UPDATE Forums F, Topics T
-SET
-	F.ForumMessageCount = F.ForumMessageCount + 1
-WHERE
-  F.ForumId = T.ForumId
-  AND
-	T.TopicId = param_TopicId;
+update forums f, topics t
+set
+	f.forummessagecount = f.forummessagecount + 1
+where
+  f.forumid = t.forumid
+  and
+	t.topicid = param_topicid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsUpdateLastTopic */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsUpdateLastTopic(param_ForumId int)
-BEGIN
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsupdatelasttopic */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsupdatelasttopic(param_forumid int)
+begin
 
 
-UPDATE Forums F
-SET
-	F.ForumTopicCount = F.ForumTopicCount + 1
-WHERE
-	F.ForumId = param_ForumId;
+update forums f
+set
+	f.forumtopiccount = f.forumtopiccount + 1
+where
+	f.forumid = param_forumid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPForumsUpdateRecount */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPForumsUpdateRecount(param_ForumId int)
-BEGIN
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumsupdaterecount */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spforumsupdaterecount(param_forumid int)
+begin
 
 /*
-	RECOUNTS THE CHILDREN MESSAGES AND TOPICS
+	recounts the children messages and topics
 */
-DECLARE var_ForumTopicCount int;
-DECLARE var_ForumMessageCount int;
+declare var_forumtopiccount int;
+declare var_forummessagecount int;
 
-SELECT
-  COUNT(TopicId)
-	,SUM(TopicReplies)
-INTO
-  var_ForumTopicCount
-  ,var_ForumMessageCount
-FROM
-	Topics
-WHERE
-	ForumId = param_ForumId
-  AND
-	Active = 1;
+select
+  count(topicid)
+	,sum(topicreplies)
+into
+  var_forumtopiccount
+  ,var_forummessagecount
+from
+	topics
+where
+	forumid = param_forumid
+  and
+	active = 1;
 
-UPDATE Forums
-SET
-	ForumTopicCount = IFNULL(var_ForumTopicCount, 0)
-	,ForumMessageCount = IFNULL(var_ForumMessageCount, 0)
-WHERE
-	ForumId = param_ForumId;
+update forums
+set
+	forumtopiccount = ifnull(var_forumtopiccount, 0)
+	,forummessagecount = ifnull(var_forummessagecount, 0)
+where
+	forumid = param_forumid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesDelete(
-	param_TopicId int
-	,param_MessageId int
-	,param_UserId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesdelete(
+	param_topicid int
+	,param_messageid int
+	,param_userid int
 )
-BEGIN
+begin
 
-UPDATE Messages
-SET
-	Active = 0
-	,MessageLastEditDate = UTC_TIMESTAMP()
-	,MessageLastEditUser = param_UserId
-WHERE
-	TopicId = param_TopicId
-	AND
-	MessageId = param_MessageId;
+update messages
+set
+	active = 0
+	,messagelasteditdate = utc_timestamp()
+	,messagelastedituser = param_userid
+where
+	topicid = param_topicid
+	and
+	messageid = param_messageid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesFlag */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesFlag(
-	param_TopicId int
-	,param_MessageId int
-	,param_Ip varchar(39)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesflag */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesflag(
+	param_topicid int
+	,param_messageid int
+	,param_ip varchar(39)
 )
-BEGIN
-	INSERT IGNORE INTO Flags
-	(TopicId, MessageId, Ip, FlagDate)
-	VALUES
-	(param_TopicId, param_MessageId, param_Ip, UTC_TIMESTAMP());
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesFlagsClear */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesFlagsClear(
-	param_TopicId int
-	,param_MessageId int
+begin
+	insert ignore into flags
+	(topicid, messageid, ip, flagdate)
+	values
+	(param_topicid, param_messageid, param_ip, utc_timestamp());
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesflagsclear */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesflagsclear(
+	param_topicid int
+	,param_messageid int
 )
-BEGIN
-DELETE FROM
-	Flags
-WHERE
-	TopicId = param_TopicId
-	AND
-	MessageId = param_MessageId;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesFlagsGetAll */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesFlagsGetAll()
-BEGIN
+begin
+delete from
+	flags
+where
+	topicid = param_topicid
+	and
+	messageid = param_messageid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesflagsgetall */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesflagsgetall()
+begin
 /*
-	Lists all flagged messages (not topics)
+	lists all flagged messages (not topics)
 */
-SELECT
-	F.TopicId
-	,F.MessageId
-	,FNCastToInt(COUNT(FlagId)) AS TotalFlags
-	,T.TopicTitle
-	,T.TopicShortName
-	,Forums.ForumId
-	,Forums.ForumShortName
-	,Forums.ForumName
-	,M.MessageBody
-	,M.UserName
-	,M.UserId
-FROM
-	Flags F
-	INNER JOIN Topics T ON T.TopicId = F.TopicId
-	INNER JOIN Forums ON Forums.ForumId = T.ForumId
-	INNER JOIN MessagesComplete M ON M.TopicId = T.TopicId AND M.MessageId = F.MessageId
-WHERE
-	T.Active = 1
-	AND	
-	M.Active = 1
-GROUP BY
-	F.TopicId
-	,F.MessageId
-	,T.TopicTitle
-	,T.TopicShortName
-	,Forums.ForumId
-	,Forums.ForumShortName
-	,Forums.ForumName
-	,M.MessageBody
-	,M.UserName
-	,M.UserId
-ORDER BY COUNT(FlagId) DESC, F.TopicId;
+select
+	f.topicid
+	,f.messageid
+	,fncasttoint(count(flagid)) as totalflags
+	,t.topictitle
+	,t.topicshortname
+	,forums.forumid
+	,forums.forumshortname
+	,forums.forumname
+	,m.messagebody
+	,m.username
+	,m.userid
+from
+	flags f
+	inner join topics t on t.topicid = f.topicid
+	inner join forums on forums.forumid = t.forumid
+	inner join messagescomplete m on m.topicid = t.topicid and m.messageid = f.messageid
+where
+	t.active = 1
+	and	
+	m.active = 1
+group by
+	f.topicid
+	,f.messageid
+	,t.topictitle
+	,t.topicshortname
+	,forums.forumid
+	,forums.forumshortname
+	,forums.forumname
+	,m.messagebody
+	,m.username
+	,m.userid
+order by count(flagid) desc, f.topicid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesGetByTopic */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesGetByTopic(param_TopicId int)
-BEGIN
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesgetbytopic */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesgetbytopic(param_topicid int)
+begin
 
-SELECT
-  M.MessageId AS RowNumber
-	,M.TopicId
-	,M.MessageId
-	,M.MessageBody
-	,M.MessageCreationDate
-	,M.MessageLastEditDate
-	,M.ParentId
-	,UserId
-	,UserName
-	,UserSignature
-	,UserGroupId
-	,UserGroupName
-	,UserPhoto
-	,UserRegistrationDate
-	,M.Active
-FROM
-	MessagesComplete M
-WHERE
-	M.TopicId = param_TopicId
-ORDER BY M.TopicId, M.MessageId;
+select
+  m.messageid as rownumber
+	,m.topicid
+	,m.messageid
+	,m.messagebody
+	,m.messagecreationdate
+	,m.messagelasteditdate
+	,m.parentid
+	,userid
+	,username
+	,usersignature
+	,usergroupid
+	,usergroupname
+	,userphoto
+	,userregistrationdate
+	,m.active
+from
+	messagescomplete m
+where
+	m.topicid = param_topicid
+order by m.topicid, m.messageid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesGetByTopicFrom */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesGetByTopicFrom(
-	param_TopicId int
-	,param_FirstMsg int
-	,param_Amount int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesgetbytopicfrom */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesgetbytopicfrom(
+	param_topicid int
+	,param_firstmsg int
+	,param_amount int
 )
-BEGIN
+begin
 
 prepare stmt from "
-SELECT
-		M.MessageId AS RowNumber
-		,M.TopicId
-		,M.MessageId
-		,M.MessageBody
-		,M.MessageCreationDate
-		,M.MessageLastEditDate
-		,M.ParentId
-		,UserId
-		,UserName
-		,UserSignature
-		,UserGroupId
-		,UserGroupName
-		,UserPhoto
-		,UserRegistrationDate
-		,M.Active
-	FROM
-		MessagesComplete M
-	WHERE
-		M.TopicId = ?
-		AND
-		M.MessageId > ?
-  ORDER BY M.TopicId, M.MessageId
-  LIMIT ?";
+select
+		m.messageid as rownumber
+		,m.topicid
+		,m.messageid
+		,m.messagebody
+		,m.messagecreationdate
+		,m.messagelasteditdate
+		,m.parentid
+		,userid
+		,username
+		,usersignature
+		,usergroupid
+		,usergroupname
+		,userphoto
+		,userregistrationdate
+		,m.active
+	from
+		messagescomplete m
+	where
+		m.topicid = ?
+		and
+		m.messageid > ?
+  order by m.topicid, m.messageid
+  limit ?";
 
-SET @param_TopicId = param_TopicId;
-SET @param_FirstMsg = param_FirstMsg;
-SET @param_Amount = param_Amount;
+set @param_topicid = param_topicid;
+set @param_firstmsg = param_firstmsg;
+set @param_amount = param_amount;
 
-execute stmt using @param_TopicId, @param_FirstMsg, @param_Amount;
+execute stmt using @param_topicid, @param_firstmsg, @param_amount;
 
 deallocate prepare stmt;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesGetByTopicLatest */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesGetByTopicLatest(param_TopicId int)
-BEGIN
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesgetbytopiclatest */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesgetbytopiclatest(param_topicid int)
+begin
 
-SELECT
-	M.TopicId
-	,M.MessageId
-	,M.MessageBody
-	,M.MessageCreationDate
-	,M.MessageLastEditDate
-	,M.ParentId
-	,UserId
-	,UserName
-	,UserSignature
-	,UserGroupId
-	,UserGroupName
-	,M.Active
-FROM
-	MessagesComplete M
-WHERE
-	M.TopicId = param_TopicId
-ORDER BY
-	TopicId, MessageId DESC
-LIMIT 20;
+select
+	m.topicid
+	,m.messageid
+	,m.messagebody
+	,m.messagecreationdate
+	,m.messagelasteditdate
+	,m.parentid
+	,userid
+	,username
+	,usersignature
+	,usergroupid
+	,usergroupname
+	,m.active
+from
+	messagescomplete m
+where
+	m.topicid = param_topicid
+order by
+	topicid, messageid desc
+limit 20;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesGetByTopicUpTo */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesGetByTopicUpTo(
-  param_TopicId int,
-	param_FirstMsg int,
-	param_LastMsg int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesgetbytopicupto */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesgetbytopicupto(
+  param_topicid int,
+	param_firstmsg int,
+	param_lastmsg int
 )
-BEGIN
+begin
 
-SELECT
-	M.MessageId AS RowNumber
-	,M.TopicId
-	,M.MessageId
-	,M.MessageBody
-	,M.MessageCreationDate
-	,M.MessageLastEditDate
-	,M.ParentId
-	,UserId
-	,UserName
-	,UserSignature
-	,UserGroupId
-	,UserGroupName
-	,UserPhoto
-	,UserRegistrationDate
-	,M.Active
-FROM
-	MessagesComplete M
-WHERE
-	M.TopicId = param_TopicId
-	AND
-	M.MessageId > param_FirstMsg
-	AND
-	M.MessageId <= param_LastMsg
-ORDER BY M.TopicId, M.MessageId;
+select
+	m.messageid as rownumber
+	,m.topicid
+	,m.messageid
+	,m.messagebody
+	,m.messagecreationdate
+	,m.messagelasteditdate
+	,m.parentid
+	,userid
+	,username
+	,usersignature
+	,usergroupid
+	,usergroupname
+	,userphoto
+	,userregistrationdate
+	,m.active
+from
+	messagescomplete m
+where
+	m.topicid = param_topicid
+	and
+	m.messageid > param_firstmsg
+	and
+	m.messageid <= param_lastmsg
+order by m.topicid, m.messageid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPMessagesInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPMessagesInsert(
-	param_TopicId int
-	,param_MessageBody longtext
-	,param_UserId int
-	,OUT param_MessageId int
-	,param_Ip varchar(39)
-	,param_ParentId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spmessagesinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spmessagesinsert(
+	param_topicid int
+	,param_messagebody longtext
+	,param_userid int
+	,out param_messageid int
+	,param_ip varchar(39)
+	,param_parentid int
 )
-BEGIN
-DECLARE EXIT HANDLER FOR SQLEXCEPTION
-BEGIN
-  ROLLBACK;
-END;
-START TRANSACTION;
+begin
+declare exit handler for sqlexception
+begin
+  rollback;
+end;
+start transaction;
 
-  SELECT T.MessagesIdentity+1 INTO param_MessageId FROM Topics T WHERE T.TopicId = param_TopicId;
+  select t.messagesidentity+1 into param_messageid from topics t where t.topicid = param_topicid;
 
-  UPDATE Topics T
-  SET
-	  T.MessagesIdentity = param_MessageId
-  WHERE
-	  TopicId = param_TopicId;
+  update topics t
+  set
+	  t.messagesidentity = param_messageid
+  where
+	  topicid = param_topicid;
 
-	INSERT INTO Messages
+	insert into messages
 	(
-	TopicId
-	,MessageId
-	,MessageBody
-	,MessageCreationDate
-	,MessageLastEditDate
-	,MessageLastEditUser
-	,UserId
-	,Active
-	,EditIp
-	,ParentId
+	topicid
+	,messageid
+	,messagebody
+	,messagecreationdate
+	,messagelasteditdate
+	,messagelastedituser
+	,userid
+	,active
+	,editip
+	,parentid
 	)
-	VALUES
+	values
 	(
-	param_TopicId
-	,param_MessageId
-	,param_MessageBody
-	,UTC_TIMESTAMP()
-	,UTC_TIMESTAMP()
-	,param_UserId
-	,param_UserId
-	,1 -- Active
-	,param_Ip
-	,param_ParentId
+	param_topicid
+	,param_messageid
+	,param_messagebody
+	,utc_timestamp()
+	,utc_timestamp()
+	,param_userid
+	,param_userid
+	,1 -- active
+	,param_ip
+	,param_parentid
 	);
 
 
-	SET @TopicId=param_TopicId;
-  SET @MessageId=param_MessageId;
-	-- Update topic
-	CALL SPTopicsUpdateLastMessage (@TopicId, @MessageId);
-	-- Update forums
-	CALL SPForumsUpdateLastMessage (@TopicId, @MessageId);
-COMMIT;
+	set @topicid=param_topicid;
+  set @messageid=param_messageid;
+	-- update topic
+	call sptopicsupdatelastmessage (@topicid, @messageid);
+	-- update forums
+	call spforumsupdatelastmessage (@topicid, @messageid);
+commit;
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPPageContentsDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPPageContentsDelete(
-  param_PageContentShortName nvarchar(128)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sppagecontentsdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sppagecontentsdelete(
+  param_pagecontentshortname nvarchar(128)
 )
-BEGIN
-DELETE FROM PageContents
-WHERE
-	PageContentShortName = param_PageContentShortName;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPPageContentsGet */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPPageContentsGet(
-  param_PageContentShortName nvarchar(128)
+begin
+delete from pagecontents
+where
+	pagecontentshortname = param_pagecontentshortname;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sppagecontentsget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sppagecontentsget(
+  param_pagecontentshortname nvarchar(128)
 )
-BEGIN
-SELECT
-	PageContentId
-	,PageContentTitle
-	,PageContentBody
-	,PageContentShortName
-FROM
-	PageContents
-WHERE
-	PageContentShortName = param_PageContentShortName;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPPageContentsGetAll */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPPageContentsGetAll()
-BEGIN
-SELECT
-	PageContentId
-	,PageContentTitle
-	,PageContentBody
-	,PageContentShortName
-FROM
-	PageContents
-ORDER BY
-	PageContentTitle;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPPageContentsGetUsedShortNames */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPPageContentsGetUsedShortNames(
-	param_PageContentShortName nvarchar(32),
-	param_SearchShortName nvarchar(32)
+begin
+select
+	pagecontentid
+	,pagecontenttitle
+	,pagecontentbody
+	,pagecontentshortname
+from
+	pagecontents
+where
+	pagecontentshortname = param_pagecontentshortname;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sppagecontentsgetall */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sppagecontentsgetall()
+begin
+select
+	pagecontentid
+	,pagecontenttitle
+	,pagecontentbody
+	,pagecontentshortname
+from
+	pagecontents
+order by
+	pagecontenttitle;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sppagecontentsgetusedshortnames */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sppagecontentsgetusedshortnames(
+	param_pagecontentshortname nvarchar(32),
+	param_searchshortname nvarchar(32)
 )
-BEGIN
+begin
 /*
-	Gets used short names for PageContents
+	gets used short names for pagecontents
 	returns:
-		IF NOT USED SHORTNAME: empty result set
-		IF USED SHORTNAME: resultset with amount of rows used
+		if not used shortname: empty result set
+		if used shortname: resultset with amount of rows used
 */
-DECLARE var_CurrentValue nvarchar(32);
-SELECT
-	PageContentShortName INTO var_CurrentValue
-FROM
-	PageContents
-WHERE
-	PageContentShortName = param_PageContentShortName;
+declare var_currentvalue nvarchar(32);
+select
+	pagecontentshortname into var_currentvalue
+from
+	pagecontents
+where
+	pagecontentshortname = param_pagecontentshortname;
 
 
-IF var_CurrentValue IS NULL THEN
-	SELECT NULL As ForumShortName FROM pagecontents WHERE 1=0;
-ELSE
-	SELECT
-		PageContentShortName
-	FROM
-		PageContents
-	WHERE
-		PageContentShortName LIKE CONCAT(param_SearchShortName, '%')
-		OR
-		PageContentShortName = param_PageContentShortName;
-END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPPageContentsInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPPageContentsInsert(
-	param_PageContentShortName nvarchar(128)
-	,param_PageContentTitle nvarchar(128)
-	,param_PageContentBody longtext
+if var_currentvalue is null then
+	select null as forumshortname from pagecontents where 1=0;
+else
+	select
+		pagecontentshortname
+	from
+		pagecontents
+	where
+		pagecontentshortname like concat(param_searchshortname, '%')
+		or
+		pagecontentshortname = param_pagecontentshortname;
+end if;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sppagecontentsinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sppagecontentsinsert(
+	param_pagecontentshortname nvarchar(128)
+	,param_pagecontenttitle nvarchar(128)
+	,param_pagecontentbody longtext
 )
-BEGIN
-INSERT INTO PageContents
+begin
+insert into pagecontents
 (
-PageContentTitle
-,PageContentBody
-,PageContentShortName
-,PageContentEditDate
+pagecontenttitle
+,pagecontentbody
+,pagecontentshortname
+,pagecontenteditdate
 )
-VALUES
+values
 (
-param_PageContentTitle
-,param_PageContentBody
-,param_PageContentShortName
-,UTC_TIMESTAMP()
+param_pagecontenttitle
+,param_pagecontentbody
+,param_pagecontentshortname
+,utc_timestamp()
 );
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPPageContentsUpdate */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPPageContentsUpdate(
-	param_PageContentShortName nvarchar(128)
-	,param_PageContentTitle nvarchar(128)
-	,param_PageContentBody longtext
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sppagecontentsupdate */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sppagecontentsupdate(
+	param_pagecontentshortname nvarchar(128)
+	,param_pagecontenttitle nvarchar(128)
+	,param_pagecontentbody longtext
  )
-BEGIN
-UPDATE PageContents
-SET
-	PageContentTitle = param_PageContentTitle
-	,PageContentBody = param_PageContentBody
-	,PageContentEditDate = UTC_TIMESTAMP()
-WHERE
-	PageContentShortName = param_PageContentShortName;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTagsGetMostViewed */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTagsGetMostViewed(
-  param_ForumId int
-	,param_Top bigint
+begin
+update pagecontents
+set
+	pagecontenttitle = param_pagecontenttitle
+	,pagecontentbody = param_pagecontentbody
+	,pagecontenteditdate = utc_timestamp()
+where
+	pagecontentshortname = param_pagecontentshortname;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptagsgetmostviewed */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptagsgetmostviewed(
+  param_forumid int
+	,param_top bigint
 )
-BEGIN
+begin
 
 
-DECLARE var_TotalViews bigint;
+declare var_totalviews bigint;
 
-SELECT
-		SUM(T.TopicViews) INTO var_TotalViews
-	FROM
-		Topics T
-	WHERE
-		T.ForumId = param_ForumId;
+select
+		sum(t.topicviews) into var_totalviews
+	from
+		topics t
+	where
+		t.forumid = param_forumid;
 
-IF var_TotalViews IS NULL OR var_TotalViews < 1 THEN
-	SET var_TotalViews = 1;
-END IF;
+if var_totalviews is null or var_totalviews < 1 then
+	set var_totalviews = 1;
+end if;
 
 prepare stmt from "
-SELECT
-	Tag,
-	TagViews,
-	(TagViews*100.00)/? AS Weight
-FROM
+select
+	tag,
+	tagviews,
+	(tagviews*100.00)/? as weight
+from
 	(
-  SELECT
-		Tags.Tag
-		,SUM(T.TopicViews) As TagViews
-		,COUNT(T.TopicId) As TopicCount
-	FROM
-		Tags
-		INNER JOIN Topics T ON Tags.TopicId = T.TopicId
-	WHERE
-		T.ForumId = ?
-		AND
-		T.Active = 1
-	GROUP BY
-		Tags.Tag
-	ORDER BY SUM(T.TopicViews) desc
-  LIMIT ?
-	) T
-ORDER BY Tag";
+  select
+		tags.tag
+		,sum(t.topicviews) as tagviews
+		,count(t.topicid) as topiccount
+	from
+		tags
+		inner join topics t on tags.topicid = t.topicid
+	where
+		t.forumid = ?
+		and
+		t.active = 1
+	group by
+		tags.tag
+	order by sum(t.topicviews) desc
+  limit ?
+	) t
+order by tag";
 
-SET @var_TotalViews = var_TotalViews;
-SET @param_ForumId = param_ForumId;
-SET @param_Top = param_Top;
-execute stmt using @var_TotalViews, @param_ForumId, @param_Top;
+set @var_totalviews = var_totalviews;
+set @param_forumid = param_forumid;
+set @param_top = param_top;
+execute stmt using @var_totalviews, @param_forumid, @param_top;
 
 deallocate prepare stmt;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTagsInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTagsInsert(
-	param_Tags nvarchar(256)
-	,param_TopicId int
-	,param_PreviousTags nvarchar(256)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptagsinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptagsinsert(
+	param_tags nvarchar(256)
+	,param_topicid int
+	,param_previoustags nvarchar(256)
 )
-BEGIN
+begin
 
-DECLARE var_parts int;
-DECLARE var_currentPart int;
+declare var_parts int;
+declare var_currentpart int;
 /*define amount of tag parts*/
-SELECT LENGTH(param_Tags) - LENGTH(REPLACE(param_Tags, ' ', '')) + 1 INTO var_parts;
-SET var_currentPart = 1;
+select length(param_tags) - length(replace(param_tags, ' ', '')) + 1 into var_parts;
+set var_currentpart = 1;
 
 
-IF NOT param_PreviousTags IS NULL THEN
-	DELETE FROM Tags
-	WHERE
-		TopicId = param_TopicId;
-END IF;
+if not param_previoustags is null then
+	delete from tags
+	where
+		topicid = param_topicid;
+end if;
 
-WHILE (var_currentPart <= var_parts) DO
-  IF FNSplit(param_Tags, ' ', var_currentPart) <> '' THEN
-    INSERT INTO Tags
-    (Tag,TopicId)
-    SELECT FNSplit(param_Tags, ' ', var_currentPart), param_TopicId;
-  END IF;
+while (var_currentpart <= var_parts) do
+  if fnsplit(param_tags, ' ', var_currentpart) <> '' then
+    insert into tags
+    (tag,topicid)
+    select fnsplit(param_tags, ' ', var_currentpart), param_topicid;
+  end if;
 
-  SET var_currentPart = var_currentPart + 1;
-END WHILE;
+  set var_currentpart = var_currentpart + 1;
+end while;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTemplatesDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTemplatesDelete(param_TemplateId int)
-BEGIN
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptemplatesdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptemplatesdelete(param_templateid int)
+begin
 
-DELETE FROM Templates WHERE TemplateId = param_TemplateId;
+delete from templates where templateid = param_templateid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTemplatesGet */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTemplatesGet(param_TemplateId int)
-BEGIN
-
-
-SELECT
-	TemplateId
-	,TemplateKey
-	,TemplateDescription
-	,TemplateIsCurrent
-FROM
-	Templates
-WHERE
-	TemplateId = param_TemplateId;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptemplatesget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptemplatesget(param_templateid int)
+begin
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTemplatesGetAll */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTemplatesGetAll()
-BEGIN
+select
+	templateid
+	,templatekey
+	,templatedescription
+	,templateiscurrent
+from
+	templates
+where
+	templateid = param_templateid;
 
-SELECT
-	TemplateId
-	,TemplateKey
-	,TemplateDescription
-	,TemplateIsCurrent
-FROM
-	Templates;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTemplatesGetCurrent */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTemplatesGetCurrent()
-BEGIN
-SELECT
-	TemplateId
-	,TemplateKey
-	,TemplateDescription
-FROM
-	Templates
-WHERE
-	TemplateIsCurrent = 1;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTemplatesInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTemplatesInsert(
-	param_TemplateKey nvarchar(64)
-	,param_TemplateDescription nvarchar(256)
-	,OUT param_TemplateId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptemplatesgetall */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptemplatesgetall()
+begin
+
+select
+	templateid
+	,templatekey
+	,templatedescription
+	,templateiscurrent
+from
+	templates;
+
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptemplatesgetcurrent */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptemplatesgetcurrent()
+begin
+select
+	templateid
+	,templatekey
+	,templatedescription
+from
+	templates
+where
+	templateiscurrent = 1;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptemplatesinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptemplatesinsert(
+	param_templatekey nvarchar(64)
+	,param_templatedescription nvarchar(256)
+	,out param_templateid int
 )
-BEGIN
+begin
 -- ----------------------
--- If exist updates, if not insert
+-- if exist updates, if not insert
 -- ---------------------
-IF NOT EXISTS (SELECT TemplateKey FROM Templates WHERE TemplateKey = param_TemplateKey) THEN
-    INSERT INTO Templates
+if not exists (select templatekey from templates where templatekey = param_templatekey) then
+    insert into templates
     (
-        TemplateKey
-        ,TemplateDescription
-        ,TemplateDate
-        ,TemplateIsCurrent
+        templatekey
+        ,templatedescription
+        ,templatedate
+        ,templateiscurrent
     )
-    VALUES
+    values
     (
-        param_TemplateKey
-        ,param_TemplateDescription
-        ,UTC_TIMESTAMP()
+        param_templatekey
+        ,param_templatedescription
+        ,utc_timestamp()
         ,0
     );
 
-    SELECT LAST_INSERT_ID() INTO param_TemplateId;
-ELSE
-    UPDATE Templates
-    SET
-        TemplateDescription = param_TemplateDescription
-        ,TemplateDate = UTC_TIMESTAMP()
-    WHERE 
-        TemplateKey=param_TemplateKey;
-END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTemplatesUpdateCurrent */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTemplatesUpdateCurrent(param_TemplateId int)
-BEGIN
+    select last_insert_id() into param_templateid;
+else
+    update templates
+    set
+        templatedescription = param_templatedescription
+        ,templatedate = utc_timestamp()
+    where 
+        templatekey=param_templatekey;
+end if;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptemplatesupdatecurrent */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptemplatesupdatecurrent(param_templateid int)
+begin
 
 
-UPDATE Templates
-SET
-	TemplateIsCurrent = (CASE WHEN TemplateId = param_TemplateId THEN 1 ELSE 0 END);
+update templates
+set
+	templateiscurrent = (case when templateid = param_templateid then 1 else 0 end);
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsAddVisit */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsAddVisit(param_TopicId int)
-BEGIN
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsaddvisit */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsaddvisit(param_topicid int)
+begin
 
-UPDATE Topics
-SET
-	TopicViews = TopicViews+1
-WHERE
-	TopicId = param_TopicId;
+update topics
+set
+	topicviews = topicviews+1
+where
+	topicid = param_topicid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsClose */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsClose(
-	param_TopicId int
-	,param_UserId int
-	,param_Ip varchar(39)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsclose */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsclose(
+	param_topicid int
+	,param_userid int
+	,param_ip varchar(39)
 )
-BEGIN
+begin
 
-UPDATE Topics
-	SET
-		TopicIsClose = 1
-		,TopicLastEditDate = UTC_TIMESTAMP()
-		,TopicLastEditUser = param_UserId
-		,TopicLastEditIp = param_Ip
-	WHERE
-		TopicId = param_TopicId;
+update topics
+	set
+		topicisclose = 1
+		,topiclasteditdate = utc_timestamp()
+		,topiclastedituser = param_userid
+		,topiclasteditip = param_ip
+	where
+		topicid = param_topicid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsDelete(
-	param_TopicId int
-	,param_UserId int
-	,param_Ip varchar(39)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsdelete(
+	param_topicid int
+	,param_userid int
+	,param_ip varchar(39)
 )
-BEGIN
+begin
 /*
-- SETS THE TOPIC ACTIVE=0
-- UPDATES RECOUNT ON FORUM
+- sets the topic active=0
+- updates recount on forum
 */
 
-DECLARE var_ForumId int;
-SELECT ForumId INTO var_ForumId FROM Topics WHERE TopicId = param_TopicId;
+declare var_forumid int;
+select forumid into var_forumid from topics where topicid = param_topicid;
 
 
-	UPDATE Topics
-	SET
-		Active = 0
-		,TopicLastEditDate = UTC_TIMESTAMP()
-		,TopicLastEditUser = param_UserId
-		,TopicLastEditIp = param_Ip
-	WHERE
-		TopicId = param_TopicId;
+	update topics
+	set
+		active = 0
+		,topiclasteditdate = utc_timestamp()
+		,topiclastedituser = param_userid
+		,topiclasteditip = param_ip
+	where
+		topicid = param_topicid;
 
-  CALL SPForumsUpdateRecount (var_ForumId);
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGet */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGet(param_TopicId int)
-BEGIN
+  call spforumsupdaterecount (var_forumid);
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsget(param_topicid int)
+begin
 
-SELECT
-	T.TopicId
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.TopicDescription
-	,T.TopicCreationDate
-	,T.TopicViews
-	,T.TopicReplies
-	,T.UserId
-	,T.TopicTags
-	,T.TopicIsClose
-	,T.TopicOrder
-	,T.LastMessageId
-	,T.UserName
-	,T.ForumId
-	,T.ForumName
-	,T.ForumShortName
-	,T.ReadAccessGroupId
-	,T.PostAccessGroupId
-FROM
-	TopicsComplete T
-WHERE
-	T.TopicId = param_TopicId;
+select
+	t.topicid
+	,t.topictitle
+	,t.topicshortname
+	,t.topicdescription
+	,t.topiccreationdate
+	,t.topicviews
+	,t.topicreplies
+	,t.userid
+	,t.topictags
+	,t.topicisclose
+	,t.topicorder
+	,t.lastmessageid
+	,t.username
+	,t.forumid
+	,t.forumname
+	,t.forumshortname
+	,t.readaccessgroupid
+	,t.postaccessgroupid
+from
+	topicscomplete t
+where
+	t.topicid = param_topicid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetByForum */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetByForum(
-	param_ForumId int
-	,param_StartIndex int
-	,param_Length int
-	,param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetbyforum */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetbyforum(
+	param_forumid int
+	,param_startindex int
+	,param_length int
+	,param_usergroupid int
 )
-BEGIN
+begin
 
 prepare stmt from "
-SELECT
-		0	AS RowNumber
-		,T.TopicId
-		,T.TopicTitle
-		,T.TopicShortName
-		,T.TopicDescription
-		,T.TopicCreationDate
-		,T.TopicViews
-		,T.TopicReplies
-		,T.UserId
-		,T.TopicTags
-		,T.TopicIsClose
-		,T.TopicOrder
-		,T.LastMessageId
-		,T.UserName
-		,M.MessageCreationDate
-		,M.UserId AS MessageUserId
-		,MU.UserName AS MessageUserName
-		,T.ReadAccessGroupId
-		,T.PostAccessGroupId
-	FROM
-		TopicsComplete T
-		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-		LEFT JOIN Users MU ON MU.UserId = M.UserId
-	WHERE
-		T.ForumId = ?
-		AND
-		IFNULL(T.ReadAccessGroupId,-1) <= IFNULL(?,-1)
-  ORDER BY TopicOrder desc, TopicViews desc
-  LIMIT ?, ?";
+select
+		0	as rownumber
+		,t.topicid
+		,t.topictitle
+		,t.topicshortname
+		,t.topicdescription
+		,t.topiccreationdate
+		,t.topicviews
+		,t.topicreplies
+		,t.userid
+		,t.topictags
+		,t.topicisclose
+		,t.topicorder
+		,t.lastmessageid
+		,t.username
+		,m.messagecreationdate
+		,m.userid as messageuserid
+		,mu.username as messageusername
+		,t.readaccessgroupid
+		,t.postaccessgroupid
+	from
+		topicscomplete t
+		left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+		left join users mu on mu.userid = m.userid
+	where
+		t.forumid = ?
+		and
+		ifnull(t.readaccessgroupid,-1) <= ifnull(?,-1)
+  order by topicorder desc, topicviews desc
+  limit ?, ?";
 
-SET @param_ForumId = param_ForumId;
-SET @param_StartIndex = param_StartIndex;
-SET @param_Length = param_Length;
-SET @param_UserGroupId = param_UserGroupId;
+set @param_forumid = param_forumid;
+set @param_startindex = param_startindex;
+set @param_length = param_length;
+set @param_usergroupid = param_usergroupid;
 
-execute stmt using @param_ForumId, @param_UserGroupId, @param_StartIndex, @param_Length;
+execute stmt using @param_forumid, @param_usergroupid, @param_startindex, @param_length;
 
 deallocate prepare stmt;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetByForumLatest */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetByForumLatest(
-	param_ForumId int
-	,param_StartIndex int
-	,param_Length int
-	,param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetbyforumlatest */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetbyforumlatest(
+	param_forumid int
+	,param_startindex int
+	,param_length int
+	,param_usergroupid int
 )
-BEGIN
+begin
 prepare stmt from "
-SELECT
-		0	AS RowNumber
-		,T.TopicId
-		,T.TopicTitle
-		,T.TopicShortName
-		,T.TopicDescription
-		,T.TopicCreationDate
-		,T.TopicViews
-		,T.TopicReplies
-		,T.UserId
-		,T.TopicTags
-		,T.TopicIsClose
-		,T.TopicOrder
-		,T.LastMessageId
-		,T.UserName
-		,M.MessageCreationDate
-		,M.UserId AS MessageUserId
-		,MU.UserName AS MessageUserName
-		,T.ReadAccessGroupId
-		,T.PostAccessGroupId
-	FROM
-		TopicsComplete T
-		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-		LEFT JOIN Users MU ON MU.UserId = M.UserId
-	WHERE
-		T.ForumId = ?
-		AND
-		IFNULL(T.ReadAccessGroupId,-1) <= IFNULL(?,-1)
-  ORDER BY 
-    TopicOrder desc,
-    (CASE 
-        WHEN M.MessageCreationDate > T.TopicCreationDate THEN M.MessageCreationDate
-        ELSE T.TopicCreationDate
-    END) desc
-  LIMIT ?, ?";
+select
+		0	as rownumber
+		,t.topicid
+		,t.topictitle
+		,t.topicshortname
+		,t.topicdescription
+		,t.topiccreationdate
+		,t.topicviews
+		,t.topicreplies
+		,t.userid
+		,t.topictags
+		,t.topicisclose
+		,t.topicorder
+		,t.lastmessageid
+		,t.username
+		,m.messagecreationdate
+		,m.userid as messageuserid
+		,mu.username as messageusername
+		,t.readaccessgroupid
+		,t.postaccessgroupid
+	from
+		topicscomplete t
+		left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+		left join users mu on mu.userid = m.userid
+	where
+		t.forumid = ?
+		and
+		ifnull(t.readaccessgroupid,-1) <= ifnull(?,-1)
+  order by 
+    topicorder desc,
+    (case 
+        when m.messagecreationdate > t.topiccreationdate then m.messagecreationdate
+        else t.topiccreationdate
+    end) desc
+  limit ?, ?";
 
-SET @param_ForumId = param_ForumId;
-SET @param_StartIndex = param_StartIndex;
-SET @param_Length = param_Length;
-SET @param_UserGroupId = param_UserGroupId;
+set @param_forumid = param_forumid;
+set @param_startindex = param_startindex;
+set @param_length = param_length;
+set @param_usergroupid = param_usergroupid;
 
-execute stmt using @param_ForumId, @param_UserGroupId, @param_StartIndex, @param_Length;
+execute stmt using @param_forumid, @param_usergroupid, @param_startindex, @param_length;
 
 deallocate prepare stmt;
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetByForumUnanswered */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetByForumUnanswered(
-   param_ForumId int
-	,param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetbyforumunanswered */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetbyforumunanswered(
+   param_forumid int
+	,param_usergroupid int
 )
-BEGIN
+begin
 
-SELECT
-	T.TopicId
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.TopicDescription
-	,T.TopicCreationDate
-	,T.TopicViews
-	,T.TopicReplies
-	,T.UserId
-	,T.TopicTags
-	,T.TopicIsClose
-	,T.TopicOrder
-	,T.LastMessageId
-	,T.UserName
-	,M.MessageCreationDate
-	,M.UserId AS MessageUserId
-	,MU.UserName AS MessageUserName
-	,T.ReadAccessGroupId
-	,T.PostAccessGroupId
-FROM
-	TopicsComplete T
-	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-	LEFT JOIN Users MU ON MU.UserId = M.UserId
-WHERE
-	T.ForumId = param_ForumId
-	AND
-	T.TopicReplies = 0 -- Unanswered
-	AND
-	T.TopicOrder IS NULL -- Not sticky
-	AND
-	IFNULL(T.ReadAccessGroupId,-1) <= IFNULL(param_UserGroupId,-1)
-ORDER BY
-	TopicViews DESC, TopicId DESC;
+select
+	t.topicid
+	,t.topictitle
+	,t.topicshortname
+	,t.topicdescription
+	,t.topiccreationdate
+	,t.topicviews
+	,t.topicreplies
+	,t.userid
+	,t.topictags
+	,t.topicisclose
+	,t.topicorder
+	,t.lastmessageid
+	,t.username
+	,m.messagecreationdate
+	,m.userid as messageuserid
+	,mu.username as messageusername
+	,t.readaccessgroupid
+	,t.postaccessgroupid
+from
+	topicscomplete t
+	left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+	left join users mu on mu.userid = m.userid
+where
+	t.forumid = param_forumid
+	and
+	t.topicreplies = 0 -- unanswered
+	and
+	t.topicorder is null -- not sticky
+	and
+	ifnull(t.readaccessgroupid,-1) <= ifnull(param_usergroupid,-1)
+order by
+	topicviews desc, topicid desc;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetByRelated */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetByRelated(
-  param_Tag1 nvarchar(50)
-	,param_Tag2 nvarchar(50)
-	,param_Tag3 nvarchar(50)
-	,param_Tag4 nvarchar(50)
-	,param_Tag5 nvarchar(50)
-	,param_Tag6 nvarchar(50)
-	,param_TopicId int
-	,param_Amount int
-	,param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetbyrelated */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetbyrelated(
+  param_tag1 nvarchar(50)
+	,param_tag2 nvarchar(50)
+	,param_tag3 nvarchar(50)
+	,param_tag4 nvarchar(50)
+	,param_tag5 nvarchar(50)
+	,param_tag6 nvarchar(50)
+	,param_topicid int
+	,param_amount int
+	,param_usergroupid int
 )
-BEGIN
+begin
 
-CREATE TEMPORARY TABLE Temp_TagsParams (Tag nvarchar(50) NULL);
+create temporary table temp_tagsparams (tag nvarchar(50) null);
 
-INSERT INTO
-  Temp_TagsParams (Tag)
-SELECT
-  param_Tag1
-UNION
-SELECT param_Tag2
-UNION
-SELECT param_Tag3
-UNION
-SELECT param_Tag4
-UNION
-SELECT param_Tag5
-UNION
-SELECT param_Tag6;
+insert into
+  temp_tagsparams (tag)
+select
+  param_tag1
+union
+select param_tag2
+union
+select param_tag3
+union
+select param_tag4
+union
+select param_tag5
+union
+select param_tag6;
 
-SELECT
-	Ta.TagCount
-	,Topics.TopicId
-	,Topics.TopicTitle
-	,Topics.TopicShortName
-	,Topics.TopicDescription
-	,Topics.TopicCreationDate
-	,Topics.TopicViews
-	,Topics.TopicReplies
-	,Topics.ForumId
-	,Topics.ForumName
-	,Topics.ForumShortName
-	,Topics.TopicIsClose
-	,Topics.TopicOrder
-	,Topics.ReadAccessGroupId
-	,Topics.PostAccessGroupId
-FROM
+select
+	ta.tagcount
+	,topics.topicid
+	,topics.topictitle
+	,topics.topicshortname
+	,topics.topicdescription
+	,topics.topiccreationdate
+	,topics.topicviews
+	,topics.topicreplies
+	,topics.forumid
+	,topics.forumname
+	,topics.forumshortname
+	,topics.topicisclose
+	,topics.topicorder
+	,topics.readaccessgroupid
+	,topics.postaccessgroupid
+from
 	(
-	SELECT
-		T.TopicId
-		,COUNT(T.Tag) AS TagCount
-	FROM
-		Tags T
-		INNER JOIN Temp_TagsParams P ON T.Tag<=>P.Tag
-	GROUP BY
-		T.TopicId
+	select
+		t.topicid
+		,count(t.tag) as tagcount
+	from
+		tags t
+		inner join temp_tagsparams p on t.tag<=>p.tag
+	group by
+		t.topicid
 	)
-	Ta
-	INNER JOIN TopicsComplete Topics ON Topics.TopicId = Ta.TopicId
-WHERE
-	Topics.TopicId <> param_TopicId
-	AND
-	IFNULL(Topics.ReadAccessGroupId,-1) <= IFNULL(param_UserGroupId,-1)
-ORDER BY
-	Ta.TagCount desc, Topics.TopicViews desc;
+	ta
+	inner join topicscomplete topics on topics.topicid = ta.topicid
+where
+	topics.topicid <> param_topicid
+	and
+	ifnull(topics.readaccessgroupid,-1) <= ifnull(param_usergroupid,-1)
+order by
+	ta.tagcount desc, topics.topicviews desc;
 
-DROP TABLE Temp_TagsParams;
+drop table temp_tagsparams;
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetByTag */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetByTag(
-  param_Tag nvarchar(50)
-	,param_ForumId int
-	,param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetbytag */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetbytag(
+  param_tag nvarchar(50)
+	,param_forumid int
+	,param_usergroupid int
 )
-BEGIN
+begin
 -- remove the last char
-SET param_Tag = SUBSTRING(param_Tag, 1, CHAR_LENGTH(param_Tag)-1);
-SELECT
-		T.TopicId
-		,T.TopicTitle
-		,T.TopicShortName
-		,T.TopicDescription
-		,T.TopicCreationDate
-		,T.TopicViews
-		,T.TopicReplies
-		,T.UserId
-		,T.TopicTags
-		,T.TopicIsClose
-		,T.TopicOrder
-		,T.LastMessageId
-		,T.UserName
-		,M.MessageCreationDate
-		,M.UserId AS MessageUserId
-		,MU.UserName AS MessageUserName
-		,T.ReadAccessGroupId
-		,T.PostAccessGroupId
-FROM
-	Tags
-	INNER JOIN TopicsComplete T ON T.TopicId = Tags.TopicId
-	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-	LEFT JOIN Users MU ON MU.UserId = M.UserId
-WHERE
-	Tags.Tag LIKE CONCAT(param_Tag, '%')
-	AND
-	T.ForumId = param_ForumId
-	AND
-	IFNULL(T.ReadAccessGroupId,-1) <= IFNULL(param_UserGroupId,-1)
-ORDER BY TopicOrder DESC,TopicViews DESC;
+set param_tag = substring(param_tag, 1, char_length(param_tag)-1);
+select
+		t.topicid
+		,t.topictitle
+		,t.topicshortname
+		,t.topicdescription
+		,t.topiccreationdate
+		,t.topicviews
+		,t.topicreplies
+		,t.userid
+		,t.topictags
+		,t.topicisclose
+		,t.topicorder
+		,t.lastmessageid
+		,t.username
+		,m.messagecreationdate
+		,m.userid as messageuserid
+		,mu.username as messageusername
+		,t.readaccessgroupid
+		,t.postaccessgroupid
+from
+	tags
+	inner join topicscomplete t on t.topicid = tags.topicid
+	left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+	left join users mu on mu.userid = m.userid
+where
+	tags.tag like concat(param_tag, '%')
+	and
+	t.forumid = param_forumid
+	and
+	ifnull(t.readaccessgroupid,-1) <= ifnull(param_usergroupid,-1)
+order by topicorder desc,topicviews desc;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetByUser */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetByUser(
-	param_UserId int
-	,param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetbyuser */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetbyuser(
+	param_userid int
+	,param_usergroupid int
 )
-BEGIN
+begin
 
-SELECT
-	T.TopicId
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.TopicDescription
-	,T.TopicCreationDate
-	,T.TopicViews
-	,T.TopicReplies
-	,T.UserId
-	,T.TopicTags
-	,T.TopicIsClose
-	,T.TopicOrder
-	,T.LastMessageId
-	,T.UserName
-	,M.MessageCreationDate
-	,T.ReadAccessGroupId
-	,T.PostAccessGroupId
-FROM
-	TopicsComplete T
-	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-WHERE
-	T.UserId = param_UserId
-	AND
-	IFNULL(T.ReadAccessGroupId,-1) <= IFNULL(param_UserGroupId,-1)
-ORDER BY T.TopicId desc;
+select
+	t.topicid
+	,t.topictitle
+	,t.topicshortname
+	,t.topicdescription
+	,t.topiccreationdate
+	,t.topicviews
+	,t.topicreplies
+	,t.userid
+	,t.topictags
+	,t.topicisclose
+	,t.topicorder
+	,t.lastmessageid
+	,t.username
+	,m.messagecreationdate
+	,t.readaccessgroupid
+	,t.postaccessgroupid
+from
+	topicscomplete t
+	left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+where
+	t.userid = param_userid
+	and
+	ifnull(t.readaccessgroupid,-1) <= ifnull(param_usergroupid,-1)
+order by t.topicid desc;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetLatest */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetLatest(
-    param_UserGroupId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetlatest */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetlatest(
+    param_usergroupid int
 )
-BEGIN
+begin
 
 /*
-	Gets the latest messages in all forums	
+	gets the latest messages in all forums	
 */
-	SELECT   
-		T.TopicId
-		,T.TopicTitle
-		,T.TopicShortName
-		,T.TopicDescription
-		,T.TopicCreationDate
-		,T.TopicViews
-		,T.TopicReplies
-		,T.UserId
-		,T.TopicTags
-		,T.TopicIsClose
-		,T.TopicOrder
-		,T.LastMessageId
-		,T.UserName
-		,M.MessageCreationDate
-	FROM
-		TopicsComplete T
-		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-	WHERE
-		IFNULL(T.ReadAccessGroupId,-1) <= IFNULL(param_UserGroupId,-1)
-	ORDER BY T.TopicId desc
-  LIMIT 20;
+	select   
+		t.topicid
+		,t.topictitle
+		,t.topicshortname
+		,t.topicdescription
+		,t.topiccreationdate
+		,t.topicviews
+		,t.topicreplies
+		,t.userid
+		,t.topictags
+		,t.topicisclose
+		,t.topicorder
+		,t.lastmessageid
+		,t.username
+		,m.messagecreationdate
+	from
+		topicscomplete t
+		left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+	where
+		ifnull(t.readaccessgroupid,-1) <= ifnull(param_usergroupid,-1)
+	order by t.topicid desc
+  limit 20;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetMessagesByUser */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetMessagesByUser(
-	param_UserId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetmessagesbyuser */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetmessagesbyuser(
+	param_userid int
 )
-BEGIN
+begin
 /*
-Gets the messages posted by the user grouped by topic
+gets the messages posted by the user grouped by topic
 */
-SELECT
-	T.TopicId
-	,M.MessageId
-	,M.MessageCreationDate
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.TopicDescription
-	,T.TopicCreationDate
-	,T.TopicViews
-	,T.TopicReplies
-	,T.UserId
-	,T.TopicTags
-	,T.TopicIsClose
-	,T.TopicOrder
-FROM
-	TopicsComplete T
-	INNER JOIN Messages M ON M.TopicId = T.TopicId
-WHERE
-	M.UserId = param_UserId
-ORDER BY T.TopicId desc, M.MessageId desc;
+select
+	t.topicid
+	,m.messageid
+	,m.messagecreationdate
+	,t.topictitle
+	,t.topicshortname
+	,t.topicdescription
+	,t.topiccreationdate
+	,t.topicviews
+	,t.topicreplies
+	,t.userid
+	,t.topictags
+	,t.topicisclose
+	,t.topicorder
+from
+	topicscomplete t
+	inner join messages m on m.topicid = t.topicid
+where
+	m.userid = param_userid
+order by t.topicid desc, m.messageid desc;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsGetUnanswered */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsGetUnanswered()
-BEGIN
-SELECT
-	T.TopicId
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.TopicDescription
-	,T.TopicCreationDate
-	,T.TopicViews
-	,T.TopicReplies
-	,T.UserId
-	,T.TopicTags
-	,T.TopicIsClose
-	,T.TopicOrder
-	,T.LastMessageId
-	,T.UserName
-	,M.MessageCreationDate
-	,T.ForumId
-	,T.ForumName
-	,T.ForumShortName
-FROM
-	TopicsComplete T
-	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-WHERE
-	T.TopicReplies = 0 -- Unanswered
-	AND
-	T.TopicOrder IS NULL -- Not sticky
-ORDER BY
-	TopicId DESC;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsInsert(
-	param_TopicTitle nvarchar(255)
-	,param_TopicShortName nvarchar(64)
-	,param_TopicDescription longtext
-	,param_UserId int
-	,param_TopicTags nvarchar(256)
-	,param_TopicOrder int
-	,param_Forum nvarchar(32)
-	,param_Ip varchar(39)
-	,param_ReadAccessGroupId smallint
-	,param_PostAccessGroupId smallint
-	,OUT param_TopicId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsgetunanswered */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsgetunanswered()
+begin
+select
+	t.topicid
+	,t.topictitle
+	,t.topicshortname
+	,t.topicdescription
+	,t.topiccreationdate
+	,t.topicviews
+	,t.topicreplies
+	,t.userid
+	,t.topictags
+	,t.topicisclose
+	,t.topicorder
+	,t.lastmessageid
+	,t.username
+	,m.messagecreationdate
+	,t.forumid
+	,t.forumname
+	,t.forumshortname
+from
+	topicscomplete t
+	left join messages m on m.topicid = t.topicid and m.messageid = t.lastmessageid and m.active = 1
+where
+	t.topicreplies = 0 -- unanswered
+	and
+	t.topicorder is null -- not sticky
+order by
+	topicid desc;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsinsert(
+	param_topictitle nvarchar(255)
+	,param_topicshortname nvarchar(64)
+	,param_topicdescription longtext
+	,param_userid int
+	,param_topictags nvarchar(256)
+	,param_topicorder int
+	,param_forum nvarchar(32)
+	,param_ip varchar(39)
+	,param_readaccessgroupid smallint
+	,param_postaccessgroupid smallint
+	,out param_topicid int
 )
-BEGIN
+begin
 
-DECLARE var_ForumId int;
+declare var_forumid int;
 
-DECLARE EXIT HANDLER FOR SQLEXCEPTION
-BEGIN
-  ROLLBACK;
-END;
+declare exit handler for sqlexception
+begin
+  rollback;
+end;
 
-SELECT ForumId INTO var_ForumId FROM Forums WHERE ForumShortName = param_Forum;
-SET param_TopicTags = LOWER(param_TopicTags);
+select forumid into var_forumid from forums where forumshortname = param_forum;
+set param_topictags = lower(param_topictags);
 
-IF param_TopicOrder IS NOT NULL THEN
-	SELECT param_TopicOrder = MAX(TopicOrder)+1 FROM Topics;
-	SELECT param_TopicOrder = IFNULL(param_TopicOrder, 1);
-END IF;
+if param_topicorder is not null then
+	select param_topicorder = max(topicorder)+1 from topics;
+	select param_topicorder = ifnull(param_topicorder, 1);
+end if;
 
-START TRANSACTION;
+start transaction;
 
-	INSERT INTO Topics
+	insert into topics
 	(
-	TopicTitle
-	,TopicShortName
-	,TopicDescription
-	,TopicCreationDate
-	,TopicLastEditDate
-	,TopicViews
-	,TopicReplies
-	,UserId
-	,TopicTags
-	,ForumId
-	,TopicLastEditUser
-	,TopicLastEditIp
-	,Active
-	,TopicIsClose
-	,TopicOrder
-	,MessagesIdentity
-	,ReadAccessGroupId
-	,PostAccessGroupId
+	topictitle
+	,topicshortname
+	,topicdescription
+	,topiccreationdate
+	,topiclasteditdate
+	,topicviews
+	,topicreplies
+	,userid
+	,topictags
+	,forumid
+	,topiclastedituser
+	,topiclasteditip
+	,active
+	,topicisclose
+	,topicorder
+	,messagesidentity
+	,readaccessgroupid
+	,postaccessgroupid
 	)
-	VALUES
+	values
 	(
-	param_TopicTitle
-	,param_TopicShortName
-	,param_TopicDescription
-	,UTC_TIMESTAMP()
-	,UTC_TIMESTAMP()
-	,0 -- TopicViews
-	,0 -- TopicReplies
-	,param_UserId
-	,param_TopicTags
-	,var_ForumId
-	,param_UserId
-	,param_Ip
-	,1 -- Active
-	,0 -- TopicIsClose
-	,param_TopicOrder
-	,0 -- MessageIdentity
-	,param_ReadAccessGroupId
-	,param_PostAccessGroupId
+	param_topictitle
+	,param_topicshortname
+	,param_topicdescription
+	,utc_timestamp()
+	,utc_timestamp()
+	,0 -- topicviews
+	,0 -- topicreplies
+	,param_userid
+	,param_topictags
+	,var_forumid
+	,param_userid
+	,param_ip
+	,1 -- active
+	,0 -- topicisclose
+	,param_topicorder
+	,0 -- messageidentity
+	,param_readaccessgroupid
+	,param_postaccessgroupid
 	);
 
-	SET param_TopicId = LAST_INSERT_ID();
+	set param_topicid = last_insert_id();
 
-	-- Add tags
-  SET @Tags=param_TopicTags;
-  SET @TopicId=param_TopicId;
-  SET @ForumId=var_ForumId;
-	CALL SPTagsInsert (@Tags, @TopicId, null);
+	-- add tags
+  set @tags=param_topictags;
+  set @topicid=param_topicid;
+  set @forumid=var_forumid;
+	call sptagsinsert (@tags, @topicid, null);
 
-	-- Update forums
-	CALL SPForumsUpdateRecount (@ForumId);
-COMMIT;
+	-- update forums
+	call spforumsupdaterecount (@forumid);
+commit;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsMove */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsMove(
-	param_TopicId int
-	,param_ForumId int
-	,param_UserId int
-	,param_Ip varchar(39)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsmove */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsmove(
+	param_topicid int
+	,param_forumid int
+	,param_userid int
+	,param_ip varchar(39)
 )
-BEGIN
+begin
 
-DECLARE var_PreviousForumId int;
+declare var_previousforumid int;
 
-DECLARE EXIT HANDLER FOR SQLEXCEPTION
-BEGIN
-  ROLLBACK;
-  -- RESIGNAL;
-END;
-START TRANSACTION;
-  SELECT ForumId INTO var_PreviousForumId FROM Topics WHERE TopicId = param_TopicId;
-	UPDATE Topics
-	SET
-		ForumId = param_ForumId
-		,TopicLastEditDate = UTC_TIMESTAMP()
-		,TopicLastEditUser = param_UserId
-		,TopicLastEditIp = param_Ip
-	WHERE
-		TopicId = param_TopicId;
+declare exit handler for sqlexception
+begin
+  rollback;
+  -- resignal;
+end;
+start transaction;
+  select forumid into var_previousforumid from topics where topicid = param_topicid;
+	update topics
+	set
+		forumid = param_forumid
+		,topiclasteditdate = utc_timestamp()
+		,topiclastedituser = param_userid
+		,topiclasteditip = param_ip
+	where
+		topicid = param_topicid;
 
-  SET @ForumId = param_ForumId;
-  SET @PreviousForumId = var_PreviousForumId;
-	CALL SPForumsUpdateRecount (@ForumId);
-	CALL SPForumsUpdateRecount (@PreviousForumId);
+  set @forumid = param_forumid;
+  set @previousforumid = var_previousforumid;
+	call spforumsupdaterecount (@forumid);
+	call spforumsupdaterecount (@previousforumid);
 
-COMMIT;
+commit;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsOpen */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsOpen(
-	param_TopicId int
-	,param_UserId int
-	,param_Ip varchar(39)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsopen */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsopen(
+	param_topicid int
+	,param_userid int
+	,param_ip varchar(39)
 )
-BEGIN
-	UPDATE Topics
-	SET
-		TopicIsClose = 0
-		,TopicLastEditDate = UTC_TIMESTAMP()
-		,TopicLastEditUser = param_UserId
-		,TopicLastEditIp = param_Ip
-	WHERE
-		TopicId = param_TopicId;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsSubscriptionsDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsSubscriptionsDelete(
-	param_TopicId int
-	,param_UserId int
-	,param_Userguid char(32)
+begin
+	update topics
+	set
+		topicisclose = 0
+		,topiclasteditdate = utc_timestamp()
+		,topiclastedituser = param_userid
+		,topiclasteditip = param_ip
+	where
+		topicid = param_topicid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicssubscriptionsdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsdelete(
+	param_topicid int
+	,param_userid int
+	,param_userguid char(32)
 )
-BEGIN
+begin
 
-DELETE S
-FROM
-	TopicsSubscriptions S
-	INNER JOIN Users U
-WHERE
-  U.UserId = S.UserId
-  AND
-	S.TopicId = param_TopicId
-	AND
-	S.UserId = param_UserId
-	AND
-	U.UserGuid = param_UserGuid;
+delete s
+from
+	topicssubscriptions s
+	inner join users u
+where
+  u.userid = s.userid
+  and
+	s.topicid = param_topicid
+	and
+	s.userid = param_userid
+	and
+	u.userguid = param_userguid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsSubscriptionsGetByTopic */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsSubscriptionsGetByTopic(
-	param_TopicId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicssubscriptionsgetbytopic */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsgetbytopic(
+	param_topicid int
 )
-BEGIN
+begin
 /*
-	Gets the active users subscribed to a topic.
-	Checks read access of topic vs user role
+	gets the active users subscribed to a topic.
+	checks read access of topic vs user role
 */
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserEmail
-	,U.UserEmailPolicy
-	,U.UserGuid
-FROM
-	TopicsSubscriptions S
-	INNER JOIN Topics T ON T.TopicId = S.TopicId
-	INNER JOIN Users U ON U.UserId = S.UserId
-WHERE
-	S.TopicId = param_TopicId
-	AND
-	U.Active = 1
-	AND
-	U.UserGroupId >= IFNULL(T.ReadAccessGroupId, -1);
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsSubscriptionsGetByUser */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsSubscriptionsGetByUser(
-  param_UserId int
+select
+	u.userid
+	,u.username
+	,u.useremail
+	,u.useremailpolicy
+	,u.userguid
+from
+	topicssubscriptions s
+	inner join topics t on t.topicid = s.topicid
+	inner join users u on u.userid = s.userid
+where
+	s.topicid = param_topicid
+	and
+	u.active = 1
+	and
+	u.usergroupid >= ifnull(t.readaccessgroupid, -1);
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicssubscriptionsgetbyuser */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsgetbyuser(
+  param_userid int
 )
-BEGIN
+begin
 
-SELECT
-	T.TopicId
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.ForumId
-	,T.ForumName
-	,T.ForumShortName
-FROM
-	TopicsSubscriptions S
-	INNER JOIN TopicsComplete T ON T.TopicId = S.TopicId
-WHERE
-	S.UserId = param_UserId
-ORDER BY
-	S.TopicId DESC;
+select
+	t.topicid
+	,t.topictitle
+	,t.topicshortname
+	,t.forumid
+	,t.forumname
+	,t.forumshortname
+from
+	topicssubscriptions s
+	inner join topicscomplete t on t.topicid = s.topicid
+where
+	s.userid = param_userid
+order by
+	s.topicid desc;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsSubscriptionsInsert */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsSubscriptionsInsert(
-	param_TopicId int
-	,param_UserId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicssubscriptionsinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsinsert(
+	param_topicid int
+	,param_userid int
 )
-BEGIN
-IF NOT EXISTS (SELECT TopicId FROM TopicsSubscriptions WHERE TopicId = param_TopicId AND UserID = param_UserId) THEN
-	INSERT INTO TopicsSubscriptions
-	(TopicId, UserId)
-	VALUES
-	(param_TopicId, param_UserId);
-END IF;
+begin
+if not exists (select topicid from topicssubscriptions where topicid = param_topicid and userid = param_userid) then
+	insert into topicssubscriptions
+	(topicid, userid)
+	values
+	(param_topicid, param_userid);
+end if;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsUpdate */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsUpdate(
-	param_TopicId int
-	,param_TopicTitle nvarchar(256)
-	,param_TopicDescription longtext
-	,param_UserId int
-	,param_TopicTags nvarchar(256)
-	,param_TopicOrder int
-	,param_ReadAccessGroupId smallint
-	,param_PostAccessGroupId smallint
-	,param_Ip varchar(39)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsupdate */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsupdate(
+	param_topicid int
+	,param_topictitle nvarchar(256)
+	,param_topicdescription longtext
+	,param_userid int
+	,param_topictags nvarchar(256)
+	,param_topicorder int
+	,param_readaccessgroupid smallint
+	,param_postaccessgroupid smallint
+	,param_ip varchar(39)
 )
-BEGIN
+begin
 
-DECLARE var_PreviousTags nvarchar(256);
+declare var_previoustags nvarchar(256);
 
-START TRANSACTION;
+start transaction;
 
-  SELECT TopicTags INTO var_PreviousTags FROM Topics WHERE TopicId=param_TopicId;
+  select topictags into var_previoustags from topics where topicid=param_topicid;
 
-  IF param_TopicOrder IS NOT NULL THEN
-	  SELECT MAX(TopicOrder)+1 INTO param_TopicOrder FROM Topics;
-  	SET param_TopicOrder = IFNULL(param_TopicOrder, 1);
-  END IF;
+  if param_topicorder is not null then
+	  select max(topicorder)+1 into param_topicorder from topics;
+  	set param_topicorder = ifnull(param_topicorder, 1);
+  end if;
 
 
-	UPDATE Topics T
-	SET
-		TopicTitle = param_TopicTitle
-		,TopicDescription = param_TopicDescription
-		,TopicLastEditDate = UTC_TIMESTAMP()
-		,TopicTags = param_TopicTags
-		,TopicLastEditUser = param_UserId
-		,TopicLastEditIp = param_Ip
-		,TopicOrder = param_TopicOrder
-		,ReadAccessGroupId = param_ReadAccessGroupId
-		,PostAccessGroupId = param_PostAccessGroupId
-	WHERE
-		TopicId = param_TopicId;
+	update topics t
+	set
+		topictitle = param_topictitle
+		,topicdescription = param_topicdescription
+		,topiclasteditdate = utc_timestamp()
+		,topictags = param_topictags
+		,topiclastedituser = param_userid
+		,topiclasteditip = param_ip
+		,topicorder = param_topicorder
+		,readaccessgroupid = param_readaccessgroupid
+		,postaccessgroupid = param_postaccessgroupid
+	where
+		topicid = param_topicid;
 
-	-- Edit tags
-  SET @Tags=param_TopicTags;
-  SET @TopicId=param_TopicId;
-  SET @PreviousTags=var_PreviousTags;
-	CALL SPTagsInsert (@Tags, @TopicId, @PreviousTags);
+	-- edit tags
+  set @tags=param_topictags;
+  set @topicid=param_topicid;
+  set @previoustags=var_previoustags;
+	call sptagsinsert (@tags, @topicid, @previoustags);
 
-COMMIT;
+commit;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPTopicsUpdateLastMessage */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPTopicsUpdateLastMessage(
-	param_TopicId int
-	,param_MessageId int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists sptopicsupdatelastmessage */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure sptopicsupdatelastmessage(
+	param_topicid int
+	,param_messageid int
 )
-BEGIN
+begin
 
-UPDATE Topics
-SET
-	TopicReplies = TopicReplies + 1
-	,LastMessageId = param_MessageId
-WHERE
-	TopicId = param_TopicId;
+update topics
+set
+	topicreplies = topicreplies + 1
+	,lastmessageid = param_messageid
+where
+	topicid = param_topicid;
 
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersDelete */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersDelete(param_UserId int)
-BEGIN
-UPDATE Users
-SET
-	Active = 0
-WHERE
-	UserId = param_UserId;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersDemote */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersDemote(param_UserId int)
-BEGIN
-DECLARE var_UserGroupId int;
-SELECT UserGroupId INTO var_UserGroupId FROM Users WHERE UserId = param_UserId;
-SELECT MAX(UserGroupId) INTO var_UserGroupId FROM UsersGroups WHERE UserGroupId < var_UserGroupId;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersdelete(param_userid int)
+begin
+update users
+set
+	active = 0
+where
+	userid = param_userid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersdemote */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersdemote(param_userid int)
+begin
+declare var_usergroupid int;
+select usergroupid into var_usergroupid from users where userid = param_userid;
+select max(usergroupid) into var_usergroupid from usersgroups where usergroupid < var_usergroupid;
 
-IF var_UserGroupId IS NOT NULL THEN
-	UPDATE Users
-	SET
-		UserGroupId = var_UserGroupId
-	WHERE
-		UserId = param_UserId;
-END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGet */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGet(param_UserId int)
-BEGIN
+if var_usergroupid is not null then
+	update users
+	set
+		usergroupid = var_usergroupid
+	where
+		userid = param_userid;
+end if;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersget(param_userid int)
+begin
 
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserProfile
-	,U.UserSignature
-	,U.UserGroupId
-	,U.UserBirthDate
-	,U.UserWebsite
-	,U.UserTimezone
-	,U.UserPhoto
-	,U.UserRegistrationDate
-	,U.UserExternalProfileUrl
-	,U.UserEmail
-	,U.UserEmailPolicy
-	,UG.UserGroupId
-	,UG.UserGroupName
-FROM
-	Users U
-	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
-WHERE
-	U.UserId = param_UserId;
+select
+	u.userid
+	,u.username
+	,u.userprofile
+	,u.usersignature
+	,u.usergroupid
+	,u.userbirthdate
+	,u.userwebsite
+	,u.usertimezone
+	,u.userphoto
+	,u.userregistrationdate
+	,u.userexternalprofileurl
+	,u.useremail
+	,u.useremailpolicy
+	,ug.usergroupid
+	,ug.usergroupname
+from
+	users u
+	inner join usersgroups ug on ug.usergroupid = u.usergroupid
+where
+	u.userid = param_userid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGetAll */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGetAll()
-BEGIN
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserProfile
-	,U.UserSignature
-	,U.UserGroupId
-	,U.UserBirthDate
-	,U.UserWebsite
-	,U.UserTimezone
-	,U.UserPhoto
-	,U.UserRegistrationDate
-	,UG.UserGroupId
-	,UG.UserGroupName
-FROM
-	Users U
-	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
-WHERE
-	U.Active = 1
-ORDER BY
-	U.UserName;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgetall */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgetall()
+begin
+select
+	u.userid
+	,u.username
+	,u.userprofile
+	,u.usersignature
+	,u.usergroupid
+	,u.userbirthdate
+	,u.userwebsite
+	,u.usertimezone
+	,u.userphoto
+	,u.userregistrationdate
+	,ug.usergroupid
+	,ug.usergroupname
+from
+	users u
+	inner join usersgroups ug on ug.usergroupid = u.usergroupid
+where
+	u.active = 1
+order by
+	u.username;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGetByName */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGetByName(
-  param_UserName nvarchar(50)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgetbyname */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgetbyname(
+  param_username nvarchar(50)
 )
-BEGIN
+begin
 
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserProfile
-	,U.UserSignature
-	,U.UserGroupId
-	,U.UserBirthDate
-	,U.UserWebsite
-	,U.UserTimezone
-	,U.UserPhoto
-	,U.UserRegistrationDate
-	,UG.UserGroupId
-	,UG.UserGroupName
-FROM
-	Users U
-	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
-WHERE
-	U.UserName LIKE CONCAT('%', param_UserName, '%')
-	AND
-	U.Active = 1
-ORDER BY
-	U.UserName;
+select
+	u.userid
+	,u.username
+	,u.userprofile
+	,u.usersignature
+	,u.usergroupid
+	,u.userbirthdate
+	,u.userwebsite
+	,u.usertimezone
+	,u.userphoto
+	,u.userregistrationdate
+	,ug.usergroupid
+	,ug.usergroupname
+from
+	users u
+	inner join usersgroups ug on ug.usergroupid = u.usergroupid
+where
+	u.username like concat('%', param_username, '%')
+	and
+	u.active = 1
+order by
+	u.username;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGetByPasswordResetGuid */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGetByPasswordResetGuid(
-	param_Provider nvarchar(32)
-	,param_PasswordResetGuid nvarchar(64)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgetbypasswordresetguid */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgetbypasswordresetguid(
+	param_provider nvarchar(32)
+	,param_passwordresetguid nvarchar(64)
 )
-BEGIN
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-	,U.UserProviderId
-	,U.PasswordResetGuid
-	,U.PasswordResetGuidExpireDate
-FROM
-	Users U
-WHERE
-	UserProvider = param_Provider
-	AND
-	PasswordResetGuid = param_PasswordResetGuid;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGetByProvider */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGetByProvider(
-	param_Provider nvarchar(32)
-	,param_ProviderId nvarchar(64)
+begin
+select
+	u.userid
+	,u.username
+	,u.usergroupid
+	,u.userguid
+	,u.usertimezone
+	,u.userexternalprofileurl
+	,u.userproviderlastcall
+	,u.useremail
+	,u.userproviderid
+	,u.passwordresetguid
+	,u.passwordresetguidexpiredate
+from
+	users u
+where
+	userprovider = param_provider
+	and
+	passwordresetguid = param_passwordresetguid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgetbyprovider */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgetbyprovider(
+	param_provider nvarchar(32)
+	,param_providerid nvarchar(64)
 )
-BEGIN
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-FROM
-	Users U
-WHERE
-	UserProvider = param_Provider
-	AND
-	UserProviderId = param_ProviderId
-	AND
-	U.Active = 1;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGetTestUser */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGetTestUser()
-BEGIN
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-FROM
-	Users U
-WHERE
-	U.Active = 1
-ORDER BY
-	U.UserGroupId DESC
-LIMIT 1;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGroupsGet */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGroupsGet(param_UserGroupId smallint)
-BEGIN
+begin
+select
+	u.userid
+	,u.username
+	,u.usergroupid
+	,u.userguid
+	,u.usertimezone
+	,u.userexternalprofileurl
+	,u.userproviderlastcall
+	,u.useremail
+from
+	users u
+where
+	userprovider = param_provider
+	and
+	userproviderid = param_providerid
+	and
+	u.active = 1;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgettestuser */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgettestuser()
+begin
+select
+	u.userid
+	,u.username
+	,u.usergroupid
+	,u.userguid
+	,u.usertimezone
+	,u.userexternalprofileurl
+	,u.userproviderlastcall
+	,u.useremail
+from
+	users u
+where
+	u.active = 1
+order by
+	u.usergroupid desc
+limit 1;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgroupsget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgroupsget(param_usergroupid smallint)
+begin
 
-SELECT
-	UserGroupId
-	,UserGroupName
-FROM
-	UsersGroups
-WHERE
-	UserGroupId = param_UserGroupId;
+select
+	usergroupid
+	,usergroupname
+from
+	usersgroups
+where
+	usergroupid = param_usergroupid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersGroupsGetAll */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersGroupsGetAll()
-BEGIN
-    SELECT 
-        UserGroupId
-        ,UserGroupName
-    FROM
-        UsersGroups
-    ORDER BY 
-        UserGroupId ASC;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersInsertFromProvider */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersInsertFromProvider(
-  param_UserName nvarchar(50)
-	,param_UserProfile longtext
-	,param_UserSignature longtext
-	,param_UserGroupId smallint
-	,param_UserBirthDate datetime
-	,param_UserWebsite nvarchar(255)
-	,param_UserGuid char(32)
-	,param_UserTimezone decimal(9,2)
-	,param_UserEmail nvarchar(100)
-	,param_UserEmailPolicy int
-	,param_UserPhoto nvarchar(1024)
-	,param_UserExternalProfileUrl nvarchar(255)
-	,param_UserProvider nvarchar(32)
-	,param_UserProviderId nvarchar(64)
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersgroupsgetall */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersgroupsgetall()
+begin
+    select 
+        usergroupid
+        ,usergroupname
+    from
+        usersgroups
+    order by 
+        usergroupid asc;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersinsertfromprovider */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersinsertfromprovider(
+  param_username nvarchar(50)
+	,param_userprofile longtext
+	,param_usersignature longtext
+	,param_usergroupid smallint
+	,param_userbirthdate datetime
+	,param_userwebsite nvarchar(255)
+	,param_userguid char(32)
+	,param_usertimezone decimal(9,2)
+	,param_useremail nvarchar(100)
+	,param_useremailpolicy int
+	,param_userphoto nvarchar(1024)
+	,param_userexternalprofileurl nvarchar(255)
+	,param_userprovider nvarchar(32)
+	,param_userproviderid nvarchar(64)
  )
-BEGIN
+begin
 
--- If it is the first active user -> make it an admin
-DECLARE var_UserCount int;
-DECLARE var_UserId int;
-SELECT COUNT(UserId) INTO var_UserCount FROM Users WHERE Active = 1;
-IF IFNULL(var_UserCount, 0) > 0 THEN
- SET param_UserGroupId = 1;
-ELSE
-  SELECT MAX(UserGroupId) INTO param_UserGroupId FROM UsersGroups;
-END IF;
+-- if it is the first active user -> make it an admin
+declare var_usercount int;
+declare var_userid int;
+select count(userid) into var_usercount from users where active = 1;
+if ifnull(var_usercount, 0) > 0 then
+ set param_usergroupid = 1;
+else
+  select max(usergroupid) into param_usergroupid from usersgroups;
+end if;
 
-INSERT INTO Users
-   (UserName
-   ,UserProfile
-   ,UserSignature
-   ,UserGroupId
-   ,Active
-   ,UserBirthDate
-   ,UserWebsite
-   ,UserGuid
-   ,UserTimezone
-   ,UserEmail
-   ,UserEmailPolicy
-   ,UserPhoto
-   ,UserRegistrationDate
-   ,UserExternalProfileUrl
-   ,UserProvider
-   ,UserProviderId
-   ,UserProviderLastCall)
-VALUES
-	(param_UserName
-   ,param_UserProfile
-   ,param_UserSignature
-   ,param_UserGroupId
-   ,1 -- Active
-   ,param_UserBirthDate
-   ,param_UserWebsite
-   ,param_UserGuid
-   ,param_UserTimezone
-   ,param_UserEmail
-   ,param_UserEmailPolicy
-   ,param_UserPhoto
-   ,UTC_TIMESTAMP() -- RegitrationDate
-   ,param_UserExternalProfileUrl
-   ,param_UserProvider
-   ,param_UserProviderId
-   ,UTC_TIMESTAMP() -- UserProviderLastCall
+insert into users
+   (username
+   ,userprofile
+   ,usersignature
+   ,usergroupid
+   ,active
+   ,userbirthdate
+   ,userwebsite
+   ,userguid
+   ,usertimezone
+   ,useremail
+   ,useremailpolicy
+   ,userphoto
+   ,userregistrationdate
+   ,userexternalprofileurl
+   ,userprovider
+   ,userproviderid
+   ,userproviderlastcall)
+values
+	(param_username
+   ,param_userprofile
+   ,param_usersignature
+   ,param_usergroupid
+   ,1 -- active
+   ,param_userbirthdate
+   ,param_userwebsite
+   ,param_userguid
+   ,param_usertimezone
+   ,param_useremail
+   ,param_useremailpolicy
+   ,param_userphoto
+   ,utc_timestamp() -- regitrationdate
+   ,param_userexternalprofileurl
+   ,param_userprovider
+   ,param_userproviderid
+   ,utc_timestamp() -- userproviderlastcall
 	);
 
-select LAST_INSERT_ID() INTO var_UserId;
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-FROM
-	Users U
-WHERE
-	U.UserId = var_UserId;
+select last_insert_id() into var_userid;
+select
+	u.userid
+	,u.username
+	,u.usergroupid
+	,u.userguid
+	,u.usertimezone
+	,u.userexternalprofileurl
+	,u.userproviderlastcall
+	,u.useremail
+from
+	users u
+where
+	u.userid = var_userid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersPromote */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersPromote(param_UserId int)
-BEGIN
-DECLARE var_UserGroupId int;
-SELECT UserGroupId INTO var_UserGroupId FROM Users WHERE UserId = param_UserId;
-SELECT MIN(UserGroupId) INTO var_UserGroupId FROM UsersGroups WHERE UserGroupId > var_UserGroupId;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spuserspromote */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spuserspromote(param_userid int)
+begin
+declare var_usergroupid int;
+select usergroupid into var_usergroupid from users where userid = param_userid;
+select min(usergroupid) into var_usergroupid from usersgroups where usergroupid > var_usergroupid;
 
-IF var_UserGroupId IS NOT NULL THEN
-	UPDATE Users
-	SET
-		UserGroupId = var_UserGroupId
-	WHERE
-		UserId = param_UserId;
-END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersUpdate */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersUpdate(
-	param_UserId int
-	,param_UserName nvarchar(50)
-	,param_UserProfile longtext
-	,param_UserSignature longtext
-	,param_UserBirthDate datetime
-	,param_UserWebsite nvarchar(255)
-	,param_UserTimezone decimal(9,2)
-	,param_UserEmail nvarchar(100)
-	,param_UserEmailPolicy int
-	,param_UserPhoto nvarchar(1024)
-	,param_UserExternalProfileUrl nvarchar(255)
+if var_usergroupid is not null then
+	update users
+	set
+		usergroupid = var_usergroupid
+	where
+		userid = param_userid;
+end if;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersupdate */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersupdate(
+	param_userid int
+	,param_username nvarchar(50)
+	,param_userprofile longtext
+	,param_usersignature longtext
+	,param_userbirthdate datetime
+	,param_userwebsite nvarchar(255)
+	,param_usertimezone decimal(9,2)
+	,param_useremail nvarchar(100)
+	,param_useremailpolicy int
+	,param_userphoto nvarchar(1024)
+	,param_userexternalprofileurl nvarchar(255)
 )
-BEGIN
+begin
 
-UPDATE Users
-SET
-UserName = param_UserName
-,UserProfile = param_UserProfile
-,UserSignature = param_UserSignature
-,UserBirthDate = param_UserBirthDate
-,UserWebsite = param_UserWebsite
-,UserTimezone = param_UserTimezone
-,UserEmail = param_UserEmail
-,UserEmailPolicy = param_UserEmailPolicy
-,UserPhoto = param_UserPhoto
-,UserExternalProfileUrl = param_UserExternalProfileUrl
-WHERE 
-	UserId = param_UserId;
+update users
+set
+username = param_username
+,userprofile = param_userprofile
+,usersignature = param_usersignature
+,userbirthdate = param_userbirthdate
+,userwebsite = param_userwebsite
+,usertimezone = param_usertimezone
+,useremail = param_useremail
+,useremailpolicy = param_useremailpolicy
+,userphoto = param_userphoto
+,userexternalprofileurl = param_userexternalprofileurl
+where 
+	userid = param_userid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersUpdateEmail */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersUpdateEmail(
-	param_UserId int
-	,param_UserEmail nvarchar(100)
-	,param_UserEmailPolicy int
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersupdateemail */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersupdateemail(
+	param_userid int
+	,param_useremail nvarchar(100)
+	,param_useremailpolicy int
 )
-BEGIN
-UPDATE Users
-SET
-	UserEmail = param_UserEmail
-	,UserEmailPolicy = param_UserEmailPolicy
-WHERE
-	UserId = param_UserId;
+begin
+update users
+set
+	useremail = param_useremail
+	,useremailpolicy = param_useremailpolicy
+where
+	userid = param_userid;
 
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS SPUsersUpdatePasswordResetGuid */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50003 PROCEDURE SPUsersUpdatePasswordResetGuid(
-	param_UserId int
-	,param_PasswordResetGuid nvarchar(100)
-	,param_PasswordResetGuidExpireDate datetime
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersupdatepasswordresetguid */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create*/ /*!50003 procedure spusersupdatepasswordresetguid(
+	param_userid int
+	,param_passwordresetguid nvarchar(100)
+	,param_passwordresetguidexpiredate datetime
 )
-BEGIN
-UPDATE Users
-SET
-	PasswordResetGuid = param_PasswordResetGuid
-	,PasswordResetGuidExpireDate = param_PasswordResetGuidExpireDate
-WHERE
-	UserId = param_UserId;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
+begin
+update users
+set
+	passwordresetguid = param_passwordresetguid
+	,passwordresetguidexpiredate = param_passwordresetguidexpiredate
+where
+	userid = param_userid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
 
 
 --
--- Final view structure for view `messagescomplete`
+-- final view structure for view `messagescomplete`
 --
 
-/*!50001 DROP TABLE IF EXISTS messagescomplete*/;
-/*!50001 DROP VIEW IF EXISTS messagescomplete*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50001 VIEW messagescomplete AS select m.topicid AS topicid,m.messageid AS messageid,m.messagebody AS messagebody,m.messagecreationdate AS messagecreationdate,m.messagelasteditdate AS messagelasteditdate,m.parentid AS parentid,m.userid AS userid,m.active AS active,u.username AS username,u.usersignature AS usersignature,u.usergroupid AS usergroupid,g.usergroupname AS usergroupname,u.userphoto AS userphoto,u.userregistrationdate AS userregistrationdate from (((messages m join users u on((u.userid = m.userid))) join usersgroups g on((g.usergroupid = u.usergroupid))) left join messages p on(((p.topicid = m.topicid) and (p.messageid = m.parentid) and (p.active = 1)))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!50001 drop table if exists messagescomplete*/;
+/*!50001 drop view if exists messagescomplete*/;
+/*!50001 set @saved_cs_client          = @@character_set_client */;
+/*!50001 set @saved_cs_results         = @@character_set_results */;
+/*!50001 set @saved_col_connection     = @@collation_connection */;
+/*!50001 set character_set_client      = utf8 */;
+/*!50001 set character_set_results     = utf8 */;
+/*!50001 set collation_connection      = utf8_general_ci */;
+/*!50001 create algorithm=undefined */
+/*!50001 view messagescomplete as select m.topicid as topicid,m.messageid as messageid,m.messagebody as messagebody,m.messagecreationdate as messagecreationdate,m.messagelasteditdate as messagelasteditdate,m.parentid as parentid,m.userid as userid,m.active as active,u.username as username,u.usersignature as usersignature,u.usergroupid as usergroupid,g.usergroupname as usergroupname,u.userphoto as userphoto,u.userregistrationdate as userregistrationdate from (((messages m join users u on((u.userid = m.userid))) join usersgroups g on((g.usergroupid = u.usergroupid))) left join messages p on(((p.topicid = m.topicid) and (p.messageid = m.parentid) and (p.active = 1)))) */;
+/*!50001 set character_set_client      = @saved_cs_client */;
+/*!50001 set character_set_results     = @saved_cs_results */;
+/*!50001 set collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `topicscomplete`
+-- final view structure for view `topicscomplete`
 --
 
-/*!50001 DROP TABLE IF EXISTS topicscomplete*/;
-/*!50001 DROP VIEW IF EXISTS topicscomplete*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50001 VIEW topicscomplete AS select t.topicid AS TopicId,t.topictitle AS TopicTitle,t.topicshortname AS TopicShortName,t.topicdescription AS TopicDescription,t.topiccreationdate AS TopicCreationDate,t.topicviews AS TopicViews,t.topicreplies AS TopicReplies,t.userid AS UserId,t.topictags AS TopicTags,t.topicisclose AS TopicIsClose,t.topicorder AS TopicOrder,t.lastmessageid AS LastMessageId,u.username AS UserName,f.forumid AS ForumId,f.forumname AS ForumName,f.forumshortname AS ForumShortName,(case when (ifnull(t.ReadAccessGroupId,-(1)) >= ifnull(f.ReadAccessGroupId,-(1))) then t.ReadAccessGroupId else f.ReadAccessGroupId end) AS ReadAccessGroupId,(case when (t.PostAccessGroupId >= ifnull(f.ReadAccessGroupId,-(1))) then t.PostAccessGroupId else f.ReadAccessGroupId end) AS PostAccessGroupId from ((topics t join users u on((u.userid = t.userid))) join forums f on((f.forumid = t.forumid))) where ((t.active = 1) and (f.active = 1)) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!50001 drop table if exists topicscomplete*/;
+/*!50001 drop view if exists topicscomplete*/;
+/*!50001 set @saved_cs_client          = @@character_set_client */;
+/*!50001 set @saved_cs_results         = @@character_set_results */;
+/*!50001 set @saved_col_connection     = @@collation_connection */;
+/*!50001 set character_set_client      = utf8 */;
+/*!50001 set character_set_results     = utf8 */;
+/*!50001 set collation_connection      = utf8_general_ci */;
+/*!50001 create algorithm=undefined */
+/*!50001 view topicscomplete as select t.topicid as topicid,t.topictitle as topictitle,t.topicshortname as topicshortname,t.topicdescription as topicdescription,t.topiccreationdate as topiccreationdate,t.topicviews as topicviews,t.topicreplies as topicreplies,t.userid as userid,t.topictags as topictags,t.topicisclose as topicisclose,t.topicorder as topicorder,t.lastmessageid as lastmessageid,u.username as username,f.forumid as forumid,f.forumname as forumname,f.forumshortname as forumshortname,(case when (ifnull(t.readaccessgroupid,-(1)) >= ifnull(f.readaccessgroupid,-(1))) then t.readaccessgroupid else f.readaccessgroupid end) as readaccessgroupid,(case when (t.postaccessgroupid >= ifnull(f.readaccessgroupid,-(1))) then t.postaccessgroupid else f.readaccessgroupid end) as postaccessgroupid from ((topics t join users u on((u.userid = t.userid))) join forums f on((f.forumid = t.forumid))) where ((t.active = 1) and (f.active = 1)) */;
+/*!50001 set character_set_client      = @saved_cs_client */;
+/*!50001 set character_set_results     = @saved_cs_results */;
+/*!50001 set collation_connection      = @saved_col_connection */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 set sql_mode=@old_sql_mode */;
+/*!40014 set foreign_key_checks=@old_foreign_key_checks */;
+/*!40014 set unique_checks=@old_unique_checks */;
+/*!40101 set character_set_client=@old_character_set_client */;
+/*!40101 set character_set_results=@old_character_set_results */;
+/*!40101 set collation_connection=@old_collation_connection */;
+/*!40111 set sql_notes=@old_sql_notes */;
 
--- Dump completed on 2012-02-21 12:28:58
+-- dump completed on 2012-02-21 12:28:58
