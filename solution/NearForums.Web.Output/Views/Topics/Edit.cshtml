@@ -14,6 +14,9 @@
 	,{"Title", S("Subject must not be blank.")}
 	,{"ShortName", ""}
 	,{"PostAccessRole", S("The role required to post should be greater than the required to read.")}
+	,{"captcha", new Dictionary<ValidationErrorType, string>(){
+		{ValidationErrorType.NullOrEmpty, S("Captcha must not be blank.")}
+		,{ValidationErrorType.CompareNotMatch, S("Captcha does not match the image value. Please retry.")}}}
 	,{"email", new Dictionary<ValidationErrorType, string>(){
 		{ValidationErrorType.NullOrEmpty, S("Email must not be blank in order to notify of new posts.")}
 		,{ValidationErrorType.Format, S("Email format is not valid.")}}}
