@@ -175,7 +175,7 @@ namespace NearForums.Web.Controllers.Helpers
 				TemplatesServiceClient.AddOrUpdate(template);
 
 				bool fileValid = true;
-				baseDirectory = context.Server.MapPath(Config.UI.Template.Path + template.Key);
+				baseDirectory = Config.TemplateFolderPathFull(template.Key);
 				#region Create directories
 				try
 				{
@@ -241,7 +241,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 				if (fileValid)
 				{
-					PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.UI.Template.Path + template.Key + "/", context), context);
+					PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.TemplateFolderPath(template.Key) + "/", context), context);
 					
 					ChopTemplateFile(baseDirectory + "\\template.html");
 				}
@@ -335,7 +335,7 @@ namespace NearForums.Web.Controllers.Helpers
 				//Get all the files in the directory
 				template = new TemplateState(t.Key);
 				template.Id = t.Id;
-				string[] fileNameList = SafeIO.Directory_GetFiles(context.Server.MapPath(template.Path), "*.part.*.html");
+				string[] fileNameList = SafeIO.Directory_GetFiles(Config.TemplateFolderPathFull(template.Name), "*.part.*.html");
 				foreach (string fileName in fileNameList)
 				{
 					template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));

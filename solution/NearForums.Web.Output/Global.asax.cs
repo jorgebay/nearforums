@@ -26,8 +26,7 @@ namespace NearForums.Web.Output
 
 		public static void RegisterRoutes(RouteCollection routes)
 		{
-			//Routes are not registered on the Global.asax.cs file
-			//Routes are registered at: NearForums.Web.Extensions.RoutingHelper
+			//Routes are registered using: NearForums.Web.Extensions.RoutingHelper
 			//Routes are configured at: Config\Routes.config
 
 			RoutingHelper.RegisterRoutes(RouteTable.Routes, RouteMappingConfiguration.Current);
@@ -39,6 +38,9 @@ namespace NearForums.Web.Output
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
+
+			//Inject as a dependency
+			SiteConfiguration.Current.PathResolver = Server.MapPath;
 		}
 	}
 }

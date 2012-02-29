@@ -8,19 +8,6 @@ namespace NearForums.Configuration
 {
 	public class TemplateElement : ConfigurationElement
 	{
-		[ConfigurationProperty("path", IsRequired = false)]
-		public string Path
-		{
-			get
-			{
-				return (string)this["path"];
-			}
-			set
-			{
-				this["path"] = value;
-			}
-		}
-
 		/// <summary>
 		/// Determines if the application uses templates
 		/// </summary>

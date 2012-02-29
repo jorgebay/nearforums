@@ -27,28 +27,6 @@ namespace NearForums.Web.State
 			set;
 		}
 
-		/// <summary>
-		/// Gets the relative path based on the name
-		/// </summary>
-		public string Path
-		{
-			get
-			{
-				return SiteConfiguration.Current.UI.Template.Path + Name;
-			}
-		}
-
-		/// <summary>
-		/// Gets the relative path based on the name
-		/// </summary>
-		public string ImagePath
-		{
-			get
-			{
-				return this.Path + "/images";
-			}
-		}
-
 		public List<TemplateItem> Items
 		{
 			get;

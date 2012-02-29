@@ -20,7 +20,7 @@ namespace NearForums.Localization
 					lock (lockCurrentLoad)
 					{
 						var cultureName = SiteConfiguration.Current.CultureName;
-						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFullPath + cultureName.ToLowerInvariant() + ".po");
+						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFilePath(cultureName));
 					}
 				}
 				return _current;

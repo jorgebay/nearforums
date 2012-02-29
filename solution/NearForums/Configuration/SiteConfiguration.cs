@@ -41,6 +41,11 @@ namespace NearForums.Configuration
 		}
 		#endregion
 
+		public SiteConfiguration()
+		{
+			PathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
+		}
+
 		[ConfigurationProperty("ui", IsRequired = true)]
 		public UIElement UI
 		{
@@ -149,7 +154,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines if the application should store and retrieve admin settings, apart from the site configuration
 		/// </summary>
-		[ConfigurationProperty("useSettings", IsRequired = false, DefaultValue=true)]
+		[ConfigurationProperty("useSettings", IsRequired = false, DefaultValue=false)]
 		private bool UseSettings
 		{
 			get
@@ -162,45 +167,77 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("settingsSource", IsRequired = false, DefaultValue = @"content\settings.xml")]
-		public string SettingsSource
+		#region Paths
+		/// <summary>
+		/// Determines the path of content files (localization,templates,...), relative to executing path. Example: ~/content/
+		/// </summary>
+		[ConfigurationProperty("contentPath", IsRequired = false, DefaultValue = @"~/content/")]
+		public string ContentPath
 		{
 			get
 			{
-				return (string)this["settingsSource"];
+				return (string)this["contentPath"];
 			}
 			set
 			{
-				this["settingsSource"] = value;
+				this["contentPath"] = value;
 			}
 		}
 
 		/// <summary>
-		/// Determines the path of localization files, relative to executing path. Example: content\localization\
+		/// Gets the full path of the Content folder
 		/// </summary>
-		[ConfigurationProperty("localizationFolder", IsRequired = false, DefaultValue = @"content\localization\")]
-		public string LocalizationFolder
+		public string ContentPathFull
 		{
 			get
 			{
-				return (string)this["localizationFolder"];
-			}
-			set
-			{
-				this["localizationFolder"] = value;
+				return PathResolver(ContentPath);
 			}
 		}
 
 		/// <summary>
-		/// Gets the path on disk of the localization files. Example: c:\whatever\content\localization\
+		/// Gets the path on disk of the settings file. Example: c:\whatever\content\settings\main.xml
 		/// </summary>
-		public string LocalizationFullPath
+		public string SettingsFilePath
 		{
 			get
 			{
-				return CombinePath(LocalizationFolder);
+				return Path.Combine(ContentPathFull, "settings\\main.xml");
 			}
 		}
+
+		/// <summary>
+		/// Gets the path on disk of the localization file. Example: c:\whatever\content\localization\en-us.po
+		/// </summary>
+		public string LocalizationFilePath(string cultureName)
+		{
+			if (cultureName == null)
+			{
+				throw new ArgumentNullException("cultureName");
+			}
+			return Path.Combine(ContentPathFull, "localization\\" + cultureName.ToLower() + ".po");
+		}
+
+		/// <summary>
+		/// Gets the path on disk of the template folder. Example: c:\whatever\content\templates\template-key
+		/// </summary>
+		public string TemplateFolderPathFull(string templateKey)
+		{
+			return PathResolver(TemplateFolderPath(templateKey));
+		}
+
+		/// <summary>
+		/// Gets the virtual path of the template folder. Example: ~/content/templates/template-key
+		/// </summary>
+		public string TemplateFolderPath(string templateKey)
+		{
+			if (templateKey == null)
+			{
+				throw new ArgumentNullException("templateKey");
+			}
+			return ContentPath + "templates/" + templateKey.ToLower();
+		} 
+		#endregion
 
 		/// <summary>
 		/// Determines the path of localization files, relative to executing path. Example: content\localization\
@@ -241,10 +278,9 @@ namespace NearForums.Configuration
 		/// </summary>
 		protected virtual void LoadSettings()
 		{
-			var settingsFileName = CombinePath(SettingsSource);
 			try
 			{
-				using (var settingsFile = File.Open(settingsFileName, FileMode.Open, FileAccess.Read))
+				using (var settingsFile = File.Open(SettingsFilePath, FileMode.Open, FileAccess.Read))
 				{
 					using (var reader = new XmlTextReader(settingsFile))
 					{
@@ -258,15 +294,11 @@ namespace NearForums.Configuration
 			//Its OK if there isn't settings
 		}
 
-		/// <summary>
-		/// Combines the current application configuration path with the fileName given
-		/// </summary>
-		/// <param name="fileName"></param>
-		/// <returns></returns>
-		public string CombinePath(string fileName)
+		public Func<string, string> PathResolver
 		{
-			return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), fileName);
-		} 
+			get;
+			set;
+		}
 		#endregion
 
 		#region Save settings
@@ -274,9 +306,8 @@ namespace NearForums.Configuration
 		/// Saves current settings.
 		/// </summary>
 		public void SaveSettings()
-		{ 
-			var settingsFileName = CombinePath(SettingsSource);
-			var writer = XmlTextWriter.Create(settingsFileName, new XmlWriterSettings() 
+		{
+			var writer = XmlTextWriter.Create(SettingsFilePath, new XmlWriterSettings() 
 			{ 
 				ConformanceLevel = ConformanceLevel.Fragment, 
 				Encoding = Encoding.UTF8,
