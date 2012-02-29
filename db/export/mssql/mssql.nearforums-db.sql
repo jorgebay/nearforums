@@ -1,16 +1,14 @@
-Ôªø/****** Object:  Table [dbo].[Templates]    Script Date: 10/27/2011 14:30:41 ******/
+Ôªø/****** Object:  Table [dbo].[Templates]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Templates]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Templates](
 	[TemplateId] [int] IDENTITY(1,1) NOT NULL,
-	[TemplateKey] [varchar](64) NOT NULL,
-	[TemplateDescription] [varchar](256) NULL,
+	[TemplateKey] [nvarchar](64) NOT NULL,
+	[TemplateDescription] [nvarchar](256) NULL,
 	[TemplateIsCurrent] [bit] NOT NULL,
 	[TemplateDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Templates] PRIMARY KEY CLUSTERED 
@@ -20,20 +18,16 @@ CREATE TABLE [dbo].[Templates](
 ) ON [PRIMARY]
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [dbo].[UsersGroups]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[UsersGroups]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UsersGroups]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[UsersGroups](
 	[UserGroupId] [smallint] NOT NULL,
-	[UserGroupName] [varchar](50) NOT NULL,
+	[UserGroupName] [nvarchar](50) NOT NULL,
  CONSTRAINT [PK_UsersGroups] PRIMARY KEY CLUSTERED 
 (
 	[UserGroupId] ASC
@@ -41,22 +35,18 @@ CREATE TABLE [dbo].[UsersGroups](
 ) ON [PRIMARY]
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [dbo].[PageContents]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[PageContents]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PageContents]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[PageContents](
 	[PageContentId] [int] IDENTITY(1,1) NOT NULL,
-	[PageContentTitle] [varchar](128) NOT NULL,
-	[PageContentBody] [varchar](max) NOT NULL,
-	[PageContentShortName] [varchar](128) NOT NULL,
+	[PageContentTitle] [nvarchar](128) NOT NULL,
+	[PageContentBody] [nvarchar](max) NOT NULL,
+	[PageContentShortName] [nvarchar](128) NOT NULL,
 	[PageContentEditDate] [datetime] NOT NULL,
  CONSTRAINT [PK_PageContents] PRIMARY KEY CLUSTERED 
 (
@@ -65,20 +55,16 @@ CREATE TABLE [dbo].[PageContents](
 ) ON [PRIMARY]
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [dbo].[ForumsCategories]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[ForumsCategories]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ForumsCategories]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[ForumsCategories](
 	[CategoryId] [int] IDENTITY(1,1) NOT NULL,
-	[CategoryName] [varchar](255) NOT NULL,
+	[CategoryName] [nvarchar](255) NOT NULL,
 	[CategoryOrder] [int] NOT NULL,
  CONSTRAINT [PK_ForumsCategories] PRIMARY KEY CLUSTERED 
 (
@@ -87,16 +73,14 @@ CREATE TABLE [dbo].[ForumsCategories](
 ) ON [PRIMARY]
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 02/22/2012 16:34:52 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
-execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[Split] (@s varchar(512), @sep char(1))
+execute dbo.sp_executesql @statement = N'CREATE FUNCTION [dbo].[Split] (@s nvarchar(512), @sep char(1))
 RETURNS table
 AS
 RETURN (
@@ -113,7 +97,7 @@ RETURN (
   )' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsUpdate]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsUpdate]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -121,9 +105,9 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsUpdate]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPPageContentsUpdate]
-	@PageContentShortName varchar(128)
-	,@PageContentTitle varchar(128)
-	,@PageContentBody varchar(max)
+	@PageContentShortName nvarchar(128)
+	,@PageContentTitle nvarchar(128)
+	,@PageContentBody nvarchar(max)
 AS
 UPDATE PageContents 
 SET
@@ -134,7 +118,7 @@ WHERE
 	PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsInsert]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -142,9 +126,9 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsInsert]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPPageContentsInsert]
-	@PageContentShortName varchar(128)
-	,@PageContentTitle varchar(128)
-	,@PageContentBody varchar(max)
+	@PageContentShortName nvarchar(128)
+	,@PageContentTitle nvarchar(128)
+	,@PageContentBody nvarchar(max)
 AS
 INSERT INTO PageContents 
 (
@@ -162,7 +146,7 @@ VALUES
 )' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsGetUsedShortNames]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsGetUsedShortNames]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -171,8 +155,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPPageContentsGetUsedShortNames]
 (
-	@PageContentShortName varchar(32), 
-	@SearchShortName varchar(32)
+	@PageContentShortName nvarchar(32), 
+	@SearchShortName nvarchar(32)
 )
 AS
 /*
@@ -181,7 +165,7 @@ AS
 		IF NOT USED SHORTNAME: empty result set
 		IF USED SHORTNAME: resultset with amount of rows used
 */
-DECLARE @CurrentValue varchar(32)
+DECLARE @CurrentValue nvarchar(32)
 SELECT 
 	@CurrentValue = PageContentShortName
 FROM 
@@ -203,7 +187,7 @@ ELSE
 		PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsGetAll]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsGetAll]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -224,7 +208,7 @@ ORDER BY
 	PageContentTitle' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsGet]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsGet]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -232,7 +216,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsGet]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPPageContentsGet]
-	@PageContentShortName varchar(128)=''about''
+	@PageContentShortName nvarchar(128)=''about''
 AS
 SELECT
 	PageContentId
@@ -245,7 +229,7 @@ WHERE
 	PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsDelete]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -253,14 +237,14 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPPageContentsDelete]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPPageContentsDelete]
-	@PageContentShortName varchar(128)
+	@PageContentShortName nvarchar(128)
 AS
 DELETE FROM PageContents 
 WHERE
 	PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesUpdateCurrent]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesUpdateCurrent]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -278,7 +262,7 @@ FROM
 	Templates T' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesInsert]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -286,8 +270,8 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTemplatesInsert]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTemplatesInsert]
-	@TemplateKey varchar(64)
-	,@TemplateDescription varchar(256)
+	@TemplateKey nvarchar(64)
+	,@TemplateDescription nvarchar(256)
 	,@TemplateId int OUTPUT
 AS
 
@@ -325,7 +309,7 @@ ELSE
 	END' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesGetCurrent]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesGetCurrent]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -345,7 +329,7 @@ WHERE
 	TemplateIsCurrent = 1' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesGetAll]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesGetAll]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -363,7 +347,7 @@ FROM
 	Templates' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesGet]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesGet]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -384,7 +368,7 @@ WHERE
 	TemplateId = @TemplateId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesDelete]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -397,7 +381,7 @@ AS
 DELETE FROM Templates WHERE TemplateId = @TemplateId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetAll]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetAll]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -416,7 +400,7 @@ ORDER BY
 	CategoryOrder' 
 END
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -427,24 +411,24 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Us
 BEGIN
 CREATE TABLE [dbo].[Users](
 	[UserId] [int] IDENTITY(1,1) NOT NULL,
-	[UserName] [varchar](50) NOT NULL,
-	[UserProfile] [varchar](max) NULL,
-	[UserSignature] [varchar](max) NULL,
+	[UserName] [nvarchar](50) NOT NULL,
+	[UserProfile] [nvarchar](max) NULL,
+	[UserSignature] [nvarchar](max) NULL,
 	[UserGroupId] [smallint] NOT NULL,
 	[Active] [bit] NOT NULL,
 	[UserBirthDate] [datetime] NULL,
-	[UserWebsite] [varchar](255) NULL,
+	[UserWebsite] [nvarchar](255) NULL,
 	[UserGuid] [char](32) NOT NULL,
 	[UserTimezone] [decimal](9, 2) NOT NULL,
-	[UserEmail] [varchar](100) NULL,
+	[UserEmail] [nvarchar](100) NULL,
 	[UserEmailPolicy] [int] NULL,
-	[UserPhoto] [varchar](1024) NULL,
+	[UserPhoto] [nvarchar](1024) NULL,
 	[UserRegistrationDate] [datetime] NOT NULL,
-	[UserExternalProfileUrl] [varchar](255) NULL,
-	[UserProvider] [varchar](32) NOT NULL,
-	[UserProviderId] [varchar](64) NOT NULL,
+	[UserExternalProfileUrl] [nvarchar](255) NULL,
+	[UserProvider] [nvarchar](32) NOT NULL,
+	[UserProviderId] [nvarchar](64) NOT NULL,
 	[UserProviderLastCall] [datetime] NOT NULL,
-	[PasswordResetGuid] [varchar](100) NULL,
+	[PasswordResetGuid] [nvarchar](100) NULL,
 	[PasswordResetGuidExpireDate] [datetime] NULL,
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
@@ -455,7 +439,27 @@ END
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGet]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGetAll]    Script Date: 02/22/2012 16:34:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGroupsGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPUsersGroupsGetAll]
+	
+AS
+SELECT 
+	UserGroupId
+	,UserGroupName
+FROM
+	UsersGroups
+ORDER BY 
+	UserGroupId asc' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGet]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -474,7 +478,7 @@ WHERE
 	UserGroupId = @UserGroupId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersUpdatePasswordResetGuid]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersUpdatePasswordResetGuid]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -483,7 +487,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersUpdatePasswordResetGuid]
 	@UserId int
-	,@PasswordResetGuid varchar(100)
+	,@PasswordResetGuid nvarchar(100)
 	,@PasswordResetGuidExpireDate datetime
 AS
 UPDATE Users
@@ -494,7 +498,7 @@ WHERE
 	UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersUpdateEmail]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersUpdateEmail]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -503,7 +507,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersUpdateEmail]
 	@UserId int
-	,@UserEmail varchar(100)
+	,@UserEmail nvarchar(100)
 	,@UserEmailPolicy int
 AS
 UPDATE Users
@@ -514,7 +518,7 @@ WHERE
 	UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersUpdate]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersUpdate]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -523,16 +527,16 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersUpdate]
 	@UserId int
-	,@UserName varchar(50)
-	,@UserProfile varchar(max)
-	,@UserSignature varchar(max)
+	,@UserName nvarchar(50)
+	,@UserProfile nvarchar(max)
+	,@UserSignature nvarchar(max)
 	,@UserBirthDate datetime
-	,@UserWebsite varchar(255)
+	,@UserWebsite nvarchar(255)
 	,@UserTimezone decimal(9,2)
-	,@UserEmail varchar(100)
+	,@UserEmail nvarchar(100)
 	,@UserEmailPolicy int
-	,@UserPhoto varchar(1024)
-	,@UserExternalProfileUrl varchar(255)
+	,@UserPhoto nvarchar(1024)
+	,@UserExternalProfileUrl nvarchar(255)
 AS
 
 UPDATE Users
@@ -551,7 +555,7 @@ WHERE
 	UserId = @UserId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersPromote]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersPromote]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -573,7 +577,7 @@ IF @UserGroupId IS NOT NULL
 		UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersInsertFromProvider]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersInsertFromProvider]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -581,20 +585,20 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersInsertFromProvider]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersInsertFromProvider]
-	(@UserName varchar(50)
-	,@UserProfile varchar(max)
-	,@UserSignature varchar(max)
+	(@UserName nvarchar(50)
+	,@UserProfile nvarchar(max)
+	,@UserSignature nvarchar(max)
 	,@UserGroupId smallint
 	,@UserBirthDate datetime
-	,@UserWebsite varchar(255)
+	,@UserWebsite nvarchar(255)
 	,@UserGuid char(32)
 	,@UserTimezone decimal(9,2)
-	,@UserEmail varchar(100)
+	,@UserEmail nvarchar(100)
 	,@UserEmailPolicy int
-	,@UserPhoto varchar(1024)
-	,@UserExternalProfileUrl varchar(255)
-	,@UserProvider varchar(32)
-	,@UserProviderId varchar(64))
+	,@UserPhoto nvarchar(1024)
+	,@UserExternalProfileUrl nvarchar(255)
+	,@UserProvider nvarchar(32)
+	,@UserProviderId nvarchar(64))
 AS
 
 --If it is the first active user -> make it an admin
@@ -659,7 +663,7 @@ WHERE
 	U.UserId = @UserId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetTestUser]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGetTestUser]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -687,7 +691,7 @@ ORDER BY
 	U.UserGroupId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetByProvider]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGetByProvider]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -695,8 +699,8 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByProvider]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByProvider]
-	@Provider varchar(32)
-	,@ProviderId varchar(64)
+	@Provider nvarchar(32)
+	,@ProviderId nvarchar(64)
 AS
 SELECT 
 	U.UserId
@@ -717,7 +721,7 @@ WHERE
 	U.Active = 1' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetByPasswordResetGuid]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGetByPasswordResetGuid]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -725,8 +729,8 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByPasswordResetGuid]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByPasswordResetGuid]
-	@Provider varchar(32)
-	,@PasswordResetGuid varchar(64)
+	@Provider nvarchar(32)
+	,@PasswordResetGuid nvarchar(64)
 AS
 SELECT 
 	U.UserId
@@ -748,7 +752,7 @@ WHERE
 	PasswordResetGuid = @PasswordResetGuid' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetByName]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGetByName]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -756,7 +760,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByName]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByName]
-	@UserName varchar(50)=''Jorge''	
+	@UserName nvarchar(50)=''Jorge''	
 AS
 SELECT
 	U.UserId
@@ -782,7 +786,7 @@ ORDER BY
 	U.UserName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetAll]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGetAll]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -813,7 +817,7 @@ ORDER BY
 	U.UserName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGet]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGet]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -846,7 +850,7 @@ WHERE
 	U.UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersDemote]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersDemote]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -868,7 +872,7 @@ IF @UserGroupId IS NOT NULL
 		UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersDelete]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -885,20 +889,18 @@ WHERE
 	UserId = @UserId' 
 END
 GO
-/****** Object:  Table [dbo].[Forums]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[Forums]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Forums](
 	[ForumId] [int] IDENTITY(1,1) NOT NULL,
-	[ForumName] [varchar](255) NOT NULL,
-	[ForumShortName] [varchar](32) NOT NULL,
-	[ForumDescription] [varchar](max) NOT NULL,
+	[ForumName] [nvarchar](255) NOT NULL,
+	[ForumShortName] [nvarchar](32) NOT NULL,
+	[ForumDescription] [nvarchar](max) NOT NULL,
 	[CategoryId] [int] NOT NULL,
 	[UserId] [int] NOT NULL,
 	[ForumCreationDate] [datetime] NOT NULL,
@@ -908,6 +910,8 @@ CREATE TABLE [dbo].[Forums](
 	[ForumTopicCount] [int] NOT NULL,
 	[ForumMessageCount] [int] NOT NULL,
 	[ForumOrder] [int] NOT NULL,
+	[ReadAccessGroupId] [smallint] NULL,
+	[PostAccessGroupId] [smallint] NOT NULL,
  CONSTRAINT [PK_Forums] PRIMARY KEY CLUSTERED 
 (
 	[ForumId] ASC
@@ -915,9 +919,7 @@ CREATE TABLE [dbo].[Forums](
 ) ON [PRIMARY]
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsUpdate]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsUpdate]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -926,11 +928,13 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdate]
 (
-	@ForumShortName varchar(32)
-	,@ForumName varchar(255)
-	,@ForumDescription varchar(max)
+	@ForumShortName nvarchar(32)
+	,@ForumName nvarchar(255)
+	,@ForumDescription nvarchar(max)
 	,@CategoryId int
 	,@UserId int
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
 )
 AS
 UPDATE Forums
@@ -940,11 +944,13 @@ SET
 	,CategoryId = @CategoryId
 	,ForumLastEditDate = GETUTCDATE()
 	,ForumLastEditUser = @UserId
+	,ReadAccessGroupId = @ReadAccessGroupId
+	,PostAccessGroupId = @PostAccessGroupId
 WHERE
 	ForumShortName = @ForumShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsInsert]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -953,11 +959,13 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsInsert]
 (
-	@ForumName varchar(255)
-	,@ForumShortName varchar(32)
-	,@ForumDescription varchar(max)
+	@ForumName nvarchar(255)
+	,@ForumShortName nvarchar(32)
+	,@ForumDescription nvarchar(max)
 	,@CategoryId int
 	,@UserId int
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
 )
 AS
 INSERT INTO Forums
@@ -974,6 +982,8 @@ INSERT INTO Forums
 	,ForumTopicCount
 	,ForumMessageCount
 	,ForumOrder
+	,ReadAccessGroupId
+	,PostAccessGroupId
 )
 VALUES
 (
@@ -989,10 +999,12 @@ VALUES
 	,0
 	,0
 	,0
+	,@ReadAccessGroupId
+	,@PostAccessGroupId
 )' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsGetUsedShortNames]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsGetUsedShortNames]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1001,8 +1013,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetUsedShortNames]
 (
-	@ForumShortName varchar(32), 
-	@SearchShortName varchar(32)
+	@ForumShortName nvarchar(32), 
+	@SearchShortName nvarchar(32)
 )
 AS
 /*
@@ -1011,7 +1023,7 @@ AS
 		IF NOT USED SHORTNAME: empty result set
 		IF USED SHORTNAME: resultset with amount of rows used
 */
-DECLARE @CurrentValue varchar(32)
+DECLARE @CurrentValue nvarchar(32)
 SELECT 
 	@CurrentValue = ForumShortName
 FROM 
@@ -1033,7 +1045,7 @@ ELSE
 		ForumShortName = @ForumShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsGetByShortName]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsGetByShortName]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1041,7 +1053,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByShortName]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByShortName]
-	@ShortName varchar(32)
+	@ShortName nvarchar(32)
 AS
 SELECT
 	F.ForumId
@@ -1054,6 +1066,8 @@ SELECT
 	,F.ForumMessageCount
 	,C.CategoryId
 	,C.CategoryName
+	,F.ReadAccessGroupId
+	,F.PostAccessGroupId
 FROM
 	Forums F 
 	INNER JOIN ForumsCategories C ON F.CategoryId = C.CategoryId
@@ -1063,7 +1077,7 @@ WHERE
 	F.Active = 1' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsGetByCategory]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsGetByCategory]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1071,6 +1085,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByCategory]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByCategory]
+	@UserGroupId smallint=NULL
 AS
 SELECT
 	F.ForumId
@@ -1088,12 +1103,14 @@ FROM
 	INNER JOIN Forums F ON F.CategoryId = C.CategoryId
 WHERE
 	F.Active = 1
+	AND
+	ISNULL(F.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 ORDER BY
 	C.CategoryOrder,
 	F.ForumOrder' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsDelete]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1101,7 +1118,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsDelete]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsDelete]
-	@ForumShortName varchar(32)
+	@ForumShortName nvarchar(32)
 AS
 
 UPDATE Forums
@@ -1111,7 +1128,7 @@ WHERE
 	ForumShortName = @ForumShortName' 
 END
 GO
-/****** Object:  Table [dbo].[Topics]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[Topics]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1122,23 +1139,25 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[To
 BEGIN
 CREATE TABLE [dbo].[Topics](
 	[TopicId] [int] IDENTITY(1,1) NOT NULL,
-	[TopicTitle] [varchar](256) NOT NULL,
-	[TopicShortName] [varchar](64) NOT NULL,
-	[TopicDescription] [varchar](max) NOT NULL,
+	[TopicTitle] [nvarchar](256) NOT NULL,
+	[TopicShortName] [nvarchar](64) NOT NULL,
+	[TopicDescription] [nvarchar](max) NOT NULL,
 	[TopicCreationDate] [datetime] NOT NULL,
 	[TopicLastEditDate] [datetime] NOT NULL,
 	[TopicViews] [int] NOT NULL,
 	[TopicReplies] [int] NOT NULL,
 	[UserId] [int] NOT NULL,
-	[TopicTags] [varchar](256) NOT NULL,
+	[TopicTags] [nvarchar](256) NOT NULL,
 	[ForumId] [int] NOT NULL,
 	[TopicLastEditUser] [int] NOT NULL,
-	[TopicLastEditIp] [varchar](15) NOT NULL,
+	[TopicLastEditIp] [varchar](39) NOT NULL,
 	[Active] [bit] NOT NULL,
 	[TopicIsClose] [bit] NOT NULL,
 	[TopicOrder] [int] NULL,
 	[LastMessageId] [int] NULL,
 	[MessagesIdentity] [int] NOT NULL,
+	[ReadAccessGroupId] [smallint] NULL,
+	[PostAccessGroupId] [smallint] NOT NULL,
  CONSTRAINT [PK_Topics] PRIMARY KEY CLUSTERED 
 (
 	[TopicId] ASC
@@ -1148,7 +1167,7 @@ END
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsOpen]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsOpen]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1158,7 +1177,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsOpen]
 	@TopicId int
 	,@UserId int
-	,@Ip varchar(15)
+	,@Ip varchar (39)
 AS
 	UPDATE Topics
 	SET
@@ -1170,7 +1189,7 @@ AS
 		TopicId = @TopicId' 
 END
 GO
-/****** Object:  Table [dbo].[TopicsSubscriptions]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[TopicsSubscriptions]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1188,7 +1207,7 @@ CREATE TABLE [dbo].[TopicsSubscriptions](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  View [dbo].[TopicsComplete]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  View [dbo].[TopicsComplete]    Script Date: 02/22/2012 16:34:40 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1213,6 +1232,12 @@ SELECT
 		,F.ForumId
 		,F.ForumName
 		,F.ForumShortName
+		,CASE 
+			WHEN ISNULL(T.ReadAccessGroupId, -1) >= ISNULL(F.ReadAccessGroupId, -1) THEN T.ReadAccessGroupId
+			ELSE F.ReadAccessGroupId END AS ReadAccessGroupId
+		,CASE 
+			WHEN T.PostAccessGroupId >= ISNULL(F.ReadAccessGroupId,-1) THEN T.PostAccessGroupId -- Do not inherit post access
+			ELSE F.ReadAccessGroupId END AS PostAccessGroupId -- use the parent read access, if greater
 	FROM
 		Topics T
 		INNER JOIN Users U ON U.UserId = T.UserId
@@ -1222,7 +1247,7 @@ SELECT
 		AND
 		F.Active = 1'
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsUpdateLastMessage]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsUpdateLastMessage]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1242,17 +1267,15 @@ WHERE
 	TopicId = @TopicId' 
 END
 GO
-/****** Object:  Table [dbo].[Tags]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[Tags]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-SET ANSI_PADDING ON
-GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Tags]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Tags](
-	[Tag] [varchar](50) NOT NULL,
+	[Tag] [nvarchar](50) NOT NULL,
 	[TopicId] [int] NOT NULL,
  CONSTRAINT [PK_Tags] PRIMARY KEY CLUSTERED 
 (
@@ -1262,9 +1285,7 @@ CREATE TABLE [dbo].[Tags](
 ) ON [PRIMARY]
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsUpdateRecount]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsUpdateRecount]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1297,7 +1318,7 @@ WHERE
 	ForumId = @ForumId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsUpdateLastMessage]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsUpdateLastMessage]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1319,7 +1340,7 @@ WHERE
   T.TopicId = @TopicId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsClose]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsClose]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1329,7 +1350,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsClose]
 	@TopicId int
 	,@UserId int
-	,@Ip varchar(15)
+	,@Ip varchar (39)
 AS
 	UPDATE Topics
 	SET
@@ -1341,7 +1362,7 @@ AS
 		TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsAddVisit]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsAddVisit]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1358,7 +1379,7 @@ WHERE
 	TopicId = @TopicId' 
 END
 GO
-/****** Object:  Table [dbo].[Messages]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[Messages]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1370,13 +1391,13 @@ BEGIN
 CREATE TABLE [dbo].[Messages](
 	[TopicId] [int] NOT NULL,
 	[MessageId] [int] NOT NULL,
-	[MessageBody] [varchar](max) NOT NULL,
+	[MessageBody] [nvarchar](max) NOT NULL,
 	[MessageCreationDate] [datetime] NOT NULL,
 	[MessageLastEditDate] [datetime] NOT NULL,
 	[UserId] [int] NOT NULL,
 	[ParentId] [int] NULL,
 	[Active] [bit] NOT NULL,
-	[EditIp] [varchar](15) NULL,
+	[EditIp] [varchar](39) NULL,
 	[MessageLastEditUser] [int] NOT NULL,
  CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED 
 (
@@ -1388,7 +1409,7 @@ END
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  View [dbo].[MessagesComplete]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  View [dbo].[MessagesComplete]    Script Date: 02/22/2012 16:34:40 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1417,7 +1438,7 @@ FROM
 	INNER JOIN dbo.UsersGroups G ON G.UserGroupId = U.UserGroupId
 	LEFT JOIN dbo.Messages P ON P.TopicId = M.TopicId AND P.MessageId = M.ParentId AND P.Active = 1'
 GO
-/****** Object:  Table [dbo].[Flags]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  Table [dbo].[Flags]    Script Date: 02/22/2012 16:34:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1430,7 +1451,7 @@ CREATE TABLE [dbo].[Flags](
 	[FlagId] [int] IDENTITY(1,1) NOT NULL,
 	[TopicId] [int] NOT NULL,
 	[MessageId] [int] NULL,
-	[Ip] [varchar](15) NOT NULL,
+	[Ip] [varchar](39) NOT NULL,
 	[FlagDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Flags] PRIMARY KEY CLUSTERED 
 (
@@ -1441,7 +1462,7 @@ END
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesDelete]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1464,7 +1485,7 @@ WHERE
 	MessageId = @MessageId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTagsInsert]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTagsInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1472,9 +1493,9 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsInsert]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsInsert]
-	@Tags varchar(256),
+	@Tags nvarchar(256),
 	@TopicId int,
-	@PreviousTags varchar(256)=NULL
+	@PreviousTags nvarchar(256)=NULL
 AS
 
 IF NOT @PreviousTags IS NULL
@@ -1491,7 +1512,7 @@ INSERT INTO Tags
 SELECT part, @TopicId FROM dbo.Split(@Tags, '' '')' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTagsGetMostViewed]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTagsGetMostViewed]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1527,7 +1548,7 @@ FROM
 ORDER BY Tag' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesInsert]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1536,10 +1557,10 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesInsert]
 	@TopicId int
-	,@MessageBody varchar(max)
+	,@MessageBody nvarchar(max)
 	,@UserId int
 	,@MessageId int OUTPUT
-	,@Ip varchar(15)
+	,@Ip varchar (39)
 	,@ParentId int
 AS
 
@@ -1606,7 +1627,7 @@ BEGIN CATCH
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsInsert]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1626,7 +1647,7 @@ BEGIN
 END' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByUser]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByUser]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1652,7 +1673,7 @@ ORDER BY
 	S.TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByTopic]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByTopic]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1662,6 +1683,10 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByTopic]
 	@TopicId int
 AS
+/*
+	Gets the active users subscribed to a topic.
+	Checks read access of topic vs user role
+*/
 SELECT
 	U.UserId
 	,U.UserName
@@ -1670,14 +1695,17 @@ SELECT
 	,U.UserGuid
 FROM
 	TopicsSubscriptions S
+	INNER JOIN Topics T ON T.TopicId = S.TopicId
 	INNER JOIN Users U ON U.UserId = S.UserId
 WHERE
-	TopicId = @TopicId
+	S.TopicId = @TopicId
 	AND
-	U.Active = 1' 
+	U.Active = 1
+	AND
+	U.UserGroupId >= ISNULL(T.ReadAccessGroupId, -1)' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsDelete]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1701,7 +1729,7 @@ WHERE
 	U.UserGuid = @UserGuid' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetUnanswered]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetUnanswered]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1739,7 +1767,7 @@ ORDER BY
 	TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetMessagesByUser]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetMessagesByUser]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1774,7 +1802,7 @@ WHERE
 ORDER BY T.TopicId desc, M.MessageId desc' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetLatest]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetLatest]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1782,7 +1810,11 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetLatest]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetLatest]
+	@UserGroupId int = null
 AS
+/*
+	Gets the latest messages in all forums	
+*/
 	SELECT
 		TOP 20
 		T.TopicId
@@ -1802,11 +1834,12 @@ AS
 	FROM
 		TopicsComplete T
 		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
-	
+	WHERE
+		ISNULL(T.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 	ORDER BY T.TopicId desc' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByUser]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByUser]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1814,7 +1847,8 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByUser]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByUser]
-	@UserId int	
+	@UserId int
+	,@UserGroupId int = null
 AS
 SELECT
 	T.TopicId
@@ -1831,15 +1865,19 @@ SELECT
 	,T.LastMessageId
 	,T.UserName
 	,M.MessageCreationDate
+	,T.ReadAccessGroupId
+	,T.PostAccessGroupId
 FROM
 	TopicsComplete T
 	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
 WHERE
 	T.UserId = @UserId
-ORDER BY T.TopicId desc' 
+	AND
+	ISNULL(T.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
+ORDER BY T.TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByTag]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByTag]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1847,8 +1885,9 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByTag]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByTag]
-	@Tag varchar(50)=''forum'',
-	@ForumId int=2
+	@Tag nvarchar(50)=''forum''
+	,@ForumId int=2
+	,@UserGroupId int = null
 AS
 
 --Remove the last char
@@ -1870,6 +1909,8 @@ SELECT
 		,M.MessageCreationDate
 		,M.UserId AS MessageUserId
 		,MU.UserName AS MessageUserName
+		,T.ReadAccessGroupId
+		,T.PostAccessGroupId
 FROM
 	Tags
 	INNER JOIN TopicsComplete T ON T.TopicId = Tags.TopicId
@@ -1879,10 +1920,12 @@ WHERE
 	Tags.Tag LIKE @Tag + ''%''
 	AND
 	T.ForumId = @ForumId
+	AND
+	ISNULL(T.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 ORDER BY TopicOrder DESC,TopicViews DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByRelated]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByRelated]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1890,14 +1933,15 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsGetByRelated]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByRelated]
-	@Tag1 varchar(50)=''problem''
-	,@Tag2 varchar(50)=''installation''
-	,@Tag3 varchar(50)=''copy''
-	,@Tag4 varchar(50)=null
-	,@Tag5 varchar(50)=null
-	,@Tag6 varchar(50)=null
+	@Tag1 nvarchar(50)=''problem''
+	,@Tag2 nvarchar(50)=''installation''
+	,@Tag3 nvarchar(50)=''copy''
+	,@Tag4 nvarchar(50)=null
+	,@Tag5 nvarchar(50)=null
+	,@Tag6 nvarchar(50)=null
 	,@TopicId int=1
 	,@Amount int=5
+	,@UserGroupId int = null
 AS
 	
 WITH TagsParams (Tag) AS
@@ -1929,6 +1973,8 @@ SELECT
 	,Topics.ForumShortName
 	,Topics.TopicIsClose
 	,Topics.TopicOrder
+	,Topics.ReadAccessGroupId
+	,Topics.PostAccessGroupId
 FROM
 	(
 	SELECT 
@@ -1946,11 +1992,13 @@ FROM
 	INNER JOIN TopicsComplete Topics ON Topics.TopicId = Ta.TopicId
 WHERE
 	Topics.TopicId <> @TopicId
+	AND
+	ISNULL(Topics.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 ORDER BY
-	1 desc, Topics.TopicViews desc' 
+	1 desc, Topics.TopicViews DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumUnanswered]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumUnanswered]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1959,6 +2007,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByForumUnanswered]
 	@ForumId int = 2
+	,@UserGroupId int = null
 AS
 SELECT
 	T.TopicId
@@ -1977,6 +2026,8 @@ SELECT
 	,M.MessageCreationDate
 	,M.UserId AS MessageUserId
 	,MU.UserName AS MessageUserName
+	,T.ReadAccessGroupId
+	,T.PostAccessGroupId
 FROM
 	TopicsComplete T
 	LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
@@ -1987,11 +2038,13 @@ WHERE
 	T.TopicReplies = 0 -- Unanswered
 	AND
 	T.TopicOrder IS NULL -- Not sticky	
+	AND
+	ISNULL(T.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 ORDER BY 
 	TopicViews DESC, TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumLatest]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumLatest]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2002,6 +2055,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByForum
 	@ForumId int = 2
 	,@StartIndex int = 0
 	,@Length int = 10
+	,@UserGroupId int = null
 AS
 SELECT
 	*
@@ -2032,18 +2086,22 @@ FROM
 		,M.MessageCreationDate
 		,M.UserId AS MessageUserId
 		,MU.UserName AS MessageUserName
+		,T.ReadAccessGroupId
+		,T.PostAccessGroupId
 	FROM
 		TopicsComplete T
-		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+		LEFT JOIN [Messages] M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
 		LEFT JOIN Users MU ON MU.UserId = M.UserId
 	WHERE
 		T.ForumId = @ForumId
+		AND
+		ISNULL(T.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 	) T
 WHERE
 	RowNumber BETWEEN @StartIndex+1 AND @StartIndex + @Length' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForum]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForum]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2054,6 +2112,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsGetByForum
 	@ForumId int = 2
 	,@StartIndex int = 0
 	,@Length int = 10
+	,@UserGroupId int = null
 AS
 SELECT
 	*
@@ -2080,18 +2139,22 @@ FROM
 		,M.MessageCreationDate
 		,M.UserId AS MessageUserId
 		,MU.UserName AS MessageUserName
+		,T.ReadAccessGroupId
+		,T.PostAccessGroupId
 	FROM
 		TopicsComplete T
-		LEFT JOIN Messages M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
+		LEFT JOIN [Messages] M ON M.TopicId = T.TopicId AND M.MessageId = T.LastMessageId AND M.Active = 1
 		LEFT JOIN Users MU ON MU.UserId = M.UserId
 	WHERE
 		T.ForumId = @ForumId
+		AND
+		ISNULL(T.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
 	) T
 WHERE
 	RowNumber BETWEEN @StartIndex+1 AND @StartIndex + @Length' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGet]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGet]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2118,13 +2181,15 @@ SELECT
 	,T.ForumId
 	,T.ForumName
 	,T.ForumShortName
+	,T.ReadAccessGroupId
+	,T.PostAccessGroupId
 FROM 
 	TopicsComplete T
 WHERE
 	T.TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsDelete]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsDelete]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2134,7 +2199,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsDelete]
 	@TopicId int
 	,@UserId int
-	,@Ip varchar(15)
+	,@Ip varchar (39)
 AS
 /*
 - SETS THE TOPIC ACTIVE=0
@@ -2156,7 +2221,7 @@ WHERE
 exec dbo.SPForumsUpdateRecount @ForumId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsMove]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsMove]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2167,7 +2232,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsMove]
 	@TopicId int
 	,@ForumId int
 	,@UserId int
-	,@Ip varchar(15)
+	,@Ip varchar (39)
 AS
 DECLARE @PreviousForumId int
 SELECT @PreviousForumId = ForumId FROM Topics WHERE TopicId = @TopicId
@@ -2202,7 +2267,7 @@ BEGIN CATCH
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsInsert]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsInsert]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2211,14 +2276,16 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsInsert]
 (
-	@TopicTitle varchar(255)
-	,@TopicShortName varchar(64)
-	,@TopicDescription varchar(max)
+	@TopicTitle nvarchar(255)
+	,@TopicShortName nvarchar(64)
+	,@TopicDescription nvarchar(max)
 	,@UserId int
-	,@TopicTags varchar(256)
+	,@TopicTags nvarchar(256)
 	,@TopicOrder int
-	,@Forum varchar(32)
-	,@Ip varchar(15)
+	,@Forum nvarchar(32)
+	,@Ip varchar (39)
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
 	,@TopicId int OUTPUT
 )
 AS
@@ -2260,6 +2327,8 @@ BEGIN TRY
 	,TopicIsClose
 	,TopicOrder
 	,MessagesIdentity
+	,ReadAccessGroupId
+	,PostAccessGroupId
 	)
 	VALUES
 	(
@@ -2279,6 +2348,8 @@ BEGIN TRY
 	,0--TopicIsClose
 	,@TopicOrder
 	,0--MessageIdentity
+	,@ReadAccessGroupId
+	,@PostAccessGroupId
 	);
 
 	SELECT @TopicId = @@IDENTITY;
@@ -2304,7 +2375,7 @@ BEGIN CATCH
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsUpdate]    Script Date: 10/27/2011 14:30:43 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsUpdate]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2313,14 +2384,16 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdate]
 	@TopicId int
-	,@TopicTitle varchar(256)
-	,@TopicDescription varchar(max)
+	,@TopicTitle nvarchar(256)
+	,@TopicDescription nvarchar(max)
 	,@UserId int
-	,@TopicTags varchar(256)
+	,@TopicTags nvarchar(256)
 	,@TopicOrder int
-	,@Ip varchar(15)
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
+	,@Ip varchar (39)
 AS
-DECLARE @PreviousTags varchar(256)
+DECLARE @PreviousTags nvarchar(256)
 SELECT @PreviousTags=TopicTags FROM Topics WHERE TopicId=@TopicId
 
 IF @TopicOrder IS NOT NULL
@@ -2341,6 +2414,8 @@ BEGIN TRY
 		,TopicLastEditUser = @UserId
 		,TopicLastEditIp = @Ip
 		,TopicOrder = @TopicOrder
+		,ReadAccessGroupId = @ReadAccessGroupId
+		,PostAccessGroupId = @PostAccessGroupId
 	FROM
 		Topics T
 	WHERE
@@ -2361,11 +2436,10 @@ BEGIN CATCH
 		 @ErrSeverity = ERROR_SEVERITY()
 
 	RAISERROR(@ErrMsg, @ErrSeverity, 1)
-
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicUpTo]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicUpTo]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2406,7 +2480,7 @@ WHERE
 	M.MessageId <= @LastMsg' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicLatest]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicLatest]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2438,7 +2512,7 @@ ORDER BY
 	TopicId, MessageId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicFrom]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicFrom]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2484,7 +2558,7 @@ WHERE
 	RowNumber <= @Amount' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopic]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopic]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2519,7 +2593,7 @@ WHERE
 	M.TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsGetAll]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsGetAll]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2566,7 +2640,7 @@ GROUP BY
 ORDER BY COUNT(FlagId) DESC, F.TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsClear]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsClear]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2587,7 +2661,7 @@ WHERE
 	MessageId = @MessageId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesFlag]    Script Date: 10/27/2011 14:30:42 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesFlag]    Script Date: 02/22/2012 16:34:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2598,7 +2672,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesFlag]
 (
 	@TopicId int=1
 	,@MessageId int=1
-	,@Ip varchar(15)=''127.0.0.1''
+	,@Ip varchar (39)=''127.0.0.1''
 )
 AS
 IF NOT EXISTS (SELECT * FROM Flags WHERE TopicId=@TopicId AND IP=@Ip AND (MessageId=@MessageId OR (@MessageId IS NULL AND MessageId IS NULL)))
@@ -2610,7 +2684,7 @@ IF NOT EXISTS (SELECT * FROM Flags WHERE TopicId=@TopicId AND IP=@Ip AND (Messag
 	END' 
 END
 GO
-/****** Object:  ForeignKey [FK_Flags_Messages]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Flags_Messages]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Flags_Messages]') AND parent_object_id = OBJECT_ID(N'[dbo].[Flags]'))
 ALTER TABLE [dbo].[Flags]  WITH CHECK ADD  CONSTRAINT [FK_Flags_Messages] FOREIGN KEY([TopicId], [MessageId])
 REFERENCES [dbo].[Messages] ([TopicId], [MessageId])
@@ -2618,7 +2692,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Flags_Messages]') AND parent_object_id = OBJECT_ID(N'[dbo].[Flags]'))
 ALTER TABLE [dbo].[Flags] CHECK CONSTRAINT [FK_Flags_Messages]
 GO
-/****** Object:  ForeignKey [FK_Forums_ForumsCategories]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Forums_ForumsCategories]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_ForumsCategories]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_ForumsCategories] FOREIGN KEY([CategoryId])
 REFERENCES [dbo].[ForumsCategories] ([CategoryId])
@@ -2626,7 +2700,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_ForumsCategories]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_ForumsCategories]
 GO
-/****** Object:  ForeignKey [FK_Forums_Users]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Forums_Users]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2634,7 +2708,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_Users]
 GO
-/****** Object:  ForeignKey [FK_Forums_Users_LastEdit]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Forums_Users_LastEdit]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Users_LastEdit] FOREIGN KEY([ForumLastEditUser])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2642,7 +2716,23 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_Users_LastEdit]
 GO
-/****** Object:  ForeignKey [FK_Messages_Topics]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Forums_UsersGroups_Post]    Script Date: 02/22/2012 16:34:39 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_UsersGroups_Post] FOREIGN KEY([PostAccessGroupId])
+REFERENCES [dbo].[UsersGroups] ([UserGroupId])
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_UsersGroups_Post]
+GO
+/****** Object:  ForeignKey [FK_Forums_UsersGroups_Read]    Script Date: 02/22/2012 16:34:39 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_UsersGroups_Read] FOREIGN KEY([ReadAccessGroupId])
+REFERENCES [dbo].[UsersGroups] ([UserGroupId])
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
+ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_UsersGroups_Read]
+GO
+/****** Object:  ForeignKey [FK_Messages_Topics]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Topics] ([TopicId])
@@ -2650,7 +2740,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages] CHECK CONSTRAINT [FK_Messages_Topics]
 GO
-/****** Object:  ForeignKey [FK_Messages_Users]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Messages_Users]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2658,7 +2748,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages] CHECK CONSTRAINT [FK_Messages_Users]
 GO
-/****** Object:  ForeignKey [FK_Tags_Topics]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Tags_Topics]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Tags]'))
 ALTER TABLE [dbo].[Tags]  WITH CHECK ADD  CONSTRAINT [FK_Tags_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Topics] ([TopicId])
@@ -2666,7 +2756,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Tags]'))
 ALTER TABLE [dbo].[Tags] CHECK CONSTRAINT [FK_Tags_Topics]
 GO
-/****** Object:  ForeignKey [FK_Topics_Forums]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Topics_Forums]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Forums] FOREIGN KEY([ForumId])
 REFERENCES [dbo].[Forums] ([ForumId])
@@ -2674,7 +2764,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_Forums]
 GO
-/****** Object:  ForeignKey [FK_Topics_Users]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Topics_Users]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2682,7 +2772,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_Users]
 GO
-/****** Object:  ForeignKey [FK_Topics_Users_LastEdit]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Topics_Users_LastEdit]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Users_LastEdit] FOREIGN KEY([TopicLastEditUser])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2690,7 +2780,23 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_Users_LastEdit]
 GO
-/****** Object:  ForeignKey [FK_TopicsSubscriptions_Topics]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Topics_UsersGroups_Post]    Script Date: 02/22/2012 16:34:39 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_UsersGroups_Post] FOREIGN KEY([PostAccessGroupId])
+REFERENCES [dbo].[UsersGroups] ([UserGroupId])
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_UsersGroups_Post]
+GO
+/****** Object:  ForeignKey [FK_Topics_UsersGroups_Read]    Script Date: 02/22/2012 16:34:39 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_UsersGroups_Read] FOREIGN KEY([ReadAccessGroupId])
+REFERENCES [dbo].[UsersGroups] ([UserGroupId])
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
+ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_UsersGroups_Read]
+GO
+/****** Object:  ForeignKey [FK_TopicsSubscriptions_Topics]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions]  WITH CHECK ADD  CONSTRAINT [FK_TopicsSubscriptions_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Topics] ([TopicId])
@@ -2698,7 +2804,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions] CHECK CONSTRAINT [FK_TopicsSubscriptions_Topics]
 GO
-/****** Object:  ForeignKey [FK_TopicsSubscriptions_Users]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_TopicsSubscriptions_Users]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions]  WITH CHECK ADD  CONSTRAINT [FK_TopicsSubscriptions_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2706,7 +2812,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions] CHECK CONSTRAINT [FK_TopicsSubscriptions_Users]
 GO
-/****** Object:  ForeignKey [FK_Users_UsersGroups]    Script Date: 10/27/2011 14:30:41 ******/
+/****** Object:  ForeignKey [FK_Users_UsersGroups]    Script Date: 02/22/2012 16:34:39 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Users_UsersGroups]') AND parent_object_id = OBJECT_ID(N'[dbo].[Users]'))
 ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_UsersGroups] FOREIGN KEY([UserGroupId])
 REFERENCES [dbo].[UsersGroups] ([UserGroupId])
@@ -2714,12 +2820,14 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Users_UsersGroups]') AND parent_object_id = OBJECT_ID(N'[dbo].[Users]'))
 ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_Users_UsersGroups]
 GO
+Ôªø
 GO
+
 IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0
 BEGIN
-	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (1, 'Level 1')
+	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (1, 'Member')
 	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (10, 'Admin')
-	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (2, 'Level2')
+	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (2, 'Trusted Member')
 	INSERT INTO dbo.UsersGroups (UserGroupId, UserGroupName) VALUES (3, 'Moderator')
 END
 GO
@@ -2735,11 +2843,11 @@ BEGIN
 		<p>Nearforums is released under <a href="http://nearforums.codeplex.com/license" target="_blank">MIT License</a>, you can get the source at <a href="http://www.nearforums.com/source-code">www.nearforums.com/source-code</a>.</p>');
 	INSERT INTO dbo.[PageContents] (PageContentTitle, PageContentShortName, PageContentEditDate, PageContentBody) 
 		VALUES ('Terms and conditions', 'terms', GETUTCDATE(),
-		'<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the "User") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our†<span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the ìAgreementî) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person''s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website''s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users'' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users'' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users'' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users'' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users'' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users'' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post ("Contributions") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it''s likely that you''re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operatorsís current†<span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third partiesí use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys'' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS''S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please†<span>contact</span> us.</p>');
+		'<h2>Legal Notices</h2>  <p>We, the Operators of this Website, provide it as a public service to our users.</p>  <p>Please carefully review the following basic rules that govern your use of the Website. Please note that your use of the Website constitutes your unconditional agreement to follow and be bound by these Terms and Conditions of Use. If you (the "User") do not agree to them, do not use the Website, provide any materials to the Website or download any materials from them.</p>  <p>The Operators reserve the right to update or modify these Terms and Conditions at any time without prior notice to User. Your use of the Website following any such change constitutes your unconditional agreement to follow and be bound by these Terms and Conditions as changed. For this reason, we encourage you to review these Terms and Conditions of Use whenever you use the Website.</p>  <p>These Terms and Conditions of Use apply to the use of the Website and do not extend to any linked third party sites. These Terms and Conditions and our¬†<span>Privacy Policy</span>, which are hereby incorporated by reference, contain the entire agreement (the ‚ÄúAgreement‚Äù) between you and the Operators with respect to the Website. Any rights not expressly granted herein are reserved.</p>  <h2><span>Permitted and Prohibited Uses</span></h2>  <p>You may use the the Website for the sole purpose of sharing and exchanging ideas with other Users. You may not use the the Website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, and any U.S. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>You may not upload or transmit any material that infringes or misappropriates any person''s copyright, patent, trademark, or trade secret, or disclose via the the Website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>You may not upload any viruses, worms, Trojan horses, or other forms of harmful computer code, nor subject the Website''s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the Website.</p>  <p>You are strictly prohibited from communicating on or through the Website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>You are expressly prohibited from compiling and using other Users'' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the Website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other Users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>You also are expressly prohibited from distributing Users'' personal information to third-party parties for marketing purposes. The Operators shall deem the compiling of marketing and mailing lists using Users'' personal information, the sending of unsolicited marketing materials to Users, or the distribution of Users'' personal information to third parties for marketing purposes as a material breach of these Terms and Conditions of Use, and the Operators reserve the right to terminate or suspend your access to and use of the Website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>The Operators note that unauthorized use of Users'' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. The Operators reserve the right to report the abuse of Users'' personal information to the appropriate law enforcement and government authorities, and the Operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>User Submissions</span></h2>  <p>The Operators do not want to receive confidential or proprietary information from you through the Website. Any material, information, or other communication you transmit or post ("Contributions") to the Website will be considered non-confidential.</p>  <p>All contributions to this site are licensed by you under the MIT License to anyone who wishes to use them, including the Operators.</p>  <p>If you work for a company or at a University, it''s likely that you''re not the copyright holder of anything you make, even in your free time. Before making contributions to this site, get written permission from your employer.</p>  <h2><span>User Discussion Lists and Forums</span></h2>  <p>The Operators may, but are not obligated to, monitor or review any areas on the Website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. The Operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. The Operators may edit or remove content on the the Website at their discretion at any time.</p>  <h2><span>Use of Personally Identifiable Information</span></h2>  <p>Information submitted to the Website is governed according to the Operators‚Äôs current¬†<span>Privacy Policy</span> and the stated license of this website.</p>  <p>You agree to provide true, accurate, current, and complete information when registering with the Website. It is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. If you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the Website.</p>  <p>Although sections of the Website may be viewed simply by visiting the Website, in order to access some Content and/or additional features offered at the Website, you may need to sign on as a guest or register as a member. If you create an account on the Website, you may be asked to supply your name, address, a User ID and password. You are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. You agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. You further agree that you will not permit others, including those whose accounts have been terminated, to access the Website using your account or User ID. You grant the Operators and all other persons or entities involved in the operation of the Website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the Website and in the provision of services to you. The Operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties‚Äô use or misuse of information transmitted or received using website. To learn more about how we protect the privacy of the personal information in your account, please visit our<span>Privacy Policy</span>.</p>  <h2><span>Indemnification</span></h2>  <p>You agree to defend, indemnify and hold harmless the Operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys'' fees, arising from or related to your use or misuse of the Website, including, without limitation, your violation of these Terms and Conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>Termination</span></h2>  <p>These Terms and Conditions of Use are effective until terminated by either party. If you no longer agree to be bound by these Terms and Conditions, you must cease use of the Website. If you are dissatisfied with the Website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the Website. The Operators reserve the right to terminate or suspend your access to and use of the Website, or parts of the Website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the Operators have reason to believe that you are in violation of these Terms and Conditions of Use.</p>  <h2><span>WARRANTY DISCLAIMER</span></h2>  <p>THE WEBSITE AND ASSOCIATED MATERIALS ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, THE OPERATORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENTOF INTELLECTUAL PROPERTY. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTY THAT THE WEBSITE WILL MEET YOUR REQUIREMENTS, OR THAT YOUR USE OF THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR FREE; NOR DO THE OPERATORS MAKE ANY REPRESENTATION OR WARRANTY AS TO THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE WEBSITE. THE OPERATORS MAKE NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THE WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THE WEBSITE.</p>  <p>IN NO EVENT SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, LOSS OF INFORMATION) ARISING OUT OF THE USE, MISUSE OF OR INABILITY TO USE THE WEBSITE, EVEN IF THE OPERATORS HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THIS DISCLAIMER CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. BECAUSE SOME JURISDICTIONS PROHIBIT THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</p>  <p>YOU UNDERSTAND AND AGREE THAT ANY CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE WEBSITE IS AT YOUR OWN DISCRETION AND RISK AND THAT YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA OR BUSINESS INTERRUPTION THAT RESULTS FROM THE DOWNLOAD OF CONTENT. THE OPERATORS SHALL NOT BE RESPONSIBLE FOR ANY LOSS OR DAMAGE CAUSED, OR ALLEGED TO HAVE BEEN CAUSED, DIRECTLY OR INDIRECTLY, BY THE INFORMATION OR IDEAS CONTAINED, SUGGESTED OR REFERENCED IN OR APPEARING ON THE WEBSITE. YOUR PARTICIPATION IN THE WEBSITE IS SOLELY AT YOUR OWN RISK. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM THE OPERATORS OR THROUGH THE OPERATORS, THEIR EMPLOYEES, OR THIRD PARTIES SHALL CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. YOU ACKNOWLEDGE, BY YOUR USE OF THE THE WEBSITE, THAT YOUR USE OF THE WEBSITE IS AT YOUR SOLE RISK.</p>  <p>LIABILITY LIMITATION. UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL OR EQUITABLE THEORY, WHETHER IN TORT, CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, SHALL THE OPERATORS OR ANY OF THEIR AGENTS, VENDORS OR SUPPLIERS BE LIABLE TO USER OR TO ANY OTHER PERSON FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES OF ANY NATURE ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE THE WEBSITE OR FOR ANY BREACH OF SECURITY ASSOCIATED WITH THE TRANSMISSION OF SENSITIVE INFORMATION THROUGH THE WEBSITE OR FOR ANY INFORMATION OBTAINED THROUGH THE WEBSITE, INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOSS OF GOODWILL, LOSS OR CORRUPTION OF DATA, WORK STOPPAGE, ACCURACY OF RESULTS, OR COMPUTER FAILURE OR MALFUNCTION, EVEN IF AN AUTHORIZED REPRESENTATIVE OF THE OPERATORS HAS BEEN ADVISED OF OR SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES.</p>  <p>THE OPERATORS''S TOTAL CUMULATIVE LIABILITY FOR ANY AND ALL CLAIMS IN CONNECTION WITH THE WEBSITE WILL NOT EXCEED FIVE U.S. DOLLARS ($5.00). USER AGREES AND ACKNOWLEDGES THAT THE FOREGOING LIMITATIONS ON LIABILITY ARE AN ESSENTIAL BASIS OF THE BARGAIN AND THAT THE OPERATORS WOULD NOT PROVIDE THE WEBSITE ABSENT SUCH LIMITATION.</p>  <h2>Links to Other Materials.</h2>  <p>The Website may contain links to sites owned or operated by independent third parties. These links are provided for your convenience and reference only. We do not control such sites and, therefore, we are not responsible for any content posted on these sites. The fact that the Operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the Operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the Website. If you decide to access any of the third party sites linked to by the Website, you do this entirely at your own risk. Because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the Operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>Notification Of Possible Copyright Infringement</span></h2>  <p>In the event you believe that material or content published on the Website may infringe on your copyright or that of another, please¬†<span>contact</span> us.</p>');
 END
 GO
 
-
+Ôªø
 GO
 
 /*************************************************************/
