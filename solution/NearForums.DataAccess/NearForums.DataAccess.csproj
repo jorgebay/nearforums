@@ -49,6 +49,7 @@
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="CustomAuthenticationDataAccess.cs" />
     <Compile Include="ForumsDataAccess.cs" />
+    <Compile Include="ITagsDataAccess.cs" />
     <Compile Include="MessagesDataAccess.cs" />
     <Compile Include="PageContentsDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
