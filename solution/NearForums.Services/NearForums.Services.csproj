@@ -43,7 +43,9 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="IPageContentsService.cs" />
     <Compile Include="ITagsService.cs" />
+    <Compile Include="PageContentsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagsService.cs" />
   </ItemGroup>
