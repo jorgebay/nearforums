@@ -8,7 +8,7 @@ using System.Data.Common;
 
 namespace NearForums.DataAccess
 {
-	public class TemplatesDataAccess : BaseDataAccess
+	public class TemplatesDataAccess : BaseDataAccess, ITemplatesDataAccess
 	{
 		public List<Template> GetAll()
 		{

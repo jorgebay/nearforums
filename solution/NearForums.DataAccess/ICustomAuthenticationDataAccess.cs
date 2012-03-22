@@ -7,5 +7,6 @@ namespace NearForums.DataAccess
 {
 	public interface ICustomAuthenticationDataAccess
 	{
+		User GetUser(string userName, string password);
 	}
 }

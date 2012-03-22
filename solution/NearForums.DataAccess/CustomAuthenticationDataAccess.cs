@@ -11,7 +11,7 @@ namespace NearForums.DataAccess
 	/// <summary>
 	/// Represents a set of method to access the custom authentication providers database.
 	/// </summary>
-	public class CustomAuthenticationDataAccess : BaseDataAccess
+	public class CustomAuthenticationDataAccess : BaseDataAccess, ICustomAuthenticationDataAccess
 	{
 		public CustomAuthenticationDataAccess()
 		{
