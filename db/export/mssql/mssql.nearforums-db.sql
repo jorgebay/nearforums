@@ -2820,7 +2820,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Users_UsersGroups]') AND parent_object_id = OBJECT_ID(N'[dbo].[Users]'))
 ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_Users_UsersGroups]
 GO
-﻿
+
 GO
 
 IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0

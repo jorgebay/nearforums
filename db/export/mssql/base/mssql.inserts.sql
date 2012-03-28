@@ -1,4 +1,4 @@
-﻿
+
 GO
 
 IF (SELECT COUNT(*) FROM dbo.UsersGroups) = 0
