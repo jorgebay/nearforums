@@ -6,7 +6,7 @@ using NearForums.DataAccess;
 
 namespace NearForums.Services
 {
-	public class MessagesService : NearForums.Services.IMessagesService
+	public class MessagesService : IMessagesService
 	{
 		private readonly IMessagesDataAccess dataAccess;
 		public MessagesService(IMessagesDataAccess da)
