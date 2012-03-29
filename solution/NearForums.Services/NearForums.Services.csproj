@@ -44,9 +44,11 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="IMessagesService.cs" />
     <Compile Include="INotificationsService.cs" />
     <Compile Include="IPageContentsService.cs" />
     <Compile Include="ITagsService.cs" />
+    <Compile Include="MessagesService.cs" />
     <Compile Include="NotificationsService.cs" />
     <Compile Include="PageContentsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
