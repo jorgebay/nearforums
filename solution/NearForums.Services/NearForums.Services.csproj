@@ -52,6 +52,7 @@
     <Compile Include="ITagsService.cs" />
     <Compile Include="ITemplatesService.cs" />
     <Compile Include="ITopicsService.cs" />
+    <Compile Include="ITopicsSubscriptionsService.cs" />
     <Compile Include="MessagesService.cs" />
     <Compile Include="NotificationsService.cs" />
     <Compile Include="PageContentsService.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="TagsService.cs" />
     <Compile Include="TemplatesService.cs" />
     <Compile Include="TopicsService.cs" />
+    <Compile Include="TopicsSubscriptionsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NearForums.DataAccess\NearForums.DataAccess.csproj">

@@ -8,7 +8,11 @@ namespace NearForums.Services
 {
 	public class MessagesService : IMessagesService
 	{
+		/// <summary>
+		/// messages repository
+		/// </summary>
 		private readonly IMessagesDataAccess dataAccess;
+
 		public MessagesService(IMessagesDataAccess da)
 		{
 			dataAccess = da;
