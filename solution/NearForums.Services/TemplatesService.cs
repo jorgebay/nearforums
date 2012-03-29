@@ -6,7 +6,7 @@ using NearForums.DataAccess;
 
 namespace NearForums.Services
 {
-	public class TemplatesService : NearForums.Services.ITemplatesService
+	public class TemplatesService : ITemplatesService
 	{
 		/// <summary>
 		/// template repository
