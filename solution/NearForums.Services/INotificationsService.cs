@@ -4,7 +4,7 @@ using System.Net.Mail;
 
 namespace NearForums.Services
 {
-	interface INotificationsService
+	public interface INotificationsService
 	{
 		void SendMail(MailMessage message);
 		/// <summary>

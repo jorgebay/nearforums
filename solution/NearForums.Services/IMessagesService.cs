@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace NearForums.Services
 {
-	interface IMessagesService
+	public interface IMessagesService
 	{
 		/// <summary>
 		/// Adds a new message to the topic

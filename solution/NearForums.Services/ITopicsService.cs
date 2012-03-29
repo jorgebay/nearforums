@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace NearForums.Services
 {
-	interface ITopicsService
+	public interface ITopicsService
 	{
 		/// <summary>
 		/// Adds a visit to a topic (asynchronously)

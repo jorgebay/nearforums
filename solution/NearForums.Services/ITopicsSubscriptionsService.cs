@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace NearForums.Services
 {
-	interface ITopicsSubscriptionsService
+	public interface ITopicsSubscriptionsService
 	{
 		/// <summary>
 		/// Subscribes a user to a topic. If the user is already subscribed it does nothing.

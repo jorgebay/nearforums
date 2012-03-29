@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace NearForums.Services
 {
-	interface ITemplatesService
+	public interface ITemplatesService
 	{
 		/// <summary>
 		/// Adds or updates a template in the db

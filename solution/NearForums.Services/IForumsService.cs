@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace NearForums.Services
 {
-	interface IForumsService
+	public interface IForumsService
 	{
 		void Add(Forum forum, int userId);
 		/// <summary>

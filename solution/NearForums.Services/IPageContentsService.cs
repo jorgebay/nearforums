@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NearForums.Services
 {
-	interface IPageContentsService
+	public interface IPageContentsService
 	{
 		/// <summary>
 		/// Adds a new page content
