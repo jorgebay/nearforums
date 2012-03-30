@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Web.Controllers.Filters;
 using NearForums.Validation;
@@ -13,16 +13,26 @@ namespace NearForums.Web.Controllers
 {
 	public class PageContentsController : BaseController
 	{
+		/// <summary>
+		/// PageContents service
+		/// </summary>
+		private readonly IPageContentsService service;
+
+		public PageContentsController(IPageContentsService serv)
+		{
+			service = serv;
+		}
+
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List()
 		{
-			var list = PageContentsServiceClient.GetAll();
+			var list = service.GetAll();
 			return View(list);
 		}
 
 		public ActionResult Detail(string name)
 		{
-			var content = PageContentsServiceClient.Get(name);
+			var content = service.Get(name);
 			if (content == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -45,7 +55,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				content.ShortName = content.Title.ToUrlSegment(128);
-				PageContentsServiceClient.Add(content);
+				service.Add(content);
 			}
 			catch (ValidationException ex)
 			{
@@ -65,7 +75,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Edit(string name)
 		{
-			var content = PageContentsServiceClient.Get(name);
+			var content = service.Get(name);
 			if (content == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -82,7 +92,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				content.ShortName = name;
-				PageContentsServiceClient.Edit(content);
+				service.Edit(content);
 			}
 			catch (ValidationException ex)
 			{
@@ -103,7 +113,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin, RefuseOnFail=true)]
 		public ActionResult Delete(string name)
 		{
-			bool deleted = PageContentsServiceClient.Delete(name);
+			bool deleted = service.Delete(name);
 			return Json(deleted);
 		}
 	}
