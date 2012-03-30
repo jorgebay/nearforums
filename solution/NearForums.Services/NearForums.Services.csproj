@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=1.0.0.505, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -46,6 +50,7 @@
     </Compile>
     <Compile Include="ForumsService.cs" />
     <Compile Include="IForumsService.cs" />
+    <Compile Include="ILoggerService.cs" />
     <Compile Include="IMessagesService.cs" />
     <Compile Include="INotificationsService.cs" />
     <Compile Include="IPageContentsService.cs" />
@@ -54,6 +59,7 @@
     <Compile Include="ITopicsService.cs" />
     <Compile Include="ITopicsSubscriptionsService.cs" />
     <Compile Include="IUsersService.cs" />
+    <Compile Include="LoggerService.cs" />
     <Compile Include="MessagesService.cs" />
     <Compile Include="NotificationsService.cs" />
     <Compile Include="PageContentsService.cs" />
