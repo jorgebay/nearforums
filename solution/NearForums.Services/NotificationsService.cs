@@ -10,6 +10,16 @@ namespace NearForums.Services
 {
 	public class NotificationsService : INotificationsService
 	{
+		/// <summary>
+		/// Service that handles the logging
+		/// </summary>
+		private readonly ILoggerService loggerService;
+
+		public NotificationsService(ILoggerService logger)
+		{
+			loggerService = logger;
+		}
+
 		public void SendResetPassword(User user, string url)
 		{
 			if (!SiteConfiguration.Current.Notifications.MembershipPasswordReset.IsDefined)
@@ -36,7 +46,6 @@ namespace NearForums.Services
 			SendMail(message);
 		}
 
-		#region Subscriptions
 		public int SendToUsersSubscribed(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions)
 		{
 			int sentMailsCount = 0;
@@ -54,7 +63,7 @@ namespace NearForums.Services
 					{
 						if (handleExceptions)
 						{
-							NearForums.ServiceClient.LoggerServiceClient.LogError(ex);
+							loggerService.LogError(ex);
 						}
 						else
 						{
@@ -90,12 +99,7 @@ namespace NearForums.Services
 
 			SendMail(message);
 		}
-		#endregion
 
-		/// <summary>
-		/// Sends an email based on the application configuration.
-		/// Use configuration/system.net/mailSettings element to set the smtp parameters (method/host/port/etc).
-		/// </summary>
 		public void SendMail(MailMessage message)
 		{
 			SmtpClient client = new SmtpClient();

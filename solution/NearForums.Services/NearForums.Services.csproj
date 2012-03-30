@@ -75,10 +75,6 @@
       <Project>{8A800A71-0656-4712-881D-AA03BDCA218C}</Project>
       <Name>NearForums.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NearForums.ServiceClient\NearForums.ServiceClient.csproj">
-      <Project>{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}</Project>
-      <Name>NearForums.ServiceClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NearForums\NearForums.csproj">
       <Project>{8039364C-28D8-4AE9-9684-628671C0FF86}</Project>
       <Name>NearForums</Name>

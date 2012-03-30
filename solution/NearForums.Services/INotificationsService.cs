@@ -6,6 +6,10 @@ namespace NearForums.Services
 {
 	public interface INotificationsService
 	{
+		/// <summary>
+		/// Sends an email based on the application configuration.
+		/// Use configuration/system.net/mailSettings element to set the smtp parameters (method/host/port/etc).
+		/// </summary>
 		void SendMail(MailMessage message);
 		/// <summary>
 		/// Sends the mail to reset the password to a user
