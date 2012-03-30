@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Web.Controllers.Helpers;
 using NearForums.Validation;
@@ -13,6 +13,21 @@ namespace NearForums.Web.Controllers
 {
 	public class MessagesController : BaseController
 	{
+		/// <summary>
+		/// Messages service
+		/// </summary>
+		private readonly IMessagesService service;
+		/// <summary>
+		/// Topic service
+		/// </summary>
+		private readonly ITopicsService topicService;
+
+		public MessagesController(IMessagesService serv, ITopicsService topicServ)
+		{
+			service = serv;
+			topicService = topicServ;
+		}
+
 		#region Add
 		/// <summary>
 		/// Loads the "reply to a topic" form
@@ -26,7 +41,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Add(int id, string name, int? msg)
 		{
 			var message = new Message();
-			message.Topic = TopicsServiceClient.Get(id, name);
+			message.Topic = topicService.Get(id, name);
 			#region Check topic
 			if (message.Topic == null)
 			{
@@ -63,7 +78,7 @@ namespace NearForums.Web.Controllers
 		[PreventFlood(SuccessResultType = typeof(RedirectToRouteResult))]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
 		{
-			message.Topic = TopicsServiceClient.Get(id, name);
+			message.Topic = topicService.Get(id, name);
 			#region Check topic
 			if (message.Topic == null)
 			{
@@ -94,7 +109,7 @@ namespace NearForums.Web.Controllers
 				}
 				if (ModelState.IsValid)
 				{
-					MessagesServiceClient.Add(message, Request.UserHostAddress);
+					service.Add(message, Request.UserHostAddress);
 					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
 					//Redirect to the message posted
 					return new RedirectToRouteExtraResult(new { action = "Detail", controller = "Topics", id = id, name = name, forum = forum }, "#msg" + message.Id);
@@ -118,7 +133,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult Delete(int mid, int id, string forum, string name)
 		{
-			MessagesServiceClient.Delete(id, mid, this.User.Id);
+			service.Delete(id, mid, this.User.Id);
 			return Json(true);
 		}
 		#endregion
@@ -132,7 +147,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult Flag(int mid, int id, string forum, string name)
 		{
-			bool flagged = MessagesServiceClient.Flag(id, mid, Request.UserHostAddress);
+			bool flagged = service.Flag(id, mid, Request.UserHostAddress);
 
 			return Json(flagged);
 		}
@@ -146,7 +161,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult ListFlagged()
 		{
-			var topics = MessagesServiceClient.ListFlagged();
+			var topics = service.ListFlagged();
 			return View(topics);
 		}
 		#endregion
@@ -156,7 +171,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult ClearFlags(int mid, int id, string forum, string name)
 		{
-			bool cleared = MessagesServiceClient.ClearFlags(id, mid);
+			bool cleared = service.ClearFlags(id, mid);
 			return Json(cleared);
 		}
 		#endregion

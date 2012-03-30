@@ -11,6 +11,9 @@ using NearForums.Web.Modules;
 using NearForums.Configuration.Routing;
 using NearForums.Web.Controllers;
 using NearForums.Web.Extensions;
+using Autofac;
+using Autofac.Integration.Mvc;
+using System.Reflection;
 
 namespace NearForums.Web.Output
 {
@@ -41,6 +44,21 @@ namespace NearForums.Web.Output
 
 			//Inject as a dependency
 			SiteConfiguration.Current.PathResolver = Server.MapPath;
+
+			//Set Autofac as dependency resolver
+			var builder = new ContainerBuilder();
+			builder.RegisterAssemblyTypes(Assembly.Load("NearForums.DataAccess"))
+				.Where(t => t.Name.EndsWith("DataAccess"))
+				.AsImplementedInterfaces()
+				.InstancePerDependency();
+			builder.RegisterAssemblyTypes(Assembly.Load("NearForums.Services"))
+				.Where(t => t.Name.EndsWith("Service"))
+				.AsImplementedInterfaces()
+				.InstancePerDependency();
+			builder.RegisterControllers(typeof(BaseController).Assembly);
+			var container = builder.Build();
+			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
 		}
 	}
 }

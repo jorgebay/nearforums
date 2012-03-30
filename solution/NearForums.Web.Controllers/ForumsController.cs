@@ -3,22 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using NearForums.ServiceClient;
 using NearForums.Web.UI;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
 using NearForums.Web.Extensions;
 using NearForums.Configuration;
 using NearForums.Web.Controllers.Helpers;
+using NearForums.Services;
+using NearForums.ServiceClient;
 
 namespace NearForums.Web.Controllers
 {
 	public class ForumsController : BaseController
 	{
+		/// <summary>
+		/// Forum service
+		/// </summary>
+		private readonly IForumsService service;
+		public ForumsController(IForumsService serv)
+		{
+			service = serv;
+		}
+
 		#region List
 		public ActionResult List()
 		{
-			var list = ForumsServiceClient.GetList(Role);
+			var list = service.GetList(Role);
 			if (list.Count == 0)
 			{
 				ViewBag.ShowFirstSteps = !UsersServiceClient.IsThereAnyUser();
@@ -31,7 +41,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Manage()
 		{
-			var list = ForumsServiceClient.GetList(Role);
+			var list = service.GetList(Role);
 			return View(list);
 		} 
 		#endregion
@@ -52,7 +62,7 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult MostViewedTopics(string forum, int page)
 		{
-			var f = ForumsServiceClient.Get(forum);
+			var f = service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -73,7 +83,7 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult LatestTopics(string forum, int page, ResultFormat format)
 		{
-			var f = ForumsServiceClient.Get(forum);
+			var f = service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -108,7 +118,7 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult ListUnansweredTopics(string forum)
 		{
-			Forum f = ForumsServiceClient.Get(forum);
+			Forum f = service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -134,7 +144,7 @@ namespace NearForums.Web.Controllers
 		{
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
 			return View("Edit");
 		}
 
@@ -151,7 +161,7 @@ namespace NearForums.Web.Controllers
 				}
 				if (ModelState.IsValid)
 				{
-					ForumsServiceClient.Add(forum, this.User.Id);
+					service.Add(forum, this.User.Id);
 					return RedirectToAction("Detail", new{forum=forum.ShortName});
 				}
 			}
@@ -161,7 +171,7 @@ namespace NearForums.Web.Controllers
 			}
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
 			return View("Edit", forum);
 		} 
 		#endregion
@@ -171,7 +181,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Edit(string forum)
 		{
-			var f = ForumsServiceClient.Get(forum);
+			var f = service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -182,7 +192,7 @@ namespace NearForums.Web.Controllers
 			}
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
 			ViewBag.IsEdit = true;
 			return View("Edit", f);
 		}
@@ -195,7 +205,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				#region Check access rights
-				var originalForum = ForumsServiceClient.Get(forum);
+				var originalForum = service.Get(forum);
 				if (originalForum == null)
 				{
 					return ResultHelper.NotFoundResult(this);
@@ -209,7 +219,7 @@ namespace NearForums.Web.Controllers
 				f.ShortName = forum;
 				if (ModelState.IsValid)
 				{
-					ForumsServiceClient.Edit(f, User.Id);
+					service.Edit(f, User.Id);
 					return RedirectToAction("Detail", new{forum=f.ShortName});
 				}
 			}
@@ -219,7 +229,7 @@ namespace NearForums.Web.Controllers
 			}
 			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(ForumsServiceClient.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
 			ViewBag.IsEdit = true;
 			return View("Edit", f);
 		}
@@ -231,7 +241,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(string forum)
 		{
-			ForumsServiceClient.Delete(forum);
+			service.Delete(forum);
 
 			return RedirectToAction("Manage");
 		}
@@ -242,7 +252,7 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult TagDetail(string forum, string tag, int page)
 		{
-			Forum f = ForumsServiceClient.Get(forum);
+			Forum f = service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);

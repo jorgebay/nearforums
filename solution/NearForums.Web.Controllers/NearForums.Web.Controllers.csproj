@@ -111,6 +111,10 @@
       <Project>{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}</Project>
       <Name>NearForums.ServiceClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NearForums.Services\NearForums.Services.csproj">
+      <Project>{9FF42040-82E2-496D-8E8A-71169B0514FA}</Project>
+      <Name>NearForums.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NearForums.Web\NearForums.Web.csproj">
       <Project>{AF911FBC-3E0B-44FF-AB68-DF35FF353064}</Project>
       <Name>NearForums.Web</Name>

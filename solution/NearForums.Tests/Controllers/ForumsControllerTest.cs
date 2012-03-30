@@ -12,6 +12,7 @@ using NearForums.Web.State;
 using System.Web.Routing;
 using NearForums.Configuration.Routing;
 using NearForums.Web.Extensions;
+using NearForums.Services;
 
 namespace NearForums.Tests
 {
@@ -71,7 +72,7 @@ namespace NearForums.Tests
 		public static Forum GetAForum()
 		{
 			Forum forum = null;
-			var controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost");
 
 			controller.List();
@@ -124,7 +125,7 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forums_List_Detail()
 		{
-			var controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller);
 			Forum forum = GetAForum();
 
@@ -140,7 +141,7 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forums_Unanswered()
 		{
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 			controller.ViewData = new ViewDataDictionary();
 
 			Forum forum = GetAForum();
@@ -155,7 +156,7 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forum_LatestAllTopics()
 		{
-			var controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller);
 			var result = controller.LatestAllTopics();
 
@@ -166,7 +167,7 @@ namespace NearForums.Tests
 		public void Forum_Edit()
 		{
 			Forum forum = GetAForum();
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
@@ -181,7 +182,7 @@ namespace NearForums.Tests
 		public void Forum_Add_Delete_English()
 		{
 			Forum forum = new Forum();
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
 			forum.Name = "Unit test forum";
@@ -199,7 +200,7 @@ namespace NearForums.Tests
 		public void Forum_Add_Delete_Thai()
 		{
 			Forum forum = new Forum();
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
 			forum.Name = "ถ้า";
