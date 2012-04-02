@@ -15,6 +15,9 @@ namespace NearForums.Tests
 	public static class TestHelper
 	{
 		private static IContainer _container;
+		/// <summary>
+		/// IOC
+		/// </summary>
 		public static IContainer Container
 		{
 			get
@@ -40,6 +43,11 @@ namespace NearForums.Tests
 			}
 		}
 
+		/// <summary>
+		/// Gets an instance of a type with all dependencies resolved
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public static T Resolve<T>()
 		{
 			return Container.Resolve<T>();

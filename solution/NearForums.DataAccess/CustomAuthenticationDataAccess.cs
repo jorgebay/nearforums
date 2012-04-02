@@ -25,7 +25,7 @@ namespace NearForums.DataAccess
 		/// <summary>
 		/// Gets an instance of the db provider factory for the custom db authentication
 		/// </summary>
-		protected override DbProviderFactory Factory
+		public override DbProviderFactory Factory
 		{
 			get
 			{
@@ -34,6 +34,10 @@ namespace NearForums.DataAccess
 					_factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
 				}
 				return _factory;
+			}
+			set
+			{
+				_factory = value;
 			}
 		}
 

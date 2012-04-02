@@ -70,7 +70,7 @@ namespace NearForums.Tests.Controllers
 			SessionStateItemCollection session = ForumsControllerTest.GetSessionWithTestUser();
 			UserState userState = (UserState)session["User"];
 
-			UsersController controller = new UsersController();
+			UsersController controller = TestHelper.Resolve<UsersController>();
 			ActionResult result = controller.Detail(userState.Id);
 
 			User user = (User)controller.ViewData.Model;
@@ -83,7 +83,7 @@ namespace NearForums.Tests.Controllers
 			SessionStateItemCollection session = ForumsControllerTest.GetSessionWithTestUser();
 			UserState userState = (UserState)session["User"];
 
-			UsersController controller = new UsersController();
+			UsersController controller = TestHelper.Resolve<UsersController>();
 			ActionResult result = controller.MessagesByUser(userState.Id);
 
 			IList topics = (IList)controller.ViewData.Model;

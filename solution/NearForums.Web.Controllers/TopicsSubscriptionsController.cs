@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
@@ -14,6 +14,27 @@ namespace NearForums.Web.Controllers
 {
 	public class TopicsSubscriptionsController : BaseController
 	{
+		/// <summary>
+		/// Service that handles subscriptions
+		/// </summary>
+		private readonly ITopicsSubscriptionsService service;
+
+		/// <summary>
+		/// Topic service
+		/// </summary>
+		private readonly ITopicsService topicService;
+
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService userService;
+
+		public TopicsSubscriptionsController(ITopicsSubscriptionsService serv, ITopicsService topicServ, IUsersService userServ)
+		{
+			service = serv;
+			topicService = topicServ;
+			userService = userServ;
+		}
 		/// <summary>
 		/// Unsubscribes a user from a topic
 		/// </summary>
@@ -33,14 +54,14 @@ namespace NearForums.Web.Controllers
 				ResultHelper.ForbiddenResult(this);
 			} 
 			#endregion
-			int removedSubscription = TopicsSubscriptionsServiceClient.Remove(tid, uid, parsedGuid);
+			int removedSubscription = service.Remove(tid, uid, parsedGuid);
 
 			if (removedSubscription > 0)
 			{
 				//Load the user data
-				ViewData["User"] = UsersServiceClient.Get(uid);
+				ViewData["User"] = userService.Get(uid);
 			}
-			topic = TopicsServiceClient.Get(tid);
+			topic = topicService.Get(tid);
 			return View(topic);
 		}
 	}
