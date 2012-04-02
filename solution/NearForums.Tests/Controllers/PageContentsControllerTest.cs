@@ -68,7 +68,7 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void PageContent_Add_Edit_List_Detail_Delete_Test()
 		{
-			PageContentsController controller = new PageContentsController();
+			var controller = TestHelper.Resolve<PageContentsController>();
 
 			PageContent content = new PageContent()
 			{
@@ -81,7 +81,7 @@ namespace NearForums.Tests.Controllers
 			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
 			Assert.IsNotNull(content.ShortName);
 
-			controller = new PageContentsController();
+			controller = TestHelper.Resolve<PageContentsController>();
 			result = controller.Add(contentFail);
 			//Must return to the view
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -89,11 +89,11 @@ namespace NearForums.Tests.Controllers
 
 			#region Edit
 			content.Title += " (Edited)";
-			controller = new PageContentsController();
+			controller = TestHelper.Resolve<PageContentsController>();
 			result = controller.Edit(content.ShortName, content);
 			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
 
-			controller = new PageContentsController();
+			controller = TestHelper.Resolve<PageContentsController>();
 			result = controller.Edit(content.ShortName, contentFail);
 			//Must return to the view
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
