@@ -19,7 +19,22 @@ namespace NearForums.DataAccess
 			{
 				throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
 			}
-			Factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
+		}
+
+		private DbProviderFactory _factory;
+		/// <summary>
+		/// Gets an instance of the db provider factory for the custom db authentication
+		/// </summary>
+		protected override DbProviderFactory Factory
+		{
+			get
+			{
+				if (_factory == null)
+				{
+					_factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
+				}
+				return _factory;
+			}
 		}
 
 		public override DbConnection GetConnection()

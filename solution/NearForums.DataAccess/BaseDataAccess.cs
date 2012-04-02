@@ -44,10 +44,10 @@ namespace NearForums.DataAccess
 		/// <summary>
 		/// The database provider factory to create the connections and commands to access the db.
 		/// </summary>
-		protected DbProviderFactory Factory
+		protected virtual DbProviderFactory Factory
 		{
 			get;
-			set;
+			private set;
 		}
 
 		/// <summary>
