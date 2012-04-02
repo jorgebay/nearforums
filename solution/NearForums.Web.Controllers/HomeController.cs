@@ -13,7 +13,7 @@ namespace NearForums.Web.Controllers
 	{
 		public ActionResult Index()
 		{
-			return View(null, "Site", null);
+			return View();
 		}
 
 		public ActionResult About()

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using System.Web;
 
 using NearForums.Validation;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Controllers.Filters;
 using NearForums.Web.Controllers.Helpers;
 using System.Net;
@@ -21,6 +21,16 @@ namespace NearForums.Web.Controllers
 {
 	public class TemplatesController : BaseController
 	{
+		/// <summary>
+		/// Template service
+		/// </summary>
+		private readonly ITemplatesService templateService;
+
+		public TemplatesController(ITemplatesService templateServ)
+		{
+			templateService = templateServ;
+		}
+
 		#region Add template
 		[RequireAuthorization(UserRole.Admin)]
 		[AcceptVerbs(HttpVerbs.Get)]
@@ -63,7 +73,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List(TemplateActionError? error)
 		{
-			var list = TemplatesServiceClient.GetAll();
+			var list = templateService.GetAll();
 			ViewBag.BasePath = Url.Content(Config.TemplateFolderPath(""));
 			if (error == TemplateActionError.DeleteCurrent)
 			{
@@ -89,7 +99,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult SetCurrent(int id)
 		{
-			TemplatesServiceClient.SetCurrent(id);
+			templateService.SetCurrent(id);
 
 			this.Cache.Template = null;
 
@@ -105,7 +115,7 @@ namespace NearForums.Web.Controllers
 		{
 			TemplateActionError? error = null;
 
-			Template t = TemplatesServiceClient.Get(id);
+			Template t = templateService.Get(id);
 			if (t != null)
 			{
 				if (t.IsCurrent)
@@ -119,7 +129,7 @@ namespace NearForums.Web.Controllers
 					try
 					{
 						SafeIO.Directory_Delete(baseDirectory, true);
-						TemplatesServiceClient.Delete(id);
+						templateService.Delete(id);
 					}
 					catch (UnauthorizedAccessException)
 					{
@@ -136,7 +146,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Export(int id)
 		{
-			var template = TemplatesServiceClient.Get(id);
+			var template = templateService.Get(id);
 			string fileName = Config.TemplateFolderPath(template.Key) + "/template.zip";
 			return new FilePathResult(fileName, "application/zip") 
 			{ 

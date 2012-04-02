@@ -276,7 +276,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 		#region Add default templates
 		/// <summary>
-		/// 
+		/// Extract all template packages inside the path
 		/// </summary>
 		/// <exception cref="DirectoryNotFoundException"></exception>
 		/// <exception cref="UnauthorizedAccessException"></exception>
