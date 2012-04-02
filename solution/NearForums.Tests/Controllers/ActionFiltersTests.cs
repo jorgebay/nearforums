@@ -70,7 +70,7 @@ namespace NearForums.Tests.Controllers
 		public void AuthorizationAttribute_Test()
 		{
 			var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
-			var controllerContext = new FakeControllerContext(new TopicsController(), "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+			var controllerContext = new FakeControllerContext(TestHelper.Resolve<TopicsController>(), "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
 			var context = new AuthorizationContext(controllerContext, new FakeActionDescriptor());
 			var att = new RequireAuthorizationAttribute(UserRole.Member);
 			att.Routes.Add(new StrictRoute("login", new MvcRouteHandler())
@@ -97,7 +97,7 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void ValidateReadAccessAttribute_Test()
 		{
-			var controller = new TopicsController();
+			var controller = TestHelper.Resolve<TopicsController>();
 			var controllerContext = new FakeControllerContext(controller, "http://localhost");
 			var filterContext = new ActionExecutedContext(controllerContext, new FakeActionDescriptor(), false, null);
 			var att = new ValidateReadAccessAttribute();
