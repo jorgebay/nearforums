@@ -7,7 +7,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.Text.RegularExpressions;
 using System.Text;
 using NearForums.Validation;
-using NearForums.ServiceClient;
 using NearForums.Web.Controllers.Filters;
 
 using System.Configuration;
