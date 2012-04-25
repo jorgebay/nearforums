@@ -19,40 +19,42 @@ using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
-
 	[HandleError]
 	[ValidateFormsAuth]
 	public class FormsAuthenticationController : BaseController
 	{
-		/* This class uses code written by Troy Goode
-		 * Source code licensed by MS-PL
-		 * Website: https://github.com/TroyGoode/MembershipStarterKit
-		 */
+		//TODO: Replace membership.getuser using provider key.
+		//TODO: Extend so every provider is allowed (not only forms).
 
-		public FormsAuthenticationController()
-			: this(null, null)
+		private MembershipProvider _provider;
+		protected virtual MembershipProvider Provider
 		{
+			get
+			{
+				if (_provider == null)
+				{
+					_provider = Membership.Provider;
+				}
+				return _provider;
+			}
+			set
+			{
+				_provider = value;
+			}
 		}
 
-		// This constructor is not used by the MVC framework but is instead provided for ease
-		// of unit testing this type. See the comments at the end of this file for more
-		// information.
-		public FormsAuthenticationController(IFormsAuthentication formsAuth, IMembershipService service)
-		{
-			FormsAuth = formsAuth ?? new FormsAuthenticationService();
-			MembershipService = service ?? new AccountMembershipService();
-		}
-
+		//TODO: change implementation
 		public IFormsAuthentication FormsAuth
 		{
-			get;
-			private set;
+			get
+			{
+				throw new NotImplementedException();
+			}
 		}
 
-		public IMembershipService MembershipService
+		public FormsAuthenticationController()
 		{
-			get;
-			private set;
+
 		}
 
 		[HttpGet]
@@ -73,7 +75,7 @@ namespace NearForums.Web.Controllers
 			{
 				ValidateLogOn(userName, password);
 				FormsAuth.SignIn(userName, rememberMe);
-				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
+				SecurityHelper.TryFinishMembershipLogin(base.Session, Provider.GetUser(userName, true));
 				return Redirect(returnUrl);
 			}
 			catch (ValidationException ex)
@@ -86,7 +88,7 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult Register()
 		{
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewData["PasswordLength"] = Provider.MinRequiredPasswordLength;
 
 			return View();
 		}
@@ -108,13 +110,12 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 
-			MembershipUser membershipUser = Membership.GetUser(user.UserName);
+			var membershipUser = Provider.GetUser(user.UserName, true);
 			if (membershipUser == null)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
 
-			MembershipProvider provider = Membership.Provider;
 			FormsAuth.SignIn(membershipUser.UserName, false);
 			SecurityHelper.TryFinishMembershipLogin(base.Session, membershipUser);
 			Session.IsPasswordReset = true;
@@ -133,15 +134,14 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Sends the email to the user to reset the password
 		/// </summary>
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult ResetPassword(string email)
 		{
 			try
 			{
-				string userName = Membership.GetUserNameByEmail(email);
-
+				string userName = Provider.GetUserNameByEmail(email);
 				ValidateRegistration(userName);
-				MembershipUser membershipUser = Membership.GetUser(userName);
+				MembershipUser membershipUser = Provider.GetUser(userName, true);
 				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
 				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
 				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(Config.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
@@ -167,7 +167,7 @@ namespace NearForums.Web.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
 		{
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewData["PasswordLength"] = Provider.MinRequiredPasswordLength;
 			var createStatus = MembershipCreateStatus.ProviderError;
 
 			try
@@ -175,9 +175,9 @@ namespace NearForums.Web.Controllers
 				ValidateRegistration(userName, email, password, confirmPassword);
 				ValidateRegistration(agreeTerms);
 				// Attempt to register the user in the membership db
-				createStatus = MembershipService.CreateUser(userName, password, email);
+				var membershipUser = Provider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
 				ValidateCreateStatus(createStatus);
-				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
+				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser);
 				FormsAuth.SignIn(userName, false);
 				if (ModelState.IsValid)
 				{
@@ -189,7 +189,7 @@ namespace NearForums.Web.Controllers
 				if (createStatus == MembershipCreateStatus.Success)
 				{
 					//The membership succeded but the creation of the site user failed / Model constraint.
-					Membership.DeleteUser(userName);
+					Provider.DeleteUser(userName, true);
 				}
 				this.AddErrors(this.ModelState, ex);
 			}
@@ -200,7 +200,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization]
 		public ActionResult ChangePassword()
 		{
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = Provider.MinRequiredPasswordLength;
 
 			return View();
 		}
@@ -209,17 +209,17 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
-			var user = Membership.GetUser();
+			var user = Provider.GetUser(User.UserName, true);
 			try
 			{
 				ValidateChangePassword(currentPassword, newPassword, confirmPassword);
 				if (Session.IsPasswordReset)
 				{
-					MembershipService.ChangePassword(user.UserName, newPassword);
+					Provider.ChangePassword(user.UserName, currentPassword, newPassword);
 				}
 				else
 				{
-					if (!MembershipService.ChangePassword(user.UserName, currentPassword, newPassword))
+					if (!Provider.ChangePassword(user.UserName, currentPassword, newPassword))
 					{
 						throw new ValidationException(new ValidationError("currentPassword", ValidationErrorType.CompareNotMatch));
 					}
@@ -234,7 +234,7 @@ namespace NearForums.Web.Controllers
 				this.AddErrors(ModelState, ex);
 			}
 
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = Provider.MinRequiredPasswordLength;
 			return View();
 		}
 
@@ -257,7 +257,7 @@ namespace NearForums.Web.Controllers
 			{
 				errors.Add(new ValidationError("currentPassword", ValidationErrorType.NullOrEmpty));
 			}
-			if (newPassword == null || newPassword.Length < MembershipService.MinPasswordLength)
+			if (newPassword == null || newPassword.Length < Provider.MinRequiredPasswordLength)
 			{
 				errors.Add(new ValidationError("newPassword", ValidationErrorType.NullOrEmpty));
 			}
@@ -287,7 +287,7 @@ namespace NearForums.Web.Controllers
 			{
 				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
 			}
-			if (errors.Count == 0 && !MembershipService.ValidateUser(userName, password))
+			if (errors.Count == 0 && !Provider.ValidateUser(userName, password))
 			{
 				errors.Add(new ValidationError("userName", ValidationErrorType.CompareNotMatch));
 			}
