@@ -27,7 +27,7 @@ namespace NearForums.Web.Controllers.Helpers
         /// <summary>
         /// Checks if a external provider is trying to post a login on this website.
         /// </summary>
-        public static bool TryLoginFromProviders(SessionWrapper session, CacheWrapper cache, HttpContextBase context)
+        public static bool TryLoginFromProviders(HttpContextBase context, SessionWrapper session, CacheWrapper cache, MembershipProvider membershipProvider)
         {
             bool logged = false;
 
@@ -39,7 +39,7 @@ namespace NearForums.Web.Controllers.Helpers
             {
                 logged = true;
             }
-			else if (TryFinishMembershipLogin(context, session))
+			else if (TryFinishMembershipLogin(context, session, membershipProvider))
 			{
 				logged = true;
 			}
@@ -211,11 +211,12 @@ namespace NearForums.Web.Controllers.Helpers
 		/// <summary>
 		/// If enabled by configuration, tries to login the current membership user (reading cookie / identity) as nearforums user
 		/// </summary>
-		public static bool TryFinishMembershipLogin(HttpContextBase context, SessionWrapper session)
+		public static bool TryFinishMembershipLogin(HttpContextBase context, SessionWrapper session, MembershipProvider provider)
 		{
-			if (SiteConfiguration.Current.AuthenticationProviders.FormsAuth.IsDefined && (!String.IsNullOrEmpty(context.User.Identity.Name)))
+			if (provider != null && (!String.IsNullOrEmpty(context.User.Identity.Name)))
 			{
-				return TryFinishMembershipLogin(session, Membership.GetUser());
+				var membershipUser = provider.GetUser(context.User.Identity.Name, true);
+				return TryFinishMembershipLogin(session, membershipUser);
 			}
 			else
 			{

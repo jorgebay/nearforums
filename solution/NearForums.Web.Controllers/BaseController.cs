@@ -12,6 +12,7 @@ using NearForums.ServiceClient;
 using NearForums.Web.Controllers.Filters;
 using System.Text.RegularExpressions;
 using NearForums.Web.Extensions;
+using System.Web.Security;
 
 namespace NearForums.Web.Controllers
 {
@@ -149,6 +150,25 @@ namespace NearForums.Web.Controllers
 			}
 		}
 		#endregion
+
+		#region Membership provider
+		private MembershipProvider _membershipProvider;
+		protected virtual MembershipProvider MembershipProvider
+		{
+			get
+			{
+				if (_membershipProvider == null)
+				{
+					_membershipProvider = Membership.Provider;
+				}
+				return _membershipProvider;
+			}
+			set
+			{
+				_membershipProvider = value;
+			}
+		} 
+		#endregion
 		#endregion
 
 		#region Init
@@ -163,10 +183,10 @@ namespace NearForums.Web.Controllers
 		{
 			if (Session.User == null)
 			{
-				SecurityHelper.TryLoginFromProviders(Session, Cache, HttpContext);
+				SecurityHelper.TryLoginFromProviders(HttpContext, Session, Cache, MembershipProvider);
 			}
 			LoadTemplate();
-		} 
+		}
 		#endregion
 
 		#region Model state errors
