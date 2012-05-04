@@ -15,10 +15,6 @@ namespace NearForums.DataAccess
 	{
 		public CustomAuthenticationDataAccess()
 		{
-			if (!Config.AuthenticationProviders.CustomDb.IsDefined)
-			{
-				throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
-			}
 		}
 
 		private DbProviderFactory _factory;
@@ -29,6 +25,10 @@ namespace NearForums.DataAccess
 		{
 			get
 			{
+				if (!Config.AuthenticationProviders.CustomDb.IsDefined)
+				{
+					throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
+				}
 				if (_factory == null)
 				{
 					_factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
