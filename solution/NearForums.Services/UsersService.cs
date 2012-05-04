@@ -5,6 +5,7 @@ using System.Text;
 using NearForums.DataAccess;
 using NearForums.Validation;
 using System.Text.RegularExpressions;
+using NearForums.Configuration;
 
 
 namespace NearForums.Services
@@ -19,11 +20,16 @@ namespace NearForums.Services
 		/// Repository for custom authentication provider
 		/// </summary>
 		private readonly ICustomAuthenticationDataAccess customAuthenticationDataAccess;
+		/// <summary>
+		/// Notifications service
+		/// </summary>
+		private readonly INotificationsService _notificationService;
 
-		public UsersService(IUsersDataAccess da, ICustomAuthenticationDataAccess customAuthenticationDa)
+		public UsersService(IUsersDataAccess da, ICustomAuthenticationDataAccess customAuthenticationDa, INotificationsService notificationService)
 		{
 			dataAccess = da;
 			customAuthenticationDataAccess = customAuthenticationDa;
+			_notificationService = notificationService;
 		}
 
 		public User GetByProviderId(AuthenticationProvider provider, string providerId)
@@ -109,9 +115,11 @@ namespace NearForums.Services
 			dataAccess.AddEmail(id, email, policy);
 		}
 
-		public void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate)
+		public void ResetPassword(string membershipKey, string guid, string linkUrl)
 		{
-			dataAccess.UpdatePasswordResetGuid(id, Guid, expireDate);
+			var user = GetByProviderId(AuthenticationProvider.Membership, membershipKey);
+			dataAccess.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(SiteConfiguration.Current.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
+			_notificationService.SendResetPassword(user, linkUrl);
 		}
 
 		public User AuthenticateWithCustomProvider(string userName, string password)
@@ -146,6 +154,19 @@ namespace NearForums.Services
 			if (String.IsNullOrWhiteSpace(password))
 			{
 				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
+			}
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
+		}
+
+		public void ValidateUsername(string userName)
+		{
+			var errors = new List<ValidationError>();
+			if (String.IsNullOrWhiteSpace(userName))
+			{
+				errors.Add(new ValidationError("userName", ValidationErrorType.NullOrEmpty));
 			}
 			if (errors.Count > 0)
 			{

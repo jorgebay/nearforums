@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.UI;
 using NearForums.Web.Controllers.Helpers;
-using NearForums.Web.Extensions;
-using NearForums.ServiceClient;
 using NearForums.Validation;
-using NearForums.Configuration;
-using System.Configuration;
 using NearForums.Web.Controllers.Filters;
+using NearForums.Services;
 
 namespace NearForums.Web.Controllers
 {
@@ -21,9 +13,14 @@ namespace NearForums.Web.Controllers
 	[ValidateFormsAuth]
 	public class FormsAuthenticationController : BaseController
 	{
-		public FormsAuthenticationController()
-		{
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _service;
 
+		public FormsAuthenticationController(IUsersService service)
+		{
+			_service = service;
 		}
 
 		[HttpGet]
@@ -76,7 +73,7 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.NotFoundResult(this);
 			}
 
-			User user = UsersServiceClient.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
+			User user = _service.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
 			if (user == null || user.PasswordResetGuidExpireDate < DateTime.Now)
 			{
 				return ResultHelper.ForbiddenResult(this);
@@ -113,23 +110,18 @@ namespace NearForums.Web.Controllers
 		{
 			try
 			{
-				string userName = MembershipProvider.GetUserNameByEmail(email);
-				ValidateRegistration(userName);
+				var userName = MembershipProvider.GetUserNameByEmail(email);
+				_service.ValidateUsername(userName);
 				var membershipUser = MembershipProvider.GetUser(userName, true);
-				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
 				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
-				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(Config.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
-				if (ModelState.IsValid)
+				string linkUrl = this.Domain + this.Url.RouteUrl(new
 				{
-					string linkUrl = this.Domain + this.Url.RouteUrl(new
-					{
-						controller = "FormsAuthentication",
-						action = "NewPassword",
-						guid = guid
-					});
-					NotificationsServiceClient.SendResetPassword(user, linkUrl);
-					return View("ResetPasswordEmailConfirmation");
-				}
+					controller = "FormsAuthentication",
+					action = "NewPassword",
+					guid = guid
+				});
+				_service.ResetPassword(membershipUser.ProviderUserKey.ToString(), guid, linkUrl);
+				return View("ResetPasswordEmailConfirmation");
 			}
 			catch (ValidationException ex)
 			{
@@ -321,14 +313,6 @@ namespace NearForums.Web.Controllers
 			if (!agreeTerms)
 			{
 				throw new ValidationException(new ValidationError("agreeTerms", ValidationErrorType.NullOrEmpty));
-			}
-		}
-
-		private void ValidateRegistration(string userName)
-		{
-			if (userName == null)
-			{
-				throw new ValidationException(new ValidationError("email", ValidationErrorType.CompareNotMatch));
 			}
 		}
 		#endregion

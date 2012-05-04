@@ -21,7 +21,7 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void FormsAuthentication_ResetPassword()
 		{
-			FormsAuthenticationController controller = new FormsAuthenticationController();
+			FormsAuthenticationController controller = TestHelper.Resolve<FormsAuthenticationController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost/forums/");
 			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
 

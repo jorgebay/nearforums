@@ -42,16 +42,21 @@ namespace NearForums.Services
 		/// </summary>
 		void Promote(int id);
 		/// <summary>
-		/// Updates the user's password reset temporary Guid used for password reset purposes
-		/// </summary>
-		/// <param name="id">UserId</param>
-		/// <param name="Guid">PasswordResetGuid</param>
-		/// <param name="expireDate">PasswordResetGuidExpireDate</param>
-		void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate);
-		/// <summary>
 		/// Validates username and password
 		/// </summary>
 		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
 		void ValidateUserAndPassword(string userName, string password);
+		/// <summary>
+		/// Determines that username is valid
+		/// </summary>
+		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
+		void ValidateUsername(string userName);
+		/// <summary>
+		/// Updates the user's password reset temporary Guid used for password reset purposes and sends an email to the user
+		/// </summary>
+		/// <param name="membershipKey"></param>
+		/// <param name="guid"></param>
+		/// <param name="linkUrl">Url of the page to set the new password</param>
+		void ResetPassword(string membershipKey, string guid, string linkUrl);
 	}
 }
