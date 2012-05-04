@@ -65,10 +65,6 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Extensions\FormsAuthenticationHelper\IFormsAuthentication.cs" />
-    <Compile Include="Extensions\FormsAuthenticationHelper\IMembershipService.cs" />
-    <Compile Include="Extensions\FormsAuthenticationHelper\Impl\AccountMembershipService.cs" />
-    <Compile Include="Extensions\FormsAuthenticationHelper\Impl\FormsAuthenticationService.cs" />
     <Compile Include="Extensions\CaptchaHelper.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />

@@ -11,8 +11,6 @@ using System.Net;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using DotNetOpenAuth.Messaging;
 using System.Web.Security;
-using NearForums.Web.Extensions.FormsAuthenticationHelper;
-using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 using Facebook;
 using NearForums.Web.State;
 using System.Web.Routing;

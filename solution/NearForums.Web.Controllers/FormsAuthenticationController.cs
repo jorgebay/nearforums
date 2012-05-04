@@ -8,8 +8,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
 using NearForums.Web.Controllers.Helpers;
-using NearForums.Web.Extensions.FormsAuthenticationHelper;
-using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
 using NearForums.Web.Extensions;
 using NearForums.ServiceClient;
 using NearForums.Validation;
