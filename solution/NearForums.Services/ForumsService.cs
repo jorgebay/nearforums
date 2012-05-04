@@ -8,32 +8,36 @@ namespace NearForums.Services
 {
 	public class ForumsService : IForumsService
 	{
-		private readonly IForumsDataAccess dataAccess;
+		/// <summary>
+		/// Forums repository
+		/// </summary>
+		private readonly IForumsDataAccess _dataAccess;
+
 		public ForumsService(IForumsDataAccess da)
 		{
-			dataAccess = da;
+			_dataAccess = da;
 		}
 
 		public List<ForumCategory> GetList(UserRole? role)
 		{
-			return dataAccess.GetList(role);
+			return _dataAccess.GetList(role);
 		}
 
 		public  List<ForumCategory> GetCategories()
 		{
-			return dataAccess.GetCategories();
+			return _dataAccess.GetCategories();
 		}
 
 		public  Forum Get(string shortName)
 		{
-			return dataAccess.GetByShortName(shortName);
+			return _dataAccess.GetByShortName(shortName);
 		}
 
 		public  void Add(Forum forum, int userId)
 		{
 			forum.ValidateFields();
 			SetAvailableShortName(forum);
-			dataAccess.Add(forum, userId);
+			_dataAccess.Add(forum, userId);
 		}
 
 		public  void SetAvailableShortName(Forum forum)
@@ -42,18 +46,18 @@ namespace NearForums.Services
 			{
 				throw new ArgumentNullException("Forum.ShortName");
 			}
-			forum.ShortName = dataAccess.GetAvailableShortName(forum.ShortName);
+			forum.ShortName = _dataAccess.GetAvailableShortName(forum.ShortName);
 		}
 
 		public  void Edit(Forum forum, int userId)
 		{
 			forum.ValidateFields();
-			dataAccess.Edit(forum, userId);
+			_dataAccess.Edit(forum, userId);
 		}
 
 		public  bool Delete(string forum)
 		{
-			return dataAccess.Delete(forum);
+			return _dataAccess.Delete(forum);
 		}
 	}
 }

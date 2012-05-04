@@ -8,16 +8,19 @@ namespace NearForums.Services
 {
 	public class TagsService : ITagsService
 	{
-		private readonly ITagsDataAccess dataAccess;
+		/// <summary>
+		/// Tags repository
+		/// </summary>
+		private readonly ITagsDataAccess _dataAccess;
 
 		public TagsService(ITagsDataAccess da)
 		{
-			dataAccess = da;
+			_dataAccess = da;
 		}
 
 		public List<WeightTag> GetMostViewed(int forumId, int top)
 		{
-			return dataAccess.GetMostViewed(forumId, top);
+			return _dataAccess.GetMostViewed(forumId, top);
 		}
 	}
 }

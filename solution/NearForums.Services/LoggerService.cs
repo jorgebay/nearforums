@@ -8,7 +8,7 @@ namespace NearForums.Services
 {
 	public class LoggerService : NearForums.Services.ILoggerService
 	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static Logger _logger = LogManager.GetCurrentClassLogger(typeof(LoggerService));
 
 		public void LogError(Exception ex)
 		{
@@ -28,14 +28,14 @@ namespace NearForums.Services
 			message.AppendLine("Stacktrace:");
 			message.AppendLine(ex.StackTrace);
 
-			logger.Error(message.ToString());
+			_logger.Error(message.ToString());
 		}
 
 		public bool IsEnabled
 		{
 			get
 			{
-				return logger.IsErrorEnabled;
+				return _logger.IsErrorEnabled;
 			}
 		}
 	}

@@ -13,11 +13,11 @@ namespace NearForums.Services
 		/// <summary>
 		/// Service that handles the logging
 		/// </summary>
-		private readonly ILoggerService loggerService;
+		private readonly ILoggerService _loggerService;
 
 		public NotificationsService(ILoggerService logger)
 		{
-			loggerService = logger;
+			_loggerService = logger;
 		}
 
 		public void SendResetPassword(User user, string url)
@@ -63,7 +63,7 @@ namespace NearForums.Services
 					{
 						if (handleExceptions)
 						{
-							loggerService.LogError(ex);
+							_loggerService.LogError(ex);
 						}
 						else
 						{

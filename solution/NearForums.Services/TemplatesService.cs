@@ -11,42 +11,42 @@ namespace NearForums.Services
 		/// <summary>
 		/// template repository
 		/// </summary>
-		private readonly ITemplatesDataAccess dataAccess;
+		private readonly ITemplatesDataAccess _dataAccess;
 
 		public TemplatesService(ITemplatesDataAccess da)
 		{
-			dataAccess = da;
+			_dataAccess = da;
 		}
 
 		public  List<Template> GetAll()
 		{
-			return dataAccess.GetAll();
+			return _dataAccess.GetAll();
 		}
 
 		public  Template Get(int templateId)
 		{
-			return dataAccess.Get(templateId);
+			return _dataAccess.Get(templateId);
 		}
 
 		public  void SetCurrent(int templateId)
 		{
-			dataAccess.SetCurrent(templateId);
+			_dataAccess.SetCurrent(templateId);
 		}
 
 		public  Template GetCurrent()
 		{
-			return dataAccess.GetCurrent();
+			return _dataAccess.GetCurrent();
 		}
 
 		public  void AddOrUpdate(Template t)
 		{
 			t.ValidateFields();
-			dataAccess.AddOrUpdate(t);
+			_dataAccess.AddOrUpdate(t);
 		}
 
 		public  void Delete(int templateId)
 		{
-			dataAccess.Delete(templateId);
+			_dataAccess.Delete(templateId);
 		}
 	}
 }

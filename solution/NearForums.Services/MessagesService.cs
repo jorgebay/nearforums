@@ -11,21 +11,21 @@ namespace NearForums.Services
 		/// <summary>
 		/// messages repository
 		/// </summary>
-		private readonly IMessagesDataAccess dataAccess;
+		private readonly IMessagesDataAccess _dataAccess;
 
 		public MessagesService(IMessagesDataAccess da)
 		{
-			dataAccess = da;
+			_dataAccess = da;
 		}
 
 		public  List<Message> GetByTopic(int topicId)
 		{
-			return dataAccess.GetByTopic(topicId); 
+			return _dataAccess.GetByTopic(topicId); 
 		}
 
 		public  List<Message> GetByTopicLatest(int topicId)
 		{
-			return dataAccess.GetByTopicLatest(topicId);
+			return _dataAccess.GetByTopicLatest(topicId);
 		}
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace NearForums.Services
 		/// </summary>
 		public List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex)
 		{
-			return dataAccess.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
+			return _dataAccess.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
 		}
 
 		/// <summary>
@@ -42,33 +42,33 @@ namespace NearForums.Services
 		/// <returns></returns>
 		public List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex)
 		{
-			return dataAccess.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
+			return _dataAccess.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
 		}
 
 		public  void Add(Message message, string ip)
 		{
 			message.ValidateFields();
-			dataAccess.Add(message, ip);
+			_dataAccess.Add(message, ip);
 		}
 
 		public  void Delete(int topicId, int messageId, int userId)
 		{
-			dataAccess.Delete(topicId, messageId, userId);
+			_dataAccess.Delete(topicId, messageId, userId);
 		}
 
 		public  bool Flag(int topicId, int messageId, string ip)
 		{
-			return dataAccess.Flag(topicId, messageId, ip);
+			return _dataAccess.Flag(topicId, messageId, ip);
 		}
 
 		public  List<Topic> ListFlagged()
 		{
-			return dataAccess.ListFlagged();
+			return _dataAccess.ListFlagged();
 		}
 
 		public  bool ClearFlags(int topicId, int messageId)
 		{
-			return dataAccess.ClearFlags(topicId, messageId);
+			return _dataAccess.ClearFlags(topicId, messageId);
 		}
 	}
 }

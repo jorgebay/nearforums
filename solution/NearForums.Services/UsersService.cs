@@ -15,11 +15,11 @@ namespace NearForums.Services
 		/// <summary>
 		/// User repository
 		/// </summary>
-		private readonly IUsersDataAccess dataAccess;
+		private readonly IUsersDataAccess _dataAccess;
 		/// <summary>
 		/// Repository for custom authentication provider
 		/// </summary>
-		private readonly ICustomAuthenticationDataAccess customAuthenticationDataAccess;
+		private readonly ICustomAuthenticationDataAccess _customAuthenticationDataAccess;
 		/// <summary>
 		/// Notifications service
 		/// </summary>
@@ -27,24 +27,24 @@ namespace NearForums.Services
 
 		public UsersService(IUsersDataAccess da, ICustomAuthenticationDataAccess customAuthenticationDa, INotificationsService notificationService)
 		{
-			dataAccess = da;
-			customAuthenticationDataAccess = customAuthenticationDa;
+			_dataAccess = da;
+			_customAuthenticationDataAccess = customAuthenticationDa;
 			_notificationService = notificationService;
 		}
 
 		public User GetByProviderId(AuthenticationProvider provider, string providerId)
 		{
-			return dataAccess.GetByProviderId(provider, providerId);
+			return _dataAccess.GetByProviderId(provider, providerId);
 		}
 
 		public User GetByPasswordResetGuid(AuthenticationProvider provider, string PasswordResetGuid)
 		{
-			return dataAccess.GetByPasswordResetGuid(provider, PasswordResetGuid);
+			return _dataAccess.GetByPasswordResetGuid(provider, PasswordResetGuid);
 		}
 
 		public User GetTestUser()
 		{
-			return dataAccess.GetTestUser();
+			return _dataAccess.GetTestUser();
 		}
 
 		/// <exception cref="ValidationException"></exception>
@@ -52,50 +52,50 @@ namespace NearForums.Services
 		{
 			user.ValidateFields();
 
-			return dataAccess.AddUser(user, provider, providerId);
+			return _dataAccess.AddUser(user, provider, providerId);
 		}
 
 		public List<User> GetAll()
 		{
-			return dataAccess.GetAll();
+			return _dataAccess.GetAll();
 		}
 
 		public List<User> GetByName(string userName)
 		{
-			return dataAccess.GetByName(userName);
+			return _dataAccess.GetByName(userName);
 		}
 
 		public void Delete(int id)
 		{
 			UsersDataAccess da = new UsersDataAccess();
-			dataAccess.Delete(id);
+			_dataAccess.Delete(id);
 		}
 
 		public void Promote(int id)
 		{
-			dataAccess.Promote(id);
+			_dataAccess.Promote(id);
 		}
 
 		public void Demote(int id)
 		{
-			dataAccess.Demote(id);
+			_dataAccess.Demote(id);
 		}
 
 		public User Get(int userId)
 		{
-			return dataAccess.Get(userId);
+			return _dataAccess.Get(userId);
 		}
 
 		public string GetRoleName(UserRole userRole)
 		{
-			return dataAccess.GetRoleName(userRole);
+			return _dataAccess.GetRoleName(userRole);
 		}
 
 		/// <exception cref="ValidationException"></exception>
 		public void Edit(User user)
 		{
 			user.ValidateFields();
-			dataAccess.Edit(user);
+			_dataAccess.Edit(user);
 		}
 
 		public void AddEmail(int id, string email, EmailPolicy policy)
@@ -112,13 +112,13 @@ namespace NearForums.Services
 				throw new ValidationException(new ValidationError("email", ValidationErrorType.Format));
 			}
 			#endregion
-			dataAccess.AddEmail(id, email, policy);
+			_dataAccess.AddEmail(id, email, policy);
 		}
 
 		public void ResetPassword(string membershipKey, string guid, string linkUrl)
 		{
 			var user = GetByProviderId(AuthenticationProvider.Membership, membershipKey);
-			dataAccess.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(SiteConfiguration.Current.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
+			_dataAccess.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(SiteConfiguration.Current.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
 			_notificationService.SendResetPassword(user, linkUrl);
 		}
 
@@ -127,7 +127,7 @@ namespace NearForums.Services
 			User user = null;
 			ValidateUserAndPassword(userName, password);
 
-			var providerUser = customAuthenticationDataAccess.GetUser(userName, password);
+			var providerUser = _customAuthenticationDataAccess.GetUser(userName, password);
 			if (providerUser != null)
 			{
 				user = GetByProviderId(AuthenticationProvider.CustomDb, providerUser.Id.ToString());
@@ -176,7 +176,7 @@ namespace NearForums.Services
 
 		public Dictionary<UserRole, string> GetRoles()
 		{
-			return dataAccess.GetRoles();
+			return _dataAccess.GetRoles();
 		}
 
 		/// <summary>

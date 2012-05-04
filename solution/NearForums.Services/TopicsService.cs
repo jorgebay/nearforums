@@ -11,31 +11,31 @@ namespace NearForums.Services
 		/// <summary>
 		/// Topics repository
 		/// </summary>
-		private readonly ITopicsDataAccess dataAccess;
+		private readonly ITopicsDataAccess _dataAccess;
 		/// <summary>
 		/// Messages repository
 		/// </summary>
-		private readonly IMessagesDataAccess messagesDataAccess;
+		private readonly IMessagesDataAccess _messagesDataAccess;
 
 		public TopicsService(ITopicsDataAccess da, IMessagesDataAccess messagesDa)
 		{
-			dataAccess = da;
-			messagesDataAccess = messagesDa;
+			_dataAccess = da;
+			_messagesDataAccess = messagesDa;
 		}
 
 		public List<Topic> GetByForum(int forumId, int startIndex, int length, UserRole? role)
 		{
-			return dataAccess.GetByForum(forumId, startIndex, length, role);
+			return _dataAccess.GetByForum(forumId, startIndex, length, role);
 		}
 
 		public List<Topic> GetByTag(string tag, int forumId, UserRole? role)
 		{
-			return dataAccess.GetByTag(tag, forumId, role);
+			return _dataAccess.GetByTag(tag, forumId, role);
 		}
 
 		public Topic Get(int topicId)
 		{
-			return dataAccess.Get(topicId);
+			return _dataAccess.Get(topicId);
 		}
 
 		public Topic Get(int id, string shortName)
@@ -50,19 +50,19 @@ namespace NearForums.Services
 
 		public void LoadRelatedTopics(Topic topic, int amount)
 		{
-			topic.Related = dataAccess.GetRelatedTopics(topic, amount);
+			topic.Related = _dataAccess.GetRelatedTopics(topic, amount);
 		}
 
 		public void Create(Topic topic, string ip)
 		{
 			topic.ValidateFields();
-			dataAccess.Add(topic, ip);
+			_dataAccess.Add(topic, ip);
 		}
 
 		public void Edit(Topic topic, string ip)
 		{
 			topic.ValidateFields();
-			dataAccess.Edit(topic, ip);
+			_dataAccess.Edit(topic, ip);
 		}
 
 		public void AddVisit(int topicId)
@@ -73,58 +73,58 @@ namespace NearForums.Services
 
 		private void AddVisitSync(int topicId)
 		{
-			dataAccess.AddVisit(topicId);
+			_dataAccess.AddVisit(topicId);
 		}
 
 		public List<Topic> GetLatest(int forumId, int startIndex, int length, UserRole? role)
 		{
-			return dataAccess.GetByForumLatest(forumId, startIndex, length, role);
+			return _dataAccess.GetByForumLatest(forumId, startIndex, length, role);
 		}
 
 		public List<Topic> GetLatest()
 		{
-			return dataAccess.GetLatest();
+			return _dataAccess.GetLatest();
 		}
 
 		public Topic Move(int id, int forumId, int userId, string ip)
 		{
-			dataAccess.Move(id, forumId, userId, ip);
-			return dataAccess.Get(id);
+			_dataAccess.Move(id, forumId, userId, ip);
+			return _dataAccess.Get(id);
 		}
 
 		public void Close(int id, int userId, string ip)
 		{
-			dataAccess.Close(id, userId, ip);
+			_dataAccess.Close(id, userId, ip);
 		}
 
 		public void Open(int id, int userId, string ip)
 		{
-			dataAccess.Open(id, userId, ip);
+			_dataAccess.Open(id, userId, ip);
 		}
 
 		public List<Topic> GetUnanswered(int forumId, UserRole? role)
 		{
-			return dataAccess.GetUnanswered(forumId, role);
+			return _dataAccess.GetUnanswered(forumId, role);
 		}
 
 		public List<Topic> GetUnanswered()
 		{
-			return dataAccess.GetUnanswered();
+			return _dataAccess.GetUnanswered();
 		}
 
 		public void Delete(int id, int userId, string ip)
 		{
-			dataAccess.Delete(id, userId, ip);
+			_dataAccess.Delete(id, userId, ip);
 		}
 
 		public List<Topic> GetByUser(int userId, UserRole? role)
 		{
-			return dataAccess.GetByUser(userId, role);
+			return _dataAccess.GetByUser(userId, role);
 		}
 
 		public List<Topic> GetTopicsAndMessagesByUser(int userId)
 		{
-			return dataAccess.GetTopicsAndMessagesByUser(userId);
+			return _dataAccess.GetTopicsAndMessagesByUser(userId);
 		}
 
 		public Topic GetMessagesFrom(int topicId, int firstMsg, int amount, int initIndex)
@@ -132,7 +132,7 @@ namespace NearForums.Services
 			var topic = Get(topicId);
 			if (topic != null)
 			{
-				topic.Messages = messagesDataAccess.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
+				topic.Messages = _messagesDataAccess.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
 			}
 			return topic;
 		}
@@ -142,7 +142,7 @@ namespace NearForums.Services
 			var topic = Get(topicId);
 			if (topic != null)
 			{
-				topic.Messages = messagesDataAccess.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
+				topic.Messages = _messagesDataAccess.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
 			}
 			return topic;
 		}

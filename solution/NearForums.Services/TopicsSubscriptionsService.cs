@@ -7,42 +7,42 @@ using NearForums.Configuration;
 
 namespace NearForums.Services
 {
-	public class TopicsSubscriptionsService : NearForums.Services.ITopicsSubscriptionsService
+	public class TopicsSubscriptionsService : ITopicsSubscriptionsService
 	{
 		/// <summary>
 		/// Topic subscriptions repository
 		/// </summary>
-		private readonly ITopicsSubscriptionsDataAccess dataAccess;
+		private readonly ITopicsSubscriptionsDataAccess _dataAccess;
 
 		/// <summary>
 		/// Service to do the notifications
 		/// </summary>
-		private readonly INotificationsService notificationService;
+		private readonly INotificationsService _notificationService;
 
 		public TopicsSubscriptionsService(ITopicsSubscriptionsDataAccess da, INotificationsService notifications)
 		{
-			dataAccess = da;
-			notificationService = notifications;
+			_dataAccess = da;
+			_notificationService = notifications;
 		}
 
 		public void Add(int topicId, int userId)
 		{
-			dataAccess.Add(topicId, userId);
+			_dataAccess.Add(topicId, userId);
 		}
 
 		public int Remove(int topicId, int userId, Guid userGuid)
 		{
-			return dataAccess.Remove(topicId, userId, userGuid);
+			return _dataAccess.Remove(topicId, userId, userGuid);
 		}
 
 		public List<User> GetSubscribed(int topicId)
 		{
-			return dataAccess.GetUsersByTopic(topicId);
+			return _dataAccess.GetUsersByTopic(topicId);
 		}
 
 		public List<Topic> GetTopics(int userId)
 		{
-			return dataAccess.GetTopicsByUser(userId);
+			return _dataAccess.GetTopicsByUser(userId);
 		}
 
 		public void SendNotifications(Topic topic, int userId, string url, string unsubscribeUrl)
@@ -53,7 +53,7 @@ namespace NearForums.Services
 				var users = GetSubscribed(topic.Id);
 				users.RemoveAll(x => x.Id == userId || String.IsNullOrEmpty(x.Email));
 
-				var handler = new SendNotificationsHandler(notificationService.SendToUsersSubscribed);
+				var handler = new SendNotificationsHandler(_notificationService.SendToUsersSubscribed);
 				handler.BeginInvoke(topic, users, body, url, unsubscribeUrl, true, null, null);
 			}
 		}

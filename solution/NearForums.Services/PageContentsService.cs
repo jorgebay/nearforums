@@ -8,44 +8,47 @@ namespace NearForums.Services
 {
 	public class PageContentsService : IPageContentsService
 	{
-		private readonly IPageContentsDataAccess dataAccess;
+		/// <summary>
+		/// Page contents repository
+		/// </summary>
+		private readonly IPageContentsDataAccess _dataAccess;
 
 		public PageContentsService(IPageContentsDataAccess da)
 		{
-			dataAccess = da;
+			_dataAccess = da;
 		}
 
 		public List<PageContent> GetAll()
 		{
-			return dataAccess.GetAll();
+			return _dataAccess.GetAll();
 		}
 
 		public PageContent Get(string name)
 		{
-			return dataAccess.Get(name);
+			return _dataAccess.Get(name);
 		}
 
 		public void Add(PageContent content)
 		{
 			content.ValidateFields();
 			SetAvailableShortName(content);
-			dataAccess.Add(content);
+			_dataAccess.Add(content);
 		}
 
 		public void SetAvailableShortName(PageContent content)
 		{
-			content.ShortName = dataAccess.GetAvailableShortName(content.ShortName);
+			content.ShortName = _dataAccess.GetAvailableShortName(content.ShortName);
 		}
 
 		public void Edit(PageContent content)
 		{
 			content.ValidateFields();
-			dataAccess.Edit(content);
+			_dataAccess.Edit(content);
 		}
 
 		public bool Delete(string name)
 		{
-			return dataAccess.Delete(name);
+			return _dataAccess.Delete(name);
 		}
 	}
 }
