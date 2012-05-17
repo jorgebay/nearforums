@@ -17,28 +17,28 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// User service
 		/// </summary>
-		private readonly IUsersService service;
+		private readonly IUsersService _service;
 
 		/// <summary>
 		/// Topic service
 		/// </summary>
-		private readonly ITopicsService topicService;
+		private readonly ITopicsService _topicService;
 
 		public UsersController(IUsersService serv, ITopicsService topicServ)
 		{
-			service = serv;
-			topicService = topicServ;
+			_service = serv;
+			_topicService = topicServ;
 		}
 
 		public ActionResult Detail(int id)
 		{
-			User user = service.Get(id);
+			User user = _service.Get(id);
 			if (user == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get posted topics
-			ViewData["Topics"] = topicService.GetByUser(id, Role);
+			ViewData["Topics"] = _topicService.GetByUser(id, Role);
 
 			return View(user);
 		}
@@ -49,11 +49,11 @@ namespace NearForums.Web.Controllers
 			List<User> users = null;
 			if (String.IsNullOrEmpty(userName))
 			{
-				users = service.GetAll();
+				users = _service.GetAll();
 			}
 			else
 			{
-				users = service.GetByName(userName);
+				users = _service.GetByName(userName);
 			}
 			ViewBag.UserName = userName;
 			ViewBag.Page = page;
@@ -63,13 +63,13 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult MessagesByUser(int id)
 		{
-			User user = service.Get(id);
+			User user = _service.Get(id);
 			if (user == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get posted messages (ordered 
-			var topics = topicService.GetTopicsAndMessagesByUser(id);
+			var topics = _topicService.GetTopicsAndMessagesByUser(id);
 			return View(false, topics);
 		}
 
@@ -83,7 +83,7 @@ namespace NearForums.Web.Controllers
 				//Maybe handle a moderator/admin users
 				return ResultHelper.ForbiddenResult(this);
 			}
-			User user = service.Get(id);
+			User user = _service.Get(id);
 			return View(user);
 		}
 
@@ -99,7 +99,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				user.Id = id;
-				service.Edit(user);
+				_service.Edit(user);
 				#region Update membership data
 				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
 				{
@@ -128,7 +128,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Promote(int id, string searched)
 		{
-			service.Promote(id);
+			_service.Promote(id);
 			return RedirectToAction("List", new
 			{
 				userName = searched,
@@ -141,7 +141,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Demote(int id, string searched)
 		{
-			service.Demote(id);
+			_service.Demote(id);
 			return RedirectToAction("List", new
 			{
 				userName = searched,
@@ -154,7 +154,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, string searched)
 		{
-			service.Delete(id);
+			_service.Delete(id);
 			return RedirectToAction("List", new
 			{
 				userName = searched,

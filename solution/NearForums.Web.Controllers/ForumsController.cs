@@ -18,35 +18,35 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Forum service
 		/// </summary>
-		private readonly IForumsService service;
+		private readonly IForumsService _service;
 		/// <summary>
 		/// Users service
 		/// </summary>
-		private readonly IUsersService userService;
+		private readonly IUsersService _userService;
 		/// <summary>
 		/// Topic service
 		/// </summary>
-		private readonly ITopicsService topicService;
+		private readonly ITopicsService _topicService;
 		/// <summary>
 		/// Tag service
 		/// </summary>
-		private readonly ITagsService tagService;
+		private readonly ITagsService _tagService;
 
 		public ForumsController(IForumsService serv, IUsersService userServ, ITopicsService topicServ, ITagsService tagServ)
 		{
-			service = serv;
-			userService = userServ;
-			topicService = topicServ;
-			tagService = tagServ;
+			_service = serv;
+			_userService = userServ;
+			_topicService = topicServ;
+			_tagService = tagServ;
 		}
 
 		#region List
 		public ActionResult List()
 		{
-			var list = service.GetList(Role);
+			var list = _service.GetList(Role);
 			if (list.Count == 0)
 			{
-				ViewBag.ShowFirstSteps = !userService.IsThereAnyUser();
+				ViewBag.ShowFirstSteps = !_userService.IsThereAnyUser();
 			}
 			return View(list);
 		}
@@ -56,7 +56,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Manage()
 		{
-			var list = service.GetList(Role);
+			var list = _service.GetList(Role);
 			return View(list);
 		} 
 		#endregion
@@ -77,16 +77,16 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult MostViewedTopics(string forum, int page)
 		{
-			var f = service.Get(forum);
+			var f = _service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get the topics of the forum
 			//Must Paginate the topics on the backend (Can be too many topics)
-			f.Topics = topicService.GetByForum(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage, Role);
+			f.Topics = _topicService.GetByForum(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage, Role);
 
-			ViewData["Tags"] = tagService.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
+			ViewData["Tags"] = _tagService.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
 			ViewData["Page"] = page;
 			ViewData["TotalTopics"] = f.TopicCount;
 
@@ -98,17 +98,17 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult LatestTopics(string forum, int page, ResultFormat format)
 		{
-			var f = service.Get(forum);
+			var f = _service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get the topics of the forum
 			//Must Page the topics on the backend (Can be too many topics)
-			f.Topics = topicService.GetLatest(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage, Role);
+			f.Topics = _topicService.GetLatest(f.Id, page * Config.UI.TopicsPerPage, Config.UI.TopicsPerPage, Role);
 			if (format == ResultFormat.Html)
 			{
-				ViewData["Tags"] = tagService.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
+				ViewData["Tags"] = _tagService.GetMostViewed(f.Id, Config.UI.TagsCloudCount);
 				ViewData["Page"] = page;
 				ViewData["TotalTopics"] = f.TopicCount;
 				return View("Detail", f);
@@ -123,7 +123,7 @@ namespace NearForums.Web.Controllers
 		/// <returns></returns>
 		public ActionResult LatestAllTopics()
 		{
-			var topics = topicService.GetLatest();
+			var topics = _topicService.GetLatest();
 
 			return ResultHelper.XmlViewResult(this, topics);
 		} 
@@ -133,12 +133,12 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult ListUnansweredTopics(string forum)
 		{
-			Forum f = service.Get(forum);
+			Forum f = _service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			f.Topics = topicService.GetUnanswered(f.Id, Role);
+			f.Topics = _topicService.GetUnanswered(f.Id, Role);
 
 			return View(f);
 		}
@@ -146,7 +146,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult ListAllUnansweredTopics()
 		{
-			var topics = topicService.GetUnanswered();
+			var topics = _topicService.GetUnanswered();
 			return View(topics);
 		}
 		#endregion
@@ -157,9 +157,9 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Add()
 		{
-			var roles = userService.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(_service.GetCategories(), "Id", "Name");
 			return View("Edit");
 		}
 
@@ -176,7 +176,7 @@ namespace NearForums.Web.Controllers
 				}
 				if (ModelState.IsValid)
 				{
-					service.Add(forum, this.User.Id);
+					_service.Add(forum, this.User.Id);
 					return RedirectToAction("Detail", new{forum=forum.ShortName});
 				}
 			}
@@ -184,9 +184,9 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			var roles = userService.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(_service.GetCategories(), "Id", "Name");
 			return View("Edit", forum);
 		} 
 		#endregion
@@ -196,7 +196,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Edit(string forum)
 		{
-			var f = service.Get(forum);
+			var f = _service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -205,9 +205,9 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
-			var roles = userService.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(_service.GetCategories(), "Id", "Name");
 			ViewBag.IsEdit = true;
 			return View("Edit", f);
 		}
@@ -220,7 +220,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				#region Check access rights
-				var originalForum = service.Get(forum);
+				var originalForum = _service.Get(forum);
 				if (originalForum == null)
 				{
 					return ResultHelper.NotFoundResult(this);
@@ -234,7 +234,7 @@ namespace NearForums.Web.Controllers
 				f.ShortName = forum;
 				if (ModelState.IsValid)
 				{
-					service.Edit(f, User.Id);
+					_service.Edit(f, User.Id);
 					return RedirectToAction("Detail", new{forum=f.ShortName});
 				}
 			}
@@ -242,9 +242,9 @@ namespace NearForums.Web.Controllers
 			{
 				AddErrors(this.ModelState, ex);
 			}
-			var roles = userService.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
-			ViewBag.Categories = new SelectList(service.GetCategories(), "Id", "Name");
+			ViewBag.Categories = new SelectList(_service.GetCategories(), "Id", "Name");
 			ViewBag.IsEdit = true;
 			return View("Edit", f);
 		}
@@ -256,7 +256,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(string forum)
 		{
-			service.Delete(forum);
+			_service.Delete(forum);
 
 			return RedirectToAction("Manage");
 		}
@@ -267,12 +267,12 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult TagDetail(string forum, string tag, int page)
 		{
-			Forum f = service.Get(forum);
+			Forum f = _service.Get(forum);
 			if (f == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			f.Topics = topicService.GetByTag(tag, f.Id, Role);
+			f.Topics = _topicService.GetByTag(tag, f.Id, Role);
 			ViewData["Page"] = page;
 			ViewData["Tag"] = tag;
 			return View(f);

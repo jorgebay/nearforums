@@ -24,11 +24,11 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Template service
 		/// </summary>
-		private readonly ITemplatesService templateService;
+		private readonly ITemplatesService _service;
 
 		public TemplatesController(ITemplatesService templateServ)
 		{
-			templateService = templateServ;
+			_service = templateServ;
 		}
 
 		#region Add template
@@ -73,7 +73,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List(TemplateActionError? error)
 		{
-			var list = templateService.GetAll();
+			var list = _service.GetAll();
 			ViewBag.BasePath = Url.Content(Config.TemplateFolderPath(""));
 			if (error == TemplateActionError.DeleteCurrent)
 			{
@@ -99,7 +99,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult SetCurrent(int id)
 		{
-			templateService.SetCurrent(id);
+			_service.SetCurrent(id);
 
 			this.Cache.Template = null;
 
@@ -115,7 +115,7 @@ namespace NearForums.Web.Controllers
 		{
 			TemplateActionError? error = null;
 
-			Template t = templateService.Get(id);
+			Template t = _service.Get(id);
 			if (t != null)
 			{
 				if (t.IsCurrent)
@@ -129,7 +129,7 @@ namespace NearForums.Web.Controllers
 					try
 					{
 						SafeIO.Directory_Delete(baseDirectory, true);
-						templateService.Delete(id);
+						_service.Delete(id);
 					}
 					catch (UnauthorizedAccessException)
 					{
@@ -146,7 +146,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Export(int id)
 		{
-			var template = templateService.Get(id);
+			var template = _service.Get(id);
 			string fileName = Config.TemplateFolderPath(template.Key) + "/template.zip";
 			return new FilePathResult(fileName, "application/zip") 
 			{ 

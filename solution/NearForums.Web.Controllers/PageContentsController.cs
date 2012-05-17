@@ -16,23 +16,23 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// PageContents service
 		/// </summary>
-		private readonly IPageContentsService service;
+		private readonly IPageContentsService _service;
 
 		public PageContentsController(IPageContentsService serv)
 		{
-			service = serv;
+			_service = serv;
 		}
 
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List()
 		{
-			var list = service.GetAll();
+			var list = _service.GetAll();
 			return View(list);
 		}
 
 		public ActionResult Detail(string name)
 		{
-			var content = service.Get(name);
+			var content = _service.Get(name);
 			if (content == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -55,7 +55,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				content.ShortName = content.Title.ToUrlSegment(128);
-				service.Add(content);
+				_service.Add(content);
 			}
 			catch (ValidationException ex)
 			{
@@ -75,7 +75,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Edit(string name)
 		{
-			var content = service.Get(name);
+			var content = _service.Get(name);
 			if (content == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -92,7 +92,7 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				content.ShortName = name;
-				service.Edit(content);
+				_service.Edit(content);
 			}
 			catch (ValidationException ex)
 			{
@@ -113,7 +113,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin, RefuseOnFail=true)]
 		public ActionResult Delete(string name)
 		{
-			bool deleted = service.Delete(name);
+			bool deleted = _service.Delete(name);
 			return Json(deleted);
 		}
 	}

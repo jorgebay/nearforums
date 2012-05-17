@@ -17,23 +17,23 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Service that handles subscriptions
 		/// </summary>
-		private readonly ITopicsSubscriptionsService service;
+		private readonly ITopicsSubscriptionsService _service;
 
 		/// <summary>
 		/// Topic service
 		/// </summary>
-		private readonly ITopicsService topicService;
+		private readonly ITopicsService _topicService;
 
 		/// <summary>
 		/// User service
 		/// </summary>
-		private readonly IUsersService userService;
+		private readonly IUsersService _userService;
 
 		public TopicsSubscriptionsController(ITopicsSubscriptionsService serv, ITopicsService topicServ, IUsersService userServ)
 		{
-			service = serv;
-			topicService = topicServ;
-			userService = userServ;
+			_service = serv;
+			_topicService = topicServ;
+			_userService = userServ;
 		}
 		/// <summary>
 		/// Unsubscribes a user from a topic
@@ -54,14 +54,14 @@ namespace NearForums.Web.Controllers
 				ResultHelper.ForbiddenResult(this);
 			} 
 			#endregion
-			int removedSubscription = service.Remove(tid, uid, parsedGuid);
+			int removedSubscription = _service.Remove(tid, uid, parsedGuid);
 
 			if (removedSubscription > 0)
 			{
 				//Load the user data
-				ViewData["User"] = userService.Get(uid);
+				ViewData["User"] = _userService.Get(uid);
 			}
-			topic = topicService.Get(tid);
+			topic = _topicService.Get(tid);
 			return View(topic);
 		}
 	}
