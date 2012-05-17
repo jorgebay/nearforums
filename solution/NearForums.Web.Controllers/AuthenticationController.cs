@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Helpers;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using DotNetOpenAuth.OpenId;
 using System.Net;
@@ -20,6 +20,16 @@ namespace NearForums.Web.Controllers
 {
 	public class AuthenticationController : BaseController
 	{
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _service;
+
+		public AuthenticationController(IUsersService service)
+		{
+			_service = service;
+		}
+
 		/// <summary>
 		/// If the user is not logged in, it ask the user to login using any of the provider.
 		/// If the user is logged in and not authorized, it shows a message to the user.
@@ -37,7 +47,7 @@ namespace NearForums.Web.Controllers
 					return Redirect(returnUrl);
 				}
 				ViewBag.UserRole = role;
-				ViewBag.UserRoleName = UsersServiceClient.GetRoleName(role.Value);
+				ViewBag.UserRoleName = _service.GetRoleName(role.Value);
 				return View("NotAuthorized");
 			}
 			if (Config.AuthenticationProviders.CustomDb.IsDefined)
@@ -128,13 +138,13 @@ namespace NearForums.Web.Controllers
 
 					FacebookClient fbClient = new FacebookClient(accessToken);
 					dynamic facebookUser = fbClient.Get("me?fields=id,name,first_name,last_name,about,link,birthday,timezone");
-					
-					User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Facebook, facebookUser.id);
+
+					User user = _service.GetByProviderId(AuthenticationProvider.Facebook, facebookUser.id);
 					if (user == null)
 					{
 						//Its a new user for the application
 						user = SecurityHelper.CreateUser(facebookUser);
-						user = UsersServiceClient.Add(user, AuthenticationProvider.Facebook, facebookUser.id);
+						user = _service.Add(user, AuthenticationProvider.Facebook, facebookUser.id);
 					}
 
 					//Log the user in
@@ -236,7 +246,7 @@ namespace NearForums.Web.Controllers
 
 			try
 			{
-				var user = UsersServiceClient.AuthenticateWithCustomProvider(userName, password);
+				var user = _service.AuthenticateWithCustomProvider(userName, password);
 				if (user != null)
 				{
 					Session.User = new UserState(user, AuthenticationProvider.CustomDb);

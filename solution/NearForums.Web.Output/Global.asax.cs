@@ -13,20 +13,11 @@ namespace NearForums.Web.Output
 {
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
 	// visit http://go.microsoft.com/?LinkId=9394801
-
 	public class MvcApplication : System.Web.HttpApplication
 	{
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
 			filters.Add(new HandleErrorAttribute());
-		}
-
-		public static void RegisterRoutes(RouteCollection routes)
-		{
-			//Routes are registered using: NearForums.Web.Extensions.RoutingHelper
-			//Routes are configured at: Config\Routes.config
-
-			RoutingHelper.RegisterRoutes(RouteTable.Routes, RouteMappingConfiguration.Current);
 		}
 
 		protected void Application_Start()
@@ -36,7 +27,7 @@ namespace NearForums.Web.Output
 			AreaRegistration.RegisterAllAreas();
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
-			RegisterRoutes(RouteTable.Routes);
+			RoutingHelper.RegisterRoutes(RouteTable.Routes);
 		}
 	}
 }
