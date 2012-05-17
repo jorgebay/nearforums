@@ -8,7 +8,7 @@ namespace NearForums.Services
 {
 	public class LoggerService : NearForums.Services.ILoggerService
 	{
-		private static Logger _logger = LogManager.GetCurrentClassLogger(typeof(LoggerService));
+		private static Logger _logger = LogManager.GetLogger("mainlogger");
 
 		public void LogError(Exception ex)
 		{
