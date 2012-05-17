@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.UI;
 using NearForums.Validation;
@@ -32,12 +30,12 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ITagsService _tagService;
 
-		public ForumsController(IForumsService serv, IUsersService userServ, ITopicsService topicServ, ITagsService tagServ)
+		public ForumsController(IForumsService service, IUsersService userService, ITopicsService topicService, ITagsService tagService) : base(userService)
 		{
-			_service = serv;
-			_userService = userServ;
-			_topicService = topicServ;
-			_tagService = tagServ;
+			_service = service;
+			_userService = userService;
+			_topicService = topicService;
+			_tagService = tagService;
 		}
 
 		#region List

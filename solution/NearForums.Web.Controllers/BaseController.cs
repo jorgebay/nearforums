@@ -8,7 +8,7 @@ using NearForums.Web.State;
 using NearForums.Configuration;
 using NearForums.Validation;
 using System.Web;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Controllers.Filters;
 using System.Text.RegularExpressions;
 using NearForums.Web.Extensions;
@@ -19,6 +19,16 @@ namespace NearForums.Web.Controllers
 	[HandleErrorLog(View = "Errors/500")]
 	public class BaseController : Controller
 	{
+		/// <summary>
+		/// User service
+		/// </summary>
+		private IUsersService _service;
+
+		public BaseController(IUsersService service)
+		{
+			_service = service;
+		}
+
 		#region Props
 		#region State management
 		private SessionWrapper _session;
@@ -183,7 +193,7 @@ namespace NearForums.Web.Controllers
 		{
 			if (Session.User == null)
 			{
-				SecurityHelper.TryLoginFromProviders(HttpContext, Session, Cache, MembershipProvider);
+				SecurityHelper.TryLoginFromProviders(HttpContext, Session, Cache, MembershipProvider, _service);
 			}
 			LoadTemplate();
 		}

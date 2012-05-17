@@ -18,7 +18,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IUsersService _service;
 
-		public FormsAuthenticationController(IUsersService service)
+		public FormsAuthenticationController(IUsersService service) : base(service)
 		{
 			_service = service;
 		}
@@ -44,7 +44,7 @@ namespace NearForums.Web.Controllers
 				{
 					FormsAuthentication.SetAuthCookie(userName, rememberMe);
 				}
-				SecurityHelper.TryFinishMembershipLogin(Session, MembershipProvider.GetUser(userName, true));
+				SecurityHelper.TryFinishMembershipLogin(Session, MembershipProvider.GetUser(userName, true), _service);
 				return Redirect(returnUrl);
 			}
 			catch (ValidationException ex)
@@ -88,7 +88,7 @@ namespace NearForums.Web.Controllers
 			{
 				FormsAuthentication.SetAuthCookie(membershipUser.UserName, false);
 			}
-			SecurityHelper.TryFinishMembershipLogin(Session, membershipUser);
+			SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
 			Session.IsPasswordReset = true;
 
 			return RedirectToAction("ChangePassword");
@@ -143,7 +143,7 @@ namespace NearForums.Web.Controllers
 				// Attempt to register the user in the membership db
 				var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
 				ValidateCreateStatus(createStatus);
-				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser);
+				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
 				if (Config.AuthenticationProviders.FormsAuth.UseCookie)
 				{
 					FormsAuthentication.SetAuthCookie(userName, false);

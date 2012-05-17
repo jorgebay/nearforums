@@ -6,6 +6,13 @@ namespace NearForums.Services
 {
 	public interface IUsersService
 	{
+		/// <summary>
+		/// Adds a new user to the forums back end.
+		/// </summary>
+		/// <param name="user"></param>
+		/// <param name="provider"></param>
+		/// <param name="providerId"></param>
+		/// <returns></returns>
 		User Add(User user, AuthenticationProvider provider, string providerId);
 		/// <summary>
 		/// Add the email address to the user profile.

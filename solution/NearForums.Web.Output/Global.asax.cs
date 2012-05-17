@@ -1,12 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using NearForums.Configuration;
-using NearForums.Configuration.Routing;
-using NearForums.Web.Controllers;
 using NearForums.Web.Extensions;
-using Autofac;
-using Autofac.Integration.Mvc;
-using System.Reflection;
 using System.Web;
 
 namespace NearForums.Web.Output

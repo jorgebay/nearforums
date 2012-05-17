@@ -22,11 +22,18 @@ using DotNetOpenAuth.OAuth.Messages;
 using NearForums.Web.Controllers.Helpers.OAuth;
 using System.Net;
 using NearForums.Web.Extensions;
+using NearForums.Services;
 
 namespace NearForums.Web.Controllers
 {
 	public class AdminController : BaseController
 	{
+		public AdminController(IUsersService service)
+			: base(service)
+		{
+
+		}
+
 		#region Dashboard
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Dashboard()

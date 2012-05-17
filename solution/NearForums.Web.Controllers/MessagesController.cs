@@ -22,10 +22,10 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ITopicsService _topicService;
 
-		public MessagesController(IMessagesService serv, ITopicsService topicServ)
+		public MessagesController(IMessagesService service, ITopicsService topicService, IUsersService userService) : base(userService)
 		{
-			_service = serv;
-			_topicService = topicServ;
+			_service = service;
+			_topicService = topicService;
 		}
 
 		#region Add

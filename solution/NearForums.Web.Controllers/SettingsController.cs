@@ -4,11 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NearForums.Configuration;
+using NearForums.Services;
 
 namespace NearForums.Web.Controllers
 {
 	public class SettingsController : BaseController
 	{
+		public SettingsController(IUsersService service)
+			: base(service)
+		{
+
+		}
+
 		[HttpGet]
 		public ActionResult EditUI()
 		{

@@ -26,9 +26,9 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ITemplatesService _service;
 
-		public TemplatesController(ITemplatesService templateServ)
+		public TemplatesController(ITemplatesService templateService, IUsersService userService) : base(userService)
 		{
-			_service = templateServ;
+			_service = templateService;
 		}
 
 		#region Add template

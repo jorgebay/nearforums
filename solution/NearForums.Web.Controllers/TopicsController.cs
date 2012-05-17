@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Web.Mvc;
 using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
-using System.Web.Routing;
 using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers
@@ -31,12 +27,12 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IMessagesService _messageService;
 
-		public TopicsController(ITopicsService serv, IForumsService forumServ, IMessagesService messageServ, IUsersService userServ)
+		public TopicsController(ITopicsService service, IForumsService forumService, IMessagesService messageService, IUsersService userService) : base(userService)
 		{
-			_service = serv;
-			_forumService = forumServ;
-			_messageService = messageServ;
-			_userService = userServ;
+			_service = service;
+			_forumService = forumService;
+			_messageService = messageService;
+			_userService = userService;
 		}
 
 

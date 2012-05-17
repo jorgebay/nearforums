@@ -29,11 +29,11 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IUsersService _userService;
 
-		public TopicsSubscriptionsController(ITopicsSubscriptionsService serv, ITopicsService topicServ, IUsersService userServ)
+		public TopicsSubscriptionsController(ITopicsSubscriptionsService service, ITopicsService topicService, IUsersService userService) : base(userService)
 		{
-			_service = serv;
-			_topicService = topicServ;
-			_userService = userServ;
+			_service = service;
+			_topicService = topicService;
+			_userService = userService;
 		}
 		/// <summary>
 		/// Unsubscribes a user from a topic

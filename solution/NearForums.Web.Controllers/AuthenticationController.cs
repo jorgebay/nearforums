@@ -25,7 +25,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IUsersService _service;
 
-		public AuthenticationController(IUsersService service)
+		public AuthenticationController(IUsersService service) : base(service)
 		{
 			_service = service;
 		}
@@ -209,7 +209,7 @@ namespace NearForums.Web.Controllers
 			switch (response.Status)
 			{
 				case AuthenticationStatus.Authenticated:
-					SecurityHelper.OpenIdFinishLogin(response, Session);
+					SecurityHelper.OpenIdFinishLogin(response, Session, _service);
 
 					return Redirect(returnUrl);
 				case AuthenticationStatus.Canceled:

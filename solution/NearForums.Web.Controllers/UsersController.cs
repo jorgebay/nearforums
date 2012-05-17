@@ -24,10 +24,10 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ITopicsService _topicService;
 
-		public UsersController(IUsersService serv, ITopicsService topicServ)
+		public UsersController(IUsersService service, ITopicsService topicService) : base(service)
 		{
-			_service = serv;
-			_topicService = topicServ;
+			_service = service;
+			_topicService = topicService;
 		}
 
 		public ActionResult Detail(int id)

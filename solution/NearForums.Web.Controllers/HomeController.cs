@@ -4,13 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Helpers;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 
 namespace NearForums.Web.Controllers
 {
 	public class HomeController : BaseController
 	{
+		public HomeController(IUsersService service)
+			: base(service)
+		{
+
+		}
+
 		public ActionResult Index()
 		{
 			return View();
