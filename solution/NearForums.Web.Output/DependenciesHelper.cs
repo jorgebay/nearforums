@@ -8,6 +8,7 @@ using System.Reflection;
 using NearForums.Web.Controllers;
 using Autofac.Integration.Mvc;
 using System.Web.Mvc;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Output
 {
@@ -32,6 +33,7 @@ namespace NearForums.Web.Output
 				.Where(t => t.Name.EndsWith("Service"))
 				.AsImplementedInterfaces()
 				.InstancePerDependency();
+			builder.RegisterFilterProvider();
 			builder.RegisterControllers(typeof(BaseController).Assembly);
 			var container = builder.Build();
 			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
