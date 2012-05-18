@@ -26,15 +26,19 @@ namespace NearForums.Web.Controllers
 		/// Message service
 		/// </summary>
 		private readonly IMessagesService _messageService;
+		/// <summary>
+		/// Service that handles the subscriptions
+		/// </summary>
+		private readonly ITopicsSubscriptionsService _topicSubscriptionService;
 
-		public TopicsController(ITopicsService service, IForumsService forumService, IMessagesService messageService, IUsersService userService) : base(userService)
+		public TopicsController(ITopicsService service, IForumsService forumService, IMessagesService messageService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService) : base(userService)
 		{
 			_service = service;
 			_forumService = forumService;
 			_messageService = messageService;
 			_userService = userService;
+			_topicSubscriptionService = topicSubscriptionService;
 		}
-
 
 		#region Detail
 		[AddVisit]
@@ -115,7 +119,7 @@ namespace NearForums.Web.Controllers
 		{
 			try
 			{
-				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 				
 				topic.Forum = _forumService.Get(forum);
 				if (topic.Forum == null)
@@ -138,7 +142,7 @@ namespace NearForums.Web.Controllers
 				if (ModelState.IsValid)
 				{
 					_service.Create(topic, Request.UserHostAddress);
-					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
 					return RedirectToRoute(new { action = "Detail", controller = "Topics", id = topic.Id, name = topic.ShortName, forum = forum, page = 0 });
 				}
 			}
@@ -171,7 +175,7 @@ namespace NearForums.Web.Controllers
 			}
 			#endregion
 			ViewBag.IsEdit = true;
-			ViewBag.notify = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+			ViewBag.notify = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config, _topicSubscriptionService);
 			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 
@@ -215,7 +219,7 @@ namespace NearForums.Web.Controllers
 
 			try
 			{
-				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
@@ -224,7 +228,7 @@ namespace NearForums.Web.Controllers
 					topic.Description = topic.Description.SafeHtml().ReplaceValues();
 				}
 				_service.Edit(topic, Request.UserHostAddress);
-				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config);
+				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config, _topicSubscriptionService);
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
 			}
 			catch (ValidationException ex)

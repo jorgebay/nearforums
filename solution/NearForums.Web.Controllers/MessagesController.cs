@@ -21,11 +21,22 @@ namespace NearForums.Web.Controllers
 		/// Topic service
 		/// </summary>
 		private readonly ITopicsService _topicService;
+		/// <summary>
+		/// Service that handle the subscription to a topic
+		/// </summary>
+		private readonly ITopicsSubscriptionsService _topicSubscriptionService;
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _userService;
 
-		public MessagesController(IMessagesService service, ITopicsService topicService, IUsersService userService) : base(userService)
+		public MessagesController(IMessagesService service, ITopicsService topicService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService)
+			: base(userService)
 		{
 			_service = service;
 			_topicService = topicService;
+			_topicSubscriptionService = topicSubscriptionService;
+			_userService = userService;
 		}
 
 		#region Add
@@ -62,7 +73,7 @@ namespace NearForums.Web.Controllers
 			}
 
 
-			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config, _topicSubscriptionService);
 
 			return View("Edit", message);
 		}
@@ -95,8 +106,8 @@ namespace NearForums.Web.Controllers
 			#endregion
 			try
 			{
-				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
-				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
+				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
 
 				if (message.Body != null)
 				{
@@ -110,7 +121,7 @@ namespace NearForums.Web.Controllers
 				if (ModelState.IsValid)
 				{
 					_service.Add(message, Request.UserHostAddress);
-					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
+					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config, _topicSubscriptionService);
 					//Redirect to the message posted
 					return new RedirectToRouteExtraResult(new { action = "Detail", controller = "Topics", id = id, name = name, forum = forum }, "#msg" + message.Id);
 				}
