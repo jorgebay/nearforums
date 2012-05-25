@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NearForums.Web.Controllers;
 using NearForums.Tests.Fakes;
 using System.Web.Mvc;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using System.Web.SessionState;
 using NearForums.Web;
 using NearForums.Web.Extensions;
@@ -69,20 +69,21 @@ namespace NearForums.Tests.Controllers
 
 		public static Topic GetATopic(Forum forum)
 		{
-			List<Topic> topicList = TopicsServiceClient.GetByForum(forum.Id, 0, 1, null);
+			var topicService = TestHelper.Resolve<ITopicsService>();
+			List<Topic> topicList = topicService.GetByForum(forum.Id, 0, 1, null);
 
 			if (topicList.Count == 0)
 			{
 				Assert.Inconclusive("There is no topic in the db to perform this test.");
 			}
-			Topic topic = TopicsServiceClient.Get(topicList[0].Id);
+			Topic topic = topicService.Get(topicList[0].Id);
 			return topic;
 		}
 
 		[TestMethod]
 		public void Topic_Add_Delete_Test()
 		{
-			var controller = new TopicsController();
+			var controller = TestHelper.Resolve<TopicsController>();
 			var controllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			controller.ControllerContext = controllerContext;
 			ActionResult result = null;
@@ -101,7 +102,7 @@ namespace NearForums.Tests.Controllers
 			t.User = controller.User.ToUser();
 			t.Forum = forum;
 
-			controller = new TopicsController();
+			controller = TestHelper.Resolve<TopicsController>();
 			controller.ControllerContext = controllerContext;
 			controller.Url = new UrlHelper(controllerContext.RequestContext);
 			result = controller.Add(forum.ShortName, t, true, "admin@admin.com");
@@ -113,7 +114,7 @@ namespace NearForums.Tests.Controllers
 
 			Assert.IsTrue(result is JsonResult);
 
-			t = TopicsServiceClient.Get(topicId);
+			t = TestHelper.Resolve<ITopicsService>().Get(topicId);
 
 			Assert.IsNull(t);
 			
@@ -123,7 +124,7 @@ namespace NearForums.Tests.Controllers
 		public void TagList_Test()
 		{
 			#region Create a valid topic and controller
-			TopicsController controller = new TopicsController();
+			TopicsController controller = TestHelper.Resolve<TopicsController>();
 			var controllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			controller.ControllerContext = controllerContext;
 			controller.Url = new UrlHelper(controllerContext.RequestContext);
@@ -157,7 +158,7 @@ namespace NearForums.Tests.Controllers
 		{
 			var context = controller.ControllerContext;
 
-			controller = new TopicsController();
+			controller = TestHelper.Resolve<TopicsController>();
 			controller.ControllerContext = context;
 			controller.Url = new UrlHelper(context.RequestContext);
 			
@@ -184,7 +185,7 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void EditTopic_Test()
 		{
-			TopicsController controller = new TopicsController();
+			TopicsController controller = TestHelper.Resolve<TopicsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			ActionResult result = null;
 
@@ -200,21 +201,22 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void Topic_OpenClose_Test()
 		{
-			TopicsController controller = new TopicsController();
+			TopicsController controller = TestHelper.Resolve<TopicsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
+			var topicService = TestHelper.Resolve<ITopicsService>();
 
-			Forum forum = ForumsControllerTest.GetAForum();
-			Topic topic = TopicsControllerTest.GetATopic(forum);
+			var forum = ForumsControllerTest.GetAForum();
+			var topic = TopicsControllerTest.GetATopic(forum);
 
 			controller.CloseReplies(topic.Id, topic.ShortName);
 
-			topic = TopicsServiceClient.Get(topic.Id);
+			topic = topicService.Get(topic.Id);
 
 			Assert.IsTrue(topic.IsClosed);
 
 			controller.OpenReplies(topic.Id, topic.ShortName);
 
-			topic = TopicsServiceClient.Get(topic.Id);
+			topic = topicService.Get(topic.Id);
 
 			Assert.IsFalse(topic.IsClosed);
 		}
@@ -222,7 +224,7 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void Topic_LatestMessages_Test()
 		{
-			TopicsController controller = new TopicsController();
+			TopicsController controller = TestHelper.Resolve<TopicsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
 			Forum forum = ForumsControllerTest.GetAForum();

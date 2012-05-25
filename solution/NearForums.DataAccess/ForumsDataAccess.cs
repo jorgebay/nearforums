@@ -8,7 +8,7 @@ using System.Data;
 
 namespace NearForums.DataAccess
 {
-	public class ForumsDataAccess : BaseDataAccess
+	public class ForumsDataAccess : BaseDataAccess, IForumsDataAccess
 	{
 		/// <summary>
 		/// Gets a list of ForumCategories with the list forums, dependant of the user role.

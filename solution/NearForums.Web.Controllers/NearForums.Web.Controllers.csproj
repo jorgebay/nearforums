@@ -81,6 +81,7 @@
     <Compile Include="BaseController.cs" />
     <Compile Include="Filters\AddVisitAttribute.cs" />
     <Compile Include="Filters\BaseActionFilterAttribute.cs" />
+    <Compile Include="Filters\TemplatingAttribute.cs" />
     <Compile Include="Filters\ValidateReadAccessAttribute.cs" />
     <Compile Include="Filters\HandleErrorLogAttribute.cs" />
     <Compile Include="Filters\PreventFloodAttribute.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\SubscriptionHelper.cs" />
     <Compile Include="Helpers\TemplateHelper.cs" />
-    <Compile Include="Helpers\WebConfigHelper.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="MessagesController.cs" />
     <Compile Include="PageContentsController.cs" />
@@ -107,9 +107,9 @@
     <Compile Include="UsersController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NearForums.ServiceClient\NearForums.ServiceClient.csproj">
-      <Project>{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}</Project>
-      <Name>NearForums.ServiceClient</Name>
+    <ProjectReference Include="..\NearForums.Services\NearForums.Services.csproj">
+      <Project>{9FF42040-82E2-496D-8E8A-71169B0514FA}</Project>
+      <Name>NearForums.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\NearForums.Web\NearForums.Web.csproj">
       <Project>{AF911FBC-3E0B-44FF-AB68-DF35FF353064}</Project>

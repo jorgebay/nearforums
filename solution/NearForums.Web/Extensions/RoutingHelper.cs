@@ -17,7 +17,7 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		public static void RegisterRoutes(RouteCollection routes)
 		{
-			RouteMappingConfiguration config = RouteMappingConfiguration.Current;
+			var config = RouteMappingConfiguration.Current;
 			RegisterRoutes(routes, config);
 		}
 

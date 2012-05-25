@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NearForums.Web.Controllers;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using NearForums.Tests.Fakes;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.State;
 using System.Web.Routing;
 using NearForums.Configuration.Routing;
@@ -71,7 +68,7 @@ namespace NearForums.Tests
 		public static Forum GetAForum()
 		{
 			Forum forum = null;
-			var controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost");
 
 			controller.List();
@@ -105,7 +102,7 @@ namespace NearForums.Tests
 
 		public static ForumCategory GetACategory()
 		{
-			var categories = ForumsServiceClient.GetCategories();
+			var categories = TestHelper.Resolve<IForumsService>().GetCategories();
 			if (categories.Count == 0)
 			{
 				Assert.Inconclusive("There are no forum categories to perform this test.");
@@ -124,7 +121,7 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forums_List_Detail()
 		{
-			var controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller);
 			Forum forum = GetAForum();
 
@@ -140,7 +137,8 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forums_Unanswered()
 		{
-			ForumsController controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			controller.ViewData = new ViewDataDictionary();
 
 			Forum forum = GetAForum();
@@ -155,7 +153,7 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forum_LatestAllTopics()
 		{
-			var controller = new ForumsController();
+			var controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller);
 			var result = controller.LatestAllTopics();
 
@@ -166,7 +164,7 @@ namespace NearForums.Tests
 		public void Forum_Edit()
 		{
 			Forum forum = GetAForum();
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
@@ -181,7 +179,7 @@ namespace NearForums.Tests
 		public void Forum_Add_Delete_English()
 		{
 			Forum forum = new Forum();
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
 			forum.Name = "Unit test forum";
@@ -199,7 +197,7 @@ namespace NearForums.Tests
 		public void Forum_Add_Delete_Thai()
 		{
 			Forum forum = new Forum();
-			ForumsController controller = new ForumsController();
+			ForumsController controller = TestHelper.Resolve<ForumsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 
 			forum.Name = "ถ้า";

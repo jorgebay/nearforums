@@ -38,6 +38,10 @@ namespace NearForums.Configuration
 				}
 				return config;
 			}
+			set
+			{
+				config = value;
+			}
 		}
 		#endregion
 

@@ -12,7 +12,7 @@ namespace NearForums.DataAccess
 	/// <summary>
 	/// Represents a set of methods to get data from the db and convert into app entities
 	/// </summary>
-	public class BaseDataAccess
+	public abstract class BaseDataAccess
 	{
 		/// <summary>
 		/// Current configuration
@@ -27,7 +27,7 @@ namespace NearForums.DataAccess
 
 		public BaseDataAccess()
 		{
-			this.Factory = DbProviderFactories.GetFactory(Config.DataAccess.ConnectionString.ProviderName);
+			//Should be left empty
 		}
 
 		/// <summary>
@@ -41,13 +41,24 @@ namespace NearForums.DataAccess
 			return conn;
 		}
 
+		private DbProviderFactory _factory;
 		/// <summary>
 		/// The database provider factory to create the connections and commands to access the db.
 		/// </summary>
-		protected DbProviderFactory Factory
+		public virtual DbProviderFactory Factory
 		{
-			get;
-			set;
+			get
+			{
+				if (_factory == null)
+				{
+					_factory = DbProviderFactories.GetFactory(Config.DataAccess.ConnectionString.ProviderName);
+				}
+				return _factory;
+			}
+			set
+			{
+				_factory = value;
+			}
 		}
 
 		/// <summary>

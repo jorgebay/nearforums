@@ -7,7 +7,7 @@ using System.Data;
 
 namespace NearForums.DataAccess
 {
-	public class TopicsSubscriptionsDataAccess: BaseDataAccess
+	public class TopicsSubscriptionsDataAccess: BaseDataAccess, ITopicsSubscriptionsDataAccess
 	{
 		/// <summary>
 		/// Add a subscription for the user to the topic

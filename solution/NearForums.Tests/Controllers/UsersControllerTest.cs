@@ -8,6 +8,7 @@ using NearForums.Web.State;
 using NearForums.Web.Controllers;
 using System.Web.Mvc;
 using System.Collections;
+using NearForums.Tests.Fakes;
 
 namespace NearForums.Tests.Controllers
 {
@@ -70,7 +71,8 @@ namespace NearForums.Tests.Controllers
 			SessionStateItemCollection session = ForumsControllerTest.GetSessionWithTestUser();
 			UserState userState = (UserState)session["User"];
 
-			UsersController controller = new UsersController();
+			var controller = TestHelper.Resolve<UsersController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			ActionResult result = controller.Detail(userState.Id);
 
 			User user = (User)controller.ViewData.Model;
@@ -83,7 +85,8 @@ namespace NearForums.Tests.Controllers
 			SessionStateItemCollection session = ForumsControllerTest.GetSessionWithTestUser();
 			UserState userState = (UserState)session["User"];
 
-			UsersController controller = new UsersController();
+			var controller = TestHelper.Resolve<UsersController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			ActionResult result = controller.MessagesByUser(userState.Id);
 
 			IList topics = (IList)controller.ViewData.Model;

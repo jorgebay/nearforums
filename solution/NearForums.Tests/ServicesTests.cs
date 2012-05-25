@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Tests.Controllers;
 using NearForums.Configuration;
 
@@ -60,14 +60,16 @@ namespace NearForums.Tests
 			user.Role = UserRole.Member;
 			string providerId = "00" + new Random().Next(int.MaxValue / 2, int.MaxValue).ToString();
 
-			UsersServiceClient.Add(user, AuthenticationProvider.Twitter, providerId);
+			var userService = TestHelper.Resolve<IUsersService>();
 
-			user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Twitter, providerId);
+			userService.Add(user, AuthenticationProvider.Twitter, providerId);
+
+			user = userService.GetByProviderId(AuthenticationProvider.Twitter, providerId);
 			Assert.IsTrue(user.Id > 0);
 
-			UsersServiceClient.Delete(user.Id);
+			userService.Delete(user.Id);
 
-			user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Twitter, providerId);
+			user = userService.GetByProviderId(AuthenticationProvider.Twitter, providerId);
 
 			Assert.IsNull(user);
 
@@ -84,14 +86,14 @@ namespace NearForums.Tests
 
 			providerId = "00" + new Random().Next(int.MaxValue / 2, int.MaxValue).ToString();
 
-			UsersServiceClient.Add(user, AuthenticationProvider.Twitter, providerId);
+			userService.Add(user, AuthenticationProvider.Twitter, providerId);
 
-			user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Twitter, providerId);
+			user = userService.GetByProviderId(AuthenticationProvider.Twitter, providerId);
 			Assert.IsTrue(user.Id > 0);
 
-			UsersServiceClient.Delete(user.Id);
+			userService.Delete(user.Id);
 
-			user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Twitter, providerId);
+			user = userService.GetByProviderId(AuthenticationProvider.Twitter, providerId);
 			Assert.IsNull(user);
 		}
 
@@ -103,10 +105,12 @@ namespace NearForums.Tests
 			var forum = ForumsControllerTest.GetAForum();
 			var topic = TopicsControllerTest.GetATopic(forum);
 
-			TopicsSubscriptionsServiceClient.Add(topic.Id, user.Id);
+			var subscriptionService = TestHelper.Resolve<ITopicsSubscriptionsService>();
 
-			var subscribedUsers = TopicsSubscriptionsServiceClient.GetSubscribed(topic.Id);
-			var subscribedTopics = TopicsSubscriptionsServiceClient.GetTopics(user.Id);
+			subscriptionService.Add(topic.Id, user.Id);
+
+			var subscribedUsers = subscriptionService.GetSubscribed(topic.Id);
+			var subscribedTopics = subscriptionService.GetTopics(user.Id);
 
 			Assert.IsTrue(subscribedUsers.Count > 0);
 			Assert.IsTrue(subscribedTopics.Count > 0);
@@ -114,11 +118,11 @@ namespace NearForums.Tests
 			//Check that the topic recently subscribed is present.
 			Assert.IsTrue(subscribedTopics.Any(x => x.Id == topic.Id));
 
-			NotificationsServiceClient.SendToUsersSubscribed(topic, subscribedUsers, "Unit test email from " + TestContext.TestName + ", :<!--!UNSUBSCRIBEURL!-->:<!--!URL!-->:<!--!TITLE!-->:", "http://url", "http://unsubscribeUrl/{0}/{1}", false);
+			TestHelper.Resolve<INotificationsService>().SendToUsersSubscribed(topic, subscribedUsers, "Unit test email from " + TestContext.TestName + ", :<!--!UNSUBSCRIBEURL!-->:<!--!URL!-->:<!--!TITLE!-->:", "http://url", "http://unsubscribeUrl/{0}/{1}", false);
 
-			TopicsSubscriptionsServiceClient.Remove(topic.Id, user.Id, user.Guid);
+			subscriptionService.Remove(topic.Id, user.Id, user.Guid);
 
-			subscribedTopics = TopicsSubscriptionsServiceClient.GetTopics(user.Id);
+			subscribedTopics = subscriptionService.GetTopics(user.Id);
 
 			//Check that the topic recently unsubscribed is NOT present.
 			Assert.IsFalse(subscribedTopics.Any(x => x.Id == topic.Id));
@@ -126,7 +130,8 @@ namespace NearForums.Tests
 
 		public static User GetTestUser()
 		{
-			User user = UsersServiceClient.GetTestUser();
+			var userService = TestHelper.Resolve<IUsersService>();
+			var user = userService.GetTestUser();
 			if (user == null)
 			{
 				Assert.Inconclusive("There is no user in the db.");

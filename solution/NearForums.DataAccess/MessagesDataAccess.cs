@@ -8,7 +8,7 @@ using NearForums.DataAccess;
 
 namespace NearForums.DataAccess
 {
-	public class MessagesDataAccess : BaseDataAccess
+	public class MessagesDataAccess : BaseDataAccess, IMessagesDataAccess
 	{
 		public List<Message> GetByTopic(int topicId)
 		{

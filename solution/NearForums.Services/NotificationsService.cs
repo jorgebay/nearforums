@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net.Mail;
 using NearForums.Configuration;
-using NearForums;
+using System.Net.Mail;
 using System.Configuration;
 
-namespace NearForums.ServiceClient
+namespace NearForums.Services
 {
-	public class NotificationsServiceClient
+	public class NotificationsService : INotificationsService
 	{
-		public static void SendResetPassword(User user, string url)
+		/// <summary>
+		/// Service that handles the logging
+		/// </summary>
+		private readonly ILoggerService _loggerService;
+
+		public NotificationsService(ILoggerService logger)
+		{
+			_loggerService = logger;
+		}
+
+		public void SendResetPassword(User user, string url)
 		{
 			if (!SiteConfiguration.Current.Notifications.MembershipPasswordReset.IsDefined)
 			{
@@ -29,7 +38,7 @@ namespace NearForums.ServiceClient
 			#region Replace body values
 			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName" });
 			body = Utils.ReplaceBodyValues(body, SiteConfiguration.Current.AuthenticationProviders.FormsAuth, new[] { "TimeToExpireResetPasswordLink" });
-			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>() {{ "url", url } });
+			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>() { { "url", url } });
 			#endregion
 			message.Body = body;
 			message.Subject = "Reset Password";
@@ -37,13 +46,7 @@ namespace NearForums.ServiceClient
 			SendMail(message);
 		}
 
-		#region Subscriptions
-		/// <summary>
-		/// Sync Sends a notification to every user subscribed to a topic
-		/// </summary>
-		/// <param name="topic"></param>
-		/// <param name="userId">userId of the last poster</param>
-		public static int SendToUsersSubscribed(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions)
+		public int SendToUsersSubscribed(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions)
 		{
 			int sentMailsCount = 0;
 
@@ -60,7 +63,7 @@ namespace NearForums.ServiceClient
 					{
 						if (handleExceptions)
 						{
-							LoggerServiceClient.LogError(ex);
+							_loggerService.LogError(ex);
 						}
 						else
 						{
@@ -76,7 +79,7 @@ namespace NearForums.ServiceClient
 		/// Prepares the body (by replacing the param values) and sends an email to the user subscribed to a topic
 		/// </summary>
 		/// <param name="body">Base body of the email.</param>
-		private static void SendEmailToSubscriptor(Topic topic, User user, string body, string url, string unsubscribeUrl)
+		private void SendEmailToSubscriptor(Topic topic, User user, string body, string url, string unsubscribeUrl)
 		{
 			if (user.Guid == Guid.Empty)
 			{
@@ -87,22 +90,17 @@ namespace NearForums.ServiceClient
 			message.To.Add(new MailAddress(user.Email, user.UserName));
 			message.IsBodyHtml = true;
 			#region Replace body values
-			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName"});
+			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName" });
 			body = Utils.ReplaceBodyValues(body, topic, new[] { "Title", "Id" });
-			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>(){{"unsubscribeUrl", unsubscribeUrl}, {"url", url}});
+			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>() { { "unsubscribeUrl", unsubscribeUrl }, { "url", url } });
 			#endregion
 			message.Body = body;
 			message.Subject = "Re: " + topic.Title;
 
 			SendMail(message);
 		}
-		#endregion
 
-		/// <summary>
-		/// Sends an email based on the application configuration.
-		/// Use configuration/system.net/mailSettings element to set the smtp parameters (method/host/port/etc).
-		/// </summary>
-		public static void SendMail(MailMessage message)
+		public void SendMail(MailMessage message)
 		{
 			SmtpClient client = new SmtpClient();
 			client.Send(message);

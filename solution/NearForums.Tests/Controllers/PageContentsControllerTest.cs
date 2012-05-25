@@ -11,6 +11,7 @@ using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using NearForums.Web.Controllers;
 using System.Web.Mvc;
 using System.Collections;
+using NearForums.Tests.Fakes;
 
 
 namespace NearForums.Tests.Controllers
@@ -68,9 +69,10 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void PageContent_Add_Edit_List_Detail_Delete_Test()
 		{
-			PageContentsController controller = new PageContentsController();
+			var controller = TestHelper.Resolve<PageContentsController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 
-			PageContent content = new PageContent()
+			var content = new PageContent()
 			{
 				Title = "Dummy Test Content"
 				,Body = "<p>Hello world</p>"
@@ -81,7 +83,8 @@ namespace NearForums.Tests.Controllers
 			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
 			Assert.IsNotNull(content.ShortName);
 
-			controller = new PageContentsController();
+			controller = TestHelper.Resolve<PageContentsController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			result = controller.Add(contentFail);
 			//Must return to the view
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -89,11 +92,13 @@ namespace NearForums.Tests.Controllers
 
 			#region Edit
 			content.Title += " (Edited)";
-			controller = new PageContentsController();
+			controller = TestHelper.Resolve<PageContentsController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			result = controller.Edit(content.ShortName, content);
 			Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
 
-			controller = new PageContentsController();
+			controller = TestHelper.Resolve<PageContentsController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			result = controller.Edit(content.ShortName, contentFail);
 			//Must return to the view
 			Assert.IsInstanceOfType(result, typeof(ViewResult));

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Web.Controllers.Helpers;
 using NearForums.Validation;
@@ -13,6 +13,32 @@ namespace NearForums.Web.Controllers
 {
 	public class MessagesController : BaseController
 	{
+		/// <summary>
+		/// Messages service
+		/// </summary>
+		private readonly IMessagesService _service;
+		/// <summary>
+		/// Topic service
+		/// </summary>
+		private readonly ITopicsService _topicService;
+		/// <summary>
+		/// Service that handle the subscription to a topic
+		/// </summary>
+		private readonly ITopicsSubscriptionsService _topicSubscriptionService;
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _userService;
+
+		public MessagesController(IMessagesService service, ITopicsService topicService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService)
+			: base(userService)
+		{
+			_service = service;
+			_topicService = topicService;
+			_topicSubscriptionService = topicSubscriptionService;
+			_userService = userService;
+		}
+
 		#region Add
 		/// <summary>
 		/// Loads the "reply to a topic" form
@@ -26,7 +52,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Add(int id, string name, int? msg)
 		{
 			var message = new Message();
-			message.Topic = TopicsServiceClient.Get(id, name);
+			message.Topic = _topicService.Get(id, name);
 			#region Check topic
 			if (message.Topic == null)
 			{
@@ -47,7 +73,7 @@ namespace NearForums.Web.Controllers
 			}
 
 
-			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
+			ViewData["notify"] = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config, _topicSubscriptionService);
 
 			return View("Edit", message);
 		}
@@ -63,7 +89,7 @@ namespace NearForums.Web.Controllers
 		[PreventFlood(SuccessResultType = typeof(RedirectToRouteResult))]
 		public ActionResult Add([Bind(Prefix = "", Exclude = "Id")] Message message, int id, string name, string forum, int? msg, bool notify, string email)
 		{
-			message.Topic = TopicsServiceClient.Get(id, name);
+			message.Topic = _topicService.Get(id, name);
 			#region Check topic
 			if (message.Topic == null)
 			{
@@ -80,8 +106,8 @@ namespace NearForums.Web.Controllers
 			#endregion
 			try
 			{
-				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
-				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
+				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
 
 				if (message.Body != null)
 				{
@@ -94,8 +120,8 @@ namespace NearForums.Web.Controllers
 				}
 				if (ModelState.IsValid)
 				{
-					MessagesServiceClient.Add(message, Request.UserHostAddress);
-					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config);
+					_service.Add(message, Request.UserHostAddress);
+					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config, _topicSubscriptionService);
 					//Redirect to the message posted
 					return new RedirectToRouteExtraResult(new { action = "Detail", controller = "Topics", id = id, name = name, forum = forum }, "#msg" + message.Id);
 				}
@@ -118,7 +144,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult Delete(int mid, int id, string forum, string name)
 		{
-			MessagesServiceClient.Delete(id, mid, this.User.Id);
+			_service.Delete(id, mid, this.User.Id);
 			return Json(true);
 		}
 		#endregion
@@ -132,7 +158,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult Flag(int mid, int id, string forum, string name)
 		{
-			bool flagged = MessagesServiceClient.Flag(id, mid, Request.UserHostAddress);
+			bool flagged = _service.Flag(id, mid, Request.UserHostAddress);
 
 			return Json(flagged);
 		}
@@ -146,7 +172,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult ListFlagged()
 		{
-			var topics = MessagesServiceClient.ListFlagged();
+			var topics = _service.ListFlagged();
 			return View(topics);
 		}
 		#endregion
@@ -156,7 +182,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult ClearFlags(int mid, int id, string forum, string name)
 		{
-			bool cleared = MessagesServiceClient.ClearFlags(id, mid);
+			bool cleared = _service.ClearFlags(id, mid);
 			return Json(cleared);
 		}
 		#endregion

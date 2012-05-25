@@ -21,16 +21,21 @@ namespace NearForums.Web.Controllers.Filters
 		/// <summary>
 		/// Gets or sets the current site configuration.
 		/// </summary>
-		/// <remarks>To ensure testability</remarks>
+		private SiteConfiguration _config;
 		public SiteConfiguration Config
 		{
-			get;
-			set;
-		}
-
-		public BaseActionFilterAttribute()
-		{
-			Config = SiteConfiguration.Current;
+			get
+			{
+				if (_config == null)
+				{
+					Config = SiteConfiguration.Current;
+				}
+				return _config;
+			}
+			set
+			{
+				_config = value;
+			}
 		}
 	}
 }

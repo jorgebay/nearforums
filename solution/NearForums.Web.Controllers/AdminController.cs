@@ -7,7 +7,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.Text.RegularExpressions;
 using System.Text;
 using NearForums.Validation;
-using NearForums.ServiceClient;
 using NearForums.Web.Controllers.Filters;
 
 using System.Configuration;
@@ -23,11 +22,18 @@ using DotNetOpenAuth.OAuth.Messages;
 using NearForums.Web.Controllers.Helpers.OAuth;
 using System.Net;
 using NearForums.Web.Extensions;
+using NearForums.Services;
 
 namespace NearForums.Web.Controllers
 {
 	public class AdminController : BaseController
 	{
+		public AdminController(IUsersService service)
+			: base(service)
+		{
+
+		}
+
 		#region Dashboard
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Dashboard()

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using System.Web;
 
 using NearForums.Validation;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Controllers.Filters;
 using NearForums.Web.Controllers.Helpers;
 using System.Net;
@@ -21,6 +21,16 @@ namespace NearForums.Web.Controllers
 {
 	public class TemplatesController : BaseController
 	{
+		/// <summary>
+		/// Template service
+		/// </summary>
+		private readonly ITemplatesService _service;
+
+		public TemplatesController(ITemplatesService templateService, IUsersService userService) : base(userService)
+		{
+			_service = templateService;
+		}
+
 		#region Add template
 		[RequireAuthorization(UserRole.Admin)]
 		[AcceptVerbs(HttpVerbs.Get)]
@@ -48,7 +58,7 @@ namespace NearForums.Web.Controllers
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
 				}
 
-				TemplateHelper.Add(template, postedFile.InputStream, HttpContext);
+				TemplateHelper.Add(template, postedFile.InputStream, HttpContext, _service);
 				return RedirectToAction("List");
 			}
 			catch (ValidationException ex)
@@ -63,7 +73,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List(TemplateActionError? error)
 		{
-			var list = TemplatesServiceClient.GetAll();
+			var list = _service.GetAll();
 			ViewBag.BasePath = Url.Content(Config.TemplateFolderPath(""));
 			if (error == TemplateActionError.DeleteCurrent)
 			{
@@ -89,7 +99,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult SetCurrent(int id)
 		{
-			TemplatesServiceClient.SetCurrent(id);
+			_service.SetCurrent(id);
 
 			this.Cache.Template = null;
 
@@ -105,7 +115,7 @@ namespace NearForums.Web.Controllers
 		{
 			TemplateActionError? error = null;
 
-			Template t = TemplatesServiceClient.Get(id);
+			Template t = _service.Get(id);
 			if (t != null)
 			{
 				if (t.IsCurrent)
@@ -119,7 +129,7 @@ namespace NearForums.Web.Controllers
 					try
 					{
 						SafeIO.Directory_Delete(baseDirectory, true);
-						TemplatesServiceClient.Delete(id);
+						_service.Delete(id);
 					}
 					catch (UnauthorizedAccessException)
 					{
@@ -136,7 +146,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Export(int id)
 		{
-			var template = TemplatesServiceClient.Get(id);
+			var template = _service.Get(id);
 			string fileName = Config.TemplateFolderPath(template.Key) + "/template.zip";
 			return new FilePathResult(fileName, "application/zip") 
 			{ 
@@ -168,7 +178,7 @@ namespace NearForums.Web.Controllers
 			ViewBag.Path = path;
 			try
 			{
-				ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext);
+				ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext, _service);
 			}
 			catch (DirectoryNotFoundException ex)
 			{

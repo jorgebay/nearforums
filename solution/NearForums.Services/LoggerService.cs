@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using NLog;
 
-namespace NearForums.ServiceClient
+namespace NearForums.Services
 {
-	public static class LoggerServiceClient
+	public class LoggerService : NearForums.Services.ILoggerService
 	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static Logger _logger = LogManager.GetLogger("mainlogger");
 
-		public static void LogError(Exception ex)
+		public void LogError(Exception ex)
 		{
-			StringBuilder message = new StringBuilder();
+			var message = new StringBuilder();
 			if (ex.InnerException != null)
 			{
 				message.AppendLine("-------INNER EXCEPTION----------");
@@ -28,14 +28,14 @@ namespace NearForums.ServiceClient
 			message.AppendLine("Stacktrace:");
 			message.AppendLine(ex.StackTrace);
 
-			logger.Error(message.ToString());
+			_logger.Error(message.ToString());
 		}
 
-		public static bool IsEnabled
+		public bool IsEnabled
 		{
 			get
 			{
-				return logger.IsErrorEnabled;
+				return _logger.IsErrorEnabled;
 			}
 		}
 	}

@@ -11,15 +11,34 @@ namespace NearForums.DataAccess
 	/// <summary>
 	/// Represents a set of method to access the custom authentication providers database.
 	/// </summary>
-	public class CustomAuthenticationDataAccess : BaseDataAccess
+	public class CustomAuthenticationDataAccess : BaseDataAccess, ICustomAuthenticationDataAccess
 	{
 		public CustomAuthenticationDataAccess()
 		{
-			if (!Config.AuthenticationProviders.CustomDb.IsDefined)
+		}
+
+		private DbProviderFactory _factory;
+		/// <summary>
+		/// Gets an instance of the db provider factory for the custom db authentication
+		/// </summary>
+		public override DbProviderFactory Factory
+		{
+			get
 			{
-				throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
+				if (!Config.AuthenticationProviders.CustomDb.IsDefined)
+				{
+					throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
+				}
+				if (_factory == null)
+				{
+					_factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
+				}
+				return _factory;
 			}
-			Factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
+			set
+			{
+				_factory = value;
+			}
 		}
 
 		public override DbConnection GetConnection()
@@ -29,10 +48,6 @@ namespace NearForums.DataAccess
 			return conn;
 		}
 
-		/// <summary>
-		/// Gets the user data from the custom authentication provider
-		/// </summary>
-		/// <returns>An instance of User type, with only the fields id, name, email filled in.</returns>
 		public User GetUser(string userName, string password)
 		{
 			User user = null;
