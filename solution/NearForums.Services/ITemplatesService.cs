@@ -9,6 +9,10 @@ namespace NearForums.Services
 		/// </summary>
 		/// <param name="t"></param>
 		void AddOrUpdate(Template t);
+		/// <summary>
+		/// Deletes a template from the repository
+		/// </summary>
+		/// <param name="templateId"></param>
 		void Delete(int templateId);
 		Template Get(int templateId);
 		List<NearForums.Template> GetAll();

@@ -17,6 +17,7 @@ using System.Web.Security;
 namespace NearForums.Web.Controllers
 {
 	[HandleErrorLog(View = "Errors/500")]
+	[Templating]
 	public class BaseController : Controller
 	{
 		/// <summary>
@@ -195,7 +196,6 @@ namespace NearForums.Web.Controllers
 			{
 				SecurityHelper.TryLoginFromProviders(HttpContext, Session, Cache, MembershipProvider, _service);
 			}
-			LoadTemplate();
 		}
 		#endregion
 
@@ -226,25 +226,7 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region Templates & Master
-		/// <summary>
-		/// Loads the current template
-		/// </summary>
-		protected virtual void LoadTemplate()
-		{
-			Template = TemplateHelper.LoadTemplate(HttpContext);
-		}
-
-		/// <summary>
-		/// Returns active/current template. 
-		/// It returns null if disabled by configuration or no active.
-		/// </summary>
-		public TemplateState Template
-		{
-			get;
-			set;
-		}
-
+		#region Master
 		public virtual string GetDefaultMasterName()
 		{
 			var masterName = "Site";
@@ -252,13 +234,13 @@ namespace NearForums.Web.Controllers
 			{
 				masterName = "Mobile";
 			}
-			else if (Template != null)
+			else if (Cache.Template != null || Session.TemplatePreviewed != null)
 			{
 				masterName = "Templated";
 			}
 
 			return masterName;
-		}
+		} 
 		#endregion
 
 		#region Action Results

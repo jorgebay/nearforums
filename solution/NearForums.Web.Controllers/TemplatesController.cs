@@ -58,7 +58,7 @@ namespace NearForums.Web.Controllers
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
 				}
 
-				TemplateHelper.Add(template, postedFile.InputStream, HttpContext);
+				TemplateHelper.Add(template, postedFile.InputStream, HttpContext, _service);
 				return RedirectToAction("List");
 			}
 			catch (ValidationException ex)
@@ -178,7 +178,7 @@ namespace NearForums.Web.Controllers
 			ViewBag.Path = path;
 			try
 			{
-				ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext);
+				ViewBag.TemplateCount = TemplateHelper.AddDefaultTemplates(path, HttpContext, _service);
 			}
 			catch (DirectoryNotFoundException ex)
 			{
