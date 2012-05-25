@@ -95,7 +95,6 @@
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\SubscriptionHelper.cs" />
     <Compile Include="Helpers\TemplateHelper.cs" />
-    <Compile Include="Helpers\WebConfigHelper.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="MessagesController.cs" />
     <Compile Include="PageContentsController.cs" />
@@ -108,10 +107,6 @@
     <Compile Include="UsersController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NearForums.ServiceClient\NearForums.ServiceClient.csproj">
-      <Project>{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}</Project>
-      <Name>NearForums.ServiceClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NearForums.Services\NearForums.Services.csproj">
       <Project>{9FF42040-82E2-496D-8E8A-71169B0514FA}</Project>
       <Name>NearForums.Services</Name>
