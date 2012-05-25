@@ -146,10 +146,6 @@
       <Project>{8A800A71-0656-4712-881D-AA03BDCA218C}</Project>
       <Name>NearForums.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NearForums.ServiceClient\NearForums.ServiceClient.csproj">
-      <Project>{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}</Project>
-      <Name>NearForums.ServiceClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NearForums.Services\NearForums.Services.csproj">
       <Project>{9FF42040-82E2-496D-8E8A-71169B0514FA}</Project>
       <Name>NearForums.Services</Name>

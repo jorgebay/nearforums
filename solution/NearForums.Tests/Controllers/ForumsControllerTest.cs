@@ -1,18 +1,14 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NearForums.Web.Controllers;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using NearForums.Tests.Fakes;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.State;
 using System.Web.Routing;
 using NearForums.Configuration.Routing;
 using NearForums.Web.Extensions;
-using NearForums.Services;
 
 namespace NearForums.Tests
 {
@@ -106,7 +102,7 @@ namespace NearForums.Tests
 
 		public static ForumCategory GetACategory()
 		{
-			var categories = ForumsServiceClient.GetCategories();
+			var categories = TestHelper.Resolve<IForumsService>().GetCategories();
 			if (categories.Count == 0)
 			{
 				Assert.Inconclusive("There are no forum categories to perform this test.");
@@ -141,7 +137,8 @@ namespace NearForums.Tests
 		[TestMethod]
 		public void Forums_Unanswered()
 		{
-			ForumsController controller = TestHelper.Resolve<ForumsController>();
+			var controller = TestHelper.Resolve<ForumsController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			controller.ViewData = new ViewDataDictionary();
 
 			Forum forum = GetAForum();

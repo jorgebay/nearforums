@@ -9,6 +9,8 @@ using NearForums.Tests.Fakes;
 using Autofac;
 using System.Reflection;
 using NearForums.Web.Controllers;
+using NearForums.Services;
+using NearForums.DataAccess;
 
 namespace NearForums.Tests
 {
@@ -25,11 +27,11 @@ namespace NearForums.Tests
 				if (_container == null)
 				{
 					var builder = new ContainerBuilder();
-					builder.RegisterAssemblyTypes(Assembly.Load("NearForums.DataAccess"))
+					builder.RegisterAssemblyTypes(typeof(BaseDataAccess).Assembly)
 						.Where(t => t.Name.EndsWith("DataAccess"))
 						.AsImplementedInterfaces()
 						.InstancePerDependency();
-					builder.RegisterAssemblyTypes(Assembly.Load("NearForums.Services"))
+					builder.RegisterAssemblyTypes(typeof(UsersService).Assembly)
 						.Where(t => t.Name.EndsWith("Service"))
 						.AsImplementedInterfaces()
 						.InstancePerDependency();
@@ -37,6 +39,7 @@ namespace NearForums.Tests
 						.Where(t => t.Name.EndsWith("Controller"))
 						.InstancePerDependency();
 					var container = builder.Build();
+
 					_container = container;
 				}
 				return _container;

@@ -63,7 +63,8 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void ListFlagged_Test()
 		{
-			MessagesController controller = TestHelper.Resolve<MessagesController>();
+			var controller = TestHelper.Resolve<MessagesController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			var result = controller.ListFlagged();
 
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
