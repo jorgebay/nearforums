@@ -61,6 +61,7 @@
     <Compile Include="Configuration\Notifications\NotificationElement.cs" />
     <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
+    <Compile Include="Configuration\SearchElement.cs" />
     <Compile Include="Configuration\SpamPreventionElement.cs" />
     <Compile Include="Configuration\SSOOpenIdElement.cs" />
     <Compile Include="Configuration\Redirector\RedirectorConfiguration.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="PagedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SafeIO.cs" />
+    <Compile Include="SearchResult.cs" />
     <Compile Include="TagList.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Topic.cs" />

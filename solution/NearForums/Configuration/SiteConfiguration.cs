@@ -45,11 +45,6 @@ namespace NearForums.Configuration
 		}
 		#endregion
 
-		public SiteConfiguration()
-		{
-			PathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
-		}
-
 		[ConfigurationProperty("ui", IsRequired = true)]
 		public UIElement UI
 		{
@@ -112,6 +107,23 @@ namespace NearForums.Configuration
 			set
 			{
 				this["notifications"] = value;
+			}
+		}
+
+		[ConfigurationProperty("search", IsRequired = false)]
+		public SearchElement Search
+		{
+			get
+			{
+				return (SearchElement)this["search"];
+			}
+			set
+			{
+				this["search"] = value;
+				if (value != null)
+				{
+					value.ParentElement = this;
+				}
 			}
 		}
 
@@ -298,10 +310,21 @@ namespace NearForums.Configuration
 			//Its OK if there isn't settings
 		}
 
+		private Func<string, string> _pathResolver;
 		public Func<string, string> PathResolver
 		{
-			get;
-			set;
+			get
+			{
+				if (_pathResolver == null)
+				{
+					_pathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
+				}
+				return _pathResolver;
+			}
+			set
+			{
+				_pathResolver = value;
+			}
 		}
 		#endregion
 
