@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\references\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=1.0.0.505, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\references\NLog.dll</HintPath>
@@ -54,6 +57,7 @@
     <Compile Include="IMessagesService.cs" />
     <Compile Include="INotificationsService.cs" />
     <Compile Include="IPageContentsService.cs" />
+    <Compile Include="ISearchService.cs" />
     <Compile Include="ITagsService.cs" />
     <Compile Include="ITemplatesService.cs" />
     <Compile Include="ITopicsService.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="NotificationsService.cs" />
     <Compile Include="PageContentsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchService.cs" />
     <Compile Include="TagsService.cs" />
     <Compile Include="TemplatesService.cs" />
     <Compile Include="TopicsService.cs" />
