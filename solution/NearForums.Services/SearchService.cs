@@ -8,6 +8,9 @@ using NearForums.Configuration;
 using Lucene.Net.Store;
 using System.IO;
 using Lucene.Net.Documents;
+using Lucene.Net.Search;
+using Lucene.Net.QueryParsers;
+using NearForums.Services.Helpers;
 
 namespace NearForums.Services
 {
@@ -20,7 +23,26 @@ namespace NearForums.Services
 			throw new NotImplementedException();
 		}
 
-		public void IndexTopic(Topic topic)
+		/// <summary>
+		/// Adds a new topic to the index
+		/// </summary>
+		/// <param name="topic"></param>
+		public void Add(Topic topic)
+		{
+			lock (writerLock)
+			{
+				using (var writer = GetWriter())
+				{
+					var doc = topic.ToDocument();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds the message as document (topic) field
+		/// </summary>
+		/// <param name="topic"></param>
+		public void Add(Message topic)
 		{
 			lock (writerLock)
 			{
@@ -32,9 +54,16 @@ namespace NearForums.Services
 		}
 
 		/// <summary>
-		/// Gets the IndexWriter with the default options
+		/// Updates the document fields 
 		/// </summary>
-		/// <returns></returns>
+		public void Update(Topic topic)
+		{
+
+		}
+
+		/// <summary>
+		/// Gets an instance of the IndexWriter with the default options
+		/// </summary>
 		private IndexWriter GetWriter()
 		{
 			var indexPath = SiteConfiguration.Current.Search.IndexPath;

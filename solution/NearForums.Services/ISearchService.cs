@@ -15,6 +15,18 @@ namespace NearForums.Services
 		/// <summary>
 		/// Adds a topic to the index
 		/// </summary>
-		void IndexTopic(Topic topic);
+		void Add(Topic topic);
+
+		/// <summary>
+		/// Adds a message to the index
+		/// </summary>
+		/// <param name="topic"></param>
+		void Add(Message message);
+
+		/// <summary>
+		/// Updates a topic from the 
+		/// </summary>
+		/// <param name="topic"></param>
+		void Update(Topic topic);
 	}
 }

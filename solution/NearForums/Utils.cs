@@ -60,7 +60,7 @@ namespace NearForums
 		}
 
 		/// <summary>
-		/// Remove tags from a html string
+		/// Remove tags from a html string. Should not be used for critical html handling.
 		/// </summary>
 		/// <param name="value"></param>
 		/// <returns></returns>
@@ -70,8 +70,7 @@ namespace NearForums
 			{
 				value = CleanHtmlComments(value);
 				value = CleanHtmlBehaviour(value);
-				value = Regex.Replace(value, @"</[^>]+?>", " ");
-				value = Regex.Replace(value, @"<[^>]+?>", "");
+				value = Regex.Replace(value, @"</?[^>]+?>", " ");
 				value = value.Trim();
 			}
 			return value;
