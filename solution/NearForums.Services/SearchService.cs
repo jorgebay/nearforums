@@ -17,10 +17,30 @@ namespace NearForums.Services
 	public class SearchService : ISearchService
 	{
 		private static object writerLock = new object();
-
-		public List<SearchResult> Search(string query)
+		private static FSDirectory Directory
 		{
-			throw new NotImplementedException();
+			get
+			{
+				//TODO: Make sure that the directory exist / create if not
+				return FSDirectory.Open(new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath));
+			}
+		}
+
+		public List<SearchResult> Search(string value)
+		{
+			var results = new List<SearchResult>();
+			if (String.IsNullOrWhiteSpace(value))
+			{
+				throw new ArgumentException("query can not be null, empty or only whitespace chars.");
+			}
+			using (var searcher = new IndexSearcher(Directory, false))
+			{
+				var hitsLimit = 1000; //TODO: Move to config
+				var query = value.ToQuery();
+				var docs = searcher.Search(query, hitsLimit).ScoreDocs;
+
+			}
+			return results;
 		}
 
 		/// <summary>
@@ -34,6 +54,7 @@ namespace NearForums.Services
 				using (var writer = GetWriter())
 				{
 					var doc = topic.ToDocument();
+					writer.AddDocument(doc);
 				}
 			}
 		}
@@ -66,11 +87,9 @@ namespace NearForums.Services
 		/// </summary>
 		private IndexWriter GetWriter()
 		{
-			var indexPath = SiteConfiguration.Current.Search.IndexPath;
-			//TODO: Make sure that the directory exist / create if not
-			var directory = FSDirectory.Open(new DirectoryInfo(indexPath));
-
-			var writer = new IndexWriter(directory, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), false, IndexWriter.MaxFieldLength.UNLIMITED);
+			var path = new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath);
+			
+			var writer = new IndexWriter(Directory, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), false, IndexWriter.MaxFieldLength.UNLIMITED);
 
 			return writer;
 		}
