@@ -401,6 +401,7 @@
     <Content Include="Views\FormsAuthentication\ResetPasswordEmailConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="content\search-index\" />
     <Folder Include="Views\Static\" />
   </ItemGroup>
   <ItemGroup>

@@ -286,6 +286,8 @@ namespace NearForums.Configuration
 			base.PostDeserialize();
 
 			ProcessMissingElements(this);
+
+			Search.ParentElement = this;
 		}
 
 		#region Load settings

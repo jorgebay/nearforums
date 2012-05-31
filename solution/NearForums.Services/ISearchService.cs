@@ -8,9 +8,13 @@ namespace NearForums.Services
 	public interface ISearchService
 	{
 		/// <summary>
+		/// Determines if recreates the index the next time it writes
+		/// </summary>
+		bool RecreateIndex { get; set; }
+		/// <summary>
 		/// Queries the index
 		/// </summary>
-		List<SearchResult> Search(string query);
+		List<Topic> Search(string query);
 
 		/// <summary>
 		/// Adds a topic to the index

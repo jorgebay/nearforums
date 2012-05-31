@@ -4,6 +4,7 @@ using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Analysis.Standard;
 using System.Collections.Generic;
+using Lucene.Net.Analysis;
 
 namespace NearForums.Services.Helpers
 {
@@ -52,18 +53,18 @@ namespace NearForums.Services.Helpers
 			var doc = new Document();
 
 			doc.Add(new Field(Id, topic.Id.ToString(), Field.Store.YES, Field.Index.NO));
-			
+
 			var title = new Field(Title, topic.Title.ToString(), Field.Store.YES, Field.Index.ANALYZED);
 			title.SetBoost(2f); //TODO: Move to configuration
 			doc.Add(title);
-			
+
 			var description = new Field(Description, Utils.RemoveTags(topic.Description), Field.Store.YES, Field.Index.ANALYZED);
 			description.SetBoost(1.5f);
 			doc.Add(description);
 
 			doc.Add(new Field(Date, DateTools.DateToString(topic.Date, DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NO));
 
-			var tags = new Field(Tags, topic.Description, Field.Store.YES, Field.Index.ANALYZED);
+			var tags = new Field(Tags, topic.Tags.ToString(), Field.Store.YES, Field.Index.ANALYZED);
 			tags.SetBoost(3f);
 			doc.Add(tags);
 
@@ -75,13 +76,24 @@ namespace NearForums.Services.Helpers
 		}
 
 		/// <summary>
+		/// Converts a document into topic
+		/// </summary>
+		/// <returns></returns>
+		public static Topic ToTopic(this Document doc)
+		{
+			var topic = new Topic();
+			topic.Id = Convert.ToInt32(doc.GetField(Id).StringValue());
+			topic.Title = doc.GetField(Title).StringValue();
+			return topic;
+		}
+
+		/// <summary>
 		/// Converts a string into a Query containing all the analyzed fields
 		/// </summary>
 		/// <param name="searchQuery"></param>
 		/// <returns></returns>
-		public static Query ToQuery(this string searchQuery)
+		public static Query ToQuery(this string searchQuery, Analyzer analyzer)
 		{
-			var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
 			var parser = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_29, SearchFieldNames, analyzer);
 			Query query;
 			try

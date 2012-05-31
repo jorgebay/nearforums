@@ -11,13 +11,21 @@ using Lucene.Net.Documents;
 using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
 using NearForums.Services.Helpers;
+using Lucene.Net.Analysis;
 
 namespace NearForums.Services
 {
 	public class SearchService : ISearchService
 	{
+		/// <summary>
+		/// Used to lock the search index writer 
+		/// </summary>
 		private static object writerLock = new object();
-		private static FSDirectory Directory
+
+		/// <summary>
+		/// Gets the directory where the index is located
+		/// </summary>
+		private FSDirectory Directory
 		{
 			get
 			{
@@ -26,19 +34,51 @@ namespace NearForums.Services
 			}
 		}
 
-		public List<SearchResult> Search(string value)
+		/// <summary>
+		/// Determines if recreates the index the next time it writes
+		/// </summary>
+		public bool RecreateIndex { get; set; }
+
+		private Analyzer _analyzer;
+		/// <summary>
+		/// Gets or set the analyzer used by the SearchEngine
+		/// </summary>
+		public Analyzer Analyzer
 		{
-			var results = new List<SearchResult>();
+			get
+			{
+				if (_analyzer == null)
+				{
+					_analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
+				}
+				return _analyzer;
+			}
+			set
+			{
+				_analyzer = value;
+			}
+		}
+
+		public List<Topic> Search(string value)
+		{
+			var results = new List<Topic>();
 			if (String.IsNullOrWhiteSpace(value))
 			{
 				throw new ArgumentException("query can not be null, empty or only whitespace chars.");
 			}
-			using (var searcher = new IndexSearcher(Directory, false))
+			using (var searcher = new IndexSearcher(Directory, true))
 			{
 				var hitsLimit = 1000; //TODO: Move to config
-				var query = value.ToQuery();
-				var docs = searcher.Search(query, hitsLimit).ScoreDocs;
-
+				var query = value.ToQuery(Analyzer);
+				var hits = searcher.Search(query, hitsLimit).ScoreDocs;
+				foreach (var h in hits)
+				{
+					var doc = searcher.Doc(h.doc);
+					if (doc != null)
+					{
+						results.Add(doc.ToTopic());
+					}
+				}
 			}
 			return results;
 		}
@@ -88,8 +128,7 @@ namespace NearForums.Services
 		private IndexWriter GetWriter()
 		{
 			var path = new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath);
-			
-			var writer = new IndexWriter(Directory, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), false, IndexWriter.MaxFieldLength.UNLIMITED);
+			var writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
 
 			return writer;
 		}
