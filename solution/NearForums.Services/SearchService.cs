@@ -30,7 +30,7 @@ namespace NearForums.Services
 			get
 			{
 				//TODO: Make sure that the directory exist / create if not
-				return FSDirectory.Open(new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath));
+				return FSDirectory.Open(new DirectoryInfo(Config.IndexPath));
 			}
 		}
 
@@ -38,6 +38,14 @@ namespace NearForums.Services
 		/// Determines if recreates the index the next time it writes
 		/// </summary>
 		public bool RecreateIndex { get; set; }
+
+		public SearchElement Config
+		{
+			get
+			{
+				return SiteConfiguration.Current.Search;
+			}
+		}
 
 		private Analyzer _analyzer;
 		/// <summary>
@@ -57,6 +65,68 @@ namespace NearForums.Services
 			{
 				_analyzer = value;
 			}
+		}
+
+
+		/// <summary>
+		/// Adds a new topic to the index
+		/// </summary>
+		/// <param name="topic"></param>
+		public void Add(Topic topic)
+		{
+			lock (writerLock)
+			{
+				using (var writer = GetWriter())
+				{
+					var doc = topic.ToDocument();
+					writer.AddDocument(doc);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds the message as document (topic) field
+		/// </summary>
+		/// <param name="topic"></param>
+		public void Add(Message message)
+		{
+			if (message.Id > Config.MaxMessages)
+			{
+				return;
+			}
+			lock (writerLock)
+			{
+				using (var writer = GetWriter())
+				{
+					Document doc = null;
+					using (var searcher = new IndexSearcher(Directory, true))
+					{
+						doc = searcher.SearchById(message.Topic.Id);
+					}
+					if (doc == null)
+					{
+						throw new ArgumentException("No topic found for given id (" + message.Topic.Id +")");
+					}
+					var dateField = doc.GetField(SearchHelper.Date);
+					dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
+					doc.RemoveField(SearchHelper.Date);
+					doc.Add(dateField);
+					doc.Add(message.ToField());
+					writer.Update(message.Topic.Id, doc, Analyzer);
+					writer.Commit();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets an instance of the IndexWriter with the default options
+		/// </summary>
+		private IndexWriter GetWriter()
+		{
+			var path = new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath);
+			var writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
+
+			return writer;
 		}
 
 		public List<Topic> Search(string value)
@@ -84,53 +154,11 @@ namespace NearForums.Services
 		}
 
 		/// <summary>
-		/// Adds a new topic to the index
-		/// </summary>
-		/// <param name="topic"></param>
-		public void Add(Topic topic)
-		{
-			lock (writerLock)
-			{
-				using (var writer = GetWriter())
-				{
-					var doc = topic.ToDocument();
-					writer.AddDocument(doc);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds the message as document (topic) field
-		/// </summary>
-		/// <param name="topic"></param>
-		public void Add(Message topic)
-		{
-			lock (writerLock)
-			{
-				using (var writer = GetWriter())
-				{
-					var document = new Document();
-				}
-			}
-		}
-
-		/// <summary>
 		/// Updates the document fields 
 		/// </summary>
 		public void Update(Topic topic)
 		{
-
-		}
-
-		/// <summary>
-		/// Gets an instance of the IndexWriter with the default options
-		/// </summary>
-		private IndexWriter GetWriter()
-		{
-			var path = new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath);
-			var writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
-
-			return writer;
+			throw new NotImplementedException();
 		}
 	}
 }
