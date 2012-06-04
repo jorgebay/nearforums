@@ -9,6 +9,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Util;
 using System.Collections;
 using System.Linq;
+using NearForums.Configuration;
 
 namespace NearForums.Services.Helpers
 {
@@ -56,6 +57,10 @@ namespace NearForums.Services.Helpers
 			{
 				value = (T)Convert.ChangeType(NumericUtils.PrefixCodedToInt(doc.GetField(fieldName).StringValue()), type);
 			}
+			else if (type == typeof(DateTime))
+			{
+				value = (T)Convert.ChangeType(DateTools.StringToDate(doc.GetField(fieldName).StringValue()), type);
+			}
 			else
 			{
 				value = (T)Convert.ChangeType(doc.GetField(fieldName).StringValue(), type);
@@ -70,11 +75,9 @@ namespace NearForums.Services.Helpers
 		public static Document SearchById(this IndexSearcher searcher, int id)
 		{
 			Document doc = null;
-			var results = searcher.Search(new TermQuery(new Term(Id, NumericUtils.IntToPrefixCoded(id))), 1).ScoreDocs;
+			var results = searcher.Search(new TermQuery(new Term(Id, NumericUtils.IntToPrefixCoded(id))), 2).ScoreDocs;
 			if (results.Length == 1)
 			{
-				//var fields = new Hashtable(StoredFieldNames.ToDictionary<string, string>(key => key));
-				//var selector = new SetBasedFieldSelector(fields, new Hashtable());
 				doc = searcher.Doc(results[0].doc);
 			}
 			else if (results.Length > 1)
@@ -85,34 +88,34 @@ namespace NearForums.Services.Helpers
 		}
 
 		/// <summary>
-		/// Converts a Topic into a search document with proper fields
+		/// Converts a Topic into a search document with proper fields to be indexed
 		/// </summary>
 		/// <returns></returns>
-		public static Document ToDocument(this Topic topic)
+		public static Document ToDocument(this Topic topic, SearchElement config)
 		{
 			var doc = new Document();
 
 			doc.Add(new Field(Id, NumericUtils.IntToPrefixCoded(topic.Id), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var title = new Field(Title, topic.Title.ToString(), Field.Store.YES, Field.Index.ANALYZED);
-			title.SetBoost(2f); //TODO: Move to configuration
+			title.SetBoost(config.TitleBoost);
 			doc.Add(title);
 
 			var description = new Field(Description, Utils.RemoveTags(topic.Description), Field.Store.YES, Field.Index.ANALYZED);
-			description.SetBoost(1.5f);
+			description.SetBoost(config.DescriptionBoost);
 			doc.Add(description);
 
 			doc.Add(new Field(Date, DateTools.DateToString(topic.Date, DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NO));
 
 			var tags = new Field(Tags, topic.Tags.ToString(), Field.Store.YES, Field.Index.ANALYZED);
-			tags.SetBoost(3f);
+			tags.SetBoost(config.TagsBoost);
 			doc.Add(tags);
 
 			doc.Add(new Field(ForumName, topic.Forum.Name, Field.Store.YES, Field.Index.NO));
 
 			doc.Add(new Field(ForumName, topic.Forum.Name, Field.Store.YES, Field.Index.NO));
 
-			doc.Add(new Field(ForumShortName, topic.Forum.ShortName, Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field(ForumShortName, topic.Forum.ShortName, Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			return doc;
 		}
@@ -136,6 +139,7 @@ namespace NearForums.Services.Helpers
 			var topic = new Topic();
 			topic.Id = doc.GetFieldValue<int>(Id);
 			topic.Title = doc.GetFieldValue<string>(Title);
+			topic.Date = doc.GetFieldValue<DateTime>(Date);
 			return topic;
 		}
 
@@ -166,7 +170,6 @@ namespace NearForums.Services.Helpers
 		/// <param name="doc"></param>
 		public static void Update(this IndexWriter writer, int topicId, Document doc, Analyzer analyzer)
 		{
-			//TODO: Change topic id param
 			writer.DeleteDocuments(new TermQuery(new Term(Id, NumericUtils.IntToPrefixCoded(topicId))));
 			writer.AddDocument(doc, analyzer);
 		}

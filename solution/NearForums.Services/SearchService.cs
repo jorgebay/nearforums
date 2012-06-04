@@ -39,11 +39,23 @@ namespace NearForums.Services
 		/// </summary>
 		public bool RecreateIndex { get; set; }
 
+		private SearchElement _config;
+		/// <summary>
+		/// Gets or sets the search configuration
+		/// </summary>
 		public SearchElement Config
 		{
 			get
 			{
-				return SiteConfiguration.Current.Search;
+				if (_config == null)
+				{
+					_config = SiteConfiguration.Current.Search;
+				}
+				return _config;
+			}
+			set
+			{
+				_config = value;
 			}
 		}
 
@@ -78,7 +90,7 @@ namespace NearForums.Services
 			{
 				using (var writer = GetWriter())
 				{
-					var doc = topic.ToDocument();
+					var doc = topic.ToDocument(Config);
 					writer.AddDocument(doc);
 				}
 			}
@@ -99,7 +111,7 @@ namespace NearForums.Services
 				using (var writer = GetWriter())
 				{
 					Document doc = null;
-					using (var searcher = new IndexSearcher(Directory, true))
+					using (var searcher = new IndexSearcher(writer.GetReader()))
 					{
 						doc = searcher.SearchById(message.Topic.Id);
 					}
@@ -138,7 +150,7 @@ namespace NearForums.Services
 			}
 			using (var searcher = new IndexSearcher(Directory, true))
 			{
-				var hitsLimit = 1000; //TODO: Move to config
+				var hitsLimit = Config.MaxResults;
 				var query = value.ToQuery(Analyzer);
 				var hits = searcher.Search(query, hitsLimit).ScoreDocs;
 				foreach (var h in hits)

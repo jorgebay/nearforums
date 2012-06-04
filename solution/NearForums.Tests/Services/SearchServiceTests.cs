@@ -57,13 +57,15 @@ namespace NearForums.Tests.Services
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
 			service.RecreateIndex = true;
+			//initial date of index
+			var baseDate = DateTime.UtcNow.Date;
 			var topic = new Topic()
 			{
 				Id = 1,
 				Title = "Dummy topic",
 				Description = "<p>Lorem ipsum</p>",
 				Tags = new TagList(),
-				Date = DateTime.UtcNow.Date,
+				Date = baseDate,
 				Forum = new Forum()
 				{
 					Name = "Dummy forum",
@@ -76,7 +78,7 @@ namespace NearForums.Tests.Services
 			{
 				Id = 1,
 				Body = "<p>This is the first message</p>",
-				Date = DateTime.UtcNow.Date.AddDays(1),
+				Date = baseDate.AddDays(1),
 				Topic = topic
 			});
 
@@ -87,13 +89,15 @@ namespace NearForums.Tests.Services
 			{
 				Id = 2,
 				Body = "<p>This is the second message</p>",
-				Date = DateTime.UtcNow.Date.AddDays(2),
+				Date = baseDate.AddDays(2),
 				Topic = topic
 			});
 
-
 			results = service.Search("second");
 			Assert.AreEqual(1, results.Count);
+			//Check that the modification on the document date took place
+			Assert.AreEqual(baseDate.AddDays(2), results[0].Date);
+
 			results = service.Search("first");
 			Assert.AreEqual(1, results.Count);
 		}
