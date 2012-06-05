@@ -20,7 +20,9 @@ namespace NearForums.Services
 		/// <summary>
 		/// Used to lock the search index writer 
 		/// </summary>
-		private static object writerLock = new object();
+		private static object _writerLock = new object();
+
+		private static IndexWriter _writer;
 
 		/// <summary>
 		/// Gets the directory where the index is located
@@ -86,14 +88,10 @@ namespace NearForums.Services
 		/// <param name="topic"></param>
 		public void Add(Topic topic)
 		{
-			lock (writerLock)
-			{
-				using (var writer = GetWriter())
-				{
-					var doc = topic.ToDocument(Config);
-					writer.AddDocument(doc);
-				}
-			}
+			var writer = GetWriter();
+			var doc = topic.ToDocument(Config);
+			writer.AddDocument(doc);
+			writer.Commit();
 		}
 
 		/// <summary>
@@ -106,28 +104,21 @@ namespace NearForums.Services
 			{
 				return;
 			}
-			lock (writerLock)
+			var writer = GetWriter();
+			Document doc = null;
+			using (var searcher = new IndexSearcher(writer.GetReader()))
 			{
-				using (var writer = GetWriter())
-				{
-					Document doc = null;
-					using (var searcher = new IndexSearcher(writer.GetReader()))
-					{
-						doc = searcher.SearchById(message.Topic.Id);
-					}
-					if (doc == null)
-					{
-						throw new ArgumentException("No topic found for given id (" + message.Topic.Id +")");
-					}
-					var dateField = doc.GetField(SearchHelper.Date);
-					dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
-					doc.RemoveField(SearchHelper.Date);
-					doc.Add(dateField);
-					doc.Add(message.ToField());
-					writer.Update(message.Topic.Id, doc, Analyzer);
-					writer.Commit();
-				}
+				doc = searcher.SearchById(message.Topic.Id);
 			}
+			if (doc == null)
+			{
+				throw new ArgumentException("No topic found for given id (" + message.Topic.Id +")");
+			}
+			var dateField = doc.GetField(SearchHelper.Date);
+			dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
+			doc.Add(message.ToField());
+			writer.Update(message.Topic.Id, doc, Analyzer);
+			writer.Commit();
 		}
 
 		/// <summary>
@@ -135,10 +126,18 @@ namespace NearForums.Services
 		/// </summary>
 		private IndexWriter GetWriter()
 		{
-			var path = new DirectoryInfo(SiteConfiguration.Current.Search.IndexPath);
-			var writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
-
-			return writer;
+			lock (_writerLock)
+			{
+				if (_writer == null)
+				{
+					if (IndexWriter.IsLocked(Directory))
+					{
+						IndexWriter.Unlock(Directory);
+					}
+					_writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
+				}
+			}
+			return _writer;
 		}
 
 		public List<Topic> Search(string value)
@@ -148,7 +147,7 @@ namespace NearForums.Services
 			{
 				throw new ArgumentException("query can not be null, empty or only whitespace chars.");
 			}
-			using (var searcher = new IndexSearcher(Directory, true))
+			using (var searcher = new IndexSearcher(GetWriter().GetReader()))
 			{
 				var hitsLimit = Config.MaxResults;
 				var query = value.ToQuery(Analyzer);
@@ -170,7 +169,21 @@ namespace NearForums.Services
 		/// </summary>
 		public void Update(Topic topic)
 		{
-			throw new NotImplementedException();
+			var writer = GetWriter();
+			Document doc = null;
+			using (var searcher = new IndexSearcher(writer.GetReader()))
+			{
+				doc = searcher.SearchById(topic.Id);
+			}
+			if (doc == null)
+			{
+				throw new ArgumentException("No topic found for given id (" + topic.Id + ")");
+			}
+			//var dateField = doc.GetField(SearchHelper.Date);
+			//dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
+
+			writer.Update(topic.Id, doc, Analyzer);
+			writer.Commit();
 		}
 	}
 }

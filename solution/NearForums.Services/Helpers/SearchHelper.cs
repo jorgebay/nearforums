@@ -140,6 +140,7 @@ namespace NearForums.Services.Helpers
 			topic.Id = doc.GetFieldValue<int>(Id);
 			topic.Title = doc.GetFieldValue<string>(Title);
 			topic.Date = doc.GetFieldValue<DateTime>(Date);
+			topic.Description = doc.GetFieldValue<string>(Description);
 			return topic;
 		}
 

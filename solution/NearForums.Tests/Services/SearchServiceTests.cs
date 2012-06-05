@@ -101,5 +101,65 @@ namespace NearForums.Tests.Services
 			results = service.Search("first");
 			Assert.AreEqual(1, results.Count);
 		}
+
+
+		/*
+		/// <summary>
+		/// Checks performance
+		/// </summary>
+		[TestMethod]
+		public void Index_Performance()
+		{
+			var baseDate = DateTime.UtcNow.Date;
+
+			var searchService = TestHelper.Resolve<ISearchService>();
+			searchService.RecreateIndex = true;
+			
+			var results = searchService.Search("zzzzzzzzzzzzzz");
+			Assert.AreEqual(0, results.Count);
+
+			for (var i = 0; i < 50; i++)
+			{
+				var service = TestHelper.Resolve<ISearchService>();
+				var topic = new Topic()
+				{
+					Id = i,
+					Title = "Dummy topic",
+					Description = "<p>Lorem ipsum</p>",
+					Tags = new TagList(),
+					Date = baseDate,
+					Forum = new Forum()
+					{
+						Name = "Dummy forum",
+						ShortName = "dummy-forum"
+					}
+				};
+				service.Add(topic);
+
+				service.Add(new Message()
+				{
+					Id = 1,
+					Body = "<p>This is the first message</p>",
+					Date = baseDate.AddDays(1),
+					Topic = topic
+				});
+
+				service.Add(new Message()
+				{
+					Id = 2,
+					Body = "<p>This is the second message</p>",
+					Date = baseDate.AddDays(2),
+					Topic = topic
+				});
+			}
+			results = searchService.Search("second");
+			Assert.IsTrue(results.Count > 0);
+			//Check that the modification on the document date took place
+			Assert.AreEqual(baseDate.AddDays(2), results[0].Date);
+
+			results = searchService.Search("first");
+			Assert.IsTrue(results.Count > 0);
+		}
+		 * */
 	}
 }
