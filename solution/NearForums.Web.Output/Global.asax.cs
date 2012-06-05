@@ -2,6 +2,7 @@
 using System.Web.Routing;
 using NearForums.Web.Extensions;
 using System.Web;
+using NearForums.Services;
 
 namespace NearForums.Web.Output
 {
@@ -22,6 +23,11 @@ namespace NearForums.Web.Output
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RoutingHelper.RegisterRoutes(RouteTable.Routes);
+		}
+
+		protected void Application_End()
+		{
+			SearchService.CloseIndex();
 		}
 	}
 }

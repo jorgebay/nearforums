@@ -21,8 +21,13 @@ namespace NearForums.Services
 		/// Used to lock the search index writer 
 		/// </summary>
 		private static object _writerLock = new object();
-
 		private static IndexWriter _writer;
+		private readonly ILoggerService _logger;
+
+		public SearchService(ILoggerService logger)
+		{
+			_logger = logger;
+		}
 
 		/// <summary>
 		/// Gets the directory where the index is located
@@ -132,7 +137,9 @@ namespace NearForums.Services
 				{
 					if (IndexWriter.IsLocked(Directory))
 					{
+						_logger.LogError("Search index is write locked. Trying to unlock.");
 						IndexWriter.Unlock(Directory);
+						_logger.LogError("Search index is unlocked.");
 					}
 					_writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
 				}
@@ -179,11 +186,26 @@ namespace NearForums.Services
 			{
 				throw new ArgumentException("No topic found for given id (" + topic.Id + ")");
 			}
-			//var dateField = doc.GetField(SearchHelper.Date);
-			//dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
 
 			writer.Update(topic.Id, doc, Analyzer);
 			writer.Commit();
+		}
+
+
+		/// <summary>
+		/// Releases all the resources, optimices the index and closes all files of the search index.
+		/// Note: This method should be executed when the application is shutting down, but it is not required for mantaining a healthy search index.
+		/// </summary>
+		public static void CloseIndex()
+		{
+			if (_writer != null)
+			{
+				lock (_writerLock)
+				{
+					_writer.Close();
+					_writer = null;
+				}
+			}
 		}
 	}
 }

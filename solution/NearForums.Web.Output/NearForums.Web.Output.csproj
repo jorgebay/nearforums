@@ -225,6 +225,10 @@
     <Content Include="Views\Forums\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NearForums.Services\NearForums.Services.csproj">
+      <Project>{9FF42040-82E2-496D-8E8A-71169B0514FA}</Project>
+      <Name>NearForums.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NearForums.Web.Controllers\NearForums.Web.Controllers.csproj">
       <Project>{F8767C50-4290-45BF-84F2-F3BFCBDB3607}</Project>
       <Name>NearForums.Web.Controllers</Name>

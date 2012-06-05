@@ -6,7 +6,7 @@ using NLog;
 
 namespace NearForums.Services
 {
-	public class LoggerService : NearForums.Services.ILoggerService
+	public class LoggerService : ILoggerService
 	{
 		private static Logger _logger = LogManager.GetLogger("mainlogger");
 
@@ -29,6 +29,11 @@ namespace NearForums.Services
 			message.AppendLine(ex.StackTrace);
 
 			_logger.Error(message.ToString());
+		}
+
+		public void LogError(string message)
+		{
+			_logger.Error(message);
 		}
 
 		public bool IsEnabled

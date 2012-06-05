@@ -5,5 +5,6 @@ namespace NearForums.Services
 	{
 		bool IsEnabled { get; }
 		void LogError(Exception ex);
+		void LogError(string message);
 	}
 }
