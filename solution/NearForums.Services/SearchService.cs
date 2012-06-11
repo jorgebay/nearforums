@@ -119,11 +119,27 @@ namespace NearForums.Services
 			{
 				throw new ArgumentException("No topic found for given id (" + message.Topic.Id +")");
 			}
-			var dateField = doc.GetField(SearchHelper.Date);
+			var dateField = doc.GetDateField();
 			dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
 			doc.Add(message.ToField());
-			writer.Update(message.Topic.Id, doc, Analyzer);
+			writer.Update(message.Topic.Id, doc, Analyzer, Config);
 			writer.Commit();
+		}
+
+		/// <summary>
+		/// Releases all the resources, optimices the index and closes all files of the search index.
+		/// Note: This method should be executed when the application is shutting down, but it is not required for mantaining a healthy search index.
+		/// </summary>
+		public static void CloseIndex()
+		{
+			if (_writer != null)
+			{
+				lock (_writerLock)
+				{
+					_writer.Close();
+					_writer = null;
+				}
+			}
 		}
 
 		/// <summary>
@@ -187,25 +203,11 @@ namespace NearForums.Services
 				throw new ArgumentException("No topic found for given id (" + topic.Id + ")");
 			}
 
-			writer.Update(topic.Id, doc, Analyzer);
+			doc.GetDescriptionField().SetValue(topic.Description);
+			doc.GetTitleField().SetValue(topic.Title);
+			doc.GetTagsField().SetValue(topic.Tags.ToString());
+			writer.Update(topic.Id, doc, Analyzer, Config);
 			writer.Commit();
-		}
-
-
-		/// <summary>
-		/// Releases all the resources, optimices the index and closes all files of the search index.
-		/// Note: This method should be executed when the application is shutting down, but it is not required for mantaining a healthy search index.
-		/// </summary>
-		public static void CloseIndex()
-		{
-			if (_writer != null)
-			{
-				lock (_writerLock)
-				{
-					_writer.Close();
-					_writer = null;
-				}
-			}
 		}
 	}
 }

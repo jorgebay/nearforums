@@ -102,6 +102,49 @@ namespace NearForums.Tests.Services
 			Assert.AreEqual(1, results.Count);
 		}
 
+		[TestMethod]
+		public void Index_UpdateTopic_Search()
+		{
+			var service = TestHelper.Resolve<ISearchService>();
+			//Clear the index
+			service.RecreateIndex = true;
+			var topic = new Topic()
+			{
+				Id = 1,
+				Title = "Initial",
+				Description = "<p>Lorem ipsum</p>",
+				Tags = new TagList(),
+				Date = DateTime.Now,
+				Forum = new Forum()
+				{
+					Name = "Dummy forum",
+					ShortName = "dummy-forum"
+				}
+			};
+			service.Add(topic);
+			service.Add(new Message()
+			{
+				Id = 1,
+				Body = "<p>This is the first message</p>",
+				Date = DateTime.Now.AddDays(1),
+				Topic = topic
+			});
+
+			var results = service.Search("initial");
+			Assert.AreEqual(1, results.Count);
+
+			topic.Title = "Edited";
+			service.Update(topic);
+
+			results = service.Search("edited");
+			Assert.AreEqual(1, results.Count);
+
+			results = service.Search("initial");
+			Assert.AreEqual(0, results.Count); //no results for the original title of the topic
+
+			results = service.Search("message");
+			Assert.AreEqual(1, results.Count); //the messages should stay the same
+		}
 
 		/*
 		/// <summary>

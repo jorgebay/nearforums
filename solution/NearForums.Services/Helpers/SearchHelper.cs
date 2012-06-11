@@ -49,6 +49,60 @@ namespace NearForums.Services.Helpers
 			}
 		}
 
+		/// <summary>
+		/// Gets the field that stores the document date
+		/// </summary>
+		/// <param name="doc"></param>
+		/// <returns></returns>
+		public static Field GetDateField(this Document doc)
+		{
+			var field = doc.GetField(SearchHelper.Date);
+			if (field == null)
+			{
+				throw new MissingFieldException("Missing field in the document: " + Date);
+			}
+			return field;
+		}
+
+		/// <summary>
+		/// Gets the field that stores the document date
+		/// </summary>
+		public static Field GetTitleField(this Document doc)
+		{
+			var field = doc.GetField(Title);
+			if (field == null)
+			{
+				throw new MissingFieldException("Missing field in the document: " + Title);
+			}
+			return field;
+		}
+
+		/// <summary>
+		/// Gets the field that stores the document description
+		/// </summary>
+		public static Field GetDescriptionField(this Document doc)
+		{
+			var field = doc.GetField(SearchHelper.Description);
+			if (field == null)
+			{
+				throw new MissingFieldException("Missing field in the document: " + Description);
+			}
+			return field;
+		}
+
+		/// <summary>
+		/// Gets the field that stores the document tags
+		/// </summary>
+		public static Field GetTagsField(this Document doc)
+		{
+			var field = doc.GetField(Tags);
+			if (field == null)
+			{
+				throw new MissingFieldException("Missing field in the document: " + Tags);
+			}
+			return field;
+		}
+
 		public static T GetFieldValue<T>(this Document doc, string fieldName)
 		{
 			T value = default(T);
@@ -96,26 +150,14 @@ namespace NearForums.Services.Helpers
 			var doc = new Document();
 
 			doc.Add(new Field(Id, NumericUtils.IntToPrefixCoded(topic.Id), Field.Store.YES, Field.Index.NOT_ANALYZED));
-
-			var title = new Field(Title, topic.Title.ToString(), Field.Store.YES, Field.Index.ANALYZED);
-			title.SetBoost(config.TitleBoost);
-			doc.Add(title);
-
-			var description = new Field(Description, Utils.RemoveTags(topic.Description), Field.Store.YES, Field.Index.ANALYZED);
-			description.SetBoost(config.DescriptionBoost);
-			doc.Add(description);
-
+			doc.Add(new Field(Title, topic.Title.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field(Description, Utils.RemoveTags(topic.Description), Field.Store.YES, Field.Index.ANALYZED));
 			doc.Add(new Field(Date, DateTools.DateToString(topic.Date, DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NO));
-
-			var tags = new Field(Tags, topic.Tags.ToString(), Field.Store.YES, Field.Index.ANALYZED);
-			tags.SetBoost(config.TagsBoost);
-			doc.Add(tags);
-
+			doc.Add(new Field(Tags, topic.Tags.ToString(), Field.Store.YES, Field.Index.ANALYZED));
 			doc.Add(new Field(ForumName, topic.Forum.Name, Field.Store.YES, Field.Index.NO));
-
 			doc.Add(new Field(ForumName, topic.Forum.Name, Field.Store.YES, Field.Index.NO));
-
 			doc.Add(new Field(ForumShortName, topic.Forum.ShortName, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.SetFieldBoosts(config);
 
 			return doc;
 		}
@@ -165,13 +207,26 @@ namespace NearForums.Services.Helpers
 		}
 
 		/// <summary>
+		/// Sets the boosts per each field defined in configuration.
+		/// Note: The boost information cannot be retrieved from the index.
+		/// </summary>
+		/// <param name="doc"></param>
+		public static void SetFieldBoosts(this Document doc, SearchElement config)
+		{
+			doc.GetTitleField().SetBoost(config.TitleBoost);
+			doc.GetDescriptionField().SetBoost(config.DescriptionBoost);
+			doc.GetTagsField().SetBoost(config.TagsBoost);
+		}
+
+		/// <summary>
 		/// Deletes the original document and replaces with the new one.
 		/// </summary>
 		/// <param name="writer"></param>
 		/// <param name="doc"></param>
-		public static void Update(this IndexWriter writer, int topicId, Document doc, Analyzer analyzer)
+		public static void Update(this IndexWriter writer, int topicId, Document doc, Analyzer analyzer, SearchElement config)
 		{
 			writer.DeleteDocuments(new TermQuery(new Term(Id, NumericUtils.IntToPrefixCoded(topicId))));
+			doc.SetFieldBoosts(config);
 			writer.AddDocument(doc, analyzer);
 		}
 	}
