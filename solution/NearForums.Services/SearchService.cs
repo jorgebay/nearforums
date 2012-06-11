@@ -145,9 +145,21 @@ namespace NearForums.Services
 		/// <summary>
 		/// Removes the message field from the document
 		/// </summary>
-		public void Delete(Message message)
+		public void DeleteMessage(int topicId, int messageId)
 		{
-			throw new NotImplementedException();
+			var writer = GetWriter();
+			Document doc = null;
+			using (var searcher = new IndexSearcher(writer.GetReader()))
+			{
+				doc = searcher.SearchById(topicId);
+			}
+			if (doc == null)
+			{
+				throw new ArgumentException("No topic found for given id (" + topicId + ")");
+			}
+			doc.RemoveMessage(messageId);
+			writer.Update(topicId, doc, Analyzer, Config);
+			writer.Commit();
 		}
 
 		/// <summary>

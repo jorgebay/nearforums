@@ -14,7 +14,7 @@ namespace NearForums.Tests.Services
 		/// Tests that the add to index and search works properly
 		/// </summary>
 		[TestMethod]
-		public void Index_AddTopic_Seach_Test()
+		public void SearchIndex_AddTopic_Test()
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Delete all previous index data
@@ -52,7 +52,7 @@ namespace NearForums.Tests.Services
 		/// Adds a topic and a message and searchs for message
 		/// </summary>
 		[TestMethod]
-		public void Index_AddMessage_Seach_Test()
+		public void SearchIndex_AddMessage_Test()
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
@@ -103,7 +103,7 @@ namespace NearForums.Tests.Services
 		}
 
 		[TestMethod]
-		public void Index_UpdateTopic_Search()
+		public void SearchIndex_UpdateTopic_Test()
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
@@ -144,6 +144,59 @@ namespace NearForums.Tests.Services
 
 			results = service.Search("message");
 			Assert.AreEqual(1, results.Count); //the messages should stay the same
+		}
+
+		[TestMethod]
+		public void SearchIndex_RemoveMessage_Test()
+		{
+			var service = TestHelper.Resolve<ISearchService>();
+			//Clear the index
+			service.RecreateIndex = true;
+			var topic = new Topic()
+			{
+				Id = 1,
+				Title = "container",
+				Description = "<p>Lorem ipsum</p>",
+				Tags = new TagList(),
+				Date = DateTime.Now,
+				Forum = new Forum()
+				{
+					Name = "Dummy forum",
+					ShortName = "dummy-forum"
+				}
+			};
+			service.Add(topic);
+			service.Add(new Message()
+			{
+				Id = 1,
+				Body = "<p>This is the first message</p>",
+				Date = DateTime.Now.AddDays(1),
+				Topic = topic
+			});
+			service.Add(new Message()
+			{
+				Id = 2,
+				Body = "<p>This is the second message</p>",
+				Date = DateTime.Now.AddDays(1),
+				Topic = topic
+			});
+
+			var results = service.Search("first");
+			Assert.AreEqual(1, results.Count);
+
+			results = service.Search("second");
+			Assert.AreEqual(1, results.Count);
+
+			service.DeleteMessage(topic.Id, 2);
+
+			results = service.Search("second");
+			Assert.AreEqual(0, results.Count); //there must be no results for the deleted message
+
+			results = service.Search("first");
+			Assert.AreEqual(1, results.Count); //results for the first message3
+
+			results = service.Search("container");
+			Assert.AreEqual(1, results.Count); //the topic information should stay the same
 		}
 
 		/*

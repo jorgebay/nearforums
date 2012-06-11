@@ -27,7 +27,7 @@ namespace NearForums.Services
 		/// Removes a message from the search index
 		/// </summary>
 		/// <param name="message"></param>
-		void Delete(Message message);
+		void DeleteMessage(int topicId, int messageId);
 
 		/// <summary>
 		/// Removes a topic from the search index

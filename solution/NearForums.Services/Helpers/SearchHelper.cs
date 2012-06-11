@@ -103,6 +103,10 @@ namespace NearForums.Services.Helpers
 			return field;
 		}
 
+		/// <summary>
+		/// Gets the field value, from coded values to type T
+		/// </summary>
+		/// <returns></returns>
 		public static T GetFieldValue<T>(this Document doc, string fieldName)
 		{
 			T value = default(T);
@@ -120,6 +124,15 @@ namespace NearForums.Services.Helpers
 				value = (T)Convert.ChangeType(doc.GetField(fieldName).StringValue(), type);
 			}
 			return value;
+		}
+
+		/// <summary>
+		/// Removes the field used to store the message in the document
+		/// </summary>
+		public static void RemoveMessage(this Document doc, int messageId)
+		{
+			var fieldName = String.Format(Message, messageId);
+			doc.RemoveField(fieldName);
 		}
 
 		/// <summary>
