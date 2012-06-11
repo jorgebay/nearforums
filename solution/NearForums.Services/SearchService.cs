@@ -180,9 +180,11 @@ namespace NearForums.Services
 		/// <summary>
 		/// Removes the document that represents the topic
 		/// </summary>
-		public void Delete(Topic topic)
+		public void DeleteTopic(int id)
 		{
-			throw new NotImplementedException();
+			var writer = GetWriter();
+			writer.Delete(id);
+			writer.Commit();
 		}
 
 		/// <summary>

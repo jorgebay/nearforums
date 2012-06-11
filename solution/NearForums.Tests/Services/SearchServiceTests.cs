@@ -146,7 +146,7 @@ namespace NearForums.Tests.Services
 		}
 
 		[TestMethod]
-		public void SearchIndex_RemoveMessage_Test()
+		public void SearchIndex_DeleteMessage_Test()
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
@@ -198,17 +198,64 @@ namespace NearForums.Tests.Services
 			Assert.AreEqual(1, results.Count); //the topic information should stay the same
 		}
 
+		[TestMethod]
+		public void SearchIndex_DeleteTopic_Test()
+		{
+			var service = TestHelper.Resolve<ISearchService>();
+			//Clear the index
+			service.CreateIndex();
+			service.Add(new Topic()
+			{
+				Id = 1,
+				Title = "first topic",
+				Description = "<p>Lorem ipsum</p>",
+				Tags = new TagList(),
+				Date = DateTime.Now,
+				Forum = new Forum()
+				{
+					Name = "Dummy forum",
+					ShortName = "dummy-forum"
+				}
+			});
+			service.Add(new Topic()
+			{
+				Id = 2,
+				Title = "second topic",
+				Description = "<p>Lorem ipsum</p>",
+				Tags = new TagList(),
+				Date = DateTime.Now,
+				Forum = new Forum()
+				{
+					Name = "Dummy forum",
+					ShortName = "dummy-forum"
+				}
+			});
+			var results = service.Search("topic");
+			Assert.AreEqual(2, results.Count);
+
+			service.DeleteTopic(1);
+			results = service.Search("topic");
+			Assert.AreEqual(1, results.Count);
+
+			results = service.Search("first");
+			Assert.AreEqual(0, results.Count); //first message must not be showing.
+
+			service.DeleteTopic(2);
+			results = service.Search("second");
+			Assert.AreEqual(0, results.Count);
+
+		}
 		/*
 		/// <summary>
 		/// Checks performance
 		/// </summary>
 		[TestMethod]
-		public void Index_Performance()
+		public void Index_Performance_Test()
 		{
 			var baseDate = DateTime.UtcNow.Date;
 
 			var searchService = TestHelper.Resolve<ISearchService>();
-			searchService.RecreateIndex = true;
+			searchService.CreateIndex();
 			
 			var results = searchService.Search("zzzzzzzzzzzzzz");
 			Assert.AreEqual(0, results.Count);
@@ -238,21 +285,13 @@ namespace NearForums.Tests.Services
 					Date = baseDate.AddDays(1),
 					Topic = topic
 				});
-
-				service.Add(new Message()
-				{
-					Id = 2,
-					Body = "<p>This is the second message</p>",
-					Date = baseDate.AddDays(2),
-					Topic = topic
-				});
 			}
-			results = searchService.Search("second");
+			results = searchService.Search("first");
 			Assert.IsTrue(results.Count > 0);
 			//Check that the modification on the document date took place
-			Assert.AreEqual(baseDate.AddDays(2), results[0].Date);
+			Assert.AreEqual(baseDate.AddDays(1), results[0].Date);
 
-			results = searchService.Search("first");
+			results = searchService.Search("lorem");
 			Assert.IsTrue(results.Count > 0);
 		}
 		 * */

@@ -50,6 +50,15 @@ namespace NearForums.Services.Helpers
 		}
 
 		/// <summary>
+		/// Deletes a document by TopicId
+		/// </summary>
+		/// <param name="topicId">Id of the topic to search for</param>
+		public static void Delete(this IndexWriter writer, int topicId)
+		{
+			writer.DeleteDocuments(new TermQuery(new Term(Id, NumericUtils.IntToPrefixCoded(topicId))));
+		}
+
+		/// <summary>
 		/// Gets the field that stores the document date
 		/// </summary>
 		/// <param name="doc"></param>
@@ -238,7 +247,7 @@ namespace NearForums.Services.Helpers
 		/// <param name="doc"></param>
 		public static void Update(this IndexWriter writer, int topicId, Document doc, Analyzer analyzer, SearchElement config)
 		{
-			writer.DeleteDocuments(new TermQuery(new Term(Id, NumericUtils.IntToPrefixCoded(topicId))));
+			writer.Delete(topicId);
 			doc.SetFieldBoosts(config);
 			writer.AddDocument(doc, analyzer);
 		}
