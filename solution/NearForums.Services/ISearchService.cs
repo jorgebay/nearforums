@@ -11,10 +11,12 @@ namespace NearForums.Services
 		/// Determines if recreates the index the next time it writes
 		/// </summary>
 		bool RecreateIndex { get; set; }
+
 		/// <summary>
-		/// Queries the index
+		/// Adds a message to the index
 		/// </summary>
-		List<Topic> Search(string query);
+		/// <param name="topic"></param>
+		void Add(Message message);
 
 		/// <summary>
 		/// Adds a topic to the index
@@ -22,10 +24,21 @@ namespace NearForums.Services
 		void Add(Topic topic);
 
 		/// <summary>
-		/// Adds a message to the index
+		/// Removes a message from the search index
+		/// </summary>
+		/// <param name="message"></param>
+		void Delete(Message message);
+
+		/// <summary>
+		/// Removes a topic from the search index
 		/// </summary>
 		/// <param name="topic"></param>
-		void Add(Message message);
+		void Delete(Topic topic);
+
+		/// <summary>
+		/// Queries the index
+		/// </summary>
+		List<Topic> Search(string query);
 
 		/// <summary>
 		/// Updates a topic from the 

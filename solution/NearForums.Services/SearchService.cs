@@ -143,6 +143,22 @@ namespace NearForums.Services
 		}
 
 		/// <summary>
+		/// Removes the message field from the document
+		/// </summary>
+		public void Delete(Message message)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Removes the document that represents the topic
+		/// </summary>
+		public void Delete(Topic topic)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
 		/// Gets an instance of the IndexWriter with the default options
 		/// </summary>
 		private IndexWriter GetWriter()

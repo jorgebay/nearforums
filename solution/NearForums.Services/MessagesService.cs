@@ -12,10 +12,15 @@ namespace NearForums.Services
 		/// messages repository
 		/// </summary>
 		private readonly IMessagesDataAccess _dataAccess;
+		/// <summary>
+		/// Search index service
+		/// </summary>
+		private readonly ISearchService _searchIndex;
 
-		public MessagesService(IMessagesDataAccess da)
+		public MessagesService(IMessagesDataAccess da, ISearchService searchIndex)
 		{
 			_dataAccess = da;
+			_searchIndex = searchIndex;
 		}
 
 		public  List<Message> GetByTopic(int topicId)
@@ -49,6 +54,7 @@ namespace NearForums.Services
 		{
 			message.ValidateFields();
 			_dataAccess.Add(message, ip);
+			_searchIndex.Add(message);
 		}
 
 		public  void Delete(int topicId, int messageId, int userId)

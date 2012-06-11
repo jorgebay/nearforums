@@ -16,11 +16,16 @@ namespace NearForums.Services
 		/// Messages repository
 		/// </summary>
 		private readonly IMessagesDataAccess _messagesDataAccess;
+		/// <summary>
+		/// Search index service
+		/// </summary>
+		private readonly ISearchService _searchIndex;
 
-		public TopicsService(ITopicsDataAccess da, IMessagesDataAccess messagesDa)
+		public TopicsService(ITopicsDataAccess da, IMessagesDataAccess messagesDa, ISearchService searchIndex)
 		{
 			_dataAccess = da;
 			_messagesDataAccess = messagesDa;
+			_searchIndex = searchIndex;
 		}
 
 		public List<Topic> GetByForum(int forumId, int startIndex, int length, UserRole? role)
@@ -57,12 +62,14 @@ namespace NearForums.Services
 		{
 			topic.ValidateFields();
 			_dataAccess.Add(topic, ip);
+			_searchIndex.Add(topic);
 		}
 
 		public void Edit(Topic topic, string ip)
 		{
 			topic.ValidateFields();
 			_dataAccess.Edit(topic, ip);
+			_searchIndex.Update(topic);
 		}
 
 		public void AddVisit(int topicId)
