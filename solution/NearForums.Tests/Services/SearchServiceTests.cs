@@ -18,7 +18,7 @@ namespace NearForums.Tests.Services
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Delete all previous index data
-			service.RecreateIndex = true;
+			service.CreateIndex();
 			service.Add(new Topic()
 			{
 				Id = 1,
@@ -45,7 +45,7 @@ namespace NearForums.Tests.Services
 			});
 
 			var results = service.Search("TOPIC");
-			Assert.IsTrue(results.Count > 0);
+			Assert.AreEqual(2, results.Count);
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace NearForums.Tests.Services
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
-			service.RecreateIndex = true;
+			service.CreateIndex();
 			//initial date of index
 			var baseDate = DateTime.UtcNow.Date;
 			var topic = new Topic()
@@ -73,7 +73,6 @@ namespace NearForums.Tests.Services
 				}
 			};
 			service.Add(topic);
-			service.RecreateIndex = false;
 			service.Add(new Message()
 			{
 				Id = 1,
@@ -107,7 +106,7 @@ namespace NearForums.Tests.Services
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
-			service.RecreateIndex = true;
+			service.CreateIndex();
 			var topic = new Topic()
 			{
 				Id = 1,
@@ -151,7 +150,7 @@ namespace NearForums.Tests.Services
 		{
 			var service = TestHelper.Resolve<ISearchService>();
 			//Clear the index
-			service.RecreateIndex = true;
+			service.CreateIndex();
 			var topic = new Topic()
 			{
 				Id = 1,

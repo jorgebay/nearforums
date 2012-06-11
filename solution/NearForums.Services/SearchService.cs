@@ -41,11 +41,6 @@ namespace NearForums.Services
 			}
 		}
 
-		/// <summary>
-		/// Determines if recreates the index the next time it writes
-		/// </summary>
-		public bool RecreateIndex { get; set; }
-
 		private SearchElement _config;
 		/// <summary>
 		/// Gets or sets the search configuration
@@ -143,6 +138,26 @@ namespace NearForums.Services
 		}
 
 		/// <summary>
+		/// Creates or recreates the search index by opening a new IndexWriter with create flag
+		/// </summary>
+		public void CreateIndex()
+		{
+			lock (_writerLock)
+			{
+				if (_writer != null)
+				{
+						_writer.Close();
+						_writer = null;
+				}
+				//open a new writer with the create flag
+				using (var writer = new IndexWriter(Directory, Analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED))
+				{
+					//dispose: close it
+				}
+			}
+		}
+
+		/// <summary>
 		/// Removes the message field from the document
 		/// </summary>
 		public void DeleteMessage(int topicId, int messageId)
@@ -185,7 +200,7 @@ namespace NearForums.Services
 						IndexWriter.Unlock(Directory);
 						_logger.LogError("Search index is unlocked.");
 					}
-					_writer = new IndexWriter(Directory, Analyzer, RecreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
+					_writer = new IndexWriter(Directory, Analyzer, false, IndexWriter.MaxFieldLength.UNLIMITED);
 				}
 			}
 			return _writer;

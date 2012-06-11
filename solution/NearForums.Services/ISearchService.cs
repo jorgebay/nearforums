@@ -8,9 +8,10 @@ namespace NearForums.Services
 	public interface ISearchService
 	{
 		/// <summary>
-		/// Determines if recreates the index the next time it writes
+		/// Creates or recreates the index.
+		/// Delete all previous index data.
 		/// </summary>
-		bool RecreateIndex { get; set; }
+		void CreateIndex();
 
 		/// <summary>
 		/// Adds a message to the index
