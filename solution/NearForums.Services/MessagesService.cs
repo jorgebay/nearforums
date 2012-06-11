@@ -60,6 +60,7 @@ namespace NearForums.Services
 		public  void Delete(int topicId, int messageId, int userId)
 		{
 			_dataAccess.Delete(topicId, messageId, userId);
+			_searchIndex.DeleteMessage(topicId, messageId);
 		}
 
 		public  bool Flag(int topicId, int messageId, string ip)

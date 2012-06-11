@@ -122,6 +122,7 @@ namespace NearForums.Services
 		public void Delete(int id, int userId, string ip)
 		{
 			_dataAccess.Delete(id, userId, ip);
+			_searchIndex.DeleteTopic(id);
 		}
 
 		public List<Topic> GetByUser(int userId, UserRole? role)

@@ -81,7 +81,6 @@ namespace NearForums.Services
 			}
 		}
 
-
 		/// <summary>
 		/// Adds a new topic to the index
 		/// </summary>
@@ -112,7 +111,7 @@ namespace NearForums.Services
 			}
 			if (doc == null)
 			{
-				throw new ArgumentException("No topic found for given id (" + message.Topic.Id +")");
+				return;
 			}
 			var dateField = doc.GetDateField();
 			dateField.SetValue(DateTools.DateToString(message.Date, DateTools.Resolution.MINUTE));
@@ -170,7 +169,7 @@ namespace NearForums.Services
 			}
 			if (doc == null)
 			{
-				throw new ArgumentException("No topic found for given id (" + topicId + ")");
+				return;
 			}
 			doc.RemoveMessage(messageId);
 			writer.Update(topicId, doc, Analyzer, Config);
@@ -245,7 +244,7 @@ namespace NearForums.Services
 			}
 			if (doc == null)
 			{
-				throw new ArgumentException("No topic found for given id (" + topic.Id + ")");
+				return;
 			}
 
 			doc.GetDescriptionField().SetValue(topic.Description);
