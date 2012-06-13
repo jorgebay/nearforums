@@ -148,6 +148,10 @@ namespace NearForums.Services
 						_writer.Close();
 						_writer = null;
 				}
+				if (IndexWriter.IsLocked(Directory))
+				{
+					IndexWriter.Unlock(Directory);
+				}
 				//open a new writer with the create flag
 				using (var writer = new IndexWriter(Directory, Analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED))
 				{
@@ -212,7 +216,7 @@ namespace NearForums.Services
 			var results = new List<Topic>();
 			if (String.IsNullOrWhiteSpace(value))
 			{
-				throw new ArgumentException("query can not be null, empty or only whitespace chars.");
+				return results;
 			}
 			using (var searcher = new IndexSearcher(GetWriter().GetReader()))
 			{

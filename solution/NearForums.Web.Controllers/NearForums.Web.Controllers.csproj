@@ -99,6 +99,7 @@
     <Compile Include="MessagesController.cs" />
     <Compile Include="PageContentsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchEngineController.cs" />
     <Compile Include="SettingsController.cs" />
     <Compile Include="TagsController.cs" />
     <Compile Include="TemplatesController.cs" />

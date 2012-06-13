@@ -25,6 +25,7 @@ namespace NearForums.Tests.Services
 				Title = "Dummy topic",
 				Description = "<p>Lorem ipsum</p>",
 				Tags = new TagList(),
+				Date = DateTime.UtcNow.AddDays(-1d),
 				Forum = new Forum()
 				{
 					Name = "Dummy forum",
@@ -36,6 +37,7 @@ namespace NearForums.Tests.Services
 				Id = 2,
 				Title = "Dummy topic 2",
 				Description = "<p>Lorem ipsum</p>",
+				Date = DateTime.UtcNow.AddDays(-0.5d),
 				Tags = new TagList(),
 				Forum = new Forum()
 				{
