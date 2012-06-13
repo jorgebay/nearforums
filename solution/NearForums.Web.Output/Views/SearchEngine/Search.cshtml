@@ -1,4 +1,4 @@
-﻿@model List<Topic>
+﻿@model PagedList<Topic>
 @{
     ViewBag.Title = S("Search results");
 }
@@ -19,4 +19,5 @@
 		</li>
 	}
 	</ul>
+	@Html.Pager(Model, new {q=ViewBag.Q}, S("Previous"), S("Next"))
 }

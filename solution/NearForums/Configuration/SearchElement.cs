@@ -108,5 +108,21 @@ namespace NearForums.Configuration
 				this["tagsBoost"] = value;
 			}
 		}
+
+		/// <summary>
+		///  Gets or sets the page size of the 
+		/// </summary>
+		[ConfigurationProperty("resultsPageSize", IsRequired = false, DefaultValue = 20)]
+		public int ResultsPageSize
+		{
+			get
+			{
+				return (int)this["resultsPageSize"];
+			}
+			set
+			{
+				this["resultsPageSize"] = value;
+			}
+		}
 	}
 }

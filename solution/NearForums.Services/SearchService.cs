@@ -211,12 +211,12 @@ namespace NearForums.Services
 			return _writer;
 		}
 
-		public List<Topic> Search(string value)
+		public PagedList<Topic> Search(string value, int index)
 		{
 			var results = new List<Topic>();
 			if (String.IsNullOrWhiteSpace(value))
 			{
-				return results;
+				return new PagedList<Topic>(results, 0, 1);
 			}
 			using (var searcher = new IndexSearcher(GetWriter().GetReader()))
 			{
@@ -232,7 +232,7 @@ namespace NearForums.Services
 					}
 				}
 			}
-			return results;
+			return new PagedList<Topic>(results, index, Config.ResultsPageSize);
 		}
 
 		/// <summary>

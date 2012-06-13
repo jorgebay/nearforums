@@ -39,7 +39,8 @@ namespace NearForums.Services
 		/// <summary>
 		/// Queries the index
 		/// </summary>
-		List<Topic> Search(string query);
+		/// <param name="index">Current page index, zero based.</param>
+		PagedList<Topic> Search(string query, int index);
 
 		/// <summary>
 		/// Updates a topic from the 

@@ -46,7 +46,7 @@ namespace NearForums.Tests.Services
 				}
 			});
 
-			var results = service.Search("TOPIC");
+			var results = service.Search("TOPIC", 0);
 			Assert.AreEqual(2, results.Count);
 		}
 
@@ -83,7 +83,7 @@ namespace NearForums.Tests.Services
 				Topic = topic
 			});
 
-			var results = service.Search("first");
+			var results = service.Search("first", 0);
 			Assert.AreEqual(1, results.Count);
 
 			service.Add(new Message()
@@ -94,12 +94,12 @@ namespace NearForums.Tests.Services
 				Topic = topic
 			});
 
-			results = service.Search("second");
+			results = service.Search("second", 0);
 			Assert.AreEqual(1, results.Count);
 			//Check that the modification on the document date took place
 			Assert.AreEqual(baseDate.AddDays(2), results[0].Date);
 
-			results = service.Search("first");
+			results = service.Search("first", 0);
 			Assert.AreEqual(1, results.Count);
 		}
 
@@ -131,19 +131,19 @@ namespace NearForums.Tests.Services
 				Topic = topic
 			});
 
-			var results = service.Search("initial");
+			var results = service.Search("initial", 0);
 			Assert.AreEqual(1, results.Count);
 
 			topic.Title = "Edited";
 			service.Update(topic);
 
-			results = service.Search("edited");
+			results = service.Search("edited", 0);
 			Assert.AreEqual(1, results.Count);
 
-			results = service.Search("initial");
+			results = service.Search("initial", 0);
 			Assert.AreEqual(0, results.Count); //no results for the original title of the topic
 
-			results = service.Search("message");
+			results = service.Search("message", 0);
 			Assert.AreEqual(1, results.Count); //the messages should stay the same
 		}
 
@@ -182,21 +182,21 @@ namespace NearForums.Tests.Services
 				Topic = topic
 			});
 
-			var results = service.Search("first");
+			var results = service.Search("first", 0);
 			Assert.AreEqual(1, results.Count);
 
-			results = service.Search("second");
+			results = service.Search("second", 0);
 			Assert.AreEqual(1, results.Count);
 
 			service.DeleteMessage(topic.Id, 2);
 
-			results = service.Search("second");
+			results = service.Search("second", 0);
 			Assert.AreEqual(0, results.Count); //there must be no results for the deleted message
 
-			results = service.Search("first");
+			results = service.Search("first", 0);
 			Assert.AreEqual(1, results.Count); //results for the first message3
 
-			results = service.Search("container");
+			results = service.Search("container", 0);
 			Assert.AreEqual(1, results.Count); //the topic information should stay the same
 		}
 
@@ -232,21 +232,22 @@ namespace NearForums.Tests.Services
 					ShortName = "dummy-forum"
 				}
 			});
-			var results = service.Search("topic");
+			var results = service.Search("topic", 0);
 			Assert.AreEqual(2, results.Count);
 
 			service.DeleteTopic(1);
-			results = service.Search("topic");
+			results = service.Search("topic", 0);
 			Assert.AreEqual(1, results.Count);
 
-			results = service.Search("first");
+			results = service.Search("first", 0);
 			Assert.AreEqual(0, results.Count); //first message must not be showing.
 
 			service.DeleteTopic(2);
-			results = service.Search("second");
+			results = service.Search("second", 0);
 			Assert.AreEqual(0, results.Count);
 
 		}
+
 		/*
 		/// <summary>
 		/// Checks performance
@@ -259,7 +260,7 @@ namespace NearForums.Tests.Services
 			var searchService = TestHelper.Resolve<ISearchService>();
 			searchService.CreateIndex();
 			
-			var results = searchService.Search("zzzzzzzzzzzzzz");
+			var results = searchService.Search("zzzzzzzzzzzzzz", 0);
 			Assert.AreEqual(0, results.Count);
 
 			for (var i = 0; i < 50; i++)
@@ -288,12 +289,12 @@ namespace NearForums.Tests.Services
 					Topic = topic
 				});
 			}
-			results = searchService.Search("first");
+			results = searchService.Search("first", 0);
 			Assert.IsTrue(results.Count > 0);
 			//Check that the modification on the document date took place
 			Assert.AreEqual(baseDate.AddDays(1), results[0].Date);
 
-			results = searchService.Search("lorem");
+			results = searchService.Search("lorem", 0);
 			Assert.IsTrue(results.Count > 0);
 		}
 		 * */

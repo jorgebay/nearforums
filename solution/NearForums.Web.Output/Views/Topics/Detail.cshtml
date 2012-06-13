@@ -45,7 +45,7 @@
 		</div>
 	}
 	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">@Html.Img("~/images/loadingMini.gif", "") @T("Show more messages")</a></div>
-	@Html.Pager(messages)
+	@Html.Pager(messages, S("Previous"), S("Next"))
 	@Html.Partial("Toolbar")
 	@Html.Partial("Related")
 </div>

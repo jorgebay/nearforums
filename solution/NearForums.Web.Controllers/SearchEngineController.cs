@@ -20,9 +20,11 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult Search(string q)
+		public ActionResult Search(string q, int? page)
 		{
-			var results = _searchService.Search(q);
+			var results = _searchService.Search(q, page ?? 0);
+			ViewBag.Page = page ?? 0;
+			ViewBag.Q = q;
 			return View(results);
 		}
 	}
