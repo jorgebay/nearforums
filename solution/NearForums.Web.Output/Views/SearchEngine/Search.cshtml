@@ -11,13 +11,17 @@
 {
 	<ul class="results">
 	@foreach (var topic in Model)
-	{
+ {
 		<li>
-			<h3>@Html.ActionLink(topic.Title, "ShortUrl", "Topics", new{id=topic.Id}, null)</h3>
+			<h3>@Html.ActionLink(topic.Title, "ShortUrl", "Topics", new { id = topic.Id }, null)</h3>
 			<div class="date">@Html.Date(topic.Date)</div>
 			<div>@topic.Description</div>
 		</li>
-	}
+ }
 	</ul>
-	@Html.Pager(Model, new {q=ViewBag.Q}, S("Previous"), S("Next"))
+	@Html.Pager(Model, new { q = ViewBag.Q }, S("Previous"), S("Next"))
+}
+else
+{
+	<p class="warning">@T("We did not find results for <strong>{0}</strong>", ViewBag.Q)</p>
 }
