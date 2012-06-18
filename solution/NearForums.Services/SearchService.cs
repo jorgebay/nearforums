@@ -190,6 +190,15 @@ namespace NearForums.Services
 			writer.Commit();
 		}
 
+		public int DocumentCount
+		{
+			get
+			{
+				var writer = GetWriter();
+				return writer.GetReader().MaxDoc();
+			}
+		}
+
 		/// <summary>
 		/// Gets an instance of the IndexWriter with the default options
 		/// </summary>

@@ -37,6 +37,11 @@ namespace NearForums.Services
 		void DeleteTopic(int id);
 
 		/// <summary>
+		/// Gets the total documents currently indexed
+		/// </summary>
+		int DocumentCount { get; }
+
+		/// <summary>
 		/// Queries the index
 		/// </summary>
 		/// <param name="index">Current page index, zero based.</param>

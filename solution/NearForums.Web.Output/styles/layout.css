@@ -37,7 +37,7 @@ p
 {
 	margin-top: 0px;
 	margin-bottom: 8px;
-	line-height: 15px;
+	line-height: 18px;
 }
 ul
 {
@@ -218,13 +218,4 @@ strong a
 	padding: 5px;
 	overflow: hidden;
 	line-height: 18px;
-}
-#searchBox input.button
-{
-
-}
-#searchBox input.button:hover, #searchBox input.button:focus
-{
-	background-color: #DDDDDD;
-	border-color: #333333;
 }

@@ -92,6 +92,10 @@ namespace NearForums.Localization
 
 		public virtual string Get(string neutralValue, params object[] args)
 		{
+			if (args == null)
+			{
+				throw new ArgumentNullException("Args cannot be null, when localizing '" + neutralValue + "'", (Exception)null);
+			}
 			return String.Format(Get(neutralValue), args);
 		}
 

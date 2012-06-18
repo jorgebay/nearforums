@@ -19,6 +19,12 @@ namespace NearForums.Web.Controllers
 			_searchService = searchService;
 		}
 
+		/// <summary>
+		/// Searches the index and displays the search results
+		/// </summary>
+		/// <param name="q">Search query</param>
+		/// <param name="page">Page index (zero based)</param>
+		/// <returns></returns>
 		[HttpGet]
 		public ActionResult Search(string q, int? page)
 		{
@@ -26,6 +32,16 @@ namespace NearForums.Web.Controllers
 			ViewBag.Page = page ?? 0;
 			ViewBag.Q = q;
 			return View(results);
+		}
+
+		/// <summary>
+		/// Displays the Manage search index view
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Manage()
+		{
+			ViewBag.DocumentCount = _searchService.DocumentCount;
+			return View();
 		}
 	}
 }

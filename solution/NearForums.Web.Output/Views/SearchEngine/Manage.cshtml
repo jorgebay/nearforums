@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Search Index Management";
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+</ul>
+<h1>@ViewBag.Title</h1>
+<p>@T("The search index contains {0} documents.", ViewBag.DocumentCount)</p>
+<h2>Reindex</h2>
+<p>
+	@T("You can drop the current search index contents, rebuild and reindex all the threads on all the documents.") 
+	<br />
+	@T("This operation may take a while depending on the amount of threads and messages.")
+	<br /> 
+	<input type="button" class="button" value="@T("Reindex")" onclick="startReindex();" />
+</p>
+<script type="text/javascript">
+	function startReindex()
+	{
+		if (!confirm('@T("Are you sure you want to drop the current search index and start reindexing?")'))
+		{
+			return;
+		}
+	}
+</script>
