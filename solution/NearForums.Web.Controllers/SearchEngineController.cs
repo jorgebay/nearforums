@@ -13,10 +13,16 @@ namespace NearForums.Web.Controllers
 		/// Represents the service that performs the search on the index
 		/// </summary>
 		private readonly ISearchService _searchService;
+		/// <summary>
+		/// Represents the service that indexes content in batches
+		/// </summary>
+		private readonly ISearchIndexBatchService _batchService;
 
-		public SearchEngineController(ISearchService searchService, IUsersService userService) : base(userService)
+		public SearchEngineController(ISearchService searchService, ISearchIndexBatchService batchService, IUsersService userService)
+			: base(userService)
 		{
 			_searchService = searchService;
+			_batchService = batchService;
 		}
 
 		/// <summary>
@@ -41,7 +47,17 @@ namespace NearForums.Web.Controllers
 		public ActionResult Manage()
 		{
 			ViewBag.DocumentCount = _searchService.DocumentCount;
+			ViewBag.IndexBatchSize = Config.Search.IndexBatchSize;
 			return View();
+		}
+		
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult ReindexStart()
+		{
+			_searchService.CreateIndex();
+			var forums = _batchService.GetForums();
+			return Json(forums);
 		}
 	}
 }

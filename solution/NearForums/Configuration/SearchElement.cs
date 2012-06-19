@@ -124,5 +124,21 @@ namespace NearForums.Configuration
 				this["resultsPageSize"] = value;
 			}
 		}
+
+		/// <summary>
+		///  Determines the amount of documents indexed at once in a batch
+		/// </summary>
+		[ConfigurationProperty("indexBatchSize", IsRequired = false, DefaultValue = 5)]
+		public int IndexBatchSize
+		{
+			get
+			{
+				return (int)this["indexBatchSize"];
+			}
+			set
+			{
+				this["indexBatchSize"] = value;
+			}
+		}
 	}
 }

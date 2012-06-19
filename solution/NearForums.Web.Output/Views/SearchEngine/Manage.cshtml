@@ -15,6 +15,11 @@
 	<br /> 
 	<input type="button" class="button" value="@T("Reindex")" onclick="startReindex();" />
 </p>
+<form id="containerForm">
+	@Html.AntiForgeryToken()
+	@Html.Hidden("indexBatchSize")
+</form>
+
 <script type="text/javascript">
 	function startReindex()
 	{
@@ -22,5 +27,18 @@
 		{
 			return;
 		}
+		$.post('@Url.Action("ReindexStart")', defaultParams(), function(forums){
+			alert("returned");
+			alert(forums.length);
+		});
+	}
+
+	function defaultParams()
+	{
+		var params = new Object();
+		$("#containerForm input[type='hidden']").each(function(){
+			params[$(this).attr("name")] = $(this).val();
+		});
+		return params;
 	}
 </script>

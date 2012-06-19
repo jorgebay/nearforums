@@ -6,6 +6,9 @@ using NearForums.Validation;
 
 namespace NearForums
 {
+	/// <summary>
+	/// Represents a forum inside the Nearforums domain
+	/// </summary>
 	public class Forum : Entity, IAccessRightContainer
 	{
 		public Forum()

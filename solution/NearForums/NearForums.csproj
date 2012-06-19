@@ -78,6 +78,7 @@
     <Compile Include="Configuration\TemplateElement.cs" />
     <Compile Include="Configuration\TemplateMobileElement.cs" />
     <Compile Include="Configuration\UIElement.cs" />
+    <Compile Include="Dto\ForumDto.cs" />
     <Compile Include="EmailPolicy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Forum.cs" />
