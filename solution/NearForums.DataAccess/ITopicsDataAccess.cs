@@ -13,7 +13,13 @@ namespace NearForums.DataAccess
 		void Delete(int id, int userId, string ip);
 		void Edit(Topic topic, string ip);
 		Topic Get(int id);
+		/// <summary>
+		/// Gets a list of topics of a forum, from startIndex to startIndex+length, sorted by views
+		/// </summary>
 		List<Topic> GetByForum(int forumId, int startIndex, int length, UserRole? role);
+		/// <summary>
+		/// Gets a list of topics of a forum, from startIndex to startIndex+length, sorted by latest activity
+		/// </summary>
 		List<Topic> GetByForumLatest(int forumId, int startIndex, int length, UserRole? role);
 		List<Topic> GetByTag(string tag, int forumId, UserRole? role);
 		List<Topic> GetByUser(int userId, UserRole? role);

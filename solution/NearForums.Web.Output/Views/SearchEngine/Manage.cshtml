@@ -28,8 +28,12 @@
 			return;
 		}
 		$.post('@Url.Action("ReindexStart")', defaultParams(), function(forums){
-			alert("returned");
-			alert(forums.length);
+			var list = $("<ul></ul>").appendTo("#containerForm");
+			$.each(forums, function(){
+				$("<li></li>")
+					.text(this.Name)
+					.appendTo(list);
+			});
 		});
 	}
 

@@ -59,5 +59,13 @@ namespace NearForums.Web.Controllers
 			var forums = _batchService.GetForums();
 			return Json(forums);
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult IndexBatch(int forumId, int index)
+		{
+			_batchService.IndexBatch(forumId, index);
+			return Json(null);
+		}
 	}
 }
