@@ -40,7 +40,7 @@ namespace NearForums.Services
 		public int IndexBatch(int forumId, int index)
 		{
 			var config = SiteConfiguration.Current.Search;
-			var topics = _topicsService.GetByForum(forumId, index * config.IndexBatchSize, config.IndexBatchSize, null);
+			var topics = _topicsService.GetByForum(forumId, index, config.IndexBatchSize, null);
 			var topicsAndMessages = new List<Topic>();
 			foreach (var t in topics)
 			{

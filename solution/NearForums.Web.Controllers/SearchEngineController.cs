@@ -64,8 +64,8 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult IndexBatch(int forumId, int index)
 		{
-			_batchService.IndexBatch(forumId, index);
-			return Json(null);
+			var indexed = _batchService.IndexBatch(forumId, index);
+			return Json(indexed);
 		}
 	}
 }

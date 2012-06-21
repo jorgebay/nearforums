@@ -249,7 +249,7 @@ namespace NearForums.Web.Extensions
 		}
 
 		/// <summary>
-		/// Add a link tag referencing the stylesheet, enforcing the url to be app relative.
+		/// Add a image tag referencing, enforcing the url to be app relative.
 		/// </summary>
 		public static MvcHtmlString Img(this HtmlHelper htmlHelper, string url, string alt)
 		{
