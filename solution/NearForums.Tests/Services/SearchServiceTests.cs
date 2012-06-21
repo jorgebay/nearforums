@@ -245,7 +245,21 @@ namespace NearForums.Tests.Services
 			service.DeleteTopic(2);
 			results = service.Search("second", 0);
 			Assert.AreEqual(0, results.Count);
+		}
 
+		[TestMethod]
+		public void SearchIndex_BatchIndex_Test()
+		{
+			var batchService = TestHelper.Resolve<ISearchIndexBatchService>();
+			var indexService = TestHelper.Resolve<ISearchService>();
+			indexService.CreateIndex();
+			var forums = batchService.GetForums();
+			int indexed = 0;
+			for (var i = 0; i < 2 && i < forums.Count; i++)
+			{
+				indexed += batchService.IndexBatch(forums[i].Id, 0);
+			}
+			Assert.AreEqual(indexService.DocumentCount, indexed);
 		}
 
 		/*
