@@ -37,16 +37,20 @@ namespace NearForums.Services
 			return forums.Select<Forum, ForumDto>(f => new ForumDto(f)).ToList();
 		}
 
-		public void IndexBatch(int forumId, int index)
+		public int IndexBatch(int forumId, int index)
 		{
-			throw new NotImplementedException();
 			var config = SiteConfiguration.Current.Search;
 			var topics = _topicsService.GetByForum(forumId, index * config.IndexBatchSize, config.IndexBatchSize, null);
+			var topicsAndMessages = new List<Topic>();
 			foreach (var t in topics)
 			{
+				//Get the complete topic information: topic fields and messages
 				var completeTopic = _topicsService.GetMessagesFrom(t.Id, 1, config.MaxMessages, 1);
-				//TODO: Add multiple and then commit: _searchService.Add(completeTopic);
+				topicsAndMessages.Add(completeTopic);
 			}
+			_searchService.Add(topicsAndMessages);
+			//Return the number of topics indexed
+			return topicsAndMessages.Count;
 		}
 	}
 }

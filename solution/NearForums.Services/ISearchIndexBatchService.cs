@@ -12,11 +12,17 @@ namespace NearForums.Services
 	public interface ISearchIndexBatchService
 	{
 		/// <summary>
-		/// Gets the 
+		/// Gets all the forums to be indexed
 		/// </summary>
 		/// <returns></returns>
 		List<ForumDto> GetForums();
 
-		void IndexBatch(int forumId, int index);
+		/// <summary>
+		/// Indexes a group of topics belonging to the forum. Returns the amount of topics indexed.
+		/// </summary>
+		/// <param name="forumId"></param>
+		/// <param name="index">index of the batch (zero based)</param>
+		/// <returns>The amount of topics indexed</returns>
+		int IndexBatch(int forumId, int index);
 	}
 }

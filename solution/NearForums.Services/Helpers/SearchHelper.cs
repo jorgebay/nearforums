@@ -179,6 +179,11 @@ namespace NearForums.Services.Helpers
 			doc.Add(new Field(ForumName, topic.Forum.Name, Field.Store.YES, Field.Index.NO));
 			doc.Add(new Field(ForumName, topic.Forum.Name, Field.Store.YES, Field.Index.NO));
 			doc.Add(new Field(ForumShortName, topic.Forum.ShortName, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			foreach (var message in topic.Messages)
+			{
+				doc.Add(message.ToField());
+			}
+
 			doc.SetFieldBoosts(config);
 
 			return doc;

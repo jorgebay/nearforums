@@ -25,6 +25,11 @@ namespace NearForums.Services
 		void Add(Topic topic);
 
 		/// <summary>
+		/// Adds a list of topics to the index
+		/// </summary>
+		void Add(IEnumerable<Topic> topicList);
+
+		/// <summary>
 		/// Removes a message from the search index
 		/// </summary>
 		/// <param name="messageId">Identifier of the message</param>

@@ -87,9 +87,21 @@ namespace NearForums.Services
 		/// <param name="topic"></param>
 		public void Add(Topic topic)
 		{
+			Add(new Topic[] { topic});
+		}
+
+		/// <summary>
+		/// Adds a new topic to the index
+		/// </summary>
+		/// <param name="topic"></param>
+		public void Add(IEnumerable<Topic> topicList)
+		{
 			var writer = GetWriter();
-			var doc = topic.ToDocument(Config);
-			writer.AddDocument(doc);
+			foreach (var topic in topicList)
+			{
+				var doc = topic.ToDocument(Config);
+				writer.AddDocument(doc);
+			}
 			writer.Commit();
 		}
 
