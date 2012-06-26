@@ -135,6 +135,7 @@
     <Content Include="scripts\overtip.js" />
     <Content Include="scripts\pager.js" />
     <Content Include="scripts\quoting.js" />
+    <Content Include="scripts\search-indexer.js" />
     <Content Include="scripts\tinymce\changelog.txt" />
     <Content Include="scripts\tinymce\jquery.tinymce.js" />
     <Content Include="scripts\tinymce\langs\en.js" />

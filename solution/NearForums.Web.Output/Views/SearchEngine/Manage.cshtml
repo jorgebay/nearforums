@@ -13,7 +13,7 @@
 	<br />
 	@T("This operation may take a while depending on the amount of threads and messages.")
 	<br /> 
-	<input type="button" class="button" value="@T("Reindex")" onclick="indexer.init(this, '@Url.Action("ReindexStart")');" />
+	<input type="button" class="button" value="@T("Reindex")" onclick="indexer.init(this, '@Url.Action("ReindexStart")', '@T("Are you sure you want to drop the current search index and start reindexing?")', '@T("Reindexing finished successfully")');" />
 </p>
 <div id="loading" style="display:none;">
 	<p class="warning">
@@ -24,97 +24,5 @@
 <form id="containerForm">
 	@Html.AntiForgeryToken()
 </form>
-@*Html.Hidden("indexBatchSize")*@
 @Html.Hidden("indexBatchUrl", Url.Action("IndexBatch"))
-
-<script type="text/javascript">
-var indexer = 
-{
-	maxCalls : 10
-	,
-	callsCounter : 0
-	, 
-	init : function(sender, url)
-	{
-		if (!confirm('@T("Are you sure you want to drop the current search index and start reindexing?")'))
-		{
-			return;
-		}
-		$(sender).hide();
-		$("#loading").slideDown();
-
-		$.post(url, indexer.defaultParams(), function(forums){
-			var list = $("<ul></ul>").appendTo("#containerForm");
-			$.each(forums, function(){
-				$("<li></li>")
-					.text(this.Name + " ")
-					.append($("<span></span>")
-						.addClass("status")
-						.text("0 %"))
-					.append($("<input />")
-						.attr("type", "hidden")
-						.attr("name", "total")
-						.val(this.TopicCount))
-					.append($("<input />")
-						.attr("type", "hidden")
-						.attr("name", "indexed")
-						.val("0"))
-					.append($("<input />")
-						.attr("type", "hidden")
-						.attr("name", "id")
-						.val(this.Id))
-					.appendTo(list);
-			});
-			indexer.batch();
-		});	
-	}
-	, 
-	batch : function()
-	{
-		var allIndexed = true;
-		$("#containerForm > ul > li").each(function(){
-			var listElement = $(this);
-			var total = parseInt($("input[name='total']", listElement).val(), 10);
-			var indexed = parseInt($("input[name='indexed']", listElement).val(), 10);
-			if (indexed < total)
-			{
-				var id = $("input[name='id']", listElement).val();
-				var url = $("#indexBatchUrl").val();
-				var params = indexer.defaultParams();
-				params.forumId = id;
-				params.index = indexed;
-				$.post(url, params, function(count){
-					if (count == 0)
-					{
-						indexed = total;
-					}
-					indexed += count;
-					$("input[name='indexed']", listElement).val(indexed);
-					$("span.status", listElement).text(Math.round(indexed*100/total)).append(" %");
-					indexer.callsCounter++;
-					if (indexer.callsCounter < indexer.maxCalls)
-					{
-						setTimeout(indexer.batch, 500);
-					}
-				});
-				allIndexed = false;
-				return false;
-			}
-		});
-		if (allIndexed)
-		{
-			alert("finished");
-			$("#loading").fadeOut();
-		}
-	}
-	, 
-	defaultParams : function()
-	{
-		var params = new Object();
-		$("#containerForm > input[type='hidden']:first").each(function(){
-			params[$(this).attr("name")] = $(this).val();
-		});
-		return params;
-	}
-}
-</script>
+@Html.Script("~/scripts/search-indexer.js")
