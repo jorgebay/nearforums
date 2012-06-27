@@ -690,3 +690,10 @@ ul.results .date
 {
 	color: #888888;
 }
+.resultsInfo
+{
+	color: #999999;
+	font-weight: bold;
+	position: relative;
+	top: -10px;
+}
