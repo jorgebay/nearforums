@@ -101,6 +101,9 @@ namespace NearForums.Tests.Services
 
 			results = service.Search("first", 0);
 			Assert.AreEqual(1, results.Count);
+
+			results = service.Search("topic", 0);
+			Assert.AreEqual(1, results.Count);
 		}
 
 		[TestMethod]

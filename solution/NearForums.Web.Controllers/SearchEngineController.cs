@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NearForums.Services;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
@@ -44,6 +45,7 @@ namespace NearForums.Web.Controllers
 		/// Displays the Manage search index view
 		/// </summary>
 		/// <returns></returns>
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Manage()
 		{
 			ViewBag.DocumentCount = _searchService.DocumentCount;
@@ -53,6 +55,7 @@ namespace NearForums.Web.Controllers
 		
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[RequireAuthorization(UserRole.Admin, RefuseOnFail=true)]
 		public ActionResult ReindexStart()
 		{
 			_searchService.CreateIndex();
@@ -62,6 +65,7 @@ namespace NearForums.Web.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[RequireAuthorization(UserRole.Admin, RefuseOnFail = true)]
 		public ActionResult IndexBatch(int forumId, int index)
 		{
 			var indexed = _batchService.IndexBatch(forumId, index);

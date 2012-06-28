@@ -207,7 +207,7 @@ namespace NearForums.Services
 			get
 			{
 				var writer = GetWriter();
-				return writer.GetReader().MaxDoc();
+				return writer.NumDocs();
 			}
 		}
 
