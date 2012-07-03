@@ -96,6 +96,10 @@ namespace NearForums.Services
 		/// <param name="topic"></param>
 		public void Add(IEnumerable<Topic> topicList)
 		{
+			if (!Config.Enabled)
+			{
+				return;
+			}
 			var writer = GetWriter();
 			foreach (var topic in topicList)
 			{
@@ -111,6 +115,10 @@ namespace NearForums.Services
 		/// <param name="topic"></param>
 		public void Add(Message message)
 		{
+			if (!Config.Enabled)
+			{
+				return;
+			}
 			if (message.Id > Config.MaxMessages)
 			{
 				return;
@@ -138,6 +146,10 @@ namespace NearForums.Services
 		/// </summary>
 		public static void CloseIndex()
 		{
+			if (!SiteConfiguration.Current.Search.Enabled)
+			{
+				return;
+			}
 			if (_writer != null)
 			{
 				lock (_writerLock)
@@ -153,6 +165,10 @@ namespace NearForums.Services
 		/// </summary>
 		public void CreateIndex()
 		{
+			if (!Config.Enabled)
+			{
+				throw new NotSupportedException("Creating a search index is not supported when indexing is disabled by configuration.");
+			}
 			lock (_writerLock)
 			{
 				if (_writer != null)
@@ -177,6 +193,10 @@ namespace NearForums.Services
 		/// </summary>
 		public void DeleteMessage(int topicId, int messageId)
 		{
+			if (!Config.Enabled)
+			{
+				return;
+			}
 			var writer = GetWriter();
 			Document doc = null;
 			using (var searcher = new IndexSearcher(writer.GetReader()))
@@ -197,6 +217,10 @@ namespace NearForums.Services
 		/// </summary>
 		public void DeleteTopic(int id)
 		{
+			if (!Config.Enabled)
+			{
+				return;
+			}
 			var writer = GetWriter();
 			writer.Delete(id);
 			writer.Commit();
@@ -206,6 +230,10 @@ namespace NearForums.Services
 		{
 			get
 			{
+				if (!Config.Enabled)
+				{
+					return 0;
+				}
 				var writer = GetWriter();
 				return writer.NumDocs();
 			}
@@ -234,6 +262,10 @@ namespace NearForums.Services
 
 		public PagedList<Topic> Search(string value, int index)
 		{
+			if (!Config.Enabled)
+			{
+				throw new NotSupportedException("Searching the index is not supported when indexing is disabled by configuration.");
+			}
 			var results = new List<Topic>();
 			if (String.IsNullOrWhiteSpace(value))
 			{
@@ -261,6 +293,10 @@ namespace NearForums.Services
 		/// </summary>
 		public void Update(Topic topic)
 		{
+			if (!Config.Enabled)
+			{
+				return;
+			}
 			var writer = GetWriter();
 			Document doc = null;
 			using (var searcher = new IndexSearcher(writer.GetReader()))

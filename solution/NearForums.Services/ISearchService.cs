@@ -8,12 +8,6 @@ namespace NearForums.Services
 	public interface ISearchService
 	{
 		/// <summary>
-		/// Creates or recreates the index.
-		/// Delete all previous index data.
-		/// </summary>
-		void CreateIndex();
-
-		/// <summary>
 		/// Adds a message to the index
 		/// </summary>
 		/// <param name="topic"></param>
@@ -28,6 +22,12 @@ namespace NearForums.Services
 		/// Adds a list of topics to the index
 		/// </summary>
 		void Add(IEnumerable<Topic> topicList);
+
+		/// <summary>
+		/// Creates or recreates the index.
+		/// Delete all previous index data.
+		/// </summary>
+		void CreateIndex();
 
 		/// <summary>
 		/// Removes a message from the search index

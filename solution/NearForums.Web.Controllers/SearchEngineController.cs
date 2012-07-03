@@ -49,7 +49,6 @@ namespace NearForums.Web.Controllers
 		public ActionResult Manage()
 		{
 			ViewBag.DocumentCount = _searchService.DocumentCount;
-			ViewBag.IndexBatchSize = Config.Search.IndexBatchSize;
 			return View();
 		}
 		

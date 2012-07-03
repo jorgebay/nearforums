@@ -7,22 +7,29 @@
 </ul>
 <h1>@ViewBag.Title</h1>
 <p>@T("The search index contains {0} documents.", ViewBag.DocumentCount)</p>
-<h2>Reindex</h2>
-<p>
-	@T("You can drop the current search index contents, rebuild and reindex all the threads on all the documents.") 
-	<br />
-	@T("This operation may take a while depending on the amount of threads and messages.")
-	<br /> 
-	<input type="button" class="button" value="@T("Reindex")" onclick="indexer.init(this, '@Url.Action("ReindexStart")', '@T("Are you sure you want to drop the current search index and start reindexing?")', '@T("Reindexing finished successfully")');" />
-</p>
-<div id="loading" style="display:none;">
-	<p class="warning">
-		@Html.Img("~/images/loadingMini.gif", S("loading"))
-		@T("Reindexing Forums...<br />Please do not close this web page")
+@if (Config.Search.Enabled)
+{
+	<h2>Reindex</h2>
+	<p>
+		@T("You can drop the current search index contents, rebuild and reindex all the threads on all the documents.") 
+		<br />
+		@T("This operation may take a while depending on the amount of threads and messages.")
+		<br /> 
+		<input type="button" class="button" value="@T("Reindex")" onclick="indexer.init(this, '@Url.Action("ReindexStart")', '@T("Are you sure you want to drop the current search index and start reindexing?")', '@T("Reindexing finished successfully")');" />
 	</p>
-</div>
-<form id="containerForm">
-	@Html.AntiForgeryToken()
-</form>
-@Html.Hidden("indexBatchUrl", Url.Action("IndexBatch"))
-@Html.Script("~/scripts/search-indexer.js")
+	<div id="loading" style="display:none;">
+		<p class="warning">
+			@Html.Img("~/images/loadingMini.gif", S("loading"))
+			@T("Reindexing Forums...<br />Please do not close this web page")
+		</p>
+	</div>
+	<form id="containerForm">
+		@Html.AntiForgeryToken()
+	</form>
+	@Html.Hidden("indexBatchUrl", Url.Action("IndexBatch"))
+	@Html.Script("~/scripts/search-indexer.js")
+}
+else
+{
+	<p class="warning">@T("Search index is disabled by configuration")</p>
+}
