@@ -47,14 +47,23 @@ namespace NearForums.Services
 
 		public void SendNotifications(Topic topic, int userId, string url, string unsubscribeUrl)
 		{
-			if (SiteConfiguration.Current.Notifications != null && SiteConfiguration.Current.Notifications.Subscription != null)
+			var config = SiteConfiguration.Current.Notifications.Subscription;
+			if (!config.IsDefined)
 			{
-				string body = SiteConfiguration.Current.Notifications.Subscription.Body.ToString();
-				var users = GetSubscribed(topic.Id);
-				users.RemoveAll(x => x.Id == userId || String.IsNullOrEmpty(x.Email));
+				return;
+			}
+			string body = config.Body.ToString();
+			var users = GetSubscribed(topic.Id);
+			users.RemoveAll(x => x.Id == userId || String.IsNullOrEmpty(x.Email));
 
+			if (config.Async)
+			{
 				var handler = new SendNotificationsHandler(_notificationService.SendToUsersSubscribed);
 				handler.BeginInvoke(topic, users, body, url, unsubscribeUrl, true, null, null);
+			}
+			else
+			{
+				_notificationService.SendToUsersSubscribed(topic, users, body, url, unsubscribeUrl, false);
 			}
 		}
 	}

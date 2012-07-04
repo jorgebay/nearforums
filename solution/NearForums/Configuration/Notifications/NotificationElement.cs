@@ -20,6 +20,21 @@ namespace NearForums.Configuration.Notifications
 				this["body"] = value;
 			}
 		}
+		/// <summary>
+		/// Determines the way (synchronous or asynchronous) the email notifications are sent by default
+		/// </summary>
+		[ConfigurationProperty("async", IsRequired = false, DefaultValue = false)]
+		public bool Async
+		{
+			get
+			{
+				return (bool)this["async"];
+			}
+			set
+			{
+				this["async"] = value;
+			}
+		}
 
 	
 		public bool IsDefined
