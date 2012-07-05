@@ -45,7 +45,7 @@ namespace NearForums.Services
 			return _dataAccess.GetTopicsByUser(userId);
 		}
 
-		public void SendNotifications(Topic topic, int userId, string url, string unsubscribeUrl)
+		public void SendNotifications(Message message, int userId, string url, string unsubscribeUrl)
 		{
 			var config = SiteConfiguration.Current.Notifications.Subscription;
 			if (!config.IsDefined)
@@ -53,20 +53,20 @@ namespace NearForums.Services
 				return;
 			}
 			string body = config.Body.ToString();
-			var users = GetSubscribed(topic.Id);
+			var users = GetSubscribed(message.Topic.Id);
 			users.RemoveAll(x => x.Id == userId || String.IsNullOrEmpty(x.Email));
 
 			if (config.Async)
 			{
 				var handler = new SendNotificationsHandler(_notificationService.SendToUsersSubscribed);
-				handler.BeginInvoke(topic, users, body, url, unsubscribeUrl, true, null, null);
+				handler.BeginInvoke(message, users, body, url, unsubscribeUrl, true, null, null);
 			}
 			else
 			{
-				_notificationService.SendToUsersSubscribed(topic, users, body, url, unsubscribeUrl, false);
+				_notificationService.SendToUsersSubscribed(message, users, body, url, unsubscribeUrl, false);
 			}
 		}
 	}
 
-	public delegate int SendNotificationsHandler(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions);
+	public delegate int SendNotificationsHandler(Message message, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions);
 }

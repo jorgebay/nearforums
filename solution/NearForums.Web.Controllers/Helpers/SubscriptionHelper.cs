@@ -11,30 +11,32 @@ namespace NearForums.Web.Controllers.Helpers
 {
 	public static class SubscriptionHelper
 	{
-		public static void SendNotifications(BaseController controller, Topic topic, SiteConfiguration config, ITopicsSubscriptionsService service)
+		public static void SendNotifications(BaseController controller, Message message, SiteConfiguration config, ITopicsSubscriptionsService service)
 		{
 			if (!config.Notifications.Subscription.IsDefined)
 			{
 				return;
 			}
-			string threadUrl = controller.Domain + controller.Url.RouteUrl(new
+			var threadUrl = controller.Domain;
+			threadUrl += controller.Url.RouteUrl(new
 			{
 				controller = "Topics",
 				action = "ShortUrl",
-				id = topic.Id
+				id = message.Topic.Id
 			});
+			threadUrl += "#msg" + message.Id;
 			//Build a generic url that can be replaced with the real values
-			string unsubscribeUrl = controller.Domain + controller.Url.RouteUrl(new
+			var unsubscribeUrl = controller.Domain + controller.Url.RouteUrl(new
 			{
 				controller = "TopicsSubscriptions",
 				action = "Unsubscribe",
 				uid = Int32.MaxValue,
-				tid = topic.Id,
+				tid = message.Topic.Id,
 				guid = Int64.MaxValue.ToString()
 			});
 			unsubscribeUrl = unsubscribeUrl.Replace(Int32.MaxValue.ToString(), "{0}");
 			unsubscribeUrl = unsubscribeUrl.Replace(Int64.MaxValue.ToString(), "{1}");
-			service.SendNotifications(topic, controller.User.Id, threadUrl, unsubscribeUrl);
+			service.SendNotifications(message, controller.User.Id, threadUrl, unsubscribeUrl);
 		}
 
 		/// <summary>

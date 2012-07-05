@@ -28,6 +28,6 @@ namespace NearForums.Services
 		/// <param name="userId"></param>
 		/// <param name="url"></param>
 		/// <param name="unsubscribeUrl"></param>
-		void SendNotifications(Topic topic, int userId, string url, string unsubscribeUrl);
+		void SendNotifications(Message message, int userId, string url, string unsubscribeUrl);
 	}
 }

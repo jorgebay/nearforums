@@ -104,6 +104,10 @@ namespace NearForums.Tests
 			var user = GetTestUser();
 			var forum = ForumsControllerTest.GetAForum();
 			var topic = TopicsControllerTest.GetATopic(forum);
+			var message = new Message(100) 
+			{ 
+				Topic = topic
+			};
 
 			var subscriptionService = TestHelper.Resolve<ITopicsSubscriptionsService>();
 
@@ -118,7 +122,7 @@ namespace NearForums.Tests
 			//Check that the topic recently subscribed is present.
 			Assert.IsTrue(subscribedTopics.Any(x => x.Id == topic.Id));
 
-			TestHelper.Resolve<INotificationsService>().SendToUsersSubscribed(topic, subscribedUsers, "Unit test email from " + TestContext.TestName + ", :<!--!UNSUBSCRIBEURL!-->:<!--!URL!-->:<!--!TITLE!-->:", "http://url", "http://unsubscribeUrl/{0}/{1}", false);
+			TestHelper.Resolve<INotificationsService>().SendToUsersSubscribed(message, subscribedUsers, "Unit test email from " + TestContext.TestName + ", :<!--!UNSUBSCRIBEURL!-->:<!--!URL!-->:<!--!TITLE!-->:", "http://url", "http://unsubscribeUrl/{0}/{1}", false);
 
 			subscriptionService.Remove(topic.Id, user.Id, user.Guid);
 

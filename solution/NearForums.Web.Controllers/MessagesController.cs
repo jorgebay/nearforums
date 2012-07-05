@@ -121,7 +121,7 @@ namespace NearForums.Web.Controllers
 				if (ModelState.IsValid)
 				{
 					_service.Add(message, Request.UserHostAddress);
-					SubscriptionHelper.SendNotifications(this, message.Topic, this.Config, _topicSubscriptionService);
+					SubscriptionHelper.SendNotifications(this, message, this.Config, _topicSubscriptionService);
 					//Redirect to the message posted
 					return new RedirectToRouteExtraResult(new { action = "Detail", controller = "Topics", id = id, name = name, forum = forum }, "#msg" + message.Id);
 				}

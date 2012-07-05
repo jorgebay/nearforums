@@ -46,7 +46,7 @@ namespace NearForums.Services
 			SendMail(message);
 		}
 
-		public int SendToUsersSubscribed(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions)
+		public int SendToUsersSubscribed(Message topicMessage, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions)
 		{
 			int sentMailsCount = 0;
 
@@ -56,7 +56,7 @@ namespace NearForums.Services
 				{
 					try
 					{
-						SendEmailToSubscriptor(topic, u, body, url, unsubscribeUrl);
+						SendEmailToSubscriptor(topicMessage, u, body, url, unsubscribeUrl);
 						sentMailsCount++;
 					}
 					catch (Exception ex)
@@ -67,7 +67,7 @@ namespace NearForums.Services
 						}
 						else
 						{
-							throw ex;
+							throw;
 						}
 					}
 				}
@@ -79,7 +79,7 @@ namespace NearForums.Services
 		/// Prepares the body (by replacing the param values) and sends an email to the user subscribed to a topic
 		/// </summary>
 		/// <param name="body">Base body of the email.</param>
-		private void SendEmailToSubscriptor(Topic topic, User user, string body, string url, string unsubscribeUrl)
+		private void SendEmailToSubscriptor(Message topicMessage, User user, string body, string url, string unsubscribeUrl)
 		{
 			if (user.Guid == Guid.Empty)
 			{
@@ -89,20 +89,22 @@ namespace NearForums.Services
 			MailMessage message = new MailMessage();
 			message.To.Add(new MailAddress(user.Email, user.UserName));
 			message.IsBodyHtml = true;
+
 			#region Replace body values
 			body = Utils.ReplaceBodyValues(body, user, new[] { "UserName" });
-			body = Utils.ReplaceBodyValues(body, topic, new[] { "Title", "Id" });
+			body = Utils.ReplaceBodyValues(body, topicMessage.Topic, new[] { "Title", "Id" });
 			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>() { { "unsubscribeUrl", unsubscribeUrl }, { "url", url } });
+			body = Utils.ReplaceBodyValues(body, new Dictionary<string, string>() { { "body", message.Body } });
 			#endregion
 			message.Body = body;
-			message.Subject = "Re: " + topic.Title;
+			message.Subject = "Re: " + topicMessage.Topic.Title;
 
 			SendMail(message);
 		}
 
 		public void SendMail(MailMessage message)
 		{
-			SmtpClient client = new SmtpClient();
+			var client = new SmtpClient();
 			client.Send(message);
 		}
 	}

@@ -22,6 +22,6 @@ namespace NearForums.Services
 		/// </summary>
 		/// <param name="topic"></param>
 		/// <param name="userId">userId of the last poster</param>
-		int SendToUsersSubscribed(Topic topic, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions);
+		int SendToUsersSubscribed(Message message, List<User> users, string body, string url, string unsubscribeUrl, bool handleExceptions);
 	}
 }
