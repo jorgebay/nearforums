@@ -4,23 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 
-namespace NearForums.Configuration
+namespace NearForums.Configuration.Spam
 {
+	/// <summary>
+	/// Represents the configuration element for the spam prevention features
+	/// </summary>
 	public class SpamPreventionElement : ConfigurationElement
 	{
 		/// <summary>
-		/// Time (in minutes) required to pass between postings
+		/// Gets or sets the configuration for flood control inside the forum
 		/// </summary>
-		[ConfigurationProperty("timeToRepost", IsRequired = false)]
-		public int TimeToRepost
+		[ConfigurationProperty("floodControl", IsRequired = false)]
+		public FloodControlElement FloodControl
 		{
 			get
 			{
-				return (int)this["timeToRepost"];
+				return (FloodControlElement)this["floodControl"];
 			}
 			set
 			{
-				this["timeToRepost"] = value;
+				this["floodControl"] = value;
 			}
 		}
 

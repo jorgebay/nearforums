@@ -6,6 +6,7 @@ using System.Configuration;
 using NearForums.Configuration.Notifications;
 using System.IO;
 using System.Xml;
+using NearForums.Configuration.Spam;
 
 namespace NearForums.Configuration
 {
@@ -126,7 +127,10 @@ namespace NearForums.Configuration
 				}
 			}
 		}
-
+		
+		/// <summary>
+		/// Gets or sets the configuration for the spam prevention features
+		/// </summary>
 		[ConfigurationProperty("spamPrevention", IsRequired = true)]
 		public SpamPreventionElement SpamPrevention
 		{

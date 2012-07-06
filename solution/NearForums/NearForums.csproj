@@ -53,7 +53,8 @@
     <Compile Include="Configuration\CustomDbAuthenticationProviderElement.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\ForumSorting.cs" />
-    <Compile Include="Configuration\HtmlInputElement.cs" />
+    <Compile Include="Configuration\Spam\FloodControlElement.cs" />
+    <Compile Include="Configuration\Spam\HtmlInputElement.cs" />
     <Compile Include="Configuration\IOptionalElement.cs" />
     <Compile Include="Configuration\KeySecretElement.cs" />
     <Compile Include="Configuration\CDataElement.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="Configuration\Notifications\NotificationsContainerElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
-    <Compile Include="Configuration\SpamPreventionElement.cs" />
+    <Compile Include="Configuration\Spam\SpamPreventionElement.cs" />
     <Compile Include="Configuration\SSOOpenIdElement.cs" />
     <Compile Include="Configuration\Redirector\RedirectorConfiguration.cs" />
     <Compile Include="Configuration\Redirector\RedirectorUrl.cs" />
