@@ -249,7 +249,7 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region Delete
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator)]
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(string forum)

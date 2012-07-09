@@ -130,7 +130,7 @@ namespace NearForums.Web.Controllers
 			return View();
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
 		{
 			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;

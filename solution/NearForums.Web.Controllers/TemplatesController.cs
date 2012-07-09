@@ -33,7 +33,7 @@ namespace NearForums.Web.Controllers
 
 		#region Add template
 		[RequireAuthorization(UserRole.Admin)]
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		public ActionResult Add()
 		{
 			return View();

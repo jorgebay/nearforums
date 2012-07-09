@@ -75,7 +75,7 @@ namespace NearForums.Web.Controllers
 
 		#region Edit
 		[RequireAuthorization]
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		public ActionResult Edit(int id)
 		{
 			if (this.User.Id != id)
@@ -88,7 +88,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[RequireAuthorization]
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Edit(int id, [Bind(Prefix = "")]User user)
 		{
 			if (this.User.Id != id)
