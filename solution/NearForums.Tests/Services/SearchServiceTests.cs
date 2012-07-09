@@ -265,6 +265,13 @@ namespace NearForums.Tests.Services
 			Assert.AreEqual(indexService.DocumentCount, indexed);
 		}
 
+		[TestMethod]
+		public void SearchIndex_DocumentCount()
+		{
+			var indexService = TestHelper.Resolve<ISearchService>();
+			Assert.IsTrue(indexService.DocumentCount >= 0);
+		}
+
 		/*
 		/// <summary>
 		/// Checks performance

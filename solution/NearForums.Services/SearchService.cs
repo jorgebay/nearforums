@@ -254,7 +254,7 @@ namespace NearForums.Services
 						IndexWriter.Unlock(Directory);
 						_logger.LogError("Search index is unlocked.");
 					}
-					_writer = new IndexWriter(Directory, Analyzer, false, IndexWriter.MaxFieldLength.UNLIMITED);
+					_writer = new IndexWriter(Directory, Analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
 				}
 			}
 			return _writer;
