@@ -40,11 +40,8 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				ValidateLogOn(userName, password);
-				if (Config.AuthenticationProviders.FormsAuth.UseCookie)
-				{
-					FormsAuthentication.SetAuthCookie(userName, rememberMe);
-				}
 				SecurityHelper.TryFinishMembershipLogin(Session, MembershipProvider.GetUser(userName, true), _service);
+				FormsAuthentication.SetAuthCookie(userName, rememberMe);
 				return Redirect(returnUrl);
 			}
 			catch (ValidationException ex)
@@ -63,32 +60,31 @@ namespace NearForums.Web.Controllers
 		}
 
 		/// <summary>
-		/// Action executed when a user clicks on the reset password email
+		/// This action is executed inside the reset password / forgot password flow:
+		/// When a user clicks on the reset password email
 		/// </summary>
 		public ActionResult NewPassword(string guid)
 		{
 			Guid pwdResetGuid;
-			if (Guid.TryParseExact(guid, "N", out pwdResetGuid) == false)
+			if (!Guid.TryParseExact(guid, "N", out pwdResetGuid))
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 
-			User user = _service.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
+			var user = _service.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
 			if (user == null || user.PasswordResetGuidExpireDate < DateTime.Now)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
 
-			var membershipUser = MembershipProvider.GetUser(user.UserName, true);
-			if (membershipUser == null)
+			var membershipUserName = MembershipProvider.GetUserNameByEmail(user.Email);
+			if (membershipUserName == null)
 			{
-				return ResultHelper.ForbiddenResult(this);
+				throw new Exception("No user was found for email " + user.Email);
 			}
-			if (Config.AuthenticationProviders.FormsAuth.UseCookie)
-			{
-				FormsAuthentication.SetAuthCookie(membershipUser.UserName, false);
-			}
+			var membershipUser = MembershipProvider.GetUser(membershipUserName, true);
 			SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
+			FormsAuthentication.SetAuthCookie(membershipUser.UserName, false);
 			Session.IsPasswordReset = true;
 
 			return RedirectToAction("ChangePassword");
@@ -111,7 +107,10 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				var userName = MembershipProvider.GetUserNameByEmail(email);
-				_service.ValidateUsername(userName);
+				if (userName == null)
+				{
+					throw new ValidationException(new ValidationError("email", ValidationErrorType.CompareNotMatch));
+				}
 				var membershipUser = MembershipProvider.GetUser(userName, true);
 				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
 				string linkUrl = this.Domain + this.Url.RouteUrl(new
@@ -144,10 +143,8 @@ namespace NearForums.Web.Controllers
 				var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
 				ValidateCreateStatus(createStatus);
 				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
-				if (Config.AuthenticationProviders.FormsAuth.UseCookie)
-				{
-					FormsAuthentication.SetAuthCookie(userName, false);
-				}
+				FormsAuthentication.SetAuthCookie(userName, false);
+
 				if (ModelState.IsValid)
 				{
 					return RedirectToAction("List", "Forums");
@@ -178,12 +175,13 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
-			var user = MembershipProvider.GetUser(User.UserName, true);
+			var user = MembershipProvider.GetUser(HttpContext.User.Identity.Name, true);
 			try
 			{
 				ValidateChangePassword(currentPassword, newPassword, confirmPassword);
 				if (Session.IsPasswordReset)
 				{
+					currentPassword = user.ResetPassword();
 					MembershipProvider.ChangePassword(user.UserName, currentPassword, newPassword);
 				}
 				else

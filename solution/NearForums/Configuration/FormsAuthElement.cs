@@ -50,10 +50,5 @@ namespace NearForums.Configuration
 				this["timeToExpireResetPasswordLink"] = value;
 			}
 		}
-
-		/// <summary>
-		/// Determine if the form authentication cookie should be set
-		/// </summary>
-		public bool UseCookie { get; set; }
 	}
 }

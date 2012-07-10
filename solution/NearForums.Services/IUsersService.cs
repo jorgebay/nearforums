@@ -54,11 +54,6 @@ namespace NearForums.Services
 		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
 		void ValidateUserAndPassword(string userName, string password);
 		/// <summary>
-		/// Determines that username is valid
-		/// </summary>
-		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
-		void ValidateUsername(string userName);
-		/// <summary>
 		/// Updates the user's password reset temporary Guid used for password reset purposes and sends an email to the user
 		/// </summary>
 		/// <param name="membershipKey"></param>

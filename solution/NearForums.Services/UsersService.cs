@@ -161,19 +161,6 @@ namespace NearForums.Services
 			}
 		}
 
-		public void ValidateUsername(string userName)
-		{
-			var errors = new List<ValidationError>();
-			if (String.IsNullOrWhiteSpace(userName))
-			{
-				errors.Add(new ValidationError("userName", ValidationErrorType.NullOrEmpty));
-			}
-			if (errors.Count > 0)
-			{
-				throw new ValidationException(errors);
-			}
-		}
-
 		public Dictionary<UserRole, string> GetRoles()
 		{
 			return _dataAccess.GetRoles();

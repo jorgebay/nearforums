@@ -104,13 +104,17 @@ namespace NearForums.Web.Controllers
 				//Update membership data
 				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
 				{
+					if (HttpContext.User.Identity.Name == "")
+					{
+						throw new Exception("Identity can not be null.");
+					}
 					var membershipUser = MembershipProvider.GetUser(HttpContext.User.Identity.Name, false);
 					membershipUser.Email = user.Email;
 					MembershipProvider.UpdateUser(membershipUser);
 				}
 
-				User.UserName = user.UserName;
-				User.Email = Utils.EmptyToNull(user.Email);
+				this.User.UserName = user.UserName;
+				this.User.Email = Utils.EmptyToNull(user.Email);
 
 				return RedirectToAction("Detail", new { id = id });
 			}

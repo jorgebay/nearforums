@@ -60,10 +60,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Logout(string returnUrl)
 		{
 			Session.User = null;
-			if (Config.AuthenticationProviders.FormsAuth.UseCookie)
-			{
-				FormsAuthentication.SignOut();
-			}
+			FormsAuthentication.SignOut();
 
 			return Redirect(returnUrl);
 		}
