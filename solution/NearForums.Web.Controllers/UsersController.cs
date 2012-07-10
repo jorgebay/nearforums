@@ -83,7 +83,7 @@ namespace NearForums.Web.Controllers
 				//Maybe handle a moderator/admin users
 				return ResultHelper.ForbiddenResult(this);
 			}
-			User user = _service.Get(id);
+			var user = _service.Get(id);
 			return View(user);
 		}
 
@@ -100,18 +100,18 @@ namespace NearForums.Web.Controllers
 			{
 				user.Id = id;
 				_service.Edit(user);
-				#region Update membership data
+
+				//Update membership data
 				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
 				{
-					var membershipUser = Membership.GetUser();
+					var membershipUser = MembershipProvider.GetUser(HttpContext.User.Identity.Name, false);
 					membershipUser.Email = user.Email;
-					Membership.UpdateUser(membershipUser);
+					MembershipProvider.UpdateUser(membershipUser);
 				}
-				#endregion
-				#region Adapt values
-				this.User.UserName = user.UserName;
-				this.User.Email = Utils.EmptyToNull(user.Email);
-				#endregion
+
+				User.UserName = user.UserName;
+				User.Email = Utils.EmptyToNull(user.Email);
+
 				return RedirectToAction("Detail", new { id = id });
 			}
 			catch (ValidationException ex)
