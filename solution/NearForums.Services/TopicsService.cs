@@ -42,13 +42,29 @@ namespace NearForums.Services
 		{
 			return _dataAccess.Get(topicId);
 		}
-
+		
+		/// <summary>
+		/// Gets a topic matching the id and the shortname
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="shortName"></param>
+		/// <returns></returns>
 		public Topic Get(int id, string shortName)
 		{
 			var topic = Get(id);
 			if (topic != null && topic.ShortName.ToUpper() != shortName.ToUpper())
 			{
 				topic = null;
+			}
+			return topic;
+		}
+
+		public Topic GetWithMessagesLatest(int id, string shortName)
+		{
+			var topic = Get(id, shortName);
+			if (topic != null)
+			{
+				topic.Messages = _messagesDataAccess.GetByTopicLatest(id);
 			}
 			return topic;
 		}

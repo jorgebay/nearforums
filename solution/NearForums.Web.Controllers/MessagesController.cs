@@ -178,6 +178,10 @@ namespace NearForums.Web.Controllers
 		#endregion
 
 		#region ClearFlags
+		/// <summary>
+		/// Removes the flags/marks on a message
+		/// </summary>
+		/// <returns></returns>
 		[HttpPost]
 		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		public ActionResult ClearFlags(int mid, int id, string forum, string name)

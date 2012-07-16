@@ -23,29 +23,26 @@
 	<div class="description">
 		@Html.Raw(Model.Description)
 	</div>
-@{
-	var messages = new PagedList<Message>(Model.Messages, this.PageIndex, Config.UI.MessagesPerPage);
-}
-	@if (messages.Count > 0)
+	@if (Model.Messages.Count > 0)
 	{
 		<ul id="messages">
-		@foreach (Message m in messages)
+		@foreach (Message m in Model.Messages)
 		{
 			Html.RenderPartial("MessageItem", m);
 		}
 		</ul>
 	}
-	@if (messages.TotalItemCount > 0)
+	@if (Model.Replies > 0)
 	{
 		<div class="pagerSummary">
 			@T("Displaying <span class=\"firstItem\">{0}</span> to <span class=\"lastItem\">{1}</span> of <span class=\"totalItems\">{2}</span> messages",
-				this.PageIndex * Config.UI.MessagesPerPage + 1,
-				this.PageIndex * Config.UI.MessagesPerPage + messages.Count,
-				messages.TotalItemCount)
+				PageIndex * Config.UI.MessagesPerPage + 1,
+				PageIndex * Config.UI.MessagesPerPage + Model.Messages.Count,
+				Model.Replies)
 		</div>
 	}
 	<div id="pagerClient" style="display:none;"><a href="#" onclick="pager.more();return false;">@Html.Img("~/images/loadingMini.gif", "") @T("Show more messages")</a></div>
-	@Html.Pager(messages, S("Previous"), S("Next"))
+	@Html.Pager(Config.UI.MessagesPerPage, PageIndex, Model.Replies, S("Previous"), S("Next"))
 	@Html.Partial("Toolbar")
 	@Html.Partial("Related")
 </div>

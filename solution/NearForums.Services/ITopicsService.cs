@@ -63,6 +63,13 @@ namespace NearForums.Services
 		/// </summary>
 		List<Topic> GetTopicsAndMessagesByUser(int userId);
 		/// <summary>
+		/// Gets a topic with its latest messages in descending order.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		Topic GetWithMessagesLatest(int id, string name);
+		/// <summary>
 		/// Gets a list of unanswered topics from all forums
 		/// </summary>
 		/// <returns></returns>

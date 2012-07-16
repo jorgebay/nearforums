@@ -23,29 +23,30 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IForumsService _forumService;
 		/// <summary>
-		/// Message service
-		/// </summary>
-		private readonly IMessagesService _messageService;
-		/// <summary>
 		/// Service that handles the subscriptions
 		/// </summary>
 		private readonly ITopicsSubscriptionsService _topicSubscriptionService;
 
-		public TopicsController(ITopicsService service, IForumsService forumService, IMessagesService messageService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService) : base(userService)
+		public TopicsController(ITopicsService service, IForumsService forumService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService) : base(userService)
 		{
 			_service = service;
 			_forumService = forumService;
-			_messageService = messageService;
 			_userService = userService;
 			_topicSubscriptionService = topicSubscriptionService;
 		}
 
 		#region Detail
+		/// <summary>
+		/// Topic detail page 
+		/// </summary>
+		/// <param name="name">topic short name</param>
+		/// <param name="forum">forum short name</param>
+		/// <param name="page">zero-based page index</param>
 		[AddVisit]
 		[ValidateReadAccess]
 		public ActionResult Detail(int id, string name, string forum, int page)
 		{
-			var topic = _service.Get(id, name);
+			var topic = _service.GetMessagesFrom(id, page * Config.UI.MessagesPerPage, Config.UI.MessagesPerPage, -10);
 
 			if (topic == null)
 			{
@@ -54,34 +55,28 @@ namespace NearForums.Web.Controllers
 			if (topic.Forum.ShortName != forum)
 			{
 				//The topic could have been moved to another forum
-				//Move permanently to the other forum's topic
 				return ResultHelper.MovedPermanentlyResult(this, new{action="Detail", controller="Topics", id=id, name=name, forum=topic.Forum.ShortName});
 			}
 
-			topic.Messages = _messageService.GetByTopic(id);
-			//load related topics
 			_service.LoadRelatedTopics(topic, 5);
 
-			ViewData["Page"] = page;
+			ViewBag.Page = page;
 			//Defines that the message url should be full
-			ViewData["FullUrl"] = true;
+			ViewBag.FullUrl = true;
 
 			return View(topic);
-		} 
+		}
 		#endregion
 
 		#region Latest Messages
 		[ValidateReadAccess]
 		public ActionResult LatestMessages(int id, string name)
 		{
-			var topic = _service.Get(id, name);
-
+			var topic = _service.GetWithMessagesLatest(id, name);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-
-			topic.Messages = _messageService.GetByTopicLatest(id);
 
 			return ResultHelper.XmlViewResult(this, topic);
 		}
