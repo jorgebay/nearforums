@@ -160,15 +160,5 @@ namespace NearForums.Services
 			}
 			return topic;
 		}
-
-		public Topic GetMessages(int topicId, int firstMsg, int lastMsg, int initIndex)
-		{
-			var topic = Get(topicId);
-			if (topic != null)
-			{
-				topic.Messages = _messagesDataAccess.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
-			}
-			return topic;
-		}
 	}
 }

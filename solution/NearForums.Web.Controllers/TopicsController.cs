@@ -246,14 +246,11 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess(RefuseOnFail=true)]
 		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
 		{
-			//load topic that contains messages
 			var topic = _service.GetMessagesFrom(id, from, Config.UI.MessagesPerPage, initIndex);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			//Defines that the message url just be the anchor name
-			ViewData["FullUrl"] = false;
 
 			return View(false, topic);
 		}
@@ -262,14 +259,11 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess(RefuseOnFail = true)]
 		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg, int initIndex)
 		{
-			//load topic that contains messages
-			var topic = _service.GetMessages(id, firstMsg, lastMsg, initIndex);
+			var topic = _service.GetMessagesFrom(id, firstMsg, lastMsg-firstMsg, initIndex);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			//Defines that the message url just be the anchor name
-			ViewData["FullUrl"] = false;
 
 			return View(false, "PageMore", topic);
 		}
