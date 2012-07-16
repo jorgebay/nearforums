@@ -33,23 +33,6 @@ namespace NearForums.Services
 			return _dataAccess.GetByTopicLatest(topicId);
 		}
 
-		/// <summary>
-		/// Gets a list of messages from firstMsg to lastMsg
-		/// </summary>
-		public List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex)
-		{
-			return _dataAccess.GetByTopic(topicId, firstMsg, lastMsg, initIndex);
-		}
-
-		/// <summary>
-		/// Gets an specific amount of messages starting from firstMsg
-		/// </summary>
-		/// <returns></returns>
-		public List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex)
-		{
-			return _dataAccess.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
-		}
-
 		public  void Add(Message message, string ip)
 		{
 			message.ValidateFields();
