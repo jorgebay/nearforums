@@ -46,7 +46,7 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult Detail(int id, string name, string forum, int page)
 		{
-			var topic = _service.GetMessagesFrom(id, page * Config.UI.MessagesPerPage, Config.UI.MessagesPerPage, -10);
+			var topic = _service.GetWithMessages(id, page * Config.UI.MessagesPerPage, Config.UI.MessagesPerPage);
 
 			if (topic == null)
 			{
@@ -244,9 +244,9 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		[HttpPost]
 		[ValidateReadAccess(RefuseOnFail=true)]
-		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
+		public ActionResult PageMore(int id, string name, string forum, int from)
 		{
-			var topic = _service.GetMessagesFrom(id, from, Config.UI.MessagesPerPage, initIndex);
+			var topic = _service.GetWithMessages(id, from, Config.UI.MessagesPerPage);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -257,9 +257,9 @@ namespace NearForums.Web.Controllers
 
 		[HttpPost]
 		[ValidateReadAccess(RefuseOnFail = true)]
-		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg, int initIndex)
+		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg)
 		{
-			var topic = _service.GetMessagesFrom(id, firstMsg, lastMsg-firstMsg, initIndex);
+			var topic = _service.GetWithMessages(id, firstMsg, lastMsg-firstMsg);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);

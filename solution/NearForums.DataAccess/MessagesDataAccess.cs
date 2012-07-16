@@ -19,7 +19,7 @@ namespace NearForums.DataAccess
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				var m = this.ParseBasicMessageRow(dr, 0);
+				var m = this.ParseBasicMessageRow(dr);
 				m.User.Photo = dr.GetNullableString("UserPhoto");
 				m.User.RegistrationDate = dr.GetDate("UserRegistrationDate");
 
@@ -43,7 +43,7 @@ namespace NearForums.DataAccess
 			DataTable dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				Message m = this.ParseBasicMessageRow(dr, 0);
+				Message m = this.ParseBasicMessageRow(dr);
 
 				list.Add(m);
 			}
@@ -51,9 +51,9 @@ namespace NearForums.DataAccess
 			return list;
 		}
 
-		protected virtual Message ParseBasicMessageRow(DataRow dr, int initIndex)
+		protected virtual Message ParseBasicMessageRow(DataRow dr)
 		{
-			Message m = new Message();
+			var m = new Message();
 			m.Id = dr.Get<int>("MessageId");
 			m.Body = dr.GetString("MessageBody");
 			m.Date = dr.GetDate("MessageCreationDate");
@@ -67,18 +67,18 @@ namespace NearForums.DataAccess
 			return m;
 		}
 
-		public List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex)
+		public List<Message> GetByTopic(int topicId, int firstMsg, int lastMsg)
 		{
-			List<Message> list = new List<Message>();
+			var list = new List<Message>();
 			DbCommand comm = this.GetCommand("SPMessagesGetByTopicUpTo");
 			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
 			comm.AddParameter(this.Factory, "FirstMsg", DbType.Int32, firstMsg);
 			comm.AddParameter(this.Factory, "LastMsg", DbType.Int32, lastMsg);
 
-			DataTable dt = this.GetTable(comm);
+			var dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				var m = this.ParseBasicMessageRow(dr, initIndex);
+				var m = this.ParseBasicMessageRow(dr);
 				m.User.Photo = dr.GetNullableString("UserPhoto");
 				m.User.RegistrationDate = dr.GetDate("UserRegistrationDate");
 
@@ -88,18 +88,18 @@ namespace NearForums.DataAccess
 			return list;
 		}
 
-		public List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex)
+		public List<Message> GetByTopicFrom(int topicId, int firstMsg, int amount)
 		{
-			List<Message> list = new List<Message>();
+			var list = new List<Message>();
 			DbCommand comm = this.GetCommand("SPMessagesGetByTopicFrom");
 			comm.AddParameter(this.Factory, "TopicId", DbType.Int32, topicId);
 			comm.AddParameter(this.Factory, "FirstMsg", DbType.Int32, firstMsg);
 			comm.AddParameter(this.Factory, "Amount", DbType.Int32, amount);
 
-			DataTable dt = this.GetTable(comm);
+			var dt = this.GetTable(comm);
 			foreach (DataRow dr in dt.Rows)
 			{
-				var m = this.ParseBasicMessageRow(dr, initIndex);
+				var m = this.ParseBasicMessageRow(dr);
 				m.User.Photo = dr.GetNullableString("UserPhoto");
 				m.User.RegistrationDate = dr.GetDate("UserRegistrationDate");
 

@@ -45,7 +45,7 @@ namespace NearForums.Services
 			foreach (var t in topics)
 			{
 				//Get the complete topic information: topic fields and messages
-				var completeTopic = _topicsService.GetMessagesFrom(t.Id, 0, config.MaxMessages, 1);
+				var completeTopic = _topicsService.GetWithMessages(t.Id, 0, config.MaxMessages);
 				topicsAndMessages.Add(completeTopic);
 			}
 			_searchService.Add(topicsAndMessages);

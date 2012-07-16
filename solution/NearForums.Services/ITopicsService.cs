@@ -51,13 +51,14 @@ namespace NearForums.Services
 		List<Topic> GetLatest();
 		List<Topic> GetLatest(int forumId, int startIndex, int length, UserRole? role);
 		/// <summary>
-		/// Get a topic containing an specific amount of messages starting from firstMsg
-		/// </summary>
-		Topic GetMessagesFrom(int topicId, int firstMsg, int amount, int initIndex);
-		/// <summary>
 		/// Gets a list of topics with the messages posted by the user
 		/// </summary>
 		List<Topic> GetTopicsAndMessagesByUser(int userId);
+		/// <summary>
+		/// Get a topic containing an specific amount of messages starting from firstMsg
+		/// </summary>
+		/// <param name="firstMsg">Zero-based index of the message</param>
+		Topic GetWithMessages(int topicId, int firstMsg, int amount);
 		/// <summary>
 		/// Gets a topic with its latest messages in descending order.
 		/// </summary>

@@ -12,8 +12,8 @@ namespace NearForums.DataAccess
 		void Delete(int topicId, int messageId, int userId);
 		bool Flag(int topicId, int messageId, string ip);
 		List<NearForums.Message> GetByTopic(int topicId);
-		List<NearForums.Message> GetByTopic(int topicId, int firstMsg, int lastMsg, int initIndex);
-		List<NearForums.Message> GetByTopicFrom(int topicId, int firstMsg, int amount, int initIndex);
+		List<NearForums.Message> GetByTopic(int topicId, int firstMsg, int lastMsg);
+		List<NearForums.Message> GetByTopicFrom(int topicId, int firstMsg, int amount);
 		List<NearForums.Message> GetByTopicLatest(int topicId);
 		List<NearForums.Topic> ListFlagged();
 	}

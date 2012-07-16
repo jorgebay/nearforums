@@ -59,6 +59,16 @@ namespace NearForums.Services
 			return topic;
 		}
 
+		public Topic GetWithMessages(int topicId, int firstMsg, int amount)
+		{
+			var topic = Get(topicId);
+			if (topic != null)
+			{
+				topic.Messages = _messagesDataAccess.GetByTopicFrom(topicId, firstMsg, amount);
+			}
+			return topic;
+		}
+
 		public Topic GetWithMessagesLatest(int id, string shortName)
 		{
 			var topic = Get(id, shortName);
@@ -149,16 +159,6 @@ namespace NearForums.Services
 		public List<Topic> GetTopicsAndMessagesByUser(int userId)
 		{
 			return _dataAccess.GetTopicsAndMessagesByUser(userId);
-		}
-
-		public Topic GetMessagesFrom(int topicId, int firstMsg, int amount, int initIndex)
-		{
-			var topic = Get(topicId);
-			if (topic != null)
-			{
-				topic.Messages = _messagesDataAccess.GetByTopicFrom(topicId, firstMsg, amount, initIndex);
-			}
-			return topic;
 		}
 	}
 }
