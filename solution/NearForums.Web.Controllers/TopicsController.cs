@@ -240,7 +240,7 @@ namespace NearForums.Web.Controllers
 
 		#region Client Paging
 		/// <summary>
-		/// Gets an amount (by config) of message items starting from initIndex
+		/// Gets an amount (by config) of message items starting from index
 		/// </summary>
 		[HttpPost]
 		[ValidateReadAccess(RefuseOnFail=true)]
