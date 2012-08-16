@@ -183,7 +183,7 @@ strong a
 {
 	float: right;
 	list-style-type: none;
-	padding: 0 10px 6px 0;
+	padding: 0 0 6px 0;
 	margin: 0;
 	font-size: 13px;
 	height:16px;
@@ -226,4 +226,37 @@ strong a
 #content
 {
 	padding: 20px 0 20px 0;
+}
+#searchBox
+{
+	float: right;
+	clear: both;
+	padding: 7px 10px 7px 10px;
+	height: 30px;
+	margin: 1px 0 0 0;
+	background-color: #F9F9F9;
+	/*background-color: #555555;*/
+	border-radius: 5px 0 0 0;
+	border-left: 1px solid #C0C0C0;
+	border-top: 1px solid #C0C0C0;
+	border-right: 1px solid #C0C0C0;
+}
+#searchBox input.text
+{
+	padding: 4px;
+	overflow: hidden;
+	line-height: 18px;
+	height: 18px;
+	border: 1px solid #BBBBBB;
+}
+#searchBox input.button
+{
+	padding: 4px;
+	line-height: 18px;
+	margin: 0;
+	border: 1px solid #999999;
+}
+#searchBox input.button:hover, #searchBox input.button:focus
+{
+	border: 1px solid #FFFFFF;
 }
