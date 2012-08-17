@@ -45,20 +45,9 @@ namespace NearForums.Web.Controllers
 		[ValidateInput(true)]
 		public ActionResult Add([Bind(Prefix = "")] Template template, HttpPostedFileBase postedFile, bool useDefaultName)
 		{
-
 			try
 			{
-				if (useDefaultName)
-				{
-					template.Key = SafeIO.Path_GetFileNameWithoutExtension(postedFile.FileName);
-				}
-
-				if (SafeIO.Path_GetExtension(postedFile.FileName) != ".zip")
-				{
-					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
-				}
-
-				TemplateHelper.Add(template, postedFile.InputStream, HttpContext, _service);
+				TemplateHelper.Add(template, postedFile, HttpContext, useDefaultName, _service);
 				return RedirectToAction("List");
 			}
 			catch (ValidationException ex)
