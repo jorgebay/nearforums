@@ -1,28 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
+using System.Reflection;
 using System.Web.Mvc;
-using System.Web.Mvc.Html;
-using ICSharpCode.SharpZipLib.Zip;
-using System.Text.RegularExpressions;
-using System.Text;
-using NearForums.Validation;
-using NearForums.Web.Controllers.Filters;
-
-using System.Configuration;
-using System.Web.Configuration;
-using System.Net.Configuration;
-using NearForums.Web.Controllers.Helpers;
-using DotNetOpenAuth.OAuth.ChannelElements;
-using DotNetOpenAuth.Messaging;
-using DotNetOpenAuth.OpenId.RelyingParty;
-using DotNetOpenAuth.OpenId;
-using DotNetOpenAuth.OAuth;
-using DotNetOpenAuth.OAuth.Messages;
-using NearForums.Web.Controllers.Helpers.OAuth;
-using System.Net;
-using NearForums.Web.Extensions;
 using NearForums.Services;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
@@ -38,6 +18,13 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Moderator)]
 		public ActionResult Dashboard()
 		{
+			//Get the assembly file version
+			var attrs = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyFileVersionAttribute), true);
+			ViewBag.Version = "0";
+			if (attrs.Length > 0 && attrs[0] as AssemblyFileVersionAttribute != null)
+			{
+				ViewBag.Version = ((AssemblyFileVersionAttribute)attrs[0]).Version;
+			}
 			return View();
 		}
 		#endregion
