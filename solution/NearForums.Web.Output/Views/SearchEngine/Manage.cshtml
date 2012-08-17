@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Search Index Management";
+	ViewBag.Title = S("Manage search index");
 }
 <ul class="path floatContainer">
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
@@ -9,9 +9,9 @@
 <p>@T("The search index contains {0} documents.", ViewBag.DocumentCount)</p>
 @if (Config.Search.Enabled)
 {
-	<h2>Reindex</h2>
+	<h2>@T("Reindex")</h2>
 	<p>
-		@T("You can drop the current search index contents, rebuild and reindex all the threads on all the documents.") 
+		@T("You can drop the current search index contents, rebuild and reindex all the threads.") 
 		<br />
 		@T("This operation may take a while depending on the amount of threads and messages.")
 		<br /> 

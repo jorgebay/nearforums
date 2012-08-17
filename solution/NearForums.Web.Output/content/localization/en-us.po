@@ -1103,8 +1103,8 @@ msgid "The search index contains {0} documents."
 msgstr "The search index contains {0} documents."
 
 #: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
-msgid "You can drop the current search index contents, rebuild and reindex all the threads on all the documents."
-msgstr "You can drop the current search index contents, rebuild and reindex all the threads on all the documents."
+msgid "You can drop the current search index contents, rebuild and reindex all the threads."
+msgstr "You can drop the current search index contents, rebuild and reindex all the threads."
 
 #: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
 msgid "This operation may take a while depending on the amount of threads and messages."
