@@ -1,58 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.UI;
 using NearForums.Web.Controllers.Helpers;
-using NearForums.Web.Extensions.FormsAuthenticationHelper;
-using NearForums.Web.Extensions.FormsAuthenticationHelper.Impl;
-using NearForums.Web.Extensions;
-using NearForums.ServiceClient;
 using NearForums.Validation;
-using NearForums.Configuration;
-using System.Configuration;
 using NearForums.Web.Controllers.Filters;
+using NearForums.Services;
 
 namespace NearForums.Web.Controllers
 {
-
 	[HandleError]
 	[ValidateFormsAuth]
 	public class FormsAuthenticationController : BaseController
 	{
-		/* This class uses code written by Troy Goode
-		 * Source code licensed by MS-PL
-		 * Website: https://github.com/TroyGoode/MembershipStarterKit
-		 */
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _service;
 
-		public FormsAuthenticationController()
-			: this(null, null)
+		public FormsAuthenticationController(IUsersService service) : base(service)
 		{
-		}
-
-		// This constructor is not used by the MVC framework but is instead provided for ease
-		// of unit testing this type. See the comments at the end of this file for more
-		// information.
-		public FormsAuthenticationController(IFormsAuthentication formsAuth, IMembershipService service)
-		{
-			FormsAuth = formsAuth ?? new FormsAuthenticationService();
-			MembershipService = service ?? new AccountMembershipService();
-		}
-
-		public IFormsAuthentication FormsAuth
-		{
-			get;
-			private set;
-		}
-
-		public IMembershipService MembershipService
-		{
-			get;
-			private set;
+			_service = service;
 		}
 
 		[HttpGet]
@@ -72,8 +40,8 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				ValidateLogOn(userName, password);
-				FormsAuth.SignIn(userName, rememberMe);
-				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
+				SecurityHelper.TryFinishMembershipLogin(Session, MembershipProvider.GetUser(userName, true), _service);
+				FormsAuthentication.SetAuthCookie(userName, rememberMe);
 				return Redirect(returnUrl);
 			}
 			catch (ValidationException ex)
@@ -86,37 +54,37 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult Register()
 		{
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
 
 			return View();
 		}
 
 		/// <summary>
-		/// Action executed when a user clicks on the reset password email
+		/// This action is executed inside the reset password / forgot password flow:
+		/// When a user clicks on the reset password email
 		/// </summary>
 		public ActionResult NewPassword(string guid)
 		{
 			Guid pwdResetGuid;
-			if (Guid.TryParseExact(guid, "N", out pwdResetGuid) == false)
+			if (!Guid.TryParseExact(guid, "N", out pwdResetGuid))
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 
-			User user = UsersServiceClient.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
+			var user = _service.GetByPasswordResetGuid(AuthenticationProvider.Membership, pwdResetGuid.ToString("N"));
 			if (user == null || user.PasswordResetGuidExpireDate < DateTime.Now)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
 
-			MembershipUser membershipUser = Membership.GetUser(user.UserName);
-			if (membershipUser == null)
+			var membershipUserName = MembershipProvider.GetUserNameByEmail(user.Email);
+			if (membershipUserName == null)
 			{
-				return ResultHelper.ForbiddenResult(this);
+				throw new Exception("No user was found for email " + user.Email);
 			}
-
-			MembershipProvider provider = Membership.Provider;
-			FormsAuth.SignIn(membershipUser.UserName, false);
-			SecurityHelper.TryFinishMembershipLogin(base.Session, membershipUser);
+			var membershipUser = MembershipProvider.GetUser(membershipUserName, true);
+			SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
+			FormsAuthentication.SetAuthCookie(membershipUser.UserName, false);
 			Session.IsPasswordReset = true;
 
 			return RedirectToAction("ChangePassword");
@@ -133,29 +101,26 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Sends the email to the user to reset the password
 		/// </summary>
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult ResetPassword(string email)
 		{
 			try
 			{
-				string userName = Membership.GetUserNameByEmail(email);
-
-				ValidateRegistration(userName);
-				MembershipUser membershipUser = Membership.GetUser(userName);
-				User user = UsersServiceClient.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
-				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
-				UsersServiceClient.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(Config.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
-				if (ModelState.IsValid)
+				var userName = MembershipProvider.GetUserNameByEmail(email);
+				if (userName == null)
 				{
-					string linkUrl = this.Domain + this.Url.RouteUrl(new
-					{
-						controller = "FormsAuthentication",
-						action = "NewPassword",
-						guid = guid
-					});
-					NotificationsServiceClient.SendResetPassword(user, linkUrl);
-					return View("ResetPasswordEmailConfirmation");
+					throw new ValidationException(new ValidationError("email", ValidationErrorType.CompareNotMatch));
 				}
+				var membershipUser = MembershipProvider.GetUser(userName, true);
+				string guid = System.Guid.NewGuid().ToString("N");//GUID without hyphens
+				string linkUrl = this.Domain + this.Url.RouteUrl(new
+				{
+					controller = "FormsAuthentication",
+					action = "NewPassword",
+					guid = guid
+				});
+				_service.ResetPassword(membershipUser.ProviderUserKey.ToString(), guid, linkUrl);
+				return View("ResetPasswordEmailConfirmation");
 			}
 			catch (ValidationException ex)
 			{
@@ -164,10 +129,10 @@ namespace NearForums.Web.Controllers
 			return View();
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
 		{
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
 			var createStatus = MembershipCreateStatus.ProviderError;
 
 			try
@@ -175,10 +140,11 @@ namespace NearForums.Web.Controllers
 				ValidateRegistration(userName, email, password, confirmPassword);
 				ValidateRegistration(agreeTerms);
 				// Attempt to register the user in the membership db
-				createStatus = MembershipService.CreateUser(userName, password, email);
+				var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
 				ValidateCreateStatus(createStatus);
-				SecurityHelper.TryFinishMembershipLogin(base.Session, Membership.GetUser(userName));
-				FormsAuth.SignIn(userName, false);
+				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
+				FormsAuthentication.SetAuthCookie(userName, false);
+
 				if (ModelState.IsValid)
 				{
 					return RedirectToAction("List", "Forums");
@@ -189,7 +155,7 @@ namespace NearForums.Web.Controllers
 				if (createStatus == MembershipCreateStatus.Success)
 				{
 					//The membership succeded but the creation of the site user failed / Model constraint.
-					Membership.DeleteUser(userName);
+					MembershipProvider.DeleteUser(userName, true);
 				}
 				this.AddErrors(this.ModelState, ex);
 			}
@@ -200,7 +166,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization]
 		public ActionResult ChangePassword()
 		{
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = MembershipProvider.MinRequiredPasswordLength;
 
 			return View();
 		}
@@ -209,17 +175,18 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
 		{
-			var user = Membership.GetUser();
+			var user = MembershipProvider.GetUser(HttpContext.User.Identity.Name, true);
 			try
 			{
 				ValidateChangePassword(currentPassword, newPassword, confirmPassword);
 				if (Session.IsPasswordReset)
 				{
-					MembershipService.ChangePassword(user.UserName, newPassword);
+					currentPassword = user.ResetPassword();
+					MembershipProvider.ChangePassword(user.UserName, currentPassword, newPassword);
 				}
 				else
 				{
-					if (!MembershipService.ChangePassword(user.UserName, currentPassword, newPassword))
+					if (!MembershipProvider.ChangePassword(user.UserName, currentPassword, newPassword))
 					{
 						throw new ValidationException(new ValidationError("currentPassword", ValidationErrorType.CompareNotMatch));
 					}
@@ -234,7 +201,7 @@ namespace NearForums.Web.Controllers
 				this.AddErrors(ModelState, ex);
 			}
 
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = MembershipProvider.MinRequiredPasswordLength;
 			return View();
 		}
 
@@ -257,7 +224,7 @@ namespace NearForums.Web.Controllers
 			{
 				errors.Add(new ValidationError("currentPassword", ValidationErrorType.NullOrEmpty));
 			}
-			if (newPassword == null || newPassword.Length < MembershipService.MinPasswordLength)
+			if (newPassword == null || newPassword.Length < MembershipProvider.MinRequiredPasswordLength)
 			{
 				errors.Add(new ValidationError("newPassword", ValidationErrorType.NullOrEmpty));
 			}
@@ -287,7 +254,7 @@ namespace NearForums.Web.Controllers
 			{
 				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
 			}
-			if (errors.Count == 0 && !MembershipService.ValidateUser(userName, password))
+			if (errors.Count == 0 && !MembershipProvider.ValidateUser(userName, password))
 			{
 				errors.Add(new ValidationError("userName", ValidationErrorType.CompareNotMatch));
 			}
@@ -344,14 +311,6 @@ namespace NearForums.Web.Controllers
 			if (!agreeTerms)
 			{
 				throw new ValidationException(new ValidationError("agreeTerms", ValidationErrorType.NullOrEmpty));
-			}
-		}
-
-		private void ValidateRegistration(string userName)
-		{
-			if (userName == null)
-			{
-				throw new ValidationException(new ValidationError("email", ValidationErrorType.CompareNotMatch));
 			}
 		}
 		#endregion

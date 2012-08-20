@@ -84,6 +84,25 @@ namespace NearForums.Tests.Fakes
 			}
 		}
 
+		/// <summary>
+		/// Cleans the cache instance
+		/// </summary>
+		public void CleanCache()
+		{
+			var itemsToRemove = new List<string>();
+
+			var enumerator = Cache.GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				itemsToRemove.Add(enumerator.Key.ToString());
+			}
+
+			foreach (string itemToRemove in itemsToRemove)
+			{
+				Cache.Remove(itemToRemove);
+			}
+		}
+
 		private FakeHttpServerUtility _server;
 		public override HttpServerUtilityBase Server
 		{

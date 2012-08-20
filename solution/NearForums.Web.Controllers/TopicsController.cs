@@ -1,25 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Web.Mvc;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
 using NearForums.Web.Controllers.Filters;
-using System.Web.Routing;
 using NearForums.Web.Controllers.Helpers;
 
 namespace NearForums.Web.Controllers
 {
 	public class TopicsController : BaseController
 	{
+		/// <summary>
+		/// Topic service
+		/// </summary>
+		private readonly ITopicsService _service;
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _userService;
+		/// <summary>
+		/// Forum service
+		/// </summary>
+		private readonly IForumsService _forumService;
+		/// <summary>
+		/// Service that handles the subscriptions
+		/// </summary>
+		private readonly ITopicsSubscriptionsService _topicSubscriptionService;
+
+		public TopicsController(ITopicsService service, IForumsService forumService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService) : base(userService)
+		{
+			_service = service;
+			_forumService = forumService;
+			_userService = userService;
+			_topicSubscriptionService = topicSubscriptionService;
+		}
+
 		#region Detail
+		/// <summary>
+		/// Topic detail page 
+		/// </summary>
+		/// <param name="name">topic short name</param>
+		/// <param name="forum">forum short name</param>
+		/// <param name="page">zero-based page index</param>
 		[AddVisit]
 		[ValidateReadAccess]
 		public ActionResult Detail(int id, string name, string forum, int page)
 		{
-			var topic = TopicsServiceClient.Get(id, name);
+			var topic = _service.GetWithMessages(id, page * Config.UI.MessagesPerPage, Config.UI.MessagesPerPage);
 
 			if (topic == null)
 			{
@@ -28,34 +55,28 @@ namespace NearForums.Web.Controllers
 			if (topic.Forum.ShortName != forum)
 			{
 				//The topic could have been moved to another forum
-				//Move permanently to the other forum's topic
 				return ResultHelper.MovedPermanentlyResult(this, new{action="Detail", controller="Topics", id=id, name=name, forum=topic.Forum.ShortName});
 			}
 
-			topic.Messages = MessagesServiceClient.GetByTopic(id);
-			//load related topics
-			TopicsServiceClient.LoadRelatedTopics(topic, 5);
+			_service.LoadRelatedTopics(topic, 5);
 
-			ViewData["Page"] = page;
+			ViewBag.Page = page;
 			//Defines that the message url should be full
-			ViewData["FullUrl"] = true;
+			ViewBag.FullUrl = true;
 
 			return View(topic);
-		} 
+		}
 		#endregion
 
 		#region Latest Messages
 		[ValidateReadAccess]
 		public ActionResult LatestMessages(int id, string name)
 		{
-			var topic = TopicsServiceClient.Get(id, name);
-
+			var topic = _service.GetWithMessagesLatest(id, name);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-
-			topic.Messages = MessagesServiceClient.GetByTopicLatest(id);
 
 			return ResultHelper.XmlViewResult(this, topic);
 		}
@@ -67,7 +88,7 @@ namespace NearForums.Web.Controllers
 		[PreventFlood]
 		public ActionResult Add(string forum)
 		{
-			var f = ForumsServiceClient.Get(forum);
+			var f = _forumService.Get(forum);
 			if (!f.HasPostAccess(Role))
 			{
 				return ResultHelper.ForbiddenResult(this);
@@ -79,7 +100,7 @@ namespace NearForums.Web.Controllers
 			topic.ReadAccessRole = f.ReadAccessRole;
 			//Default, It can be less than its parent
 			topic.PostAccessRole = f.PostAccessRole;
-			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 			return View("Edit", topic);
 		}
@@ -93,9 +114,9 @@ namespace NearForums.Web.Controllers
 		{
 			try
 			{
-				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 				
-				topic.Forum = ForumsServiceClient.Get(forum);
+				topic.Forum = _forumService.Get(forum);
 				if (topic.Forum == null)
 				{
 					return ResultHelper.NotFoundResult(this);
@@ -115,8 +136,8 @@ namespace NearForums.Web.Controllers
 
 				if (ModelState.IsValid)
 				{
-					TopicsServiceClient.Create(topic, Request.UserHostAddress);
-					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config);
+					_service.Create(topic, Request.UserHostAddress);
+					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
 					return RedirectToRoute(new { action = "Detail", controller = "Topics", id = topic.Id, name = topic.ShortName, forum = forum, page = 0 });
 				}
 			}
@@ -124,7 +145,7 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 			return View("Edit", topic);
 		}
@@ -136,7 +157,7 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult Edit(int id, string name, string forum)
 		{
-			Topic topic = TopicsServiceClient.Get(id, name);
+			Topic topic = _service.Get(id, name);
 
 			if (topic == null)
 			{
@@ -149,8 +170,8 @@ namespace NearForums.Web.Controllers
 			}
 			#endregion
 			ViewBag.IsEdit = true;
-			ViewBag.notify = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config);
-			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			ViewBag.notify = SubscriptionHelper.IsUserSubscribed(id, this.User.Id, this.Config, _topicSubscriptionService);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 
 			return View(topic);
@@ -163,7 +184,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Edit(int id, string name, string forum, [Bind(Prefix = "", Exclude = "Forum")] Topic topic, bool notify, string email)
 		{
 			topic.Id = id;
-			topic.Forum = ForumsServiceClient.Get(forum);
+			topic.Forum = _forumService.Get(forum);
 			if (topic.Forum == null)
 			{
 				return ResultHelper.NotFoundResult(this);
@@ -174,7 +195,7 @@ namespace NearForums.Web.Controllers
 			}
 
 			#region Check if user can edit
-			var originalTopic = TopicsServiceClient.Get(id);
+			var originalTopic = _service.Get(id);
 			if (User.Role < UserRole.Moderator)
 			{
 				//If the user is not moderator or admin: Check if the user that created of the topic is the same as the logged user
@@ -193,7 +214,7 @@ namespace NearForums.Web.Controllers
 
 			try
 			{
-				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config);
+				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
@@ -201,8 +222,8 @@ namespace NearForums.Web.Controllers
 				{
 					topic.Description = topic.Description.SafeHtml().ReplaceValues();
 				}
-				TopicsServiceClient.Edit(topic, Request.UserHostAddress);
-				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config);
+				_service.Edit(topic, Request.UserHostAddress);
+				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config, _topicSubscriptionService);
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
 			}
 			catch (ValidationException ex)
@@ -210,7 +231,7 @@ namespace NearForums.Web.Controllers
 				this.AddErrors(this.ModelState, ex);
 			}
 			ViewBag.IsEdit = true;
-			var roles = UsersServiceClient.GetRoles().Where(x => x.Key <= Role);
+			var roles = _userService.GetRoles().Where(x => x.Key <= Role);
 			ViewBag.UserRoles = new SelectList(roles, "Key", "Value");
 
 			return View(topic);
@@ -219,36 +240,30 @@ namespace NearForums.Web.Controllers
 
 		#region Client Paging
 		/// <summary>
-		/// Gets an amount (by config) of message items starting from initIndex
+		/// Gets an amount (by config) of message items starting from index
 		/// </summary>
 		[HttpPost]
 		[ValidateReadAccess(RefuseOnFail=true)]
-		public ActionResult PageMore(int id, string name, string forum, int from, int initIndex)
+		public ActionResult PageMore(int id, string name, string forum, int from)
 		{
-			//load topic that contains messages
-			var topic = TopicsServiceClient.GetMessagesFrom(id, from, Config.UI.MessagesPerPage, initIndex);
+			var topic = _service.GetWithMessages(id, from, Config.UI.MessagesPerPage);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			//Defines that the message url just be the anchor name
-			ViewData["FullUrl"] = false;
 
 			return View(false, topic);
 		}
 
 		[HttpPost]
 		[ValidateReadAccess(RefuseOnFail = true)]
-		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg, int initIndex)
+		public ActionResult PageUntil(int id, string name, string forum, int firstMsg, int lastMsg)
 		{
-			//load topic that contains messages
-			var topic = TopicsServiceClient.GetMessages(id, firstMsg, lastMsg, initIndex);
+			var topic = _service.GetWithMessages(id, firstMsg, lastMsg-firstMsg);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			//Defines that the message url just be the anchor name
-			ViewData["FullUrl"] = false;
 
 			return View(false, "PageMore", topic);
 		}
@@ -262,7 +277,7 @@ namespace NearForums.Web.Controllers
 		/// <returns></returns>
 		public ActionResult ShortUrl(int id)
 		{
-			Topic t = TopicsServiceClient.Get(id);
+			Topic t = _service.Get(id);
 			if (t == null)
 			{
 				return ResultHelper.NotFoundResult(this, true);
@@ -280,7 +295,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Delete(int id, string name, string forum)
 		{
 			#region Check if user can edit
-			var originalTopic = TopicsServiceClient.Get(id);
+			var originalTopic = _service.Get(id);
 			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
@@ -295,7 +310,7 @@ namespace NearForums.Web.Controllers
 			}			
 			#endregion
 
-			TopicsServiceClient.Delete(id, this.User.Id, Request.UserHostAddress);
+			_service.Delete(id, this.User.Id, Request.UserHostAddress);
 
 			return Json(new { nextUrl=Url.Action("Detail", "Forums", new{ forum = forum})});
 		}
@@ -307,13 +322,13 @@ namespace NearForums.Web.Controllers
 		[ValidateReadAccess]
 		public ActionResult Move(int id, string name)
 		{
-			var topic = TopicsServiceClient.Get(id, name);
+			var topic = _service.Get(id, name);
 			if (topic == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 
-			ViewBag.Categories = ForumsServiceClient.GetList(Role);
+			ViewBag.Categories = _forumService.GetList(Role);
 			return View(topic);
 		}
 
@@ -322,7 +337,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Move(int id, string name, [Bind(Prefix = "", Exclude = "Id")] Topic t)
 		{
-			Topic savedTopic = TopicsServiceClient.Move(id, t.Forum.Id, this.User.Id, Request.UserHostAddress);
+			Topic savedTopic = _service.Move(id, t.Forum.Id, this.User.Id, Request.UserHostAddress);
 			return RedirectToAction("Detail", new
 			{
 				forum = savedTopic.Forum.ShortName
@@ -340,7 +355,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult CloseReplies(int id, string name)
 		{
 			#region Check if user can edit
-			var originalTopic = TopicsServiceClient.Get(id);
+			var originalTopic = _service.Get(id);
 			if (Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
@@ -355,7 +370,7 @@ namespace NearForums.Web.Controllers
 			}
 			#endregion
 
-			TopicsServiceClient.Close(id, this.User.Id, Request.UserHostAddress);
+			_service.Close(id, this.User.Id, Request.UserHostAddress);
 
 			return new EmptyResult();
 		}
@@ -369,7 +384,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult OpenReplies(int id, string name)
 		{
 			#region Check if user can edit
-			var originalTopic = TopicsServiceClient.Get(id);
+			var originalTopic = _service.Get(id);
 			if (this.User.Role < UserRole.Moderator)
 			{
 				//Check if the user that created of the topic is the same as the logged user
@@ -384,7 +399,7 @@ namespace NearForums.Web.Controllers
 			}
 			#endregion
 
-			TopicsServiceClient.Open(id, this.User.Id, Request.UserHostAddress);
+			_service.Open(id, this.User.Id, Request.UserHostAddress);
 
 			return new EmptyResult();
 		}

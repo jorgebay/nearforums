@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.State;
 using System.Web.Routing;
-using NearForums.ServiceClient;
+using NearForums.Services;
 
 namespace NearForums.Web.Controllers.Filters
 {
@@ -14,6 +14,8 @@ namespace NearForums.Web.Controllers.Filters
 	/// </summary>
 	public class AddVisitAttribute : BaseActionFilterAttribute
 	{
+		public ITopicsService Service { get; set; }
+
 		public AddVisitAttribute()
 		{
 			//Execute last
@@ -30,10 +32,14 @@ namespace NearForums.Web.Controllers.Filters
 				{
 					throw new ArgumentException("Necessary route values not found in controller context.");
 				}
+				if (Service == null)
+				{
+					throw new NullReferenceException("The service is null, where an instance of ITopicsService was required.");
+				}
 
 				if (!cache.VisitedActionAlready(values["controller"].ToString(), values["action"].ToString(), values["id"].ToString(), filterContext.HttpContext.Request.UserHostAddress))
 				{
-					TopicsServiceClient.AddVisit(Convert.ToInt32(values["id"]));
+					Service.AddVisit(Convert.ToInt32(values["id"]));
 				}
 			}
 			base.OnActionExecuted(filterContext);

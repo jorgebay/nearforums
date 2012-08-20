@@ -8,16 +8,28 @@ using NearForums.Web.State;
 using NearForums.Configuration;
 using NearForums.Validation;
 using System.Web;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Controllers.Filters;
 using System.Text.RegularExpressions;
 using NearForums.Web.Extensions;
+using System.Web.Security;
 
 namespace NearForums.Web.Controllers
 {
 	[HandleErrorLog(View = "Errors/500")]
+	[Templating]
 	public class BaseController : Controller
 	{
+		/// <summary>
+		/// User service
+		/// </summary>
+		private IUsersService _service;
+
+		public BaseController(IUsersService service)
+		{
+			_service = service;
+		}
+
 		#region Props
 		#region State management
 		private SessionWrapper _session;
@@ -149,6 +161,25 @@ namespace NearForums.Web.Controllers
 			}
 		}
 		#endregion
+
+		#region Membership provider
+		private MembershipProvider _membershipProvider;
+		protected virtual MembershipProvider MembershipProvider
+		{
+			get
+			{
+				if (_membershipProvider == null)
+				{
+					_membershipProvider = Membership.Provider;
+				}
+				return _membershipProvider;
+			}
+			set
+			{
+				_membershipProvider = value;
+			}
+		} 
+		#endregion
 		#endregion
 
 		#region Init
@@ -163,10 +194,9 @@ namespace NearForums.Web.Controllers
 		{
 			if (Session.User == null)
 			{
-				SecurityHelper.TryLoginFromProviders(Session, Cache, HttpContext);
+				SecurityHelper.TryLoginFromProviders(HttpContext, Session, Cache, MembershipProvider, _service);
 			}
-			LoadTemplate();
-		} 
+		}
 		#endregion
 
 		#region Model state errors
@@ -196,25 +226,7 @@ namespace NearForums.Web.Controllers
 		}
 		#endregion
 
-		#region Templates & Master
-		/// <summary>
-		/// Loads the current template
-		/// </summary>
-		protected virtual void LoadTemplate()
-		{
-			Template = TemplateHelper.LoadTemplate(HttpContext);
-		}
-
-		/// <summary>
-		/// Returns active/current template. 
-		/// It returns null if disabled by configuration or no active.
-		/// </summary>
-		public TemplateState Template
-		{
-			get;
-			set;
-		}
-
+		#region Master
 		public virtual string GetDefaultMasterName()
 		{
 			var masterName = "Site";
@@ -222,13 +234,13 @@ namespace NearForums.Web.Controllers
 			{
 				masterName = "Mobile";
 			}
-			else if (Template != null)
+			else if (Cache.Template != null || Session.TemplatePreviewed != null)
 			{
 				masterName = "Templated";
 			}
 
 			return masterName;
-		}
+		} 
 		#endregion
 
 		#region Action Results

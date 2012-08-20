@@ -216,3 +216,8 @@ strong a
 	border: 1px solid #dddddd;
 	border-radius: 5px 5px 0 0;
 }
+#searchBox
+{
+	float: right;
+	clear: both;
+}

@@ -37,7 +37,7 @@ p
 {
 	margin-top: 0px;
 	margin-bottom: 8px;
-	line-height: 15px;
+	line-height: 18px;
 }
 ul
 {
@@ -199,4 +199,23 @@ strong a
 #userMenu li a:hover
 {
 	text-decoration: underline;
+}
+#searchBox
+{
+	clear: both;
+	padding: 48px 0 0 0;
+}
+#searchBox form
+{
+	float: right;
+	background-color: #FFFFFF;
+	padding: 5px 10px 5px 5px;
+	border-radius: 5px 0 0 0;
+	height: 28px;
+}
+#searchBox input.text
+{
+	padding: 5px;
+	overflow: hidden;
+	line-height: 18px;
 }

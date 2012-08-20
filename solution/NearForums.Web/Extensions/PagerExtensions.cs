@@ -20,14 +20,14 @@ namespace NearForums.Web.Extensions
 	public static class PagerExtensions
 	{
 		#region HtmlHelper extensions
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, IPagedList list)
-		{
-			return Pager(htmlHelper, list, null, null);
-		}
-
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, IPagedList list, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, list.PageSize, list.PageIndex, list.TotalItemCount, labelPrevious, labelNext);
+		}
+
+		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, IPagedList list, object values, string labelPrevious, string labelNext)
+		{
+			return Pager(htmlHelper, list.PageSize, list.PageIndex, list.TotalItemCount, values, labelPrevious, labelNext);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string labelPrevious, string labelNext)
@@ -35,24 +35,14 @@ namespace NearForums.Web.Extensions
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, null, labelPrevious, labelNext);
 		}
 
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, string labelPrevious, string labelNext)
-		{
-			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, actionName, null, labelPrevious, labelNext);
-		}
-
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, object values, string labelPrevious, string labelNext)
 		{
-			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, new RouteValueDictionary(values), labelPrevious, labelNext);
+			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, values, labelPrevious, labelNext);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, object values, string labelPrevious, string labelNext)
 		{
 			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, actionName, new RouteValueDictionary(values), labelPrevious, labelNext);
-		}
-
-		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, RouteValueDictionary valuesDictionary, string labelPrevious, string labelNext)
-		{
-			return Pager(htmlHelper, pageSize, currentPage, totalItemCount, null, valuesDictionary, labelPrevious, labelNext);
 		}
 
 		public static MvcHtmlString Pager(this HtmlHelper htmlHelper, int pageSize, int currentPage, int totalItemCount, string actionName, RouteValueDictionary valuesDictionary, string labelPrevious, string labelNext)
@@ -104,6 +94,18 @@ namespace NearForums.Web.Extensions
 			this.currentPage = currentPage;
 			this.totalItemCount = totalItemCount;
 			this.linkWithoutPageValuesDictionary = valuesDictionary;
+			var queryString = htmlHelper.ViewContext.RequestContext.HttpContext.Request.QueryString;
+			//if (queryString.Count > 0)
+			//{
+			//    //Add querystring into routevalues.
+			//    foreach (var key in queryString.Keys)
+			//    {
+			//        if (!valuesDictionary.ContainsKey(key))
+			//        {
+			//            valuesDictionary.Add(key, queryString[key]);
+			//        }
+			//    }
+			//}
 
 			if (labelPrevious != null)
 			{

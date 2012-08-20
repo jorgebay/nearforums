@@ -6,6 +6,9 @@ using NearForums.Configuration;
 
 namespace NearForums.Web.State
 {
+	/// <summary>
+	/// Represents user account information that is going to persist on session state
+	/// </summary>
 	public class UserState
 	{
 		public UserState(User user, AuthenticationProvider provider) : this(user, provider, SiteConfiguration.Current.AuthenticationProviders)

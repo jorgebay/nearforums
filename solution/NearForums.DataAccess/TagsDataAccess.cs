@@ -7,7 +7,7 @@ using System.Data.Common;
 
 namespace NearForums.DataAccess
 {
-	public class TagsDataAccess : BaseDataAccess
+	public class TagsDataAccess : BaseDataAccess, ITagsDataAccess
 	{
 		public List<WeightTag> GetMostViewed(int forumId, int top)
 		{

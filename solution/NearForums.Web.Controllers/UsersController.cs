@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.Extensions;
 using NearForums.Validation;
 using System.Web.Security;
@@ -14,15 +14,31 @@ namespace NearForums.Web.Controllers
 {
 	public class UsersController : BaseController
 	{
+		/// <summary>
+		/// User service
+		/// </summary>
+		private readonly IUsersService _service;
+
+		/// <summary>
+		/// Topic service
+		/// </summary>
+		private readonly ITopicsService _topicService;
+
+		public UsersController(IUsersService service, ITopicsService topicService) : base(service)
+		{
+			_service = service;
+			_topicService = topicService;
+		}
+
 		public ActionResult Detail(int id)
 		{
-			User user = UsersServiceClient.Get(id);
+			User user = _service.Get(id);
 			if (user == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get posted topics
-			ViewData["Topics"] = TopicsServiceClient.GetByUser(id, Role);
+			ViewData["Topics"] = _topicService.GetByUser(id, Role);
 
 			return View(user);
 		}
@@ -33,11 +49,11 @@ namespace NearForums.Web.Controllers
 			List<User> users = null;
 			if (String.IsNullOrEmpty(userName))
 			{
-				users = UsersServiceClient.GetAll();
+				users = _service.GetAll();
 			}
 			else
 			{
-				users = UsersServiceClient.GetByName(userName);
+				users = _service.GetByName(userName);
 			}
 			ViewBag.UserName = userName;
 			ViewBag.Page = page;
@@ -47,19 +63,19 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult MessagesByUser(int id)
 		{
-			User user = UsersServiceClient.Get(id);
+			User user = _service.Get(id);
 			if (user == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get posted messages (ordered 
-			List<Topic> topics = TopicsServiceClient.GetTopicsAndMessagesByUser(id);
+			var topics = _topicService.GetTopicsAndMessagesByUser(id);
 			return View(false, topics);
 		}
 
 		#region Edit
 		[RequireAuthorization]
-		[AcceptVerbs(HttpVerbs.Get)]
+		[HttpGet]
 		public ActionResult Edit(int id)
 		{
 			if (this.User.Id != id)
@@ -67,12 +83,12 @@ namespace NearForums.Web.Controllers
 				//Maybe handle a moderator/admin users
 				return ResultHelper.ForbiddenResult(this);
 			}
-			User user = UsersServiceClient.Get(id);
+			var user = _service.Get(id);
 			return View(user);
 		}
 
 		[RequireAuthorization]
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Edit(int id, [Bind(Prefix = "")]User user)
 		{
 			if (this.User.Id != id)
@@ -83,19 +99,23 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				user.Id = id;
-				UsersServiceClient.Edit(user);
-				#region Update membership data
+				_service.Edit(user);
+
+				//Update membership data
 				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
 				{
-					var membershipUser = Membership.GetUser();
+					if (HttpContext.User.Identity.Name == "")
+					{
+						throw new Exception("Identity can not be null.");
+					}
+					var membershipUser = MembershipProvider.GetUser(HttpContext.User.Identity.Name, false);
 					membershipUser.Email = user.Email;
-					Membership.UpdateUser(membershipUser);
+					MembershipProvider.UpdateUser(membershipUser);
 				}
-				#endregion
-				#region Adapt values
+
 				this.User.UserName = user.UserName;
 				this.User.Email = Utils.EmptyToNull(user.Email);
-				#endregion
+
 				return RedirectToAction("Detail", new { id = id });
 			}
 			catch (ValidationException ex)
@@ -112,7 +132,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Promote(int id, string searched)
 		{
-			UsersServiceClient.Promote(id);
+			_service.Promote(id);
 			return RedirectToAction("List", new
 			{
 				userName = searched,
@@ -125,7 +145,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Demote(int id, string searched)
 		{
-			UsersServiceClient.Demote(id);
+			_service.Demote(id);
 			return RedirectToAction("List", new
 			{
 				userName = searched,
@@ -138,7 +158,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, string searched)
 		{
-			UsersServiceClient.Delete(id);
+			_service.Delete(id);
 			return RedirectToAction("List", new
 			{
 				userName = searched,

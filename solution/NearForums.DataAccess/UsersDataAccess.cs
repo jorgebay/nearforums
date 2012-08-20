@@ -9,7 +9,7 @@ using System.Globalization;
 
 namespace NearForums.DataAccess
 {
-	public class UsersDataAccess : BaseDataAccess
+	public class UsersDataAccess : BaseDataAccess, IUsersDataAccess
 	{
 		#region Get by provider
 		public User GetByProviderId(AuthenticationProvider provider, string providerId)

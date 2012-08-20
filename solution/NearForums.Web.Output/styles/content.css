@@ -572,6 +572,11 @@ input.button
 	width: auto;
 	padding:4px 8px;
 }
+input.button:hover, input.button:focus
+{
+	background-color: #DDDDDD;
+	border-color: #333333;
+}
 form div.checkbox input.notifyEmail
 {
 	border:1px solid #A3A3A5;
@@ -665,4 +670,30 @@ div.templates .noItems
 	padding: 20px;
 	font-size: 14px;
 	line-height: 18px;
+}
+ul.results
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+ul.results li
+{
+	padding: 0 0 15px 0;
+	margin: 0;
+}
+ul.results a
+{
+	font-weight: normal;
+}
+ul.results .date
+{
+	color: #888888;
+}
+.resultsInfo
+{
+	color: #999999;
+	font-weight: bold;
+	position: relative;
+	top: -10px;
 }

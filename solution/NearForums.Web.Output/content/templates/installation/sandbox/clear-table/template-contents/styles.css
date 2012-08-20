@@ -481,3 +481,8 @@ ul#messages div.msgHeader
 {
 	padding-top: 5px;
 }
+#searchBox
+{
+	float: right;
+	clear: both;
+}

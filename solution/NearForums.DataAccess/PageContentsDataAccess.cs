@@ -7,7 +7,7 @@ using System.Data;
 
 namespace NearForums.DataAccess
 {
-	public class PageContentsDataAccess : BaseDataAccess
+	public class PageContentsDataAccess : BaseDataAccess, IPageContentsDataAccess
 	{
 		public List<PageContent> GetAll()
 		{

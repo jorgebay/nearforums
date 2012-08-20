@@ -1089,3 +1089,55 @@ msgstr "Are you sure you want to Demote the user {0}?"
 #: NearForums.Web.Output\Views\Users\List.cshtml
 msgid "No user found for the username &quot;{0}&quot;."
 msgstr "No user found for the username &quot;{0}&quot;."
+
+#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
+msgid "Manage search index"
+msgstr "Manage search index"
+
+#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
+msgid "Manage the search index for the forum."
+msgstr "Manage the search index for the forum."
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "The search index contains {0} documents."
+msgstr "The search index contains {0} documents."
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "You can drop the current search index contents, rebuild and reindex all the threads."
+msgstr "You can drop the current search index contents, rebuild and reindex all the threads."
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "This operation may take a while depending on the amount of threads and messages."
+msgstr "This operation may take a while depending on the amount of threads and messages."
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Reindex"
+msgstr "Reindex"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Are you sure you want to drop the current search index and start reindexing?"
+msgstr "Are you sure you want to drop the current search index and start reindexing?"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Reindexing finished successfully"
+msgstr "Reindexing finished successfully"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Reindexing Forums...<br />Please do not close this web page"
+msgstr "Reindexing Forums...<br />Please do not close this web page"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Search index is disabled by configuration"
+msgstr "Search index is disabled by configuration"
+
+#: NearForums.Web.Output\Views\SearchEngine\Search.cshtml
+msgid "Search results"
+msgstr "Search results"
+
+#: NearForums.Web.Output\Views\SearchEngine\Search.cshtml
+msgid "{0:##,#} result(s)"
+msgstr "{0:##,#} result(s)"
+
+#: NearForums.Web.Output\Views\SearchEngine\Search.cshtml
+msgid "We did not find results for <strong>{0}</strong>"
+msgstr "We did not find results for <strong>{0}</strong>"

@@ -25,6 +25,10 @@ namespace NearForums.Localization
 				}
 				return _current;
 			}
+			set
+			{
+				_current = value;
+			}
 		}
 
 		/// <summary>
@@ -42,6 +46,29 @@ namespace NearForums.Localization
 
 		private Dictionary<string, string> _translations;
 
+		public Localizer()
+		{
+			_translations = new Dictionary<string, string>();
+		}
+
+		public Localizer(string cultureName, string filePath)
+			: this()
+		{
+			CultureName = cultureName;
+			FilePath = filePath;
+		}
+
+		/// <summary>
+		/// Gets the number of loaded translations
+		/// </summary>
+		public virtual int Count
+		{
+			get
+			{
+				return _translations.Count;
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the name of the culture.
 		/// </summary>
@@ -57,26 +84,11 @@ namespace NearForums.Localization
 			set;
 		}
 
-		public Localizer()
-		{
-			_translations = new Dictionary<string, string>();
-		}
-
-		public Localizer(string cultureName, string filePath) : this()
-		{
-			CultureName = cultureName;
-			FilePath = filePath;
-		}
-
-		public void LoadCulture()
-		{
-			if (FilePath == null)
-			{
-				throw new NullReferenceException("FilePath can not be null");
-			}
-			_translations = LocalizationParser.ParseFile(FilePath);
-		}
-
+		/// <summary>
+		/// Gets the translation value for neutral value
+		/// </summary>
+		/// <param name="neutralValue"></param>
+		/// <returns></returns>
 		public virtual string Get(string neutralValue)
 		{
 			if (neutralValue == null)
@@ -90,27 +102,41 @@ namespace NearForums.Localization
 			return neutralValue;
 		}
 
+		/// <summary>
+		/// Gets the translation value for neutral value, 
+		/// using the params to format the translation
+		/// </summary>
+		/// <param name="neutralValue"></param>
+		/// <param name="args"></param>
+		/// <returns></returns>
 		public virtual string Get(string neutralValue, params object[] args)
 		{
+			if (args == null)
+			{
+				throw new ArgumentNullException("Args cannot be null, when localizing '" + neutralValue + "'", (Exception)null);
+			}
 			return String.Format(Get(neutralValue), args);
 		}
 
+		public void LoadCulture()
+		{
+			if (FilePath == null)
+			{
+				throw new NullReferenceException("FilePath can not be null");
+			}
+			_translations = LocalizationParser.ParseFile(FilePath);
+		}
+
+		/// <summary>
+		/// Gets the translation value for a neutral string
+		/// </summary>
+		/// <param name="neutralValue"></param>
+		/// <returns></returns>
 		public virtual string this[string neutralValue]
 		{
 			get
 			{
 				return Get(neutralValue);
-			}
-		}
-
-		/// <summary>
-		/// Gets the number of loaded translations
-		/// </summary>
-		public virtual int Count
-		{
-			get
-			{
-				return _translations.Count;
 			}
 		}
 	}

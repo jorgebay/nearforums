@@ -1,0 +1,28 @@
+﻿@model PagedList<Topic>
+@{
+    ViewBag.Title = S("Search results");
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+</ul>
+<div class="searchResults"></div>
+<h1>@ViewBag.Title</h1>
+@if (Model.Count > 0)
+{
+	<p class="resultsInfo">@T("{0:##,#} result(s)", Model.TotalItemCount)</p>
+	<ul class="results">
+	@foreach (var topic in Model)
+ {
+		<li>
+			<h3>@Html.ActionLink(topic.Title, "ShortUrl", "Topics", new { id = topic.Id }, null)</h3>
+			<div class="date">@Html.Date(topic.Date)</div>
+			<div>@topic.Description</div>
+		</li>
+ }
+	</ul>
+	@Html.Pager(Model, new { q = ViewBag.Q }, S("Previous"), S("Next"))
+}
+else
+{
+	<p class="warning">@T("We did not find results for <strong>{0}</strong>", ViewBag.Q)</p>
+}

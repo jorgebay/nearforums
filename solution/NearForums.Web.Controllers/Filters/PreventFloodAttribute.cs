@@ -37,7 +37,7 @@ namespace NearForums.Web.Controllers.Filters
 		{
 			get
 			{
-				var minTime = TimeSpan.FromMinutes(Config.SpamPrevention.TimeToRepost);
+				var minTime = TimeSpan.FromMinutes(Config.SpamPrevention.FloodControl.TimeBetweenPosts);
 				return minTime;
 			}
 		}
@@ -65,7 +65,7 @@ namespace NearForums.Web.Controllers.Filters
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			//Checks if the user is flooding, show captcha
-			var isFlooding = CheckFlooding(filterContext);
+			var isFlooding = IsFlooding(filterContext);
 			if (isFlooding)
 			{
 				filterContext.Controller.ViewData["ShowCaptcha"] = true;
@@ -158,19 +158,28 @@ namespace NearForums.Web.Controllers.Filters
 
 		#region Check / Clear Flooding
 		/// <summary>
-		/// Checks if the user is flooding
+		/// Determines if the user is flooding
 		/// </summary>
-		protected virtual bool CheckFlooding(ControllerContext context)
+		protected virtual bool IsFlooding(ControllerContext context)
 		{
-			bool isFlooding = false;
-			var minTime = MinTime;
-			DateTime? latestPosting = GetLatestPosting(context);
-			if (latestPosting != null && DateTime.Now.Subtract(latestPosting.Value) < minTime)
+			//check if the user is of a role marked to be
+			//ignored by configuration
+			if (Config.SpamPrevention.FloodControl.IgnoreForRole != null)
 			{
-				isFlooding = true;
+				var session = new SessionWrapper(context.HttpContext);
+				if (session.User != null && session.User.Role >= Config.SpamPrevention.FloodControl.IgnoreForRole)
+				{
+					return false;
+				}
+			}
+			//Check if the required time has passed
+			DateTime? latestPosting = GetLatestPosting(context);
+			if (latestPosting == null || latestPosting < DateTime.Now.Subtract(MinTime))
+			{
+				return false;
 			}
 
-			return isFlooding;
+			return true;
 		}
 
 		/// <summary>

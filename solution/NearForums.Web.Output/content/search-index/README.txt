@@ -1,0 +1,1 @@
+This folder is used to store the files used by the search engine.

@@ -6,6 +6,7 @@ using System.Configuration;
 using NearForums.Configuration.Notifications;
 using System.IO;
 using System.Xml;
+using NearForums.Configuration.Spam;
 
 namespace NearForums.Configuration
 {
@@ -38,13 +39,12 @@ namespace NearForums.Configuration
 				}
 				return config;
 			}
+			set
+			{
+				config = value;
+			}
 		}
 		#endregion
-
-		public SiteConfiguration()
-		{
-			PathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
-		}
 
 		[ConfigurationProperty("ui", IsRequired = true)]
 		public UIElement UI
@@ -111,6 +111,26 @@ namespace NearForums.Configuration
 			}
 		}
 
+		[ConfigurationProperty("search", IsRequired = false)]
+		public SearchElement Search
+		{
+			get
+			{
+				return (SearchElement)this["search"];
+			}
+			set
+			{
+				this["search"] = value;
+				if (value != null)
+				{
+					value.ParentElement = this;
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Gets or sets the configuration for the spam prevention features
+		/// </summary>
 		[ConfigurationProperty("spamPrevention", IsRequired = true)]
 		public SpamPreventionElement SpamPrevention
 		{
@@ -270,6 +290,8 @@ namespace NearForums.Configuration
 			base.PostDeserialize();
 
 			ProcessMissingElements(this);
+
+			Search.ParentElement = this;
 		}
 
 		#region Load settings
@@ -294,10 +316,21 @@ namespace NearForums.Configuration
 			//Its OK if there isn't settings
 		}
 
+		private Func<string, string> _pathResolver;
 		public Func<string, string> PathResolver
 		{
-			get;
-			set;
+			get
+			{
+				if (_pathResolver == null)
+				{
+					_pathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
+				}
+				return _pathResolver;
+			}
+			set
+			{
+				_pathResolver = value;
+			}
 		}
 		#endregion
 

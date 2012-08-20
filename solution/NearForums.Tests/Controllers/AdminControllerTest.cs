@@ -14,7 +14,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Security.AccessControl;
 using NearForums.Configuration;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using NearForums.Web.State;
 
 namespace NearForums.Tests.Controllers

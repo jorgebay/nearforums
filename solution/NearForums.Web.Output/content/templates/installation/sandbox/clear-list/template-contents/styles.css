@@ -293,3 +293,30 @@ ul.items li.sticky a.itemTitle {
     background-position: left center;
     padding-left: 20px;
 }
+#searchBox
+{
+	float: right;
+	clear: both;
+	padding: 50px 10px 7px 10px;
+	height: 30px;
+	margin: 0;
+}
+#searchBox input.text
+{
+	padding: 4px;
+	overflow: hidden;
+	line-height: 18px;
+	height: 18px;
+	border: 1px solid #BBBBBB;
+}
+#searchBox input.button
+{
+	padding: 4px;
+	line-height: 18px;
+	margin: 0;
+	border: 1px solid #999999;
+}
+#searchBox input.button:hover, #searchBox input.button:focus
+{
+	border: 1px solid #FFFFFF;
+}

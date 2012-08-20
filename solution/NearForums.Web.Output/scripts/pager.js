@@ -69,7 +69,7 @@ var pager =
 		if (pager.enabled && pager.lastItem < pager.totalItems)
 		{
 			var fromId = $("#messages > li:last").attr("id").substring(3);
-			pager.post(pager.postUrl, {from:fromId, initIndex:$("#messages > li").length}, pager.moreCallback);
+			pager.post(pager.postUrl, {from:fromId}, pager.moreCallback);
 			pager.loadingStart();
 		}
 	}
@@ -93,7 +93,7 @@ var pager =
 				pager.loadingStart();
 				var lastMsg = window.location.hash.substring(4);
 				var firstMsg = $("#messages > li:last").attr("id").substring(3);
-				pager.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.navigateToIdCallback);
+				pager.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg}, pager.navigateToIdCallback);
 			}
 		}
 		else if ($(window.location.hash).length == 1)
@@ -133,7 +133,7 @@ var pager =
 			pager.loadingStart();
 			var lastMsg = 1000;
 			var firstMsg = $("#messages > li:last").attr("id").substring(3);
-			pager.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg,initIndex:$("#messages > li").length}, pager.showAllCallback);
+			pager.post(pager.postUrlToId, {firstMsg:firstMsg,lastMsg:lastMsg}, pager.showAllCallback);
 		}
 		return false;
 	}

@@ -63,7 +63,8 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void ListFlagged_Test()
 		{
-			MessagesController controller = new MessagesController();
+			var controller = TestHelper.Resolve<MessagesController>();
+			controller.ControllerContext = new FakeControllerContext(controller);
 			var result = controller.ListFlagged();
 
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -76,8 +77,8 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void Topic_Reply_Subscribe_Unsubscribe_Test()
 		{
-			var controller = new MessagesController();
-			var subscriptionsController = new TopicsSubscriptionsController();
+			var controller = TestHelper.Resolve<MessagesController>();
+			var subscriptionsController = TestHelper.Resolve<TopicsSubscriptionsController>();
 			controller.ControllerContext = new FakeControllerContext(controller, "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), ForumsControllerTest.GetSessionWithTestUser());
 			controller.Url = new UrlHelper(controller.ControllerContext.RequestContext);
 			subscriptionsController.ControllerContext = controller.ControllerContext;

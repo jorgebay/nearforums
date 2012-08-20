@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums", "NearForums\Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.DataAccess", "NearForums.DataAccess\NearForums.DataAccess.csproj", "{8A800A71-0656-4712-881D-AA03BDCA218C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.ServiceClient", "NearForums.ServiceClient\NearForums.ServiceClient.csproj", "{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Web", "NearForums.Web\NearForums.Web.csproj", "{AF911FBC-3E0B-44FF-AB68-DF35FF353064}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Web.Controllers", "NearForums.Web.Controllers\NearForums.Web.Controllers.csproj", "{F8767C50-4290-45BF-84F2-F3BFCBDB3607}"
@@ -19,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NearForums.Services", "NearForums.Services\NearForums.Services.csproj", "{9FF42040-82E2-496D-8E8A-71169B0514FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +34,6 @@ Global
 		{8A800A71-0656-4712-881D-AA03BDCA218C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A800A71-0656-4712-881D-AA03BDCA218C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A800A71-0656-4712-881D-AA03BDCA218C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB0075C0-6534-489F-8EFB-4D8CE5DEAA2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF911FBC-3E0B-44FF-AB68-DF35FF353064}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,6 +50,10 @@ Global
 		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6185457D-ACD3-4AE1-AE2E-0C728F05C89B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FF42040-82E2-496D-8E8A-71169B0514FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FF42040-82E2-496D-8E8A-71169B0514FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FF42040-82E2-496D-8E8A-71169B0514FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FF42040-82E2-496D-8E8A-71169B0514FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

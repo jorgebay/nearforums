@@ -10,6 +10,7 @@ using NearForums.Web.Controllers;
 using NearForums.Web.Routing;
 using System.Reflection;
 using NearForums.Web.State;
+using System.Web;
 
 namespace NearForums.Tests.Controllers
 {
@@ -70,7 +71,7 @@ namespace NearForums.Tests.Controllers
 		public void AuthorizationAttribute_Test()
 		{
 			var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
-			var controllerContext = new FakeControllerContext(new TopicsController(), "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
+			var controllerContext = new FakeControllerContext(TestHelper.Resolve<TopicsController>(), "http://localhost", null, null, new System.Collections.Specialized.NameValueCollection(), new System.Collections.Specialized.NameValueCollection(), new System.Web.HttpCookieCollection(), sessionItems);
 			var context = new AuthorizationContext(controllerContext, new FakeActionDescriptor());
 			var att = new RequireAuthorizationAttribute(UserRole.Member);
 			att.Routes.Add(new StrictRoute("login", new MvcRouteHandler())
@@ -97,7 +98,7 @@ namespace NearForums.Tests.Controllers
 		[TestMethod]
 		public void ValidateReadAccessAttribute_Test()
 		{
-			var controller = new TopicsController();
+			var controller = TestHelper.Resolve<TopicsController>();
 			var controllerContext = new FakeControllerContext(controller, "http://localhost");
 			var filterContext = new ActionExecutedContext(controllerContext, new FakeActionDescriptor(), false, null);
 			var att = new ValidateReadAccessAttribute();
@@ -113,6 +114,63 @@ namespace NearForums.Tests.Controllers
 			att.OnActionExecuted(filterContext);
 			//The user should be redirected
 			Assert.IsTrue(filterContext.Result is RedirectToRouteResult);
+		}
+
+		[TestMethod]
+		public void PreventFloodAttribute_Time_Test()
+		{
+			//set up context
+			var controller = TestHelper.Resolve<MessagesController>();
+			var controllerContext = new FakeControllerContext(controller, "http://localhost");
+			var executingFilterContext = new ActionExecutingContext(controllerContext, new FakeActionDescriptor(), new Dictionary<string, object>());
+			var executedfilterContext = new ActionExecutedContext(controllerContext, new FakeActionDescriptor(), false, null);
+			var httpContext = (FakeHttpContext)controllerContext.HttpContext;
+			httpContext.CleanCache();
+
+			//set up attr
+			var attr = new PreventFloodAttribute(typeof(EmptyResult));
+			attr.Config.SpamPrevention.FloodControl.TimeBetweenPosts = 5;
+			attr.Config.SpamPrevention.FloodControl.IgnoreForRole = null; //do not ignore
+
+			//first execution
+			attr.OnActionExecuting(executingFilterContext);
+			Assert.AreNotEqual<bool?>(true, (bool?)controller.ViewBag.ShowCaptcha);
+			attr.OnActionExecuted(executedfilterContext);
+
+			//second execution: must be considered as flooding
+			attr.OnActionExecuting(executingFilterContext);
+			Assert.AreEqual<bool?>(true, (bool?)controller.ViewBag.ShowCaptcha);
+			attr.OnActionExecuted(executedfilterContext);
+		}
+
+		[TestMethod]
+		public void PreventFloodAttribute_Role_Test()
+		{
+			//set up context
+			var controller = TestHelper.Resolve<TopicsController>();
+			var controllerContext = new FakeControllerContext(controller, "http://localhost");
+			var executingFilterContext = new ActionExecutingContext(controllerContext, new FakeActionDescriptor(), new Dictionary<string, object>());
+			var executedfilterContext = new ActionExecutedContext(controllerContext, new FakeActionDescriptor(), false, null);
+			var httpContext = (FakeHttpContext) controllerContext.HttpContext;
+			httpContext.CleanCache();
+
+			//set up attr
+			var attr = new PreventFloodAttribute(typeof(EmptyResult));
+			attr.Config.SpamPrevention.FloodControl.TimeBetweenPosts = 5;
+			attr.Config.SpamPrevention.FloodControl.IgnoreForRole = UserRole.Moderator; //ignore for moderator or admin
+
+			var session = new SessionWrapper(httpContext);
+			session.User = new UserState(new User() { Role = UserRole.Moderator }, AuthenticationProvider.CustomDb);
+
+			//first execution
+			attr.OnActionExecuting(executingFilterContext);
+			Assert.AreNotEqual<bool?>(true, (bool?)controller.ViewBag.ShowCaptcha);
+			attr.OnActionExecuted(executedfilterContext);
+
+			//second execution: must NOT be considered as flooding
+			attr.OnActionExecuting(executingFilterContext);
+			Assert.AreNotEqual<bool?>(true, (bool?)controller.ViewBag.ShowCaptcha);
+			attr.OnActionExecuted(executedfilterContext);
 		}
 	}
 }

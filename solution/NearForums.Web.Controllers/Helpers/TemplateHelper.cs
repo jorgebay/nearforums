@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Web;
 using NearForums.Validation;
-using NearForums.ServiceClient;
+using NearForums.Services;
 using ICSharpCode.SharpZipLib.Zip;
 using NearForums.Configuration;
 using NearForums.Web.State;
@@ -148,20 +148,41 @@ namespace NearForums.Web.Controllers.Helpers
 
 		#region Add
 		/// <summary>
+		/// Unpackages the template file posted and adds a new template in the db.
+		/// </summary>
+		/// <exception cref="ValidationException">Throws a ValidationException if the posted file is not valid or the application does not have access rights.</exception>
+		public static void Add(Template template, HttpPostedFileBase postedFile, HttpContextBase context, bool useDefaultName, ITemplatesService service)
+		{
+			if (postedFile == null)
+			{
+				throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.NullOrEmpty));
+			}
+			if (useDefaultName)
+			{
+				template.Key = SafeIO.Path_GetFileNameWithoutExtension(postedFile.FileName);
+			}
+			if (SafeIO.Path_GetExtension(postedFile.FileName) != ".zip")
+			{
+				throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
+			}
+
+			Add(template, postedFile.InputStream, context, service);
+		}
+
+		/// <summary>
 		/// Unpackages the template file and adds a new template in the db.
 		/// </summary>
 		/// <exception cref="ValidationException">Throws a ValidationException if the posted file is not valid or the application does not have access rights.</exception>
-		public static void Add(Template template, Stream postedStream, HttpContextBase context)
+		public static void Add(Template template, Stream packageStream, HttpContextBase context, ITemplatesService service)
 		{
 			string baseDirectory = null;
+			if (packageStream == null)
+			{
+				throw new ArgumentNullException("postedStream");
+			}
 			try
 			{
-
-				if (postedStream == null)
-				{
-					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.NullOrEmpty));
-				}
-				else if (postedStream.Length > 1024 * 1024 * 3)
+				if (packageStream.Length > 1024 * 1024 * 3)
 				{
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.MaxLength));
 				}
@@ -172,83 +193,12 @@ namespace NearForums.Web.Controllers.Helpers
 					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.DuplicateNotAllowed));
 				}
 
-				TemplatesServiceClient.AddOrUpdate(template);
+				service.AddOrUpdate(template);
 
-				bool fileValid = true;
 				baseDirectory = Config.TemplateFolderPathFull(template.Key);
-				#region Create directories
-				try
-				{
-					SafeIO.Directory_CreateDirectory(baseDirectory);
-					SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
-				}
-				catch (UnauthorizedAccessException)
-				{
-					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.AccessRights));
-				}
-				#endregion
-
-				#region Save zip file to disk
-				using (var fileStream = new FileStream(baseDirectory + "/template.zip", FileMode.Create))
-				{
-					postedStream.CopyTo(fileStream);
-				}
-				#endregion
-
-				postedStream.Position = 0;
-				#region Save the files in the zip file
-				using (var zipStream = new ZipInputStream(postedStream))
-				{
-					ZipEntry entry;
-					while (((entry = zipStream.GetNextEntry()) != null) && fileValid)
-					{
-						fileValid = ValidateFileName(entry.Name);
-
-						if (fileValid && entry.IsFile)
-						{
-							string fileName = baseDirectory;
-
-							if (SafeIO.Path_GetDirectoryName(entry.Name).ToUpper() == "TEMPLATE-CONTENTS")
-							{
-								fileName += "\\contents";
-							}
-							fileName += "\\" + SafeIO.Path_GetFileName(entry.Name);
-
-							#region Save file
-							using (System.IO.FileStream streamWriter = SafeIO.File_Create(fileName))
-							{
-								int size = 2048;
-								byte[] data = new byte[2048];
-								while (true)
-								{
-									size = zipStream.Read(data, 0, data.Length);
-									if (size > 0)
-									{
-										streamWriter.Write(data, 0, size);
-									}
-									else
-									{
-										break;
-									}
-								}
-								streamWriter.Close();
-							}
-							#endregion
-						}
-					}
-				}
-				#endregion
-
-				if (fileValid)
-				{
-					PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.TemplateFolderPath(template.Key) + "/", context), context);
-					
-					ChopTemplateFile(baseDirectory + "\\template.html");
-				}
-				else
-				{
-					throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
-				}
+				SaveFilesToDrive(baseDirectory, packageStream);
+				PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.TemplateFolderPath(template.Key) + "/", context), context);
+				ChopTemplateFile(baseDirectory + "\\template.html");
 			}
 			catch (ValidationException)
 			{
@@ -266,22 +216,99 @@ namespace NearForums.Web.Controllers.Helpers
 				}
 				if (template.Id > 0)
 				{
-					TemplatesServiceClient.Delete(template.Id);
+					service.Delete(template.Id);
 				}
 				throw;
 			}
 		}
 		#endregion
 
+		#region SaveFilesToDrive
+		/// <summary>
+		/// Saves the files contained in the template package
+		/// </summary>
+		/// <param name="baseDirectory">The template's base directory</param>
+		/// <param name="postedStream"></param>
+		/// <exception cref="ValidationException">Throws validation exceptions in case the required access rights are not granted or in the case the files inside the zip are invalid</exception>
+		private static void SaveFilesToDrive(string baseDirectory, Stream postedStream)
+		{
+			//Create directories
+			try
+			{
+				SafeIO.Directory_CreateDirectory(baseDirectory);
+				SafeIO.Directory_CreateDirectory(baseDirectory + "\\contents");
+			}
+			catch (UnauthorizedAccessException)
+			{
+				throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.AccessRights));
+			}
+
+			//Save zip file to disk for future reference
+			using (var fileStream = new FileStream(baseDirectory + "/template.zip", FileMode.Create))
+			{
+				postedStream.CopyTo(fileStream);
+			}
+
+			bool fileValid = true;
+			postedStream.Position = 0;
+			#region Save the files in the zip file
+			using (var zipStream = new ZipInputStream(postedStream))
+			{
+				ZipEntry entry;
+				while (((entry = zipStream.GetNextEntry()) != null) && fileValid)
+				{
+					fileValid = ValidateFileName(entry.Name);
+
+					if (fileValid && entry.IsFile)
+					{
+						string fileName = baseDirectory;
+
+						if (SafeIO.Path_GetDirectoryName(entry.Name).ToUpper() == "TEMPLATE-CONTENTS")
+						{
+							fileName += "\\contents";
+						}
+						fileName += "\\" + SafeIO.Path_GetFileName(entry.Name);
+
+						#region Save file
+						using (var streamWriter = SafeIO.File_Create(fileName))
+						{
+							int size = 2048;
+							byte[] data = new byte[2048];
+							while (true)
+							{
+								size = zipStream.Read(data, 0, data.Length);
+								if (size > 0)
+								{
+									streamWriter.Write(data, 0, size);
+								}
+								else
+								{
+									break;
+								}
+							}
+							streamWriter.Close();
+						}
+						#endregion
+					}
+				}
+			}
+			#endregion
+
+			if (!fileValid)
+			{
+				throw new ValidationException(new ValidationError("postedFile", ValidationErrorType.FileFormat));
+			}
+		} 
+		#endregion
 
 		#region Add default templates
 		/// <summary>
-		/// 
+		/// Extract all template packages inside the path
 		/// </summary>
 		/// <exception cref="DirectoryNotFoundException"></exception>
 		/// <exception cref="UnauthorizedAccessException"></exception>
 		/// <exception cref="ValidationException">Throws a ValidationException if the posted file is not valid or the application does not have access rights.</exception>
-		public static int AddDefaultTemplates(string path, HttpContextBase context)
+		public static int AddDefaultTemplates(string path, HttpContextBase context, ITemplatesService service)
 		{
 			var templatesLength = 0;
 			var files = SafeIO.Directory_GetFiles(path, "*.zip");
@@ -292,7 +319,7 @@ namespace NearForums.Web.Controllers.Helpers
 				template.Description = "Default";
 				using (var file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
 				{
-					TemplateHelper.Add(template, file, context);
+					TemplateHelper.Add(template, file, context, service);
 				}
 			}
 			templatesLength = files.Length;
@@ -311,23 +338,23 @@ namespace NearForums.Web.Controllers.Helpers
 		#endregion
 
 		#region Load TemplateState
-		public static TemplateState GetCurrentTemplateState(HttpContextBase context)
+		public static TemplateState GetCurrentTemplateState(HttpContextBase context, ITemplatesService service)
 		{
-			return GetTemplateState(context, null);
+			return GetTemplateState(context, null, service);
 		}
 
-		public static TemplateState GetTemplateState(HttpContextBase context, int? id)
+		public static TemplateState GetTemplateState(HttpContextBase context, int? id, ITemplatesService service)
 		{
 			TemplateState template = null;
 			Template t = null;
 			if (id != null)
 			{
-				t = TemplatesServiceClient.Get(id.Value);
+				t = service.Get(id.Value);
 			}
 			else
 			{
 				//Gets the current template code from db
-				t = TemplatesServiceClient.GetCurrent();
+				t = service.GetCurrent();
 			}
 
 			if (t != null)
@@ -341,44 +368,6 @@ namespace NearForums.Web.Controllers.Helpers
 					template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));
 				}
 			}
-			return template;
-		}
-		#endregion
-
-		#region Load Template
-		public static TemplateState LoadTemplate(HttpContextBase context)
-		{
-			TemplateState template = null;
-			var session = new SessionWrapper(context);
-			var cache = new CacheWrapper(context);
-			int? previewTemplateId = context.Request.QueryString["_tid"].ToNullableInt();
-			if (session.IsTemplatePreview)
-			{
-				if (previewTemplateId != null)
-				{
-					if (session.TemplatePreviewed == null || session.TemplatePreviewed.Id != previewTemplateId.Value)
-					{
-						//Load the previewed template into the session
-						session.TemplatePreviewed = TemplateHelper.GetTemplateState(context, previewTemplateId);
-					}
-				}
-				else
-				{
-					//Prevent for the previus previewed template to be shown in this 
-					session.TemplatePreviewed = null;
-				}
-				template = session.TemplatePreviewed;
-			}
-			if (Config.UI.Template.UseTemplates && template == null)
-			{
-				if (cache.Template == null)
-				{
-					//Load the current template in the cache
-					cache.Template = TemplateHelper.GetCurrentTemplateState(context);
-				}
-				template = cache.Template;
-			}
-
 			return template;
 		}
 		#endregion
