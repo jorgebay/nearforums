@@ -33,6 +33,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\references\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\references\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\references\HtmlAgilityPack.dll</HintPath>
@@ -75,6 +81,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewDataExtensions.cs" />
     <Compile Include="Handlers\StaticFileHandler.cs" />
+    <Compile Include="Integration\NearforumsFilterAttributeFilterProvider.cs" />
     <Compile Include="Modules\CompressionModule.cs" />
     <Compile Include="Modules\ModelBinderModule.cs" />
     <Compile Include="Modules\RedirectorModule.cs" />

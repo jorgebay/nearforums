@@ -9,6 +9,7 @@ using NearForums.Web.Controllers;
 using Autofac.Integration.Mvc;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
+using NearForums.Web.Integration;
 
 namespace NearForums.Web.Output
 {
@@ -33,10 +34,29 @@ namespace NearForums.Web.Output
 				.Where(t => t.Name.EndsWith("Service"))
 				.AsImplementedInterfaces()
 				.InstancePerDependency();
-			builder.RegisterFilterProvider();
+			builder.RegisterNearforumsFilterProvider();
 			builder.RegisterControllers(typeof(BaseController).Assembly);
 			var container = builder.Build();
 			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+		}
+
+		/// <summary>
+		/// Registers the <see cref="NearforumsFilterAttributeFilterProvider"/>.
+		/// </summary>
+		/// <param name="builder">current container builder</param>
+		public static void RegisterNearforumsFilterProvider(this ContainerBuilder builder)
+		{
+			if (builder == null)
+			{ 
+				throw new ArgumentNullException("builder"); 
+			}
+			foreach (var provider in FilterProviders.Providers.OfType<FilterAttributeFilterProvider>().ToArray())
+			{
+				FilterProviders.Providers.Remove(provider);
+			}
+			builder.RegisterType<NearforumsFilterAttributeFilterProvider>()
+				.As<IFilterProvider>()
+				.SingleInstance();
 		}
 	}
 }
