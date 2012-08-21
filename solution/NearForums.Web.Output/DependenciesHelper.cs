@@ -41,7 +41,7 @@ namespace NearForums.Web.Output
 		}
 
 		/// <summary>
-		/// Registers the <see cref="NearforumsFilterAttributeFilterProvider"/>.
+		/// Registers the <see cref="NearForumsFilterProvider"/>.
 		/// </summary>
 		/// <param name="builder">current container builder</param>
 		public static void RegisterNearforumsFilterProvider(this ContainerBuilder builder)
@@ -54,7 +54,7 @@ namespace NearForums.Web.Output
 			{
 				FilterProviders.Providers.Remove(provider);
 			}
-			builder.RegisterType<NearforumsFilterAttributeFilterProvider>()
+			builder.RegisterType<NearForumsFilterProvider>()
 				.As<IFilterProvider>()
 				.SingleInstance();
 		}

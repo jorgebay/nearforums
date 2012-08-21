@@ -8,12 +8,12 @@ using System.Web.Mvc;
 
 namespace NearForums.Web.Integration
 {
-	public class NearforumsFilterAttributeFilterProvider : FilterAttributeFilterProvider
+	public class NearForumsFilterProvider : FilterAttributeFilterProvider
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NearforumsFilterAttributeFilterProvider"/> class.
+		/// Initializes a new instance of the <see cref="NearForumsFilterProvider"/> class.
 		/// </summary>
-		public NearforumsFilterAttributeFilterProvider()
+		public NearForumsFilterProvider()
 			: base(false)
 		{
 		}
@@ -26,8 +26,11 @@ namespace NearForums.Web.Integration
 		/// </returns>
 		public override IEnumerable<Filter> GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
 		{
-			var filters = base.GetFilters(controllerContext, actionDescriptor).ToArray();
-			//TODO: add filters
+			var filters = base.GetFilters(controllerContext, actionDescriptor).ToList();
+
+			//var f = Activator.CreateInstance(Type.GetType("NearForums.Web.Integration.DerivedActionFilter, NearForums.Web")) as NearForumsActionFilter;
+			//filters.Add(new Filter(f, FilterScope.Action, null));
+			
 			var scope = AutofacDependencyResolver.Current.RequestLifetimeScope;
 			if (scope != null)
 			{

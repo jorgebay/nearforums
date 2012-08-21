@@ -81,7 +81,8 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewDataExtensions.cs" />
     <Compile Include="Handlers\StaticFileHandler.cs" />
-    <Compile Include="Integration\NearforumsFilterAttributeFilterProvider.cs" />
+    <Compile Include="Integration\NearForumsActionFilter.cs" />
+    <Compile Include="Integration\NearForumsFilterProvider.cs" />
     <Compile Include="Modules\CompressionModule.cs" />
     <Compile Include="Modules\ModelBinderModule.cs" />
     <Compile Include="Modules\RedirectorModule.cs" />
