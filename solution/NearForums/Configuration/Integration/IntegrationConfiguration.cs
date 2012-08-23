@@ -11,8 +11,10 @@ namespace NearForums.Configuration.Integration
 	/// </summary>
 	public class IntegrationConfiguration : ConfigurationSection
 	{
-		#region Current
+		private ConfigurationElementCollection<FilterElement> _globalFilters;
 		private static IntegrationConfiguration _config;
+
+		#region Current
 		/// <summary>
 		/// Gets the current IntegrationConfiguration. 
 		/// </summary>
@@ -46,6 +48,22 @@ namespace NearForums.Configuration.Integration
 			set
 			{
 				this["filters"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the list of filters that are global (to be applied to all controllers)
+		/// </summary>
+		public ConfigurationElementCollection<FilterElement> GlobalFilters
+		{
+			get
+			{
+				if (_globalFilters == null)
+				{
+					_globalFilters = new ConfigurationElementCollection<FilterElement>();
+					throw new NotImplementedException();
+				}
+				return _globalFilters;
 			}
 		}
 	}

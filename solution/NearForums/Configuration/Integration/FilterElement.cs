@@ -57,6 +57,22 @@ namespace NearForums.Configuration.Integration
 			}
 		}
 
+		/// <summary>
+		/// Order relative to the other action filters
+		/// </summary>
+		[ConfigurationProperty("order", IsRequired = false)]
+		public int? Order
+		{
+			get
+			{
+				return (int?)this["order"];
+			}
+			set
+			{
+				this["order"] = value;
+			}
+		}
+
 		#region IUniqueConfigurationElement Members
 		public string Key
 		{

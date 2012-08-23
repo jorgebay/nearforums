@@ -29,8 +29,7 @@ namespace NearForums.Web.Integration
 		{
 			var filters = base.GetFilters(controllerContext, actionDescriptor).ToList();
 
-			//var f = Activator.CreateInstance(Type.GetType("NearForums.Web.Integration.DerivedActionFilter, NearForums.Web")) as NearForumsActionFilter;
-			//filters.Add(new Filter(f, FilterScope.Action, null));
+			AddIntegrationFilters(filters);
 			
 			var scope = AutofacDependencyResolver.Current.RequestLifetimeScope;
 			if (scope != null)
@@ -42,5 +41,18 @@ namespace NearForums.Web.Integration
 			}
 			return filters;
 		}
+
+		/// <summary>
+		/// Adds the filters that are included in the configuration
+		/// </summary>
+		/// <param name="filters">the filter list to add the integration filters to</param>
+		protected virtual void AddIntegrationFilters(List<Filter> filters)
+		{
+			//var f = Activator.CreateInstance(Type.GetType("NearForums.Web.Integration.DerivedActionFilter, NearForums.Web")) as NearForumsActionFilter;
+			//filters.Add(new Filter(f, FilterScope.Action, null));
+			throw new NotImplementedException();
+		}
+
+		//private static List<string_globalFilters;
 	}
 }
