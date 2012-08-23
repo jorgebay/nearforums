@@ -13,8 +13,8 @@ namespace NearForums.Configuration
 	public class SiteConfiguration : ConfigurationSection
 	{
 		#region Current
-		private static object lockCurrentLoad = new object();
-		private static SiteConfiguration config;
+		private static object _lockCurrentLoad = new object();
+		private static SiteConfiguration _config;
 		/// <summary>
 		/// Gets the site configuration from the configuration section "site". If applies overrides configuration with admin settings.
 		/// </summary>
@@ -22,26 +22,26 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				if (config == null)
+				if (_config == null)
 				{
-					lock (lockCurrentLoad)
+					lock (_lockCurrentLoad)
 					{
-						config = (SiteConfiguration)ConfigurationManager.GetSection("site");
-						if (config == null)
+						_config = (SiteConfiguration)ConfigurationManager.GetSection("site");
+						if (_config == null)
 						{
 							throw new System.Configuration.ConfigurationErrorsException("Siteconfiguration not set.");
 						}
-						if (config.UseSettings)
+						if (_config.UseSettings)
 						{
-							config.LoadSettings();
+							_config.LoadSettings();
 						}
 					}
 				}
-				return config;
+				return _config;
 			}
 			set
 			{
-				config = value;
+				_config = value;
 			}
 		}
 		#endregion

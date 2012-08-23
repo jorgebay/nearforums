@@ -23,6 +23,9 @@ namespace NearForums.Configuration.Redirector
 			}
 		}
 
+		/// <summary>
+		/// Regular expression, if matches the url will be ignored.
+		/// </summary>
 		[ConfigurationProperty("ignoreRegex", IsRequired=false)]
 		public string IgnoreRegex
 		{
@@ -34,11 +37,6 @@ namespace NearForums.Configuration.Redirector
 			{
 				this["ignoreRegex"] = value;
 			}
-		} 
-
-		public RedirectorConfiguration()
-		{
-
 		}
 
 		public static RedirectorConfiguration Current

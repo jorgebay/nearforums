@@ -5,6 +5,7 @@ using System.Text;
 using Autofac;
 using Autofac.Integration.Mvc;
 using System.Web.Mvc;
+using NearForums.Configuration.Integration;
 
 namespace NearForums.Web.Integration
 {
