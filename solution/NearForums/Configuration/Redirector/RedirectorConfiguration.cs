@@ -11,11 +11,11 @@ namespace NearForums.Configuration.Redirector
 	public class RedirectorConfiguration : ConfigurationSection
 	{
 		[ConfigurationProperty("urlGroups", IsRequired = true)]
-		public RedirectorUrlGroupCollection UrlGroups
+		public ConfigurationElementCollection<RedirectorUrlGroup> UrlGroups
 		{
 			get
 			{
-				return (RedirectorUrlGroupCollection)this["urlGroups"];
+				return (ConfigurationElementCollection<RedirectorUrlGroup>) this["urlGroups"];
 			}
 			set
 			{

@@ -8,7 +8,10 @@ using System.Configuration;
 
 namespace NearForums.Configuration.Redirector
 {
-	public class RedirectorUrlGroup : ConfigurationElement
+	/// <summary>
+	/// Represents a group of urls that should be captured to redirect
+	/// </summary>
+	public class RedirectorUrlGroup : ConfigurationElement, IUniqueConfigurationElement
 	{
 		[ConfigurationProperty("regex", IsRequired = true)]
 		public string Regex
@@ -23,12 +26,15 @@ namespace NearForums.Configuration.Redirector
 			}
 		}
 
+		/// <summary>
+		/// A collection of specific urls that must be captured within the group
+		/// </summary>
 		[ConfigurationProperty("urls", IsRequired=true)]
-		public RedirectorUrlCollection Urls
+		public ConfigurationElementCollection<RedirectorUrl> Urls
 		{
 			get
 			{
-				return (RedirectorUrlCollection)this["urls"];
+				return (ConfigurationElementCollection<RedirectorUrl>)this["urls"];
 			}
 			set
 			{
@@ -36,9 +42,15 @@ namespace NearForums.Configuration.Redirector
 			}
 		}
 
-		public RedirectorUrlGroup()
+		#region IUniqueConfigurationElement Members
+		public string Key
 		{
-
+			get 
+			{
+				//The url regex to capture must be unique
+				return Regex;
+			}
 		}
+		#endregion
 	}
 }

@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace NearForums.Configuration.Routing
 {
-	public class RouteElementCollection : ConfigurationElementCollection
+	public class RouteElementCollection : ConfigurationElementCollection<RouteElement>
 	{
 		/// <summary>
 		/// Determines if the routes in the collection only match lower case urls (can be override on the route element).
@@ -21,29 +21,6 @@ namespace NearForums.Configuration.Routing
 			set
 			{
 				this["lowerCaseOnly"] = value;
-			}
-		}
-
-		public void Add(RouteElement element)
-		{
-			BaseAdd(element);
-		}
-
-		protected override ConfigurationElement CreateNewElement()
-		{
-			return new RouteElement();
-		}
-
-		protected override object GetElementKey(ConfigurationElement element)
-		{
-			return ((RouteElement)(element)).Url;
-		}
-
-		public RouteElement this[int index]
-		{
-			get
-			{
-				return (RouteElement)BaseGet(index);
 			}
 		}
 	}

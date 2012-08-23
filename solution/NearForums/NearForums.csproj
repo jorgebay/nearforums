@@ -48,9 +48,12 @@
     <Compile Include="Configuration\CDataBaseConfigurationElement.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="Configuration\CustomDbAuthenticationProviderElement.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\ForumSorting.cs" />
+    <Compile Include="Configuration\Integration\IntegrationConfiguration.cs" />
+    <Compile Include="Configuration\IUniqueConfigurationElement.cs" />
     <Compile Include="Configuration\Spam\FloodControlElement.cs" />
     <Compile Include="Configuration\Spam\HtmlInputElement.cs" />
     <Compile Include="Configuration\IOptionalElement.cs" />
@@ -65,9 +68,7 @@
     <Compile Include="Configuration\SSOOpenIdElement.cs" />
     <Compile Include="Configuration\Redirector\RedirectorConfiguration.cs" />
     <Compile Include="Configuration\Redirector\RedirectorUrl.cs" />
-    <Compile Include="Configuration\Redirector\RedirectorUrlCollection.cs" />
     <Compile Include="Configuration\Redirector\RedirectorUrlGroup.cs" />
-    <Compile Include="Configuration\Redirector\RedirectorUrlGroupCollection.cs" />
     <Compile Include="Configuration\ReplacementCollection.cs" />
     <Compile Include="Configuration\ReplacementItem.cs" />
     <Compile Include="Configuration\Routing\RouteElement.cs" />

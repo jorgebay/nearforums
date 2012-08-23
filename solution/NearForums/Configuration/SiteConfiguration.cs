@@ -73,11 +73,11 @@ namespace NearForums.Configuration
 		}
 
 		[ConfigurationProperty("replacements", IsRequired = false)]
-		public ReplacementCollection Replacements
+		public ConfigurationElementCollection<ReplacementItem> Replacements
 		{
 			get
 			{
-				return (ReplacementCollection)this["replacements"];
+				return (ConfigurationElementCollection<ReplacementItem>)this["replacements"];
 			}
 			set
 			{

@@ -21,7 +21,7 @@ namespace NearForums.Web.Extensions
 		{
 			if (SiteConfiguration.Current != null)
 			{
-				ReplacementCollection replacements = SiteConfiguration.Current.Replacements;
+				var replacements = SiteConfiguration.Current.Replacements;
 				foreach (ReplacementItem item in replacements)
 				{
 					value = Regex.Replace(value, item.Pattern, item.Replacement, item.RegexOptions);

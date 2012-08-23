@@ -6,9 +6,8 @@ using System.Configuration;
 
 namespace NearForums.Configuration.Routing
 {
-	public class RouteElement : ConfigurationElement
+	public class RouteElement : ConfigurationElement, IUniqueConfigurationElement
 	{
-
 		[ConfigurationProperty("url", IsRequired = true)]
 		public string Url
 		{
@@ -102,5 +101,16 @@ namespace NearForums.Configuration.Routing
 				this["constraints"] = value;
 			}
 		}
+
+		#region IUniqueConfigurationElement Members
+		public string Key
+		{
+			get 
+			{
+				//Url of the route is unique inside the app
+				return Url;
+			}
+		}
+		#endregion
 	}
 }

@@ -10,13 +10,14 @@ using NearForums;
 using NearForums.Web.Extensions;
 using System.Web.Routing;
 using NearForums.Configuration;
+using NearForums.Web.Integration;
 
 namespace NearForums.Web.Controllers.Filters
 {
 	/// <summary>
 	/// Defines a base class containing common properties and methods used.
 	/// </summary>
-	public abstract class BaseActionFilterAttribute : ActionFilterAttribute
+	public abstract class BaseActionFilterAttribute : NearForumsActionFilter
 	{
 		/// <summary>
 		/// Gets or sets the current site configuration.
