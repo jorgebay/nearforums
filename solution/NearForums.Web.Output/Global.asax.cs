@@ -27,6 +27,8 @@ namespace NearForums.Web.Output
 
 		protected void Application_End()
 		{
+			//Should close the index
+			//If this method is not executed, the search engine will still work.
 			SearchService.CloseIndex();
 		}
 	}

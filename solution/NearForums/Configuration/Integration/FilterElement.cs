@@ -13,7 +13,7 @@ namespace NearForums.Configuration.Integration
 		/// A comma-separated list containing the module type name and the assembly information.
 		/// </summary>
 		[ConfigurationProperty("type", IsRequired = true)]
-		public string Type
+		public string TypeName
 		{
 			get
 			{
@@ -22,6 +22,23 @@ namespace NearForums.Configuration.Integration
 			set
 			{
 				this["type"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the Type specified on the TypeName
+		/// </summary>
+		/// <exception cref="TypeLoadException">Throws a TypeLoadException when the type can not be loaded</exception>
+		public Type Type
+		{
+			get
+			{
+				var type = Type.GetType(TypeName);
+				if (type == null)
+				{
+					throw new TypeLoadException("Could not load Type: " + TypeName);
+				}
+				return type;
 			}
 		}
 
@@ -78,7 +95,7 @@ namespace NearForums.Configuration.Integration
 		{
 			get 
 			{
-				return Type + "-" + Controller + "-" + Action;
+				return TypeName + "-" + Controller + "-" + Action;
 			}
 		}
 		#endregion

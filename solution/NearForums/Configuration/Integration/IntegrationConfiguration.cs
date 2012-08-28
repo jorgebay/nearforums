@@ -61,7 +61,7 @@ namespace NearForums.Configuration.Integration
 				if (_globalFilters == null)
 				{
 					_globalFilters = new ConfigurationElementCollection<FilterElement>();
-					throw new NotImplementedException();
+					_globalFilters.AddRange(Filters.Where(f => String.IsNullOrEmpty(f.Controller)));
 				}
 				return _globalFilters;
 			}

@@ -14,11 +14,32 @@ namespace NearForums.Configuration
 	/// <typeparam name="T"></typeparam>
 	public class ConfigurationElementCollection<T> : System.Configuration.ConfigurationElementCollection, IEnumerable<T> where T : ConfigurationElement, IUniqueConfigurationElement, new()
 	{
+		/// <summary>
+		/// Adds a range of values to the collection
+		/// </summary>
+		/// <param name="values"></param>
+		public void AddRange(IEnumerable<T> values)
+		{
+			foreach (T item in values)
+			{
+				BaseAdd(item);
+			}
+		}
+
+		/// <summary>
+		/// Creates a new instance of T
+		/// </summary>
+		/// <returns></returns>
 		protected override ConfigurationElement CreateNewElement()
 		{
 			return new T();
 		}
 
+		/// <summary>
+		/// Gets the key of a given element
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns></returns>
 		protected override object GetElementKey(ConfigurationElement element)
 		{
 			return ((IUniqueConfigurationElement)element).Key;
@@ -35,7 +56,7 @@ namespace NearForums.Configuration
 		/// <returns></returns>
 		public new IEnumerator<T> GetEnumerator()
 		{
-			return (IEnumerator<T>)base.GetEnumerator();
+			return this.OfType<T>().GetEnumerator();
 		}
 	}
 }

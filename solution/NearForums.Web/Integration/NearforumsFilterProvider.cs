@@ -30,7 +30,7 @@ namespace NearForums.Web.Integration
 			var filters = base.GetFilters(controllerContext, actionDescriptor).ToList();
 
 			AddIntegrationFilters(filters);
-			
+
 			var scope = AutofacDependencyResolver.Current.RequestLifetimeScope;
 			if (scope != null)
 			{
@@ -48,11 +48,15 @@ namespace NearForums.Web.Integration
 		/// <param name="filters">the filter list to add the integration filters to</param>
 		protected virtual void AddIntegrationFilters(List<Filter> filters)
 		{
-			//var f = Activator.CreateInstance(Type.GetType("NearForums.Web.Integration.DerivedActionFilter, NearForums.Web")) as NearForumsActionFilter;
-			//filters.Add(new Filter(f, FilterScope.Action, null));
-			throw new NotImplementedException();
+			foreach (var filterElement in IntegrationConfiguration.Current.GlobalFilters)
+			{
+				var f = Activator.CreateInstance(filterElement.Type);
+				if (!(f is NearForumsActionFilter))
+				{
+					throw new NotSupportedException("Registering action filters of type '" + filterElement.Type.FullName + "' is not supported. Action filter extensions must inherit from NearForumsActionFilter.");
+				}
+				filters.Add(new Filter(f, FilterScope.Action, null));
+			}
 		}
-
-		//private static List<string_globalFilters;
 	}
 }
