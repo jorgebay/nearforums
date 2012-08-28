@@ -44,7 +44,7 @@ namespace NearForums.Configuration.Integration
 		#endregion
 
 		/// <summary>
-		/// Configuration 
+		/// List of action filters to be integrated into NearForums pipeline
 		/// </summary>
 		[ConfigurationProperty("filters", IsRequired = false)]
 		public ConfigurationElementCollection<FilterElement> Filters
@@ -73,6 +73,33 @@ namespace NearForums.Configuration.Integration
 				}
 				return _globalFilters;
 			}
+		}
+
+		/// <summary>
+		/// List of services to be injected. 
+		/// </summary>
+		[ConfigurationProperty("services", IsRequired = false)]
+		public ConfigurationElementCollection<ServiceElement> Services
+		{
+			get
+			{
+				return (ConfigurationElementCollection<ServiceElement>)this["services"];
+			}
+			set
+			{
+				this["services"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets a key used to uniquely identify controller/action
+		/// </summary>
+		/// <param name="controllerName"></param>
+		/// <param name="actionName"></param>
+		/// <returns></returns>
+		protected virtual string GetActionFilterKey(string controllerName, string actionName)
+		{
+			return controllerName.ToUpper() + "-" + actionName.ToUpper();
 		}
 
 		/// <summary>
@@ -107,11 +134,6 @@ namespace NearForums.Configuration.Integration
 				result = _actionFilters[GetActionFilterKey(controllerName, actionName)];
 			}
 			return result;
-		}
-
-		protected virtual string GetActionFilterKey(string controllerName, string actionName)
-		{
-			return controllerName.ToUpper() + "-" + actionName.ToUpper();
 		}
 	}
 }

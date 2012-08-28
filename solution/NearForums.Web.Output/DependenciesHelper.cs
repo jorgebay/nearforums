@@ -10,6 +10,7 @@ using Autofac.Integration.Mvc;
 using System.Web.Mvc;
 using NearForums.Web.Controllers.Filters;
 using NearForums.Web.Integration;
+using NearForums.Configuration.Integration;
 
 namespace NearForums.Web.Output
 {
@@ -26,6 +27,7 @@ namespace NearForums.Web.Output
 
 			//Set Autofac as dependency resolver
 			var builder = new ContainerBuilder();
+			builder.RegisterIntegrationServices();
 			builder.RegisterAssemblyTypes(Assembly.Load("NearForums.DataAccess"))
 				.Where(t => t.Name.EndsWith("DataAccess"))
 				.AsImplementedInterfaces()
@@ -33,9 +35,11 @@ namespace NearForums.Web.Output
 			builder.RegisterAssemblyTypes(Assembly.Load("NearForums.Services"))
 				.Where(t => t.Name.EndsWith("Service"))
 				.AsImplementedInterfaces()
+				.PropertiesAutowired()
 				.InstancePerDependency();
 			builder.RegisterNearforumsFilterProvider();
-			builder.RegisterControllers(typeof(BaseController).Assembly);
+			builder.RegisterControllers(typeof(BaseController).Assembly)
+				.PropertiesAutowired();
 			var container = builder.Build();
 			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 		}
@@ -57,6 +61,25 @@ namespace NearForums.Web.Output
 			builder.RegisterType<NearForumsFilterProvider>()
 				.As<IFilterProvider>()
 				.SingleInstance();
+		}
+
+		/// <summary>
+		/// Registers all the services defined on the integration (NearForums extensions) configuration
+		/// </summary>
+		/// <param name="builder"></param>
+		public static void RegisterIntegrationServices(this ContainerBuilder builder)
+		{
+			foreach (var service in IntegrationConfiguration.Current.Services)
+			{
+				var registration = builder.RegisterType(service.Type)
+					.PropertiesAutowired()
+					.InstancePerDependency();
+				if (service.As != null)
+				{
+					//Configure the services that the component will provide
+					registration.As(service.As);
+				}
+			}
 		}
 	}
 }
