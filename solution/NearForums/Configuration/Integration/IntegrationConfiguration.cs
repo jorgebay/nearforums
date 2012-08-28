@@ -11,7 +11,15 @@ namespace NearForums.Configuration.Integration
 	/// </summary>
 	public class IntegrationConfiguration : ConfigurationSection
 	{
+		/// <summary>
+		/// Holds the list of filters for all actions
+		/// </summary>
 		private ConfigurationElementCollection<FilterElement> _globalFilters;
+		/// <summary>
+		/// Holds the list of filters that are declared at action level
+		/// </summary>
+		private Dictionary<string, ConfigurationElementCollection<FilterElement>> _actionFilters;
+		private object _actionFiltersLock = new object();
 		private static IntegrationConfiguration _config;
 
 		#region Current
@@ -65,6 +73,45 @@ namespace NearForums.Configuration.Integration
 				}
 				return _globalFilters;
 			}
+		}
+
+		/// <summary>
+		/// Gets the list of filters that are defined per action
+		/// </summary>
+		public ConfigurationElementCollection<FilterElement> GetActionFilters(string controllerName, string actionName)
+		{
+			lock (_actionFiltersLock)
+			{
+				if (_actionFilters == null)
+				{
+					_actionFilters = new Dictionary<string, ConfigurationElementCollection<FilterElement>>();
+					var filters = Filters.Where(f => !(String.IsNullOrEmpty(f.Controller)) && !(String.IsNullOrEmpty(f.Action)));
+					foreach (var f in filters)
+					{
+						var collection = new ConfigurationElementCollection<FilterElement>();
+						if (_actionFilters.ContainsKey(GetActionFilterKey(controllerName, actionName)))
+						{
+							collection = _actionFilters[GetActionFilterKey(controllerName, actionName)];
+						}
+						else
+						{
+							_actionFilters.Add(GetActionFilterKey(controllerName, actionName), collection);
+						}
+						collection.Add(f);
+					}
+				}
+			}
+			ConfigurationElementCollection<FilterElement> result  = null;
+			if (_actionFilters.ContainsKey(GetActionFilterKey(controllerName, actionName)))
+			{
+				result = _actionFilters[GetActionFilterKey(controllerName, actionName)];
+			}
+			return result;
+		}
+
+		protected virtual string GetActionFilterKey(string controllerName, string actionName)
+		{
+			return controllerName.ToUpper() + "-" + actionName.ToUpper();
 		}
 	}
 }

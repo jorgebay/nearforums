@@ -27,6 +27,15 @@ namespace NearForums.Configuration
 		}
 
 		/// <summary>
+		/// Adds an item to the collection
+		/// </summary>
+		/// <param name="item">Item to add</param>
+		public void Add(T item)
+		{
+			BaseAdd(item);
+		}
+
+		/// <summary>
 		/// Creates a new instance of T
 		/// </summary>
 		/// <returns></returns>

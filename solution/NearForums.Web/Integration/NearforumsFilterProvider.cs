@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using System.Web.Mvc;
 using NearForums.Configuration.Integration;
+using NearForums.Configuration;
 
 namespace NearForums.Web.Integration
 {
@@ -25,11 +26,13 @@ namespace NearForums.Web.Integration
 		/// <returns>
 		/// The collection filters from all of the filter providers with properties injected.
 		/// </returns>
-		public override IEnumerable<Filter> GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
+		public override IEnumerable<Filter> GetFilters(ControllerContext context, ActionDescriptor actionDescriptor)
 		{
-			var filters = base.GetFilters(controllerContext, actionDescriptor).ToList();
+			var filters = base.GetFilters(context, actionDescriptor).ToList();
 
-			AddIntegrationFilters(filters);
+			AddIntegrationGlobalFilters(filters);
+
+			AddIntegrationActionFilters(actionDescriptor, filters);
 
 			var scope = AutofacDependencyResolver.Current.RequestLifetimeScope;
 			if (scope != null)
@@ -46,9 +49,39 @@ namespace NearForums.Web.Integration
 		/// Adds the filters that are included in the configuration
 		/// </summary>
 		/// <param name="filters">the filter list to add the integration filters to</param>
-		protected virtual void AddIntegrationFilters(List<Filter> filters)
+		protected virtual void AddIntegrationActionFilters(ActionDescriptor actionDescriptor, List<Filter> filters)
 		{
-			foreach (var filterElement in IntegrationConfiguration.Current.GlobalFilters)
+			if (actionDescriptor == null)
+			{
+				throw new ArgumentNullException("actionDescriptor");
+			}
+			if (actionDescriptor.ControllerDescriptor == null)
+			{
+				throw new ArgumentNullException("actionDescriptor.ControllerDescriptor");
+			}
+			var filterElementList = IntegrationConfiguration.Current.GetActionFilters(actionDescriptor.ControllerDescriptor.ControllerName, actionDescriptor.ActionName);
+			if (filterElementList != null)
+			{
+				AddFiltersFromConfig(filterElementList, filters);
+			}
+		}
+
+		/// <summary>
+		/// Adds global filters to the filter list
+		/// </summary>
+		/// <param name="filters"></param>
+		protected virtual void AddIntegrationGlobalFilters(List<Filter> filters)
+		{
+			AddFiltersFromConfig(IntegrationConfiguration.Current.GlobalFilters, filters);
+		}
+
+		/// <summary>
+		/// Adds (Creates an instance) the filters that are declared in the configuration
+		/// </summary>
+		/// <param name="filters">the filter list to add the integration filters to</param>
+		protected virtual void AddFiltersFromConfig(ConfigurationElementCollection<FilterElement> filterElementList, List<Filter> filters)
+		{
+			foreach (var filterElement in filterElementList)
 			{
 				var f = Activator.CreateInstance(filterElement.Type);
 				if (!(f is NearForumsActionFilter))
