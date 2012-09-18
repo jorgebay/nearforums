@@ -52,9 +52,46 @@ namespace NearForums.Web.Controllers
 			return View("LoginFormFull");
 		}
 
+		[HttpGet]
+		[Captcha]
 		public ActionResult Register()
 		{
 			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
+
+			return View();
+		}
+
+		[HttpPost]
+		[Captcha]
+		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
+		{
+			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
+			var createStatus = MembershipCreateStatus.ProviderError;
+
+			try
+			{
+				ValidateRegistration(userName, email, password, confirmPassword);
+				ValidateRegistration(agreeTerms);
+				// Attempt to register the user in the membership db
+				var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
+				ValidateCreateStatus(createStatus);
+				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
+				FormsAuthentication.SetAuthCookie(userName, false);
+
+				if (ModelState.IsValid)
+				{
+					return RedirectToAction("List", "Forums");
+				}
+			}
+			catch (ValidationException ex)
+			{
+				if (createStatus == MembershipCreateStatus.Success)
+				{
+					//The membership succeded but the creation of the site user failed / Model constraint.
+					MembershipProvider.DeleteUser(userName, true);
+				}
+				this.AddErrors(this.ModelState, ex);
+			}
 
 			return View();
 		}
@@ -126,40 +163,6 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
-			return View();
-		}
-
-		[HttpPost]
-		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
-		{
-			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
-			var createStatus = MembershipCreateStatus.ProviderError;
-
-			try
-			{
-				ValidateRegistration(userName, email, password, confirmPassword);
-				ValidateRegistration(agreeTerms);
-				// Attempt to register the user in the membership db
-				var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
-				ValidateCreateStatus(createStatus);
-				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
-				FormsAuthentication.SetAuthCookie(userName, false);
-
-				if (ModelState.IsValid)
-				{
-					return RedirectToAction("List", "Forums");
-				}
-			}
-			catch (ValidationException ex)
-			{
-				if (createStatus == MembershipCreateStatus.Success)
-				{
-					//The membership succeded but the creation of the site user failed / Model constraint.
-					MembershipProvider.DeleteUser(userName, true);
-				}
-				this.AddErrors(this.ModelState, ex);
-			}
-
 			return View();
 		}
 

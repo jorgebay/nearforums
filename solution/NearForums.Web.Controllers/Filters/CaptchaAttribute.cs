@@ -37,12 +37,9 @@ namespace NearForums.Web.Controllers.Filters
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
-			if (IsPost(filterContext))
+			if (IsPost(filterContext) && ShowCaptcha)
 			{
-				if (ValidateCaptchaModelState(filterContext))
-				{
-					ShowCaptcha = false;
-				}
+				ValidateCaptchaModelState(filterContext);
 			}
 
 			filterContext.Controller.ViewBag.ShowCaptcha = ShowCaptcha;

@@ -135,7 +135,7 @@ namespace NearForums.Web.Controllers.Filters
 				SetLatestPosting(filterContext);
 			}
 			base.OnActionExecuted(filterContext);
-		} 
+		}
 		#endregion
 
 		#region Get/Set Last Posting
