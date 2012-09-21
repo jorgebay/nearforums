@@ -16,11 +16,9 @@ namespace NearForums.Web.Controllers.Filters
 	/// Prevents a user (determined by the ip) to post unlimited times.
 	/// Checks that a certain amount of time passed since the last post, if not it shows (and validates input) a captcha image to validate that its a human input.
 	/// </summary>
-	public class PreventFloodAttribute : BaseActionFilterAttribute
+	public class PreventFloodAttribute : CaptchaAttribute
 	{
 		#region Constructor, Field and Props
-		private const string _captchaModelStateKey = "captcha";
-
 		/// <summary>
 		/// Determines the type of the action result in case of a success
 		/// </summary>
@@ -51,74 +49,31 @@ namespace NearForums.Web.Controllers.Filters
 		{
 			SuccessResultType = successResultType;
 		}
-
-		/// <summary>
-		/// Determines if the request is POST
-		/// </summary>
-		protected virtual bool IsPost(ControllerContext context)
-		{
-			return context.HttpContext.Request.HttpMethod == "POST";
-		} 
 		#endregion
 
-		#region Before action execution
+		/// <summary>
+		/// Called before action executed
+		/// </summary>
+		/// <param name="filterContext"></param>
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			//Checks if the user is flooding, show captcha
 			var isFlooding = IsFlooding(filterContext);
+			ShowCaptcha = false;
 			if (isFlooding)
 			{
-				filterContext.Controller.ViewData["ShowCaptcha"] = true;
-				//If the captcha is invalid.
-				if (IsPost(filterContext))
-				{
-					if (ValidateCaptchaModelState(filterContext))
-					{
-						filterContext.Controller.ViewData["ShowCaptcha"] = false;
-						ClearFlooding(filterContext);
-					}
-				}
+				ShowCaptcha = true;
 			}
 
 			base.OnActionExecuting(filterContext);
 		}
-		#endregion
 
-		#region Validate captcha
-		/// <summary>
-		/// Checks if captcha value is invalid. If so, it add a model error to the current ModelState
-		/// </summary>
-		protected virtual bool ValidateCaptchaModelState(ActionExecutingContext filterContext)
+		protected override void OnCaptchaValid(ControllerContext context)
 		{
-			var isValid = false;
-			var captchaModelState = filterContext.Controller.ViewData.ModelState[_captchaModelStateKey];
-			if (captchaModelState == null)
-			{
-				captchaModelState = new ModelState();
-				var postedValue = filterContext.HttpContext.Request.Form[_captchaModelStateKey];
-				captchaModelState.Value = new ValueProviderResult(postedValue, postedValue, Thread.CurrentThread.CurrentUICulture);
-				filterContext.Controller.ViewData.ModelState.Add(_captchaModelStateKey, captchaModelState);
-			}
+			ClearFlooding(context);
+			base.OnCaptchaValid(context);
+		}
 
-			//if its the captcha value is not correct, add a modelState error
-			if (String.IsNullOrEmpty(captchaModelState.Value.AttemptedValue))
-			{
-				captchaModelState.Errors.Add(new ValidationError(_captchaModelStateKey, ValidationErrorType.NullOrEmpty));
-			}
-			else if (!CaptchaHelper.IsValidCaptchaValue(captchaModelState.Value.AttemptedValue, new SessionWrapper(filterContext.HttpContext)))
-			{
-				captchaModelState.Errors.Add(new ValidationError(_captchaModelStateKey, ValidationErrorType.CompareNotMatch));
-			}
-			else
-			{
-				isValid = true;
-			}
-
-			return isValid;
-		} 
-		#endregion
-
-		#region After action execution
 		/// <summary>
 		/// Called after the action method executes
 		/// </summary>
@@ -136,9 +91,7 @@ namespace NearForums.Web.Controllers.Filters
 			}
 			base.OnActionExecuted(filterContext);
 		}
-		#endregion
 
-		#region Get/Set Last Posting
 		/// <summary>
 		/// Stores the date of the latest posting on the state server (cache)
 		/// </summary>
@@ -154,9 +107,7 @@ namespace NearForums.Web.Controllers.Filters
 			var cache = new CacheWrapper(context.HttpContext);
 			return cache.GetLatestPosting(context.HttpContext.Request.UserHostAddress);
 		}
-		#endregion
 
-		#region Check / Clear Flooding
 		/// <summary>
 		/// Determines if the user is flooding
 		/// </summary>
@@ -191,9 +142,7 @@ namespace NearForums.Web.Controllers.Filters
 			var cache = new CacheWrapper(context.HttpContext);
 			cache.SetTimePassed(context.HttpContext.Request.UserHostAddress, minTime);
 		}
-		#endregion
 
-		#region Is Success
 		/// <summary>
 		/// Determines if the action execution was successful. ie: Redirection after save, 
 		/// </summary>
@@ -204,7 +153,6 @@ namespace NearForums.Web.Controllers.Filters
 				throw new ArgumentNullException("actionResult");
 			}
 			return SuccessResultType != null && SuccessResultType.IsAssignableFrom(actionResult.GetType());
-		} 
-		#endregion
+		}
 	}
 }
