@@ -17,7 +17,7 @@ namespace NearForums.Web.Controllers.Filters
 	/// <summary>
 	/// Defines a base class containing common properties and methods used.
 	/// </summary>
-	public class BaseActionFilterAttribute : ActionFilterAttribute
+	public class BaseActionFilterAttribute : NearForumsActionFilter
 	{
 		/// <summary>
 		/// Gets or sets the current site configuration.

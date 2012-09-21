@@ -53,7 +53,6 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpGet]
-		[Captcha]
 		public ActionResult Register()
 		{
 			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
@@ -62,7 +61,6 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpPost]
-		[Captcha]
 		public ActionResult Register(string userName, string email, string password, string confirmPassword, bool agreeTerms)
 		{
 			ViewData["PasswordLength"] = MembershipProvider.MinRequiredPasswordLength;
@@ -73,13 +71,13 @@ namespace NearForums.Web.Controllers
 				ValidateRegistration(userName, email, password, confirmPassword);
 				ValidateRegistration(agreeTerms);
 				// Attempt to register the user in the membership db
-				var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
-				ValidateCreateStatus(createStatus);
-				SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
-				FormsAuthentication.SetAuthCookie(userName, false);
-
 				if (ModelState.IsValid)
 				{
+					var membershipUser = MembershipProvider.CreateUser(userName, password, email, null, null, true, null, out createStatus);
+					ValidateCreateStatus(createStatus);
+					SecurityHelper.TryFinishMembershipLogin(Session, membershipUser, _service);
+					FormsAuthentication.SetAuthCookie(userName, false);
+
 					return RedirectToAction("List", "Forums");
 				}
 			}
