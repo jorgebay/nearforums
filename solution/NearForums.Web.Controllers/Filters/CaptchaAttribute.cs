@@ -76,8 +76,24 @@ namespace NearForums.Web.Controllers.Filters
 				isValid = true;
 			}
 
+			if (isValid)
+			{
+				OnCaptchaValid(filterContext);
+			}
+
 			return isValid;
-		} 
+		}
+
+		/// <summary>
+		/// Called when the captcha is correctly filled in, 
+		/// determining that the user is human
+		/// </summary>
+		/// <param name="context"></param>
+		protected virtual void OnCaptchaValid(ControllerContext context)
+		{
+			var session = new SessionWrapper(context.HttpContext);
+			session.IsHuman = true;
+		}
 
 		/// <summary>
 		/// Called after the action method executes
