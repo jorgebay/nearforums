@@ -1,15 +1,13 @@
-﻿/*
-	this css contains all base styles for elements and structure of the layout of nearforums site.
-*/
+﻿/* Structure of the template and elements default*/
 body
 {
+	font-family: Helvetica, Arial, sans-serif;
 	background-color: #ffffff;
+	background-image: url(../images/body-bg.png);
 	color: #333333;
 	margin: 0 0 0 0;
 	padding:0;
-	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
-	background-image: url(../images/temp/body-bg.gif);
 	background-repeat: repeat-x;
 }
 img
@@ -37,7 +35,7 @@ p
 {
 	margin-top: 0px;
 	margin-bottom: 8px;
-	line-height: 18px;
+	line-height: 15px;
 }
 ul
 {
@@ -51,19 +49,22 @@ li
 }
 a
 {
-	font-weight: bold;
+	font-weight: normal;
 	color: #0372A0;
+	text-decoration: underline;
+}
+a:hover, #content a:hover
+{
 	text-decoration: underline;
 }
 h1
 {
-	font-family: georgia,serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 28px;
 	font-weight: normal;
 	color: #333333;
 	margin: 0px 0px 20px 0px;
 	padding: 0px;
-	border-bottom: 1px solid #666666;
 }
 h2
 {
@@ -71,7 +72,6 @@ h2
 	font-weight: normal;
 	margin: 0 0 10px 0;
 	padding: 0;
-	border-bottom: solid 1px #666666;
 	color: #222222;
 }
 h3
@@ -92,7 +92,7 @@ form
 }
 textarea
 {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 13px;
 	border: solid 1px #A3A3A5;
 	width: 300px;
@@ -135,13 +135,35 @@ strong a
 }
 #header
 {
-	height: 117px;
-	padding: 0 0 20px 0;
+	padding-top: 20px;
+	height: 104px;
+}
+#logo
+{
+	font-family: Myriad Pro, Helvetica, Calibri, Arial;
+	font-size: 48px;
+	line-height: 48px;
+	text-shadow: 0 1px 0 #EFEFEF;
+}
+#logo a
+{
+	text-decoration: none;
+	font-weight: normal;
+	color: #333333;
+}
+#logo .part2
+{
+	color: #BD2E00;
 }
 #footer
 {
-	background-color: #EBEBEB;
-	padding: 10px 10px 2px 10px;
+	border-top: 3px solid #757575;
+	background-color: #FAFAFA;
+	padding: 10px 0 2px 0;
+	width: 950px;
+	margin: 0 auto 0 auto;
+	color: #666666;
+	font-weight: bold;
 }
 #footer p
 {
@@ -150,29 +172,25 @@ strong a
 #footer a
 {
 	text-decoration: none;
-	color: #111111;
+	font-weight: bold;
+	/*color: #f0f0f0;*/
 }
 #footer a:hover
 {
 	text-decoration: underline;
 }
-#content
-{
-	background-image: url(../images/temp/content-top.gif);
-	background-repeat: no-repeat;
-	background-color: #ffffff;
-	padding: 17px 25px 50px 25px;
-}
 #userMenu
 {
 	float: right;
-	background-color: #ffffff;
 	list-style-type: none;
-	padding: 8px 10px 6px 0;
+	padding: 0 0 6px 0;
 	margin: 0;
 	font-size: 13px;
 	height:16px;
 	overflow: hidden;
+	position: relative;
+	top: 75px;
+	text-shadow: 0 1px 0 #FFFFFF;
 }
 #userMenu li
 {
@@ -189,33 +207,56 @@ strong a
 #userMenu li a
 {
 	text-decoration: none;
-	color: #444444;
+	color: #222222;
+	line-height: 20px;
+	font-weight: bold;
+}
+#userMenu li.login.twitter a img
+{
+	padding-top: 3px;
 }
 #userMenu a img
 {
-	position: relative;
-	top: -3px;
+
 }
 #userMenu li a:hover
 {
 	text-decoration: underline;
 }
+#content
+{
+	padding: 20px 0 20px 0;
+}
 #searchBox
 {
-	clear: both;
-	padding: 48px 0 0 0;
-}
-#searchBox form
-{
 	float: right;
-	background-color: #FFFFFF;
-	padding: 5px 10px 5px 5px;
+	clear: both;
+	padding: 7px 10px 7px 10px;
+	height: 30px;
+	margin: 1px 0 0 0;
+	background-color: #F9F9F9;
+	/*background-color: #555555;*/
 	border-radius: 5px 0 0 0;
-	height: 28px;
+	border-left: 1px solid #C0C0C0;
+	border-top: 1px solid #C0C0C0;
+	border-right: 1px solid #C0C0C0;
 }
 #searchBox input.text
 {
-	padding: 5px;
+	padding: 4px;
 	overflow: hidden;
 	line-height: 18px;
+	height: 18px;
+	border: 1px solid #BBBBBB;
+}
+#searchBox input.button
+{
+	padding: 4px;
+	line-height: 18px;
+	margin: 0;
+	border: 1px solid #999999;
+}
+#searchBox input.button:hover, #searchBox input.button:focus
+{
+	border: 1px solid #FFFFFF;
 }
