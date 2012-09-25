@@ -84,6 +84,7 @@ namespace NearForums.Web.Controllers
 				return ResultHelper.ForbiddenResult(this);
 			}
 			var user = _service.Get(id);
+			ViewBag.GravatarPhoto = _service.GetGravatarImageUrl(user);
 			return View(user);
 		}
 
@@ -122,6 +123,7 @@ namespace NearForums.Web.Controllers
 			{
 				this.AddErrors(this.ModelState, ex);
 			}
+			ViewBag.GravatarPhoto = _service.GetGravatarImageUrl(user);
 			return View(user);
 		}
 		#endregion

@@ -14,6 +14,7 @@
 		,{"Username", S("Username is required.")}
 	}, null)
 @{Html.BeginForm(null, null, FormMethod.Post, new { @id = "accountForm" });}
+@Html.Hidden("gravatarPhoto")
 <fieldset>
     <legend>@T("Change your account information")</legend>
     <div class="formItem floatContainer">
@@ -29,12 +30,17 @@
         @Html.TextBox("timezone", null, new { @class = "text" })
     </div>
     <div class="formItem floatContainer">
+		<label>@T("Profile image")</label>
+		<div class="photo" id="photoPreview"></div>
+		<select onchange="return changePhoto(this);">
+			<option>@T("Change photo")</option>
+			<option value="gravatar">@T("Use gravatar image")</option>
+			<option value="remove">@T("Remove photo")</option>
+		</select>
+	</div>
+	<div class="formItem floatContainer" style="display:none;">
 		<label for="photo">@T("Photo url")</label>
 		@Html.TextBox("photo", null, new { @class = "text" })
-		@if (!string.IsNullOrWhiteSpace(Model.Photo))
-		{ 
-			<span class="note"><img src="@Model.Photo" alt="@T("Profile image")" /></span>
-		}
     </div>
 	<div class="formItem floatContainer">
 		<label for="website">@T("Website")</label>
@@ -80,6 +86,7 @@
         $("#accountForm").submit(function () {
             calculateEmailPolicy();
         });
+		showPhotoPreview();
     });
 
     function calculateEmailPolicy() {
@@ -89,4 +96,50 @@
         });
         $("#emailPolicy").val(value);
     }
+
+	function showPhotoPreview()
+	{
+		var photoUrl = $.trim($("#photo").val());
+		var img = $("#photoPreview img");
+		if (photoUrl != "")
+		{
+			if (img.length == 0)
+			{
+				img = $("<img />").appendTo($("#photoPreview"));
+			}
+			img.prop("src", photoUrl);
+		}
+		else
+		{
+			img.remove();
+		}
+	}
+
+	function changePhoto(sender)
+	{
+		var value = $(sender).val();
+		sender.selectedIndex = 0;
+		switch (value)
+		{
+			case "gravatar":
+				assignGravatar();
+				break;
+			case "remove":
+				$("#photo").val("");
+				break;
+		}
+		showPhotoPreview();
+		return false;
+	}
+
+	function assignGravatar()
+	{
+		var gravatarPhoto = $("#gravatarPhoto").val();
+		if (gravatarPhoto == "")
+		{
+			alert("You must specify an email address to use Gravatar.");
+			return;
+		}
+		$("#photo").val(gravatarPhoto);
+	}
 </script>
