@@ -112,17 +112,18 @@ namespace NearForums.Configuration.Integration
 				if (_actionFilters == null)
 				{
 					_actionFilters = new Dictionary<string, ConfigurationElementCollection<FilterElement>>();
-					var filters = Filters.Where(f => !(String.IsNullOrEmpty(f.Controller)) && !(String.IsNullOrEmpty(f.Action)));
+					var filters = Filters.Where(f => (!String.IsNullOrEmpty(f.Controller)) && (!String.IsNullOrEmpty(f.Action)));
 					foreach (var f in filters)
 					{
 						var collection = new ConfigurationElementCollection<FilterElement>();
-						if (_actionFilters.ContainsKey(GetActionFilterKey(controllerName, actionName)))
+						var key = GetActionFilterKey(f.Controller, f.Action);
+						if (_actionFilters.ContainsKey(key))
 						{
-							collection = _actionFilters[GetActionFilterKey(controllerName, actionName)];
+							collection = _actionFilters[key];
 						}
 						else
 						{
-							_actionFilters.Add(GetActionFilterKey(controllerName, actionName), collection);
+							_actionFilters.Add(key, collection);
 						}
 						collection.Add(f);
 					}
