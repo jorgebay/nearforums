@@ -2,7 +2,8 @@
 {
 	init : function()
 	{
-		$(document).bind("dataLoaded", quoting.bindQuotes);
+		$(document).bind("dataLoaded", quoting.clean);
+		quoting.bindQuotes();
 	}
 	,
 	isNumber : function (n) 
@@ -12,7 +13,14 @@
 	,
 	bindQuotes : function()
 	{
-		$("a.fastQuote").unbind().mousemove(quoting.showQuote).mouseout(quoting.hideQuotes).each(function(){
+		$("#messages")
+			.on("mouseover", "a.fastQuote", quoting.showQuote)
+			.on("mouseout", "a.fastQuote", quoting.hideQuotes);
+	}
+	,
+	clean : function()
+	{
+		$("#messages a.fastQuote:contains('[')").each(function(){
 			$(this).text($(this).text().replace("[", "").replace("]", ""));
 		});
 	}
@@ -22,7 +30,7 @@
 		var href = $(this).attr("href");
 		if (href.length > 4)
 		{
-			var quotedId = href.substring(4);
+			var quotedId = href.substring(href.indexOf("#")+4);
 			//Determine if quoteId is numeric
 			if (quoting.isNumber(quotedId))
 			{
