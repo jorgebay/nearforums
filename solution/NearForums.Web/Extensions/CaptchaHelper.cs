@@ -21,7 +21,7 @@ namespace NearForums.Web.Extensions
 		public static ActionResult CaptchaResult(SessionWrapper session)
 		{
 			var randomText = GenerateRandomText(6);
-			var hash = ComputeMd5Hash(randomText + GetSalt());
+			var hash = Utils.GetMd5Hash(randomText + GetSalt(), Encoding.ASCII);
 			session.CaptchaHash = hash;
 
 			var rnd = new Random();
@@ -58,7 +58,7 @@ namespace NearForums.Web.Extensions
 		{
 			var expectedHash = session.CaptchaHash;
 			var toCheck = captchaValue + GetSalt();
-			var hash = ComputeMd5Hash(toCheck);
+			var hash = Utils.GetMd5Hash(toCheck, Encoding.ASCII);
 			return hash.Equals(expectedHash);
 		}
 
@@ -76,14 +76,6 @@ namespace NearForums.Web.Extensions
 		private static string GetSalt()
 		{
 			return Assembly.GetExecutingAssembly().FullName;
-		}
-
-		private static string ComputeMd5Hash(string input)
-		{
-			var encoding = new ASCIIEncoding();
-			var bytes = encoding.GetBytes(input.ToUpper());
-			HashAlgorithm md5Hasher = MD5.Create();
-			return BitConverter.ToString(md5Hasher.ComputeHash(bytes));
 		}
 
 		private static string GenerateRandomText(int textLength)

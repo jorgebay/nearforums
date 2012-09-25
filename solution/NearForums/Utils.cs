@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
+using System.Security.Cryptography;
 
 namespace NearForums
 {
@@ -295,6 +296,18 @@ namespace NearForums
 		public static T GetPropertyValue<T>(object container, string propName)
 		{
 			return (T)GetPropertyValue(container, propName);
+		}
+
+		/// <summary>
+		/// Hash an input string and return the hash as a 32 character hexadecimal string
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public static string GetMd5Hash(string input, Encoding encoding)
+		{
+			var bytes = encoding.GetBytes(input.ToUpper());
+			HashAlgorithm md5Hasher = MD5.Create();
+			return BitConverter.ToString(md5Hasher.ComputeHash(bytes));
 		}
 	}
 }

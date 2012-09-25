@@ -47,7 +47,9 @@ namespace NearForums.Services
 			return _dataAccess.GetTestUser();
 		}
 
-		/// <exception cref="ValidationException"></exception>
+		/// <exception cref="ValidationException">
+		/// Throws ValidationException when user fields are invalid
+		/// </exception>
 		public User Add(User user, AuthenticationProvider provider, string providerId)
 		{
 			user.ValidateFields();
@@ -55,54 +57,14 @@ namespace NearForums.Services
 			return _dataAccess.AddUser(user, provider, providerId);
 		}
 
-		public List<User> GetAll()
-		{
-			return _dataAccess.GetAll();
-		}
-
-		public List<User> GetByName(string userName)
-		{
-			return _dataAccess.GetByName(userName);
-		}
-
-		public void Delete(int id)
-		{
-			UsersDataAccess da = new UsersDataAccess();
-			_dataAccess.Delete(id);
-		}
-
-		public void Promote(int id)
-		{
-			_dataAccess.Promote(id);
-		}
-
-		public void Demote(int id)
-		{
-			_dataAccess.Demote(id);
-		}
-
-		public User Get(int userId)
-		{
-			return _dataAccess.Get(userId);
-		}
-
-		public string GetRoleName(UserRole userRole)
-		{
-			return _dataAccess.GetRoleName(userRole);
-		}
-
-		/// <exception cref="ValidationException"></exception>
-		public void Edit(User user)
-		{
-			user.ValidateFields();
-			_dataAccess.Edit(user);
-		}
-
+		/// <exception cref="ValidationException">
+		/// Throws ValidationException when email is invalid (null or not email)
+		/// </exception>
 		public void AddEmail(int id, string email, EmailPolicy policy)
 		{
 			#region Validate Email
 			//To get the same regex used in all the site.
-			var regexAttribute = new EmailFormatAttribute(); 
+			var regexAttribute = new EmailFormatAttribute();
 			if (String.IsNullOrEmpty(email))
 			{
 				throw new ValidationException(new ValidationError("email", ValidationErrorType.NullOrEmpty));
@@ -115,13 +77,7 @@ namespace NearForums.Services
 			_dataAccess.AddEmail(id, email, policy);
 		}
 
-		public void ResetPassword(string membershipKey, string guid, string linkUrl)
-		{
-			var user = GetByProviderId(AuthenticationProvider.Membership, membershipKey);
-			_dataAccess.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(SiteConfiguration.Current.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
-			_notificationService.SendResetPassword(user, linkUrl);
-		}
-
+		/// <exception cref="ValidationException"></exception>
 		public User AuthenticateWithCustomProvider(string userName, string password)
 		{
 			User user = null;
@@ -144,21 +100,58 @@ namespace NearForums.Services
 			return user;
 		}
 
-		public void ValidateUserAndPassword(string userName, string password)
+		public void Delete(int id)
 		{
-			var errors = new List<ValidationError>();
-			if (String.IsNullOrWhiteSpace(userName))
+			UsersDataAccess da = new UsersDataAccess();
+			_dataAccess.Delete(id);
+		}
+
+		public void Demote(int id)
+		{
+			_dataAccess.Demote(id);
+		}
+
+		/// <exception cref="ValidationException"></exception>
+		public void Edit(User user)
+		{
+			user.ValidateFields();
+			_dataAccess.Edit(user);
+		}
+
+		public List<User> GetAll()
+		{
+			return _dataAccess.GetAll();
+		}
+
+		public List<User> GetByName(string userName)
+		{
+			return _dataAccess.GetByName(userName);
+		}
+
+		public User Get(int userId)
+		{
+			return _dataAccess.Get(userId);
+		}
+
+		public string GetGravatarImageUrl(User user)
+		{
+			if (user == null)
 			{
-				errors.Add(new ValidationError("userName", ValidationErrorType.NullOrEmpty));
+				throw new ArgumentNullException("user");
 			}
-			if (String.IsNullOrWhiteSpace(password))
+			if (user.Email == null)
 			{
-				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
+				throw new ArgumentNullException("user.Email");
 			}
-			if (errors.Count > 0)
-			{
-				throw new ValidationException(errors);
-			}
+			const string url = "http://www.gravatar.com/avatar.php?gravatar_id={0}&s=48&r=pg";
+			var emailHash = Utils.GetMd5Hash(user.Email, Encoding.ASCII);
+
+			return String.Format(url, emailHash);
+		}
+
+		public string GetRoleName(UserRole userRole)
+		{
+			return _dataAccess.GetRoleName(userRole);
 		}
 
 		public Dictionary<UserRole, string> GetRoles()
@@ -184,6 +177,35 @@ namespace NearForums.Services
 			{
 			}
 			return result;
+		}
+
+		public void Promote(int id)
+		{
+			_dataAccess.Promote(id);
+		}
+
+		public void ResetPassword(string membershipKey, string guid, string linkUrl)
+		{
+			var user = GetByProviderId(AuthenticationProvider.Membership, membershipKey);
+			_dataAccess.UpdatePasswordResetGuid(user.Id, guid, DateTime.Now.AddHours(SiteConfiguration.Current.AuthenticationProviders.FormsAuth.TimeToExpireResetPasswordLink));
+			_notificationService.SendResetPassword(user, linkUrl);
+		}
+
+		public void ValidateUserAndPassword(string userName, string password)
+		{
+			var errors = new List<ValidationError>();
+			if (String.IsNullOrWhiteSpace(userName))
+			{
+				errors.Add(new ValidationError("userName", ValidationErrorType.NullOrEmpty));
+			}
+			if (String.IsNullOrWhiteSpace(password))
+			{
+				errors.Add(new ValidationError("password", ValidationErrorType.NullOrEmpty));
+			}
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
 		}
 	}
 }
