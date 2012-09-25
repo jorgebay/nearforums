@@ -141,9 +141,9 @@ namespace NearForums.Services
 			}
 			if (user.Email == null)
 			{
-				throw new ArgumentNullException("user.Email");
+				return null;
 			}
-			const string url = "http://www.gravatar.com/avatar.php?gravatar_id={0}&s=48&r=pg";
+			const string url = "https://www.gravatar.com/avatar/{0}?s=48&r=pg";
 			var emailHash = Utils.GetMd5Hash(user.Email, Encoding.ASCII);
 
 			return String.Format(url, emailHash);

@@ -305,9 +305,9 @@ namespace NearForums
 		/// <returns></returns>
 		public static string GetMd5Hash(string input, Encoding encoding)
 		{
-			var bytes = encoding.GetBytes(input.ToUpper());
+			var bytes = encoding.GetBytes(input.ToLower());
 			HashAlgorithm md5Hasher = MD5.Create();
-			return BitConverter.ToString(md5Hasher.ComputeHash(bytes));
+			return BitConverter.ToString(md5Hasher.ComputeHash(bytes)).ToLower().Replace("-", "");
 		}
 	}
 }

@@ -14,7 +14,7 @@
 	bindQuotes : function()
 	{
 		$("#messages")
-			.on("mouseover", "a.fastQuote", quoting.showQuote)
+			.on("mousemove", "a.fastQuote", quoting.showQuote)
 			.on("mouseout", "a.fastQuote", quoting.hideQuotes);
 	}
 	,
