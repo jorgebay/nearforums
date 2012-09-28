@@ -10,7 +10,7 @@ namespace NearForums.Configuration
 	/// <summary>
 	/// Contains the general configuration properties for the site
 	/// </summary>
-	public class GeneralElement : ConfigurationElement
+	public class GeneralElement : BaseConfigurationElement
 	{
 		/// <summary>
 		/// Determines the path of localization files, relative to executing path. 
@@ -89,17 +89,6 @@ namespace NearForums.Configuration
 			get
 			{
 				return PathResolver(ContentPath);
-			}
-		}
-
-		/// <summary>
-		/// Gets the path on disk of the settings file. Example: c:\whatever\content\settings\main.xml
-		/// </summary>
-		public string SettingsFilePath
-		{
-			get
-			{
-				return Path.Combine(ContentPathFull, "settings\\main.xml");
 			}
 		}
 

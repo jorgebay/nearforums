@@ -7,6 +7,7 @@ using NearForums.Configuration.Notifications;
 using System.IO;
 using System.Xml;
 using NearForums.Configuration.Spam;
+using NearForums.Configuration.Settings;
 
 namespace NearForums.Configuration
 {
@@ -136,6 +137,26 @@ namespace NearForums.Configuration
 				}
 			}
 		}
+
+		private ISettingsRepository _settingsRepository;
+		/// <summary>
+		/// Gets or sets the repository used to load and save settings
+		/// </summary>
+		public ISettingsRepository SettingsRepository
+		{
+			get
+			{
+				if (_settingsRepository == null)
+				{
+					_settingsRepository = new DatabaseSettingsRepository();
+				}
+				return _settingsRepository;
+			}
+			set
+			{
+				_settingsRepository = value;
+			}
+		}
 		
 		/// <summary>
 		/// Gets or sets the configuration for the spam prevention features
@@ -205,20 +226,7 @@ namespace NearForums.Configuration
 		/// </summary>
 		protected virtual void LoadSettings()
 		{
-			//try
-			//{
-			//    using (var settingsFile = File.Open(SettingsFilePath, FileMode.Open, FileAccess.Read))
-			//    {
-			//        using (var reader = new XmlTextReader(settingsFile))
-			//        {
-			//            reader.Read();
-			//            DeserializeElement(reader, false);
-			//        }
-			//    }
-			//}
-			//catch (DirectoryNotFoundException) { }
-			//catch (FileNotFoundException) { }
-			////Its OK if there isn't settings
+			_settingsRepository.LoadSettings(this);
 		}
 		#endregion
 
@@ -228,22 +236,7 @@ namespace NearForums.Configuration
 		/// </summary>
 		public void SaveSettings()
 		{
-			//var writer = XmlTextWriter.Create(SettingsFilePath, new XmlWriterSettings() 
-			//{ 
-			//    ConformanceLevel = ConformanceLevel.Fragment, 
-			//    Encoding = Encoding.UTF8,
-			//    Indent = true
-			//});
-			//writer.WriteStartElement("site");
-			//try
-			//{
-			//    SerializeElement(writer, false);
-			//    writer.WriteEndElement();
-			//}
-			//finally
-			//{
-			//    writer.Close();
-			//}
+			_settingsRepository.SaveSettings(this);
 		}
 		#endregion
 
