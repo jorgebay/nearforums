@@ -12,9 +12,9 @@ namespace NearForums.Web.Extensions
 		{
 			if (date.Kind == DateTimeKind.Utc)
 			{
-				if (SiteConfiguration.Current.TimeZoneOffset.HasValue)
+				if (SiteConfiguration.Current.General.TimeZoneOffset.HasValue)
 				{
-					return DateTime.SpecifyKind(date.Add(SiteConfiguration.Current.TimeZoneOffset.Value), DateTimeKind.Local);
+					return DateTime.SpecifyKind(date.Add(SiteConfiguration.Current.General.TimeZoneOffset.Value), DateTimeKind.Local);
 				}
 				else
 				{

@@ -23,7 +23,7 @@ namespace NearForums.Web.Output
 		public static void Register(HttpContextBase context)
 		{
 			//Inject as a dependency
-			SiteConfiguration.Current.PathResolver = context.Server.MapPath;
+			SiteConfiguration.Current.General.PathResolver = context.Server.MapPath;
 
 			//Set Autofac as dependency resolver
 			var builder = new ContainerBuilder();

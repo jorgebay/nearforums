@@ -46,20 +46,10 @@ namespace NearForums.Configuration
 		}
 		#endregion
 
-		[ConfigurationProperty("ui", IsRequired = true)]
-		public UIElement UI
-		{
-			get
-			{
-				return (UIElement)this["ui"];
-			}
-			set
-			{
-				this["ui"] = value;
-			}
-		}
-
-		[ConfigurationProperty("authenticationProviders", IsRequired = true)]
+		/// <summary>
+		/// Defines the authentication providers for the site
+		/// </summary>
+		[ConfigurationProperty("authenticationProviders")]
 		public AuthenticationProvidersElement AuthenticationProviders
 		{
 			get
@@ -72,20 +62,10 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("replacements", IsRequired = false)]
-		public ConfigurationElementCollection<ReplacementItem> Replacements
-		{
-			get
-			{
-				return (ConfigurationElementCollection<ReplacementItem>)this["replacements"];
-			}
-			set
-			{
-				this["replacements"] = value;
-			}
-		}
-
-		[ConfigurationProperty("dataAccess", IsRequired = false)]
+		/// <summary>
+		/// Defines the data access for the site
+		/// </summary>
+		[ConfigurationProperty("dataAccess")]
 		public DataAccessElement DataAccess
 		{
 			get
@@ -98,7 +78,23 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("notifications", IsRequired = false)]
+		/// <summary>
+		/// Gets or sets the general configuration for the site
+		/// </summary>
+		[ConfigurationProperty("general")]
+		public GeneralElement General
+		{
+			get
+			{
+				return (GeneralElement)this["general"];
+			}
+			set
+			{
+				this["general"] = value;
+			}
+		}
+
+		[ConfigurationProperty("notifications")]
 		public NotificationsContainerElement Notifications
 		{
 			get
@@ -111,7 +107,20 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("search", IsRequired = false)]
+		[ConfigurationProperty("replacements")]
+		public ConfigurationElementCollection<ReplacementItem> Replacements
+		{
+			get
+			{
+				return (ConfigurationElementCollection<ReplacementItem>)this["replacements"];
+			}
+			set
+			{
+				this["replacements"] = value;
+			}
+		}
+
+		[ConfigurationProperty("search")]
 		public SearchElement Search
 		{
 			get
@@ -131,7 +140,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Gets or sets the configuration for the spam prevention features
 		/// </summary>
-		[ConfigurationProperty("spamPrevention", IsRequired = true)]
+		[ConfigurationProperty("spamPrevention")]
 		public SpamPreventionElement SpamPrevention
 		{
 			get
@@ -144,32 +153,21 @@ namespace NearForums.Configuration
 			}
 		}
 
-		#region Timezone
-		[ConfigurationProperty("timeZoneOffset", IsRequired = false)]
-		private decimal? TimeZoneOffsetHours
+		/// <summary>
+		/// Defines the user interface configuration for the site
+		/// </summary>
+		[ConfigurationProperty("ui")]
+		public UIElement UI
 		{
 			get
 			{
-				return (decimal?)this["timeZoneOffset"];
+				return (UIElement)this["ui"];
 			}
 			set
 			{
-				this["timeZoneOffset"] = value;
+				this["ui"] = value;
 			}
 		}
-
-		public TimeSpan? TimeZoneOffset
-		{
-			get
-			{
-				if (this.TimeZoneOffsetHours == null)
-				{
-					return null;
-				}
-				return new TimeSpan(0, Convert.ToInt32(this.TimeZoneOffsetHours * 60), 0);
-			}
-		} 
-		#endregion
 
 		/// <summary>
 		/// Determines if the application should store and retrieve admin settings, apart from the site configuration
@@ -184,99 +182,6 @@ namespace NearForums.Configuration
 			set
 			{
 				this["useSettings"] = value;
-			}
-		}
-
-		#region Paths
-		/// <summary>
-		/// Determines the path of content files (localization,templates,...), relative to executing path. Example: ~/content/
-		/// </summary>
-		[ConfigurationProperty("contentPath", IsRequired = false, DefaultValue = @"~/content/")]
-		public string ContentPath
-		{
-			get
-			{
-				return (string)this["contentPath"];
-			}
-			set
-			{
-				this["contentPath"] = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the full path of the Content folder
-		/// </summary>
-		public string ContentPathFull
-		{
-			get
-			{
-				return PathResolver(ContentPath);
-			}
-		}
-
-		/// <summary>
-		/// Gets the path on disk of the settings file. Example: c:\whatever\content\settings\main.xml
-		/// </summary>
-		public string SettingsFilePath
-		{
-			get
-			{
-				return Path.Combine(ContentPathFull, "settings\\main.xml");
-			}
-		}
-
-		/// <summary>
-		/// Gets the path on disk of the localization file. Example: c:\whatever\content\localization\en-us.po
-		/// </summary>
-		public string LocalizationFilePath(string cultureName)
-		{
-			if (cultureName == null)
-			{
-				throw new ArgumentNullException("cultureName");
-			}
-			return Path.Combine(ContentPathFull, "localization\\" + cultureName.ToLower() + ".po");
-		}
-
-		/// <summary>
-		/// Gets the path on disk of the template folder. Example: c:\whatever\content\templates\template-key
-		/// </summary>
-		public string TemplateFolderPathFull(string templateKey)
-		{
-			return PathResolver(TemplateFolderPath(templateKey));
-		}
-
-		/// <summary>
-		/// Gets the virtual path of the template folder. Example: ~/content/templates/template-key
-		/// </summary>
-		public string TemplateFolderPath(string templateKey)
-		{
-			if (templateKey == null)
-			{
-				throw new ArgumentNullException("templateKey");
-			}
-			return ContentPath + "templates/" + templateKey.ToLower();
-		} 
-		#endregion
-
-		/// <summary>
-		/// Determines the path of localization files, relative to executing path. Example: content\localization\
-		/// </summary>
-		[ConfigurationProperty("cultureName", IsRequired = false, DefaultValue = "en-US")]
-		public string CultureName
-		{
-			get
-			{
-				var cultureName = (string)this["cultureName"];
-				if (String.IsNullOrWhiteSpace(cultureName))
-				{
-					cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
-				}
-				return cultureName;
-			}
-			set
-			{
-				this["cultureName"] = value;
 			}
 		}
 
@@ -300,37 +205,20 @@ namespace NearForums.Configuration
 		/// </summary>
 		protected virtual void LoadSettings()
 		{
-			try
-			{
-				using (var settingsFile = File.Open(SettingsFilePath, FileMode.Open, FileAccess.Read))
-				{
-					using (var reader = new XmlTextReader(settingsFile))
-					{
-						reader.Read();
-						DeserializeElement(reader, false);
-					}
-				}
-			}
-			catch (DirectoryNotFoundException) { }
-			catch (FileNotFoundException) { }
-			//Its OK if there isn't settings
-		}
-
-		private Func<string, string> _pathResolver;
-		public Func<string, string> PathResolver
-		{
-			get
-			{
-				if (_pathResolver == null)
-				{
-					_pathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
-				}
-				return _pathResolver;
-			}
-			set
-			{
-				_pathResolver = value;
-			}
+			//try
+			//{
+			//    using (var settingsFile = File.Open(SettingsFilePath, FileMode.Open, FileAccess.Read))
+			//    {
+			//        using (var reader = new XmlTextReader(settingsFile))
+			//        {
+			//            reader.Read();
+			//            DeserializeElement(reader, false);
+			//        }
+			//    }
+			//}
+			//catch (DirectoryNotFoundException) { }
+			//catch (FileNotFoundException) { }
+			////Its OK if there isn't settings
 		}
 		#endregion
 
@@ -340,22 +228,22 @@ namespace NearForums.Configuration
 		/// </summary>
 		public void SaveSettings()
 		{
-			var writer = XmlTextWriter.Create(SettingsFilePath, new XmlWriterSettings() 
-			{ 
-				ConformanceLevel = ConformanceLevel.Fragment, 
-				Encoding = Encoding.UTF8,
-				Indent = true
-			});
-			writer.WriteStartElement("site");
-			try
-			{
-				SerializeElement(writer, false);
-				writer.WriteEndElement();
-			}
-			finally
-			{
-				writer.Close();
-			}
+			//var writer = XmlTextWriter.Create(SettingsFilePath, new XmlWriterSettings() 
+			//{ 
+			//    ConformanceLevel = ConformanceLevel.Fragment, 
+			//    Encoding = Encoding.UTF8,
+			//    Indent = true
+			//});
+			//writer.WriteStartElement("site");
+			//try
+			//{
+			//    SerializeElement(writer, false);
+			//    writer.WriteEndElement();
+			//}
+			//finally
+			//{
+			//    writer.Close();
+			//}
 		}
 		#endregion
 
@@ -380,7 +268,7 @@ namespace NearForums.Configuration
 					}
 				}
 			}
-		} 
+		}
 		#endregion
 	}
 }

@@ -71,7 +71,7 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return Path.Combine(ParentElement.ContentPathFull, "search-index");
+				return Path.Combine(ParentElement.General.ContentPathFull, "search-index");
 			}
 		}
 

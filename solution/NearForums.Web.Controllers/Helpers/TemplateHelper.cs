@@ -195,9 +195,9 @@ namespace NearForums.Web.Controllers.Helpers
 
 				service.AddOrUpdate(template);
 
-				baseDirectory = Config.TemplateFolderPathFull(template.Key);
+				baseDirectory = Config.General.TemplateFolderPathFull(template.Key);
 				SaveFilesToDrive(baseDirectory, packageStream);
-				PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.TemplateFolderPath(template.Key) + "/", context), context);
+				PrepareTemplateBody(baseDirectory + "\\template.html", UrlHelper.GenerateContentUrl(Config.General.TemplateFolderPath(template.Key) + "/", context), context);
 				ChopTemplateFile(baseDirectory + "\\template.html");
 			}
 			catch (ValidationException)
@@ -362,7 +362,7 @@ namespace NearForums.Web.Controllers.Helpers
 				//Get all the files in the directory
 				template = new TemplateState(t.Key);
 				template.Id = t.Id;
-				string[] fileNameList = SafeIO.Directory_GetFiles(Config.TemplateFolderPathFull(template.Name), "*.part.*.html");
+				string[] fileNameList = SafeIO.Directory_GetFiles(Config.General.TemplateFolderPathFull(template.Name), "*.part.*.html");
 				foreach (string fileName in fileNameList)
 				{
 					template.Items.Add(new TemplateState.TemplateItem(SafeIO.File_ReadAllText(fileName)));
