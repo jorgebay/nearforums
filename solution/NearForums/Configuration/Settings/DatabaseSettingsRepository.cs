@@ -31,6 +31,7 @@ namespace NearForums.Configuration.Settings
 		public void SaveSettings(SiteConfiguration config)
 		{
 			SaveElement(config.General, "general");
+			SaveElement(config.UI, "general");
 		}
 
 		public void SaveElement(BaseConfigurationElement element, string elementName)

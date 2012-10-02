@@ -7,7 +7,7 @@ using System.IO;
 
 namespace NearForums.Configuration
 {
-	public class SearchElement : ConfigurationElement
+	public class SearchElement : BaseConfigurationElement
 	{
 		public SiteConfiguration ParentElement
 		{

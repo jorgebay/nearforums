@@ -148,6 +148,7 @@ namespace NearForums.Configuration
 			{
 				if (_settingsRepository == null)
 				{
+					//set a local default
 					_settingsRepository = new DatabaseSettingsRepository();
 				}
 				return _settingsRepository;
@@ -193,7 +194,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines if the application should store and retrieve admin settings, apart from the site configuration
 		/// </summary>
-		[ConfigurationProperty("useSettings", IsRequired = false, DefaultValue=false)]
+		[ConfigurationProperty("useSettings", IsRequired = false, DefaultValue=true)]
 		private bool UseSettings
 		{
 			get

@@ -9,7 +9,7 @@ namespace NearForums.Configuration.Spam
 	/// <summary>
 	/// Represents the configuration element for the spam prevention features
 	/// </summary>
-	public class SpamPreventionElement : ConfigurationElement
+	public class SpamPreventionElement : BaseConfigurationElement
 	{
 		/// <summary>
 		/// Gets or sets the configuration for flood control inside the forum

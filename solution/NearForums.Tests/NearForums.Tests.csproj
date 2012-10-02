@@ -111,6 +111,7 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="BasicTests.cs" />
+    <Compile Include="ConfigurationSettingsTests.cs" />
     <Compile Include="Controllers\ActionFiltersTests.cs" />
     <Compile Include="Controllers\AdminControllerTest.cs" />
     <Compile Include="Controllers\FormsAuthenticationControllerTest.cs" />

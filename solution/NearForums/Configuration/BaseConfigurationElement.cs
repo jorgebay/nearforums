@@ -27,9 +27,7 @@ namespace NearForums.Configuration
 			};
 			using (var writer = XmlTextWriter.Create(builder, writerSettings))
 			{
-				writer.WriteStartElement(elementName);
-				base.SerializeElement(writer, true);
-				writer.WriteEndElement();
+				base.SerializeToXmlElement(writer, elementName);
 			}
 		}
 

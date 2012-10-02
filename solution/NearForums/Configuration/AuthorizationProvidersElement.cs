@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace NearForums.Configuration
 {
-	public class AuthenticationProvidersElement : ConfigurationElement
+	public class AuthenticationProvidersElement : BaseConfigurationElement
 	{
 		[ConfigurationProperty("facebook", IsRequired = false)]
 		public KeySecretElement Facebook

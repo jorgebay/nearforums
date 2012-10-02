@@ -103,35 +103,6 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
-		public void Configuration_Test()
-		{
-			var configFilePath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-
-			Assert.IsTrue(configFilePath.ToUpper().EndsWith(".DLL.CONFIG"));
-
-			Assert.IsNotNull(SiteConfiguration.Current);
-
-			Assert.IsNotNull(SiteConfiguration.Current.DataAccess.ParameterPrefix);
-
-			Assert.IsNotNull(SiteConfiguration.Current.DataAccess.ConnectionString);
-
-			Assert.IsTrue(!String.IsNullOrEmpty(SiteConfiguration.Current.DataAccess.ConnectionString.ProviderName));
-
-			//Open connection to db
-			var da = new UsersDataAccess();
-			var conn = da.GetConnection();
-			conn.Open();
-			conn.Close();
-
-		}
-
-		[TestMethod]
-		public void NotificationsConfiguration_Test()
-		{
-			string value = SiteConfiguration.Current.Notifications.Subscription.Body.Value;
-		}
-
-		[TestMethod]
 		public void IAccessRightContainer_HasReadAccess_Test()
 		{
 			IAccessRightContainer container = new Topic();
