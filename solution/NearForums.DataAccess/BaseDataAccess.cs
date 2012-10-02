@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Common;
-using System.Data;
 using System.Configuration;
+using System.Data;
+using System.Data.Common;
 using NearForums.Configuration;
 
 namespace NearForums.DataAccess
@@ -14,6 +11,9 @@ namespace NearForums.DataAccess
 	/// </summary>
 	public abstract class BaseDataAccess
 	{
+		private ConnectionStringSettings _connectionString;
+		private DbProviderFactory _factory;
+
 		/// <summary>
 		/// Current configuration
 		/// </summary>
@@ -24,24 +24,38 @@ namespace NearForums.DataAccess
 				return SiteConfiguration.Current;
 			}
 		}
-
-		public BaseDataAccess()
+		/// <summary>
+		/// Gets the forums connection string
+		/// </summary>
+		protected virtual ConnectionStringSettings ConnectionString
 		{
-			//Should be left empty
+			get
+			{
+				if (_connectionString == null)
+				{
+					var conn = Config.DataAccess.ConnectionString;
+					conn = EnsureProvider(conn);
+					_connectionString = conn;
+				}
+				return _connectionString;
+			}
 		}
 
 		/// <summary>
-		/// Gets a new connection.
+		/// Ensures that the connection strings contains a provider
 		/// </summary>
+		/// <param name="conn"></param>
 		/// <returns></returns>
-		public virtual DbConnection GetConnection()
+		protected ConnectionStringSettings EnsureProvider(ConnectionStringSettings conn)
 		{
-			DbConnection conn = this.Factory.CreateConnection();
-			conn.ConnectionString = Config.DataAccess.ConnectionString.ConnectionString;
+			if (String.IsNullOrEmpty(conn.ProviderName))
+			{
+				//Fallback to default provider: sql server
+				conn = new ConnectionStringSettings(conn.Name, conn.ConnectionString, "System.Data.SqlClient");
+			}
 			return conn;
 		}
 
-		private DbProviderFactory _factory;
 		/// <summary>
 		/// The database provider factory to create the connections and commands to access the db.
 		/// </summary>
@@ -51,7 +65,7 @@ namespace NearForums.DataAccess
 			{
 				if (_factory == null)
 				{
-					_factory = DbProviderFactories.GetFactory(Config.DataAccess.ConnectionString.ProviderName);
+					_factory = DbProviderFactories.GetFactory(ConnectionString.ProviderName);
 				}
 				return _factory;
 			}
@@ -68,11 +82,36 @@ namespace NearForums.DataAccess
 		/// <returns></returns>
 		protected DbCommand GetCommand(string procedureName)
 		{
-			DbCommand comm = this.Factory.CreateCommand();
+			var comm = this.Factory.CreateCommand();
 			comm.Connection = GetConnection();
 			comm.CommandText = procedureName;
 			comm.CommandType = CommandType.StoredProcedure;
 			return comm;
+		}
+
+		/// <summary>
+		/// Gets a new connection.
+		/// </summary>
+		/// <returns></returns>
+		public virtual DbConnection GetConnection()
+		{
+			var conn = Factory.CreateConnection();
+			conn.ConnectionString = ConnectionString.ConnectionString;
+			return conn;
+		}
+
+		/// <summary>
+		/// Gets a datatable filled with the first result of executing the command.
+		/// </summary>
+		protected DataRow GetFirstRow(DbCommand command)
+		{
+			DataRow dr = null;
+			var dt = GetTable(command);
+			if (dt.Rows.Count > 0)
+			{
+				dr = dt.Rows[0];
+			}
+			return dr;
 		}
 
 		/// <summary>
@@ -86,20 +125,6 @@ namespace NearForums.DataAccess
 			da.Fill(dt);
 
 			return dt;
-		}
-
-		/// <summary>
-		/// Gets a datatable filled with the first result of executing the command.
-		/// </summary>
-		protected DataRow GetFirstRow(DbCommand command)
-		{
-			DataRow dr = null;
-			DataTable dt = GetTable(command);
-			if (dt.Rows.Count > 0)
-			{
-				dr = dt.Rows[0];
-			}
-			return dr;
 		}
 
 		/// <summary>

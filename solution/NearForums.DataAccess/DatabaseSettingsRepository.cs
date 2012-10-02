@@ -6,11 +6,36 @@ using System.Xml;
 using System.IO;
 using NearForums.Configuration.Settings;
 using NearForums.Configuration;
+using System.Data.Common;
+using System.Configuration;
 
 namespace NearForums.DataAccess
 {
-	public class DatabaseSettingsRepository : ISettingsRepository
+	public class DatabaseSettingsRepository : BaseDataAccess, ISettingsRepository
 	{
+		protected override System.Configuration.ConnectionStringSettings ConnectionString
+		{
+			get
+			{
+				var conn = ConfigurationManager.ConnectionStrings["ForumsConfig"];
+				if (conn == null)
+				{
+					conn = base.ConnectionString;
+				}
+				return EnsureProvider(conn);
+			}
+		}
+
+		/// <summary>
+		/// Gets the key for a setting element
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns></returns>
+		protected virtual string GetSettingKey(string element)
+		{
+			return "setting." + element.ToLower();
+		}
+
 		public SiteConfiguration LoadSettings(SiteConfiguration config)
 		{
 			//try
@@ -53,7 +78,10 @@ namespace NearForums.DataAccess
 
 		protected virtual void SaveToDb(StringBuilder value, string elementName)
 		{
-
+			var comm = GetCommand("SPSettingsSet");
+			comm.AddParameter<string>(Factory, "Key", GetSettingKey(elementName));
+			comm.AddParameter<string>(Factory, "Value", value.ToString());
+			comm.SafeExecuteNonQuery();
 		}
 	}
 }

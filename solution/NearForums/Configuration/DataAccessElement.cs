@@ -49,20 +49,13 @@ namespace NearForums.Configuration
 				{
 					//Key used in connectionStrings dictionary
 					const string _connectionKey = "Forums";
-					//Default provider
-					var providerName = "System.Data.SqlClient";
-					ConnectionStringSettings conn = ConfigurationManager.ConnectionStrings[_connectionKey];
+					var conn = ConfigurationManager.ConnectionStrings[_connectionKey];
 
 					if (conn == null)
 					{
 						throw new ConfigurationErrorsException("You must specify a SQL Connection string in the configuration file, with the key " + _connectionKey + ".");
 					}
-
-					if (!String.IsNullOrEmpty(conn.ProviderName))
-					{
-						providerName = conn.ProviderName;
-					}
-					_connectionString = new ConnectionStringSettings(_connectionKey, conn.ConnectionString, providerName);
+					_connectionString = conn;
 				}
 				return _connectionString;
 			}
