@@ -110,6 +110,7 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AssemblyInitialize.cs" />
     <Compile Include="BasicTests.cs" />
     <Compile Include="ConfigurationSettingsTests.cs" />
     <Compile Include="Controllers\ActionFiltersTests.cs" />

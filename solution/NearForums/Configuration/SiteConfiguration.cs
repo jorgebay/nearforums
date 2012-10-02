@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 using NearForums.Configuration.Notifications;
-using System.IO;
-using System.Xml;
-using NearForums.Configuration.Spam;
 using NearForums.Configuration.Settings;
+using NearForums.Configuration.Spam;
 
 namespace NearForums.Configuration
 {
@@ -32,7 +27,7 @@ namespace NearForums.Configuration
 						{
 							throw new System.Configuration.ConfigurationErrorsException("Siteconfiguration not set.");
 						}
-						if (_config.UseSettings)
+						if (_config.UseSettings && SettingsRepository != null)
 						{
 							_config.LoadSettings();
 						}
@@ -43,6 +38,22 @@ namespace NearForums.Configuration
 			set
 			{
 				_config = value;
+			}
+		}
+
+		private static ISettingsRepository _settingsRepository;
+		/// <summary>
+		/// Gets or sets the repository used to load and save settings
+		/// </summary>
+		public static ISettingsRepository SettingsRepository
+		{
+			get
+			{
+				return _settingsRepository;
+			}
+			set
+			{
+				_settingsRepository = value;
 			}
 		}
 		#endregion
@@ -95,6 +106,9 @@ namespace NearForums.Configuration
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the notification configuration for the site
+		/// </summary>
 		[ConfigurationProperty("notifications")]
 		public NotificationsContainerElement Notifications
 		{
@@ -108,6 +122,9 @@ namespace NearForums.Configuration
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the replacements
+		/// </summary>
 		[ConfigurationProperty("replacements")]
 		public ConfigurationElementCollection<ReplacementItem> Replacements
 		{
@@ -121,6 +138,9 @@ namespace NearForums.Configuration
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the search configuration
+		/// </summary>
 		[ConfigurationProperty("search")]
 		public SearchElement Search
 		{
@@ -135,27 +155,6 @@ namespace NearForums.Configuration
 				{
 					value.ParentElement = this;
 				}
-			}
-		}
-
-		private ISettingsRepository _settingsRepository;
-		/// <summary>
-		/// Gets or sets the repository used to load and save settings
-		/// </summary>
-		public ISettingsRepository SettingsRepository
-		{
-			get
-			{
-				if (_settingsRepository == null)
-				{
-					//set a local default
-					_settingsRepository = new DatabaseSettingsRepository();
-				}
-				return _settingsRepository;
-			}
-			set
-			{
-				_settingsRepository = value;
 			}
 		}
 		
@@ -225,8 +224,12 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Loads settings by overriding configuration with admin settings.
 		/// </summary>
-		protected virtual void LoadSettings()
+		public virtual void LoadSettings()
 		{
+			if (_settingsRepository == null)
+			{
+				throw new NullReferenceException("settings repository can not be null");
+			}
 			_settingsRepository.LoadSettings(this);
 		}
 		#endregion
@@ -235,8 +238,16 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Saves current settings.
 		/// </summary>
-		public void SaveSettings()
+		public virtual void SaveSettings()
 		{
+			if (!UseSettings)
+			{
+				throw new ConfigurationErrorsException("Saving settings is not possible when is not enabled by configuration (useSettings)");
+			}
+			if (_settingsRepository == null)
+			{
+				throw new NullReferenceException("settings repository can not be null");
+			}
 			_settingsRepository.SaveSettings(this);
 		}
 		#endregion

@@ -33,7 +33,6 @@ namespace NearForums.Tests
 			conn.Close();
 		}
 
-
 		[TestMethod]
 		public void Configuration_Settings_Write_Test()
 		{

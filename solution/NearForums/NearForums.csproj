@@ -60,7 +60,6 @@
     <Compile Include="Configuration\Integration\ServiceElement.cs" />
     <Compile Include="Configuration\Integration\TypeElement.cs" />
     <Compile Include="Configuration\IUniqueConfigurationElement.cs" />
-    <Compile Include="Configuration\Settings\DatabaseSettingsRepository.cs" />
     <Compile Include="Configuration\Settings\ISettingsRepository.cs" />
     <Compile Include="Configuration\Spam\FloodControlElement.cs" />
     <Compile Include="Configuration\Spam\HtmlInputElement.cs" />

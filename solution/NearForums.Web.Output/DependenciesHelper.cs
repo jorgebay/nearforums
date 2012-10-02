@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using NearForums.Configuration;
-using Autofac;
 using System.Reflection;
-using NearForums.Web.Controllers;
-using Autofac.Integration.Mvc;
+using System.Web;
 using System.Web.Mvc;
-using NearForums.Web.Controllers.Filters;
-using NearForums.Web.Integration;
+using Autofac;
+using Autofac.Integration.Mvc;
+using NearForums.Configuration;
 using NearForums.Configuration.Integration;
+using NearForums.Configuration.Settings;
+using NearForums.DataAccess;
+using NearForums.Web.Controllers;
+using NearForums.Web.Integration;
 
 namespace NearForums.Web.Output
 {
@@ -22,9 +22,6 @@ namespace NearForums.Web.Output
 		/// <param name="context"></param>
 		public static void Register(HttpContextBase context)
 		{
-			//Inject as a dependency
-			SiteConfiguration.Current.General.PathResolver = context.Server.MapPath;
-
 			//Set Autofac as dependency resolver
 			var builder = new ContainerBuilder();
 			builder.RegisterIntegrationServices();
@@ -40,8 +37,15 @@ namespace NearForums.Web.Output
 			builder.RegisterNearforumsFilterProvider();
 			builder.RegisterControllers(typeof(BaseController).Assembly)
 				.PropertiesAutowired();
+			builder.RegisterType<DatabaseSettingsRepository>()
+				.As<ISettingsRepository>()
+				.InstancePerDependency();
 			var container = builder.Build();
 			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+			//Inject configuration dependencies
+			SiteConfiguration.SettingsRepository = container.Resolve<ISettingsRepository>();
+			SiteConfiguration.Current.General.PathResolver = context.Server.MapPath;
 		}
 
 		/// <summary>
