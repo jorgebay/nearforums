@@ -52,6 +52,15 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
+		public void Configuration_Settings_Save_Test()
+		{
+			SiteConfiguration.SettingsRepository = new DatabaseSettingsRepository();
+			var config = SiteConfiguration.Current;
+
+			config.SaveSettings();
+		}
+
+		[TestMethod]
 		public void NotificationsConfiguration_Test()
 		{
 			string value = SiteConfiguration.Current.Notifications.Subscription.Body.Value;

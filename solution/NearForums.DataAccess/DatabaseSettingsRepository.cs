@@ -13,7 +13,10 @@ namespace NearForums.DataAccess
 {
 	public class DatabaseSettingsRepository : BaseDataAccess, ISettingsRepository
 	{
-		protected override System.Configuration.ConnectionStringSettings ConnectionString
+		/// <summary>
+		/// Forums config db connection string, if not set it returns the default connection string
+		/// </summary>
+		protected override ConnectionStringSettings ConnectionString
 		{
 			get
 			{
@@ -24,6 +27,25 @@ namespace NearForums.DataAccess
 				}
 				return EnsureProvider(conn);
 			}
+		}
+
+		/// <summary>
+		/// Gets a value from setting db
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="elementName"></param>
+		/// <returns></returns>
+		protected virtual StringBuilder GetFromDb(string elementName)
+		{
+			StringBuilder value = null;
+			var comm = GetCommand("SPSettingsGet");
+			comm.AddParameter<string>(Factory, "SettingKey", GetSettingKey(elementName));
+			var dr = GetFirstRow(comm);
+			if (dr != null)
+			{
+				value = new StringBuilder(dr.GetString("SettingKey"));
+			}
+			return value;
 		}
 
 		/// <summary>
@@ -52,7 +74,7 @@ namespace NearForums.DataAccess
 			//catch (DirectoryNotFoundException) { }
 			//catch (FileNotFoundException) { }
 			////Its OK if there isn't settings
-			throw new NotImplementedException();
+			return config;
 		}
 
 		/// <summary>
@@ -64,6 +86,7 @@ namespace NearForums.DataAccess
 		{
 			var builder = new StringBuilder();
 			element.Serialize(builder, elementName);
+			SaveToDb(builder, elementName);
 		}
 
 		/// <summary>
@@ -73,14 +96,19 @@ namespace NearForums.DataAccess
 		public void SaveSettings(SiteConfiguration config)
 		{
 			SaveElement(config.General, "general");
-			SaveElement(config.UI, "general");
+			SaveElement(config.UI, "ui");
 		}
 
+		/// <summary>
+		/// Inserts or update the value on settings db
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="elementName"></param>
 		protected virtual void SaveToDb(StringBuilder value, string elementName)
 		{
 			var comm = GetCommand("SPSettingsSet");
-			comm.AddParameter<string>(Factory, "Key", GetSettingKey(elementName));
-			comm.AddParameter<string>(Factory, "Value", value.ToString());
+			comm.AddParameter<string>(Factory, "SettingKey", GetSettingKey(elementName));
+			comm.AddParameter<string>(Factory, "SettingValue", value.ToString());
 			comm.SafeExecuteNonQuery();
 		}
 	}
