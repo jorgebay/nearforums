@@ -194,7 +194,7 @@ namespace NearForums.Configuration
 		/// Determines if the application should store and retrieve admin settings, apart from the site configuration
 		/// </summary>
 		[ConfigurationProperty("useSettings", IsRequired = false, DefaultValue=true)]
-		private bool UseSettings
+		public bool UseSettings
 		{
 			get
 			{

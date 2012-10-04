@@ -13,11 +13,21 @@ namespace NearForums.Configuration
 	/// </summary>
 	public abstract class BaseConfigurationElement : ConfigurationElement
 	{
+		public void Deserialize(StringBuilder input)
+		{
+			using (var xmlReader = XmlTextReader.Create(new StringReader(input.ToString())))
+			{
+				//enter the first element
+				xmlReader.Read();
+				base.DeserializeElement(xmlReader, false);
+			}
+		}
+
 		/// <summary>
 		/// Serialize the instance into text
 		/// </summary>
 		/// <param name="stream">The stream to output the text</param>
-		public void Serialize(StringBuilder builder, string elementName)
+		public void Serialize(StringBuilder output, string elementName)
 		{
 			var writerSettings = new XmlWriterSettings()
 			{
@@ -25,7 +35,7 @@ namespace NearForums.Configuration
 				Encoding = Encoding.UTF8,
 				Indent = true
 			};
-			using (var writer = XmlTextWriter.Create(builder, writerSettings))
+			using (var writer = XmlTextWriter.Create(output, writerSettings))
 			{
 				base.SerializeToXmlElement(writer, elementName);
 			}

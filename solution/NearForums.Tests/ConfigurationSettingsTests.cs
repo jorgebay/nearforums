@@ -52,12 +52,25 @@ namespace NearForums.Tests
 		}
 
 		[TestMethod]
-		public void Configuration_Settings_Save_Test()
+		public void Configuration_Settings_Load_Save_Test()
 		{
-			SiteConfiguration.SettingsRepository = new DatabaseSettingsRepository();
+			SiteConfiguration.SettingsRepository = new DatabaseSettingsRepository() { KeyPrefix = "tests."};
 			var config = SiteConfiguration.Current;
+			config.UseSettings = true;
+			config.LoadSettings();
 
+			var dateFormatOriginalValue = config.UI.DateFormat;
+			var dateFormatNew = "d '" + new Random().Next().ToString() + "'";
+			config.UI.DateFormat = dateFormatNew;
+			
 			config.SaveSettings();
+			config.LoadSettings();
+
+			Assert.AreEqual(dateFormatNew, config.UI.DateFormat);
+
+			config.UI.DateFormat = dateFormatOriginalValue;
+			config.SaveSettings();
+
 		}
 
 		[TestMethod]

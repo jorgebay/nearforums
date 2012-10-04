@@ -56,6 +56,9 @@ namespace NearForums.Configuration
 			}
 		}
 
+		/// <summary>
+		/// Date Format string .NET http://msdn.microsoft.com/en-us/library/8kb3ddd4.aspx
+		/// </summary>
 		[ConfigurationProperty("dateFormat", IsRequired = false)]
 		public string DateFormat
 		{

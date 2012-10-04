@@ -63,6 +63,17 @@ namespace NearForums.Configuration
 				}
 				return new TimeSpan(0, Convert.ToInt32(this.TimeZoneOffsetHours * 60), 0);
 			}
+			set
+			{
+				if (value == null)
+				{
+					TimeZoneOffsetHours = null;
+				}
+				else
+				{
+					TimeZoneOffsetHours = (decimal) value.Value.TotalHours;
+				}
+			}
 		}
 
 		/// <summary>

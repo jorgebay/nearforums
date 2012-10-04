@@ -29,6 +29,12 @@ namespace NearForums.DataAccess
 			}
 		}
 
+		public virtual string KeyPrefix
+		{
+			get;
+			set;
+		}
+
 		/// <summary>
 		/// Gets a value from setting db
 		/// </summary>
@@ -43,7 +49,7 @@ namespace NearForums.DataAccess
 			var dr = GetFirstRow(comm);
 			if (dr != null)
 			{
-				value = new StringBuilder(dr.GetString("SettingKey"));
+				value = new StringBuilder(dr.GetString("SettingValue"));
 			}
 			return value;
 		}
@@ -51,29 +57,26 @@ namespace NearForums.DataAccess
 		/// <summary>
 		/// Gets the key for a setting element
 		/// </summary>
-		/// <param name="element"></param>
+		/// <param name="elementName"></param>
 		/// <returns></returns>
-		protected virtual string GetSettingKey(string element)
+		protected virtual string GetSettingKey(string elementName)
 		{
-			return "setting." + element.ToLower();
+			return KeyPrefix + "setting." + elementName.ToLower();
+		}
+
+		protected virtual void LoadElement(BaseConfigurationElement element, string elementName)
+		{
+			var serializedValue = GetFromDb(elementName);
+			if (serializedValue != null)
+			{
+				element.Deserialize(serializedValue);
+			}
 		}
 
 		public SiteConfiguration LoadSettings(SiteConfiguration config)
 		{
-			//try
-			//{
-			//    using (var settingsFile = File.Open(SettingsFilePath, FileMode.Open, FileAccess.Read))
-			//    {
-			//        using (var reader = new XmlTextReader(settingsFile))
-			//        {
-			//            reader.Read();
-			//            DeserializeElement(reader, false);
-			//        }
-			//    }
-			//}
-			//catch (DirectoryNotFoundException) { }
-			//catch (FileNotFoundException) { }
-			////Its OK if there isn't settings
+			LoadElement(config.General, "general");
+			LoadElement(config.UI, "ui");
 			return config;
 		}
 
