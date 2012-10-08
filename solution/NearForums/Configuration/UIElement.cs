@@ -12,7 +12,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines the amount of messages per page are shown on the topic detail page
 		/// </summary>
-		[ConfigurationProperty("messagesPerPage", IsRequired = true)]
+		[ConfigurationProperty("messagesPerPage", DefaultValue=10)]
 		public int MessagesPerPage
 		{
 			get
@@ -28,7 +28,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines the amount of topics per page are shown on the forum detail page
 		/// </summary>
-		[ConfigurationProperty("topicsPerPage", IsRequired = true)]
+		[ConfigurationProperty("topicsPerPage", DefaultValue=20)]
 		public int TopicsPerPage
 		{
 			get
@@ -43,7 +43,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Amount of tags in the tag cloud
 		/// </summary>
-		[ConfigurationProperty("tagsCloudCount", IsRequired = true)]
+		[ConfigurationProperty("tagsCloudCount", DefaultValue=30)]
 		public int TagsCloudCount
 		{
 			get
@@ -59,7 +59,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Date Format string .NET http://msdn.microsoft.com/en-us/library/8kb3ddd4.aspx
 		/// </summary>
-		[ConfigurationProperty("dateFormat", IsRequired = false)]
+		[ConfigurationProperty("dateFormat", DefaultValue="U")]
 		public string DateFormat
 		{
 			get
@@ -72,7 +72,7 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("template", IsRequired = true)]
+		[ConfigurationProperty("template")]
 		public TemplateElement Template
 		{
 			get
@@ -85,7 +85,7 @@ namespace NearForums.Configuration
 			}
 		}
 
-		[ConfigurationProperty("resources", IsRequired = true)]
+		[ConfigurationProperty("resources")]
 		public ResourcesElement Resources
 		{
 			get
@@ -101,7 +101,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines if user details (image, member since, ...) are shown on topic detail page
 		/// </summary>
-		[ConfigurationProperty("showUserDetailsOnList", IsRequired = false)]
+		[ConfigurationProperty("showUserDetailsOnList", DefaultValue=true)]
 		public bool ShowUserDetailsOnList
 		{
 			get
@@ -117,7 +117,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines which is the default forum sorting of topics
 		/// </summary>
-		[ConfigurationProperty("defaultForumSort", IsRequired = false)]
+		[ConfigurationProperty("defaultForumSort", DefaultValue = ForumSort.LatestActivity)]
 		public ForumSort DefaultForumSort
 		{
 			get

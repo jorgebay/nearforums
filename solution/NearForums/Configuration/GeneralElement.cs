@@ -16,7 +16,7 @@ namespace NearForums.Configuration
 		/// Determines the path of localization files, relative to executing path. 
 		/// Example: content\localization\
 		/// </summary>
-		[ConfigurationProperty("cultureName", IsRequired = false, DefaultValue = "en-US")]
+		[ConfigurationProperty("cultureName", DefaultValue = "en-US")]
 		public string CultureName
 		{
 			get
@@ -37,7 +37,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Timezone expressed in hours
 		/// </summary>
-		[ConfigurationProperty("timeZoneOffset", IsRequired = false, DefaultValue="-5")]
+		[ConfigurationProperty("timeZoneOffset", DefaultValue="-5")]
 		private decimal? TimeZoneOffsetHours
 		{
 			get
@@ -79,7 +79,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines the path of content files (localization,templates,...), relative to executing path. Example: ~/content/
 		/// </summary>
-		[ConfigurationProperty("contentPath", IsRequired = false, DefaultValue = @"~/content/")]
+		[ConfigurationProperty("contentPath", DefaultValue = @"~/content/")]
 		public string ContentPath
 		{
 			get

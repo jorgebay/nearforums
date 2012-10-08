@@ -8,7 +8,7 @@ namespace NearForums.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
 	{
-		[ConfigurationProperty("jqueryUrl", IsRequired = true)]
+		[ConfigurationProperty("jqueryUrl", DefaultValue="~/scripts/jquery-1.7.1.min.js")]
 		public string JQueryUrl
 		{
 			get
