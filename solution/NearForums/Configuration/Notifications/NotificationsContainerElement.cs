@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace NearForums.Configuration.Notifications
 {
-	public class NotificationsContainerElement : BaseConfigurationElement
+	public class NotificationsContainerElement : ConfigurationElement
 	{
 		[ConfigurationProperty("subscription", IsRequired = false)]
 		public NotificationElement Subscription

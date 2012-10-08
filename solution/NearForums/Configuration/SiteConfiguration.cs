@@ -3,12 +3,13 @@ using System.Configuration;
 using NearForums.Configuration.Notifications;
 using NearForums.Configuration.Settings;
 using NearForums.Configuration.Spam;
+using System.IO;
 
 namespace NearForums.Configuration
 {
 	public class SiteConfiguration : ConfigurationSection
 	{
-		#region Current
+		#region Static members
 		private static object _lockCurrentLoad = new object();
 		private static SiteConfiguration _config;
 		/// <summary>
@@ -40,6 +41,25 @@ namespace NearForums.Configuration
 				_config = value;
 			}
 		}
+		private static Func<string, string> _pathResolver;
+		/// <summary>
+		/// Converts the virtual path into physical file path
+		/// </summary>
+		public static Func<string, string> PathResolver
+		{
+			get
+			{
+				if (_pathResolver == null)
+				{
+					_pathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
+				}
+				return _pathResolver;
+			}
+			set
+			{
+				_pathResolver = value;
+			}
+		}
 
 		private static ISettingsRepository _settingsRepository;
 		/// <summary>
@@ -56,6 +76,7 @@ namespace NearForums.Configuration
 				_settingsRepository = value;
 			}
 		}
+
 		#endregion
 
 		/// <summary>

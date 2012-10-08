@@ -64,10 +64,10 @@ namespace NearForums.DataAccess
 			return KeyPrefix + "setting." + elementName.ToLower();
 		}
 
-		protected virtual void LoadElement(BaseConfigurationElement element, string elementName)
+		protected virtual void LoadElement(SettingConfigurationElement element, string elementName)
 		{
 			var serializedValue = GetFromDb(elementName);
-			if (serializedValue != null)
+			if (serializedValue != null && serializedValue.Length > 0)
 			{
 				element.Deserialize(serializedValue);
 			}
@@ -85,7 +85,7 @@ namespace NearForums.DataAccess
 		/// </summary>
 		/// <param name="element"></param>
 		/// <param name="elementName"></param>
-		protected virtual void SaveElement(BaseConfigurationElement element, string elementName)
+		protected virtual void SaveElement(SettingConfigurationElement element, string elementName)
 		{
 			var builder = new StringBuilder();
 			element.Serialize(builder, elementName);

@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace NearForums.Configuration
 {
-	public class DataAccessElement : BaseConfigurationElement
+	public class DataAccessElement : ConfigurationElement
 	{
 		protected override void PostDeserialize()
 		{

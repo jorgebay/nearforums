@@ -1,0 +1,20 @@
+﻿@model GeneralElement
+@{
+    ViewBag.Title = S("General settings");
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+</ul>
+<h1>@ViewBag.Title</h1>
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+	<div class="formItem floatContainer">
+		<label for="name">@T("Culture")</label>
+		@Html.TextBoxFor(model => model.CultureName)
+	</div>
+	<div class="formItem buttons">
+		<input type="submit" value="@T("Send")" />
+	</div>
+}

@@ -45,7 +45,7 @@ namespace NearForums.Web.Output
 
 			//Inject configuration dependencies
 			SiteConfiguration.SettingsRepository = container.Resolve<ISettingsRepository>();
-			SiteConfiguration.Current.General.PathResolver = context.Server.MapPath;
+			SiteConfiguration.PathResolver = context.Server.MapPath;
 		}
 
 		/// <summary>

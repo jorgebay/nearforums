@@ -17,16 +17,21 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult EditUI()
+		public ActionResult EditGeneral()
 		{
-
-			return View();
+			return View(Config.General.GetEditable<GeneralElement>());
 		}
 
 		[HttpPost]
-		public ActionResult EditUI(UIElement ui)
+		[ValidateAntiForgeryToken]
+		public ActionResult EditGeneral(GeneralElement element)
 		{
-			return View();
+			if (ModelState.IsValid)
+			{
+				Config.General = element;
+				Config.SaveSettings();
+			}
+			return View(element);
 		}
 	}
 }

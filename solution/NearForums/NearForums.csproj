@@ -46,7 +46,7 @@
     </Compile>
     <Compile Include="AuthenticationProvider.cs" />
     <Compile Include="AuthenticationProviderException.cs" />
-    <Compile Include="Configuration\BaseConfigurationElement.cs" />
+    <Compile Include="Configuration\SettingConfigurationElement.cs" />
     <Compile Include="Configuration\CDataBaseConfigurationElement.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />

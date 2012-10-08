@@ -7,7 +7,7 @@ using NearForums.Validation;
 
 namespace NearForums.Configuration
 {
-	public class UIElement : BaseConfigurationElement, IEnsureValidation
+	public class UIElement : SettingConfigurationElement
 	{
 		/// <summary>
 		/// Determines the amount of messages per page are shown on the topic detail page
@@ -130,13 +130,9 @@ namespace NearForums.Configuration
 			}
 		}
 
-		#region IEnsureValidation Members
-
-		public void ValidateFields()
+		public override void ValidateFields()
 		{
 			throw new NotImplementedException();
 		}
-
-		#endregion
 	}
 }

@@ -10,7 +10,7 @@ namespace NearForums.Configuration
 	/// <summary>
 	/// Contains the general configuration properties for the site
 	/// </summary>
-	public class GeneralElement : BaseConfigurationElement
+	public class GeneralElement : SettingConfigurationElement
 	{
 		/// <summary>
 		/// Determines the path of localization files, relative to executing path. 
@@ -99,7 +99,7 @@ namespace NearForums.Configuration
 		{
 			get
 			{
-				return PathResolver(ContentPath);
+				return SiteConfiguration.PathResolver(ContentPath);
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace NearForums.Configuration
 		/// </summary>
 		public string TemplateFolderPathFull(string templateKey)
 		{
-			return PathResolver(TemplateFolderPath(templateKey));
+			return SiteConfiguration.PathResolver(TemplateFolderPath(templateKey));
 		}
 
 		/// <summary>
@@ -135,24 +135,9 @@ namespace NearForums.Configuration
 			return ContentPath + "templates/" + templateKey.ToLower();
 		}
 
-		private Func<string, string> _pathResolver;
-		/// <summary>
-		/// Converts the virtual path into physical file path
-		/// </summary>
-		public Func<string, string> PathResolver
+		public override void ValidateFields()
 		{
-			get
-			{
-				if (_pathResolver == null)
-				{
-					_pathResolver = path => Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile), path);
-				}
-				return _pathResolver;
-			}
-			set
-			{
-				_pathResolver = value;
-			}
+			throw new NotImplementedException();
 		}
 	}
 }
