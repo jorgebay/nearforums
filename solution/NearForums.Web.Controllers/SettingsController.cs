@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using NearForums.Configuration;
 using NearForums.Services;
+using NearForums.Validation;
 
 namespace NearForums.Web.Controllers
 {
@@ -28,8 +29,14 @@ namespace NearForums.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				Config.General = element;
-				Config.SaveSettings();
+				try
+				{
+					Config.SaveSetting(element);
+				}
+				catch (ValidationException ex)
+				{
+					AddErrors(ModelState, ex);
+				}
 			}
 			return View(element);
 		}

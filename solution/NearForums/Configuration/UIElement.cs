@@ -132,7 +132,7 @@ namespace NearForums.Configuration
 
 		public override void ValidateFields()
 		{
-			throw new NotImplementedException();
+
 		}
 	}
 }

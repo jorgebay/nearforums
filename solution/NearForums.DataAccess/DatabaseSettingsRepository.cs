@@ -85,6 +85,7 @@ namespace NearForums.DataAccess
 		/// </summary>
 		/// <param name="element"></param>
 		/// <param name="elementName"></param>
+		/// <exception cref="ValidationException"></exception>
 		protected virtual void SaveElement(SettingConfigurationElement element, string elementName)
 		{
 			var builder = new StringBuilder();
@@ -96,10 +97,23 @@ namespace NearForums.DataAccess
 		/// Saves the settings in the db
 		/// </summary>
 		/// <param name="config"></param>
-		public void SaveSettings(SiteConfiguration config)
+		public void SaveSetting(SettingConfigurationElement element)
 		{
-			SaveElement(config.General, "general");
-			SaveElement(config.UI, "ui");
+			string elementName = null;
+			if (element is GeneralElement)
+			{
+				elementName = "general";
+			}
+			else if (element is UIElement)
+			{
+				elementName = "ui";
+			}
+			else
+			{
+				throw new NotSupportedException("Element of type " + element.GetType().Name + " is not supported.");
+			}
+			element.ValidateFields();
+			SaveElement(element, elementName);
 		}
 
 		/// <summary>

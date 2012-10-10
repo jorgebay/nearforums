@@ -20,6 +20,6 @@ namespace NearForums.Configuration.Settings
 		/// Stores the settings for persistance
 		/// </summary>
 		/// <param name="config"></param>
-		void SaveSettings(SiteConfiguration config);
+		void SaveSetting(SettingConfigurationElement element);
 	}
 }

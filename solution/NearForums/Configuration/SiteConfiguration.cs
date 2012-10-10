@@ -259,7 +259,8 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Saves current settings.
 		/// </summary>
-		public virtual void SaveSettings()
+		/// <exception cref="ValidationException"></exception>
+		public virtual void SaveSetting(SettingConfigurationElement element)
 		{
 			if (!UseSettings)
 			{
@@ -269,7 +270,21 @@ namespace NearForums.Configuration
 			{
 				throw new NullReferenceException("settings repository can not be null");
 			}
-			_settingsRepository.SaveSettings(this);
+			_settingsRepository.SaveSetting(element);
+
+
+			if (element is GeneralElement)
+			{
+				General = (GeneralElement) element;
+			}
+			else if (element is UIElement)
+			{
+				UI = (UIElement) element;
+			}
+			else
+			{
+				throw new NotSupportedException("Element of type " + element.GetType().Name + " is not supported.");
+			}
 		}
 		#endregion
 

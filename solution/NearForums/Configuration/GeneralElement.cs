@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 using System.IO;
+using NearForums.Validation;
 
 namespace NearForums.Configuration
 {
@@ -38,7 +39,7 @@ namespace NearForums.Configuration
 		/// Timezone expressed in hours
 		/// </summary>
 		[ConfigurationProperty("timeZoneOffset", DefaultValue="-5")]
-		private decimal? TimeZoneOffsetHours
+		public decimal? TimeZoneOffsetHours
 		{
 			get
 			{
@@ -137,7 +138,24 @@ namespace NearForums.Configuration
 
 		public override void ValidateFields()
 		{
-			throw new NotImplementedException();
+			var errors = new List<ValidationError>();
+			if (TimeZoneOffsetHours.HasValue && (TimeZoneOffsetHours.Value > 14 || TimeZoneOffsetHours.Value < -12))
+			{
+				errors.Add(new ValidationError("TimeZoneOffsetHours", ValidationErrorType.Range));
+			}
+			if (!Directory.Exists(ContentPathFull))
+			{
+				errors.Add(new ValidationError("ContentPath", ValidationErrorType.CompareNotMatch));
+			}
+			else if (!File.Exists(LocalizationFilePath(CultureName)))
+			{
+				errors.Add(new ValidationError("CultureName", ValidationErrorType.CompareNotMatch));
+			}
+
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
 		}
 	}
 }

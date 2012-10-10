@@ -62,14 +62,14 @@ namespace NearForums.Tests
 			var dateFormatOriginalValue = config.UI.DateFormat;
 			var dateFormatNew = "d '" + new Random().Next().ToString() + "'";
 			config.UI.DateFormat = dateFormatNew;
-			
-			config.SaveSettings();
+
+			config.SaveSetting(config.UI);
 			config.LoadSettings();
 
 			Assert.AreEqual(dateFormatNew, config.UI.DateFormat);
 
 			config.UI.DateFormat = dateFormatOriginalValue;
-			config.SaveSettings();
+			config.SaveSetting(config.UI);
 
 		}
 
