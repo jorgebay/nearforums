@@ -2,19 +2,38 @@
 @{
     ViewBag.Title = S("General settings");
 }
-<ul class="path floatContainer">
-	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
-</ul>
-<h1>@ViewBag.Title</h1>
-@using (Html.BeginForm())
-{
-	@Html.AntiForgeryToken()
-	<div class="formItem floatContainer">
-		<label for="name">@T("Culture")</label>
-		@Html.TextBoxFor(model => model.CultureName)
-	</div>
-	<div class="formItem buttons">
-		<input type="submit" value="@T("Send")" />
-	</div>
-}
+<div class="settingForm">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	</ul>
+	@Html.Partial("Submenu")
+	<h1>@ViewBag.Title</h1>
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
+		{
+			{"CultureName", S("Language is not valid. There is no matching translation (.po) file.")}
+			,{"ContentPath", S("Content path is not valid.")}
+			,{"TimeZoneOffsetHours", S("The timezone offset is not valid.")}
+		}, null)
+		<div class="formItem floatContainer">
+			<label for="name">@T("Language")</label>
+			@Html.TextBoxFor(model => model.CultureName)
+			<span class="largeNote">@T("IETF language tag (RFC 5646)")</span>
+		</div>
+		<div class="formItem floatContainer">
+			<label for="name">@T("Content path")</label>
+			@Html.TextBoxFor(model => model.ContentPath)
+		</div>
+		<div class="formItem floatContainer">
+			<label for="name">@T("Timezone")</label>
+			@Html.TextBoxFor(model => model.TimeZoneOffsetHours)
+			<span class="largeNote">@T("Time offset from UTC, expressed in hours, used to display the dates inside the forum")</span>
+		</div>
+		<div class="formItem buttons">
+			<input type="submit" value="@T("Send")" />
+		</div>
+	}
+</div>

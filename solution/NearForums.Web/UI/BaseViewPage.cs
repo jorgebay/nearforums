@@ -142,6 +142,10 @@ namespace NearForums.Web.UI
 		{
 			get
 			{
+				if (ViewContext.RouteData.Values["action"] == null)
+				{
+					return "";
+				}
 				return ViewContext.RouteData.Values["action"].ToString();
 			}
 		}

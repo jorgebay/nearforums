@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using NearForums.Configuration;
 using NearForums.Services;
 using NearForums.Validation;
+using NearForums.Web.Controllers.Filters;
 
 namespace NearForums.Web.Controllers
 {
@@ -18,6 +19,7 @@ namespace NearForums.Web.Controllers
 		}
 
 		[HttpGet]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult EditGeneral()
 		{
 			return View(Config.General.GetEditable<GeneralElement>());
@@ -25,6 +27,7 @@ namespace NearForums.Web.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult EditGeneral(GeneralElement element)
 		{
 			if (ModelState.IsValid)
@@ -32,6 +35,7 @@ namespace NearForums.Web.Controllers
 				try
 				{
 					Config.SaveSetting(element);
+					return RedirectToAction("Dashboard", "Admin");
 				}
 				catch (ValidationException ex)
 				{

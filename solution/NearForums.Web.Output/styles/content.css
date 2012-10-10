@@ -896,3 +896,12 @@ input.button, .buttons input
 {
 	cursor: pointer;
 }
+form div.formItem span.largeNote
+{
+	font-weight: normal;
+	float: left;
+	width: 300px;
+	padding: 5px 10px;
+	font-style: italic;
+	color: #666666;
+}
