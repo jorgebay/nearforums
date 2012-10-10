@@ -328,5 +328,21 @@ namespace NearForums.Web.Extensions
 			return htmlHelper.ActionLink(linkText, actionName, routeValues, htmlAttributes);
 		}
 		#endregion
+
+		#region Localized Label
+		/// <summary>
+		/// An HTML label element and the property name of the property that is represented by the expression
+		/// </summary>
+		/// <typeparam name="TModel"></typeparam>
+		/// <typeparam name="TValue"></typeparam>
+		/// <param name="html"></param>
+		/// <param name="expression"></param>
+		/// <param name="neutralLabel">Neutral value of the label text that will be translated</param>
+		/// <returns></returns>
+		public static MvcHtmlString LocalizedLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string neutralLabel)
+		{
+			return html.LabelFor(expression, Localizer.Current[neutralLabel]);
+		}
+		#endregion
 	}
 }

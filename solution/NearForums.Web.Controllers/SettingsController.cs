@@ -44,5 +44,32 @@ namespace NearForums.Web.Controllers
 			}
 			return View(element);
 		}
+
+		[HttpGet]
+		[RequireAuthorization(UserRole.Admin)]
+		public ActionResult EditUI()
+		{
+			return View(Config.UI.GetEditable<UIElement>());
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[RequireAuthorization(UserRole.Admin)]
+		public ActionResult EditUI(UIElement element)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					Config.SaveSetting(element);
+					return RedirectToAction("Dashboard", "Admin");
+				}
+				catch (ValidationException ex)
+				{
+					AddErrors(ModelState, ex);
+				}
+			}
+			return View(element);
+		}
 	}
 }

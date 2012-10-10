@@ -1,0 +1,53 @@
+﻿@model UIElement
+@{
+	ViewBag.Title = S("Appearance settings");
+}
+<div class="settingForm">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	</ul>
+	@Html.Partial("Submenu")
+	<h1>@ViewBag.Title</h1>
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
+		{
+			{"CultureName", S("Language is not valid. There is no matching translation (.po) file.")}
+		}, null)
+		<div class="formItem floatContainer">
+			<label for="name">@T("Date format")</label>
+			@Html.TextBoxFor(model => model.DateFormat)
+			<span class="largeNote">@Html.Link(".NET Standard or custom date and time format strings", "http://msdn.microsoft.com/en-us/library/az4se3k1.aspx")</span>
+		</div>
+		<div class="formItem floatContainer">
+			<label for="name">@T("Threads per page")</label>
+			@Html.TextBoxFor(model => model.TopicsPerPage)
+		</div>
+		<div class="formItem floatContainer">
+			<label for="name">@T("Messages per page")</label>
+			@Html.TextBoxFor(model => model.MessagesPerPage)
+		</div>
+		<div class="formItem floatContainer">
+			<label for="name">@T("Default forum sort")</label>
+			@Html.TextBoxFor(model => model.DefaultForumSort)
+		</div>
+		<div class="formItem floatContainer">
+			<label for="name">@T("Amount of tags in the tag cloud")</label>
+			@Html.TextBoxFor(model => model.TagsCloudCount)
+		</div>
+		<div class="formItem checkbox">
+			@Html.CheckBoxFor(model => model.ShowUserDetailsOnList)
+			<label for="name">@T("Show user details (image, member since, ...) on thread detail page")</label>
+		</div>
+		<h2>Resources</h2>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor(model => model.Resources.JQueryUrl, "Jquery library")
+			@Html.TextBoxFor(model => model.Resources.JQueryUrl)
+		</div>
+		<div class="formItem buttons">
+			<input type="submit" value="@T("Send")" />
+		</div>
+	}
+</div>
