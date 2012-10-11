@@ -905,3 +905,7 @@ form div.formItem span.largeNote
 	font-style: italic;
 	color: #666666;
 }
+.settingForm h2
+{
+	padding-top: 10px;
+}

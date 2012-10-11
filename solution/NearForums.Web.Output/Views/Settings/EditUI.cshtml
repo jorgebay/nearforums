@@ -1,6 +1,13 @@
 ﻿@model UIElement
 @{
 	ViewBag.Title = S("Appearance settings");
+
+	var forumSortLabels = new Dictionary<ForumSort, string>() 
+	{ 
+		{ForumSort.LatestActivity, S("Latest activity")},
+		{ForumSort.MostViewedTopics, S("Most viewed threads")}
+	};
+	
 }
 <div class="settingForm">
 	<ul class="path floatContainer">
@@ -17,34 +24,45 @@
 			{"CultureName", S("Language is not valid. There is no matching translation (.po) file.")}
 		}, null)
 		<div class="formItem floatContainer">
-			<label for="name">@T("Date format")</label>
-			@Html.TextBoxFor(model => model.DateFormat)
-			<span class="largeNote">@Html.Link(".NET Standard or custom date and time format strings", "http://msdn.microsoft.com/en-us/library/az4se3k1.aspx")</span>
+			@Html.LocalizedLabelFor(m => m.DateFormat, "Date format")
+			@Html.TextBoxFor(m => m.DateFormat)
+			<span class="largeNote">@Html.Link(".NET Standard or custom date and time format strings", "http://msdn.microsoft.com/en-us/library/az4se3k1.aspx", new { target="_blank"})</span>
 		</div>
 		<div class="formItem floatContainer">
-			<label for="name">@T("Threads per page")</label>
-			@Html.TextBoxFor(model => model.TopicsPerPage)
+			@Html.LocalizedLabelFor(m => m.TopicsPerPage, "Threads per page")
+			@Html.TextBoxFor(m => m.TopicsPerPage)
 		</div>
 		<div class="formItem floatContainer">
-			<label for="name">@T("Messages per page")</label>
-			@Html.TextBoxFor(model => model.MessagesPerPage)
+			@Html.LocalizedLabelFor(m => m.MessagesPerPage, "Messages per page")
+			@Html.TextBoxFor(m => m.MessagesPerPage)
 		</div>
 		<div class="formItem floatContainer">
-			<label for="name">@T("Default forum sort")</label>
-			@Html.TextBoxFor(model => model.DefaultForumSort)
+			@Html.LocalizedLabelFor(m => m.DefaultForumSort, "Default forum sort")
+			@Html.DropDownListFor(m => m.DefaultForumSort, new SelectList(forumSortLabels, "Key", "Value"))
 		</div>
 		<div class="formItem floatContainer">
-			<label for="name">@T("Amount of tags in the tag cloud")</label>
-			@Html.TextBoxFor(model => model.TagsCloudCount)
+			@Html.LocalizedLabelFor(m => m.TagsCloudCount, "Amount of tags in the tag cloud")
+			@Html.TextBoxFor(m => m.TagsCloudCount)
 		</div>
 		<div class="formItem checkbox">
-			@Html.CheckBoxFor(model => model.ShowUserDetailsOnList)
-			<label for="name">@T("Show user details (image, member since, ...) on thread detail page")</label>
+			@Html.CheckBoxFor(m => m.ShowUserDetailsOnList)
+			@Html.LocalizedLabelFor(m => m.ShowUserDetailsOnList, "Show user details (image, member since, ...) on thread detail page")
+		</div>
+		<div class="formItem checkbox">
+			@Html.CheckBoxFor(m => m.Template.UseTemplates)
+			@Html.LocalizedLabelFor(m => m.Template.UseTemplates, "Use templates")
+		</div>
+		<h2>Mobile</h2>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor(m => m.Template.Mobile.Regex, "Mobile user agents")
+			@Html.TextBoxFor(m => m.Template.Mobile.Regex)
+			<span class="largeNote">@T("Regex to match the user agent string to")</span>
 		</div>
 		<h2>Resources</h2>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(model => model.Resources.JQueryUrl, "Jquery library")
-			@Html.TextBoxFor(model => model.Resources.JQueryUrl)
+			@Html.LocalizedLabelFor(m => m.Resources.JQueryUrl, "Jquery library")
+			@Html.TextBoxFor(m => m.Resources.JQueryUrl)
+			<span class="largeNote">@T("JQuery library Url. Can be either a virtual path (starting with ~/) or an absolute url, like <a href=\"{0}\" target=\"_blank\">the url of the JQuery libraries hosted on Google CDNs</a>.")</span>
 		</div>
 		<div class="formItem buttons">
 			<input type="submit" value="@T("Send")" />

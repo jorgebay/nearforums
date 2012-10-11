@@ -11,7 +11,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// Determines if the application uses templates
 		/// </summary>
-		[ConfigurationProperty("useTemplates", IsRequired = true)]
+		[ConfigurationProperty("useTemplates", DefaultValue=true)]
 		public bool UseTemplates
 		{
 			get
