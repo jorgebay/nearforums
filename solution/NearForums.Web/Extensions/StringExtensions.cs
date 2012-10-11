@@ -85,9 +85,13 @@ namespace NearForums.Web.Extensions
 			{
 				return null;
 			}
+			else if (value.ContainsOnlyUriInvalid())
+			{
+				return null;
+			}
 			value = value.Trim();
 			var segment = value;
-			if (value.ContainsAsciiChars())
+			if (value.ContainsUriUnreservedChars())
 			{
 				segment = segment.ToLower();
 
@@ -102,7 +106,7 @@ namespace NearForums.Web.Extensions
 			}
 			else
 			{
-				//will be url encoded by browser and encoded / decoded by webserver
+				//will be url encoded / decoded by mvc framework
 			}
 
 			if (segment.Length > maxLength)
@@ -114,11 +118,20 @@ namespace NearForums.Web.Extensions
 		}
 
 		/// <summary>
-		/// Determines if contains the string contains any ASCII string
+		///  Characters that are allowed in a URI but do not have a reserved purpose.
+		///  These include uppercase and lowercase letters and decimal digits (hyphen, period, underscore, and tilde are not valid for this application).
 		/// </summary>
-		public static bool ContainsAsciiChars(this string value)
+		public static bool ContainsUriUnreservedChars(this string value)
 		{
-			return Regex.IsMatch(value, @"[\u0000-\u007F]");
+			return Regex.IsMatch(value, @"[a-z0-9]", RegexOptions.IgnoreCase);
+		}
+
+		/// <summary>
+		///  Determines if the string only contains uri invalid chars (unreserved: "~", "." or whitespaces)
+		/// </summary>
+		public static bool ContainsOnlyUriInvalid(this string value)
+		{
+			return Regex.IsMatch(value, @"^[.~\s]+$", RegexOptions.IgnoreCase);
 		}
 
 		/// <summary>

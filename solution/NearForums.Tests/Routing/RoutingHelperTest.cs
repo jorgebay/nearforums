@@ -95,28 +95,46 @@ namespace NearForums.Tests.Routing
 				controller = "Forums",
 				action = "DetailNotConstrained"
 			});
+
+			//back and fw
+			url = TestHelper.AssertVirtualPathNotNull(routes, new
+			{
+				controller = "Forums",
+				action = "DetailNotConstrained",
+				forum = "نرحب مستخدمين العرب".ToUrlSegment(1000)
+			});
+			TestHelper.AssertIsRouteOf(routes, url, new
+			{
+				controller = "Forums",
+				action = "DetailNotConstrained"
+			});
 		}
 
 		[TestMethod]
-		public void RoutingHelper_CheckNonAscii_Test()
+		public void RoutingHelper_CheckUriUnreserved_Test()
 		{
 			//This test is to list assertions on the relation of alphabets and ascii table
 
 			var value = "";
 			value = "asdfghjkl"; //English alphabet
-			Assert.IsTrue(value.ContainsAsciiChars());
+			Assert.IsTrue(value.ContainsUriUnreservedChars());
 
 			value = "voçe abusou";
 			//Portuguese
-			Assert.IsTrue(value.ContainsAsciiChars());
+			Assert.IsTrue(value.ContainsUriUnreservedChars());
 
 			value = "เที่ยวไทย";
 			//Thai
-			Assert.IsFalse(value.ContainsAsciiChars());
+			Assert.IsFalse(value.ContainsUriUnreservedChars());
 
 			value = "안넹";
 			//Korean
-			Assert.IsFalse(value.ContainsAsciiChars());
+			Assert.IsFalse(value.ContainsUriUnreservedChars());
+
+			value = "نرحب مستخدمين العرب";
+			//Arab
+			Assert.IsFalse(value.ContainsUriUnreservedChars());
+			
 		}
 
 		[TestMethod]
