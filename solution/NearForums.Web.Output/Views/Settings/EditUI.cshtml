@@ -21,7 +21,11 @@
 		@Html.AntiForgeryToken()
 		@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 		{
-			{"CultureName", S("Language is not valid. There is no matching translation (.po) file.")}
+			{"DateFormat", S("Date format is not valid")}
+			,{"TopicsPerPage", S("Threads per page must be greater than 0.")}
+			,{"MessagesPerPage", S("Messages per page must be greater than 0.")}
+			,{"TagsCloudCount", S("Amount of tags in the tag cloud must be greater than 0.")}
+			,{"Resources.JQueryUrl", S("JQuery library url must be either a virtual path (starting with ~/) or an absolute url.")}
 		}, null)
 		<div class="formItem floatContainer">
 			@Html.LocalizedLabelFor(m => m.DateFormat, "Date format")
@@ -56,7 +60,7 @@
 		<div class="formItem floatContainer">
 			@Html.LocalizedLabelFor(m => m.Template.Mobile.Regex, "Mobile user agents")
 			@Html.TextBoxFor(m => m.Template.Mobile.Regex)
-			<span class="largeNote">@T("Regex to match the user agent string to")</span>
+			<span class="largeNote">@T("Regex to match the user agent string to. Leave empty to disable mobile specific server layout.")</span>
 		</div>
 		<h2>Resources</h2>
 		<div class="formItem floatContainer">

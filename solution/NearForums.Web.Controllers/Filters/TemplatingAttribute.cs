@@ -31,8 +31,12 @@ namespace NearForums.Web.Controllers.Filters
 			var session = new SessionWrapper(context);
 			var cache = new CacheWrapper(context);
 			template = LoadPreview(context, session);
+			if (template != null)
+			{
+				return template;
+			}
 
-			if (Config.UI.Template.UseTemplates && template == null)
+			if (Config.UI.Template.UseTemplates)
 			{
 				if (cache.Template == null)
 				{
@@ -40,6 +44,10 @@ namespace NearForums.Web.Controllers.Filters
 					cache.Template = TemplateHelper.GetCurrentTemplateState(context, Service);
 				}
 				template = cache.Template;
+			}
+			else
+			{
+				cache.Template = null;
 			}
 
 			return template;
