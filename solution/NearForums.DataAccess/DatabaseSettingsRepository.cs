@@ -8,6 +8,7 @@ using NearForums.Configuration.Settings;
 using NearForums.Configuration;
 using System.Data.Common;
 using System.Configuration;
+using NearForums.Configuration.Spam;
 
 namespace NearForums.DataAccess
 {
@@ -107,6 +108,10 @@ namespace NearForums.DataAccess
 			else if (element is UIElement)
 			{
 				elementName = "ui";
+			}
+			else if (element is SpamPreventionElement)
+			{
+				elementName = "spamPrevention";
 			}
 			else
 			{

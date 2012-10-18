@@ -1,0 +1,28 @@
+﻿@model NearForums.Configuration.Spam.SpamPreventionElement
+@{
+    ViewBag.Title = S("Spam prevention settings");
+}
+<div class="settingForm">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	</ul>
+	@Html.Partial("Submenu")
+	<h1>@ViewBag.Title</h1>
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
+		{
+			{"AllowedElements", S("Allowed html elements must not be blank.")}
+		}, null)
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor(m => m.HtmlInput.AllowedElements, "Allowed html elements in a post")
+			@Html.TextBoxFor(m => m.HtmlInput.AllowedElements)
+			<span class="largeNote">@T("Regex to match the html elements")</span>
+		</div>
+		<div class="formItem buttons">
+			<input type="submit" value="@T("Send")" />
+		</div>
+	}
+</div>

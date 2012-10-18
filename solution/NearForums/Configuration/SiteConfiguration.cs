@@ -279,7 +279,11 @@ namespace NearForums.Configuration
 			}
 			else if (element is UIElement)
 			{
-				UI = (UIElement) element;
+				UI = (UIElement)element;
+			}
+			else if (element is SpamPreventionElement)
+			{
+				SpamPrevention = (SpamPreventionElement)element;
 			}
 			else
 			{
