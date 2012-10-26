@@ -339,7 +339,7 @@ namespace NearForums.Web.Extensions
 		/// <param name="expression"></param>
 		/// <param name="neutralLabel">Neutral value of the label text that will be translated</param>
 		/// <returns></returns>
-		public static MvcHtmlString LocalizedLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string neutralLabel)
+		public static MvcHtmlString LocalizedLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, string neutralLabel, Expression<Func<TModel, TValue>> expression)
 		{
 			return html.LabelFor(expression, Localizer.Current[neutralLabel]);
 		}

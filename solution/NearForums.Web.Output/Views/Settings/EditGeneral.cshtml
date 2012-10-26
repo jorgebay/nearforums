@@ -19,16 +19,16 @@
 			,{"TimeZoneOffsetHours", S("The timezone offset is not valid.")}
 		}, null)
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.CultureName, "Language")
+			@Html.LocalizedLabelFor("Language", m => m.CultureName)
 			@Html.TextBoxFor(m => m.CultureName)
 			<span class="largeNote">@T("IETF language tag (RFC 5646)")</span>
 		</div>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.ContentPath, "Content path")
+			@Html.LocalizedLabelFor("Content path", m => m.ContentPath)
 			@Html.TextBoxFor(m => m.ContentPath)
 		</div>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.TimeZoneOffsetHours, "Timezone")
+			@Html.LocalizedLabelFor("Timezone", m => m.TimeZoneOffsetHours)
 			@Html.TextBoxFor(m => m.TimeZoneOffsetHours)
 			<span class="largeNote">@T("Time offset from UTC, expressed in hours, used to display the dates inside the forum")</span>
 		</div>

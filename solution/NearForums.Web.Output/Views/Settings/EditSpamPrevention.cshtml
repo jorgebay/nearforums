@@ -17,9 +17,13 @@
 			{"AllowedElements", S("Allowed html elements must not be blank.")}
 		}, null)
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.HtmlInput.AllowedElements, "Allowed html elements in a post")
+			@Html.LocalizedLabelFor("Allowed html elements in a post", m => m.HtmlInput.AllowedElements)
 			@Html.TextBoxFor(m => m.HtmlInput.AllowedElements)
 			<span class="largeNote">@T("Regex to match the html elements")</span>
+		</div>
+		<div class="formItem checkbox">
+			@Html.CheckBoxFor(m => m.HtmlInput.FixErrors)
+			@Html.LocalizedLabelFor("Fix posted html errors in a post (like unclosed elements / hierarchy / ...)", m => m.HtmlInput.FixErrors)
 		</div>
 		<div class="formItem buttons">
 			<input type="submit" value="@T("Send")" />

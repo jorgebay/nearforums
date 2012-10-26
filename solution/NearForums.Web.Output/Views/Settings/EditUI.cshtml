@@ -28,43 +28,43 @@
 			,{"Resources.JQueryUrl", S("JQuery library url must be either a virtual path (starting with ~/) or an absolute url.")}
 		}, null)
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.DateFormat, "Date format")
+			@Html.LocalizedLabelFor("Date format", m => m.DateFormat)
 			@Html.TextBoxFor(m => m.DateFormat)
 			<span class="largeNote">@Html.Link(".NET Standard or custom date and time format strings", "http://msdn.microsoft.com/en-us/library/az4se3k1.aspx", new { target="_blank"})</span>
 		</div>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.TopicsPerPage, "Threads per page")
+			@Html.LocalizedLabelFor("Threads per page", m => m.TopicsPerPage)
 			@Html.TextBoxFor(m => m.TopicsPerPage)
 		</div>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.MessagesPerPage, "Messages per page")
+			@Html.LocalizedLabelFor("Messages per page", m => m.MessagesPerPage)
 			@Html.TextBoxFor(m => m.MessagesPerPage)
 		</div>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.DefaultForumSort, "Default forum sort")
+			@Html.LocalizedLabelFor("Default forum sort", m => m.DefaultForumSort)
 			@Html.DropDownListFor(m => m.DefaultForumSort, new SelectList(forumSortLabels, "Key", "Value"))
 		</div>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.TagsCloudCount, "Amount of tags in the tag cloud")
+			@Html.LocalizedLabelFor("Amount of tags in the tag cloud", m => m.TagsCloudCount)
 			@Html.TextBoxFor(m => m.TagsCloudCount)
 		</div>
 		<div class="formItem checkbox">
 			@Html.CheckBoxFor(m => m.ShowUserDetailsOnList)
-			@Html.LocalizedLabelFor(m => m.ShowUserDetailsOnList, "Show user details (image, member since, ...) on thread detail page")
+			@Html.LocalizedLabelFor("Show user details (image, member since, ...) on thread detail page", m => m.ShowUserDetailsOnList)
 		</div>
 		<div class="formItem checkbox">
 			@Html.CheckBoxFor(m => m.Template.UseTemplates)
-			@Html.LocalizedLabelFor(m => m.Template.UseTemplates, "Use templates")
+			@Html.LocalizedLabelFor("Use templates", m => m.Template.UseTemplates)
 		</div>
 		<h2>Mobile</h2>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.Template.Mobile.Regex, "Mobile user agents")
+			@Html.LocalizedLabelFor("Mobile user agents", m => m.Template.Mobile.Regex)
 			@Html.TextBoxFor(m => m.Template.Mobile.Regex)
 			<span class="largeNote">@T("Regex to match the user agent string to. Leave empty to disable mobile specific server layout.")</span>
 		</div>
 		<h2>Resources</h2>
 		<div class="formItem floatContainer">
-			@Html.LocalizedLabelFor(m => m.Resources.JQueryUrl, "Jquery library")
+			@Html.LocalizedLabelFor("Jquery library", m => m.Resources.JQueryUrl)
 			@Html.TextBoxFor(m => m.Resources.JQueryUrl)
 			<span class="largeNote">@T("JQuery library Url. Can be either a virtual path (starting with ~/) or an absolute url, like <a href=\"{0}\" target=\"_blank\">the url of the JQuery libraries hosted on Google CDNs</a>.")</span>
 		</div>
