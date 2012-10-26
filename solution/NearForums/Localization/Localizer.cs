@@ -6,6 +6,9 @@ using NearForums.Configuration;
 
 namespace NearForums.Localization
 {
+	/// <summary>
+	/// Converts neutral strings into localized strings 
+	/// </summary>
 	public class Localizer
 	{
 		#region Static Methods
@@ -19,8 +22,8 @@ namespace NearForums.Localization
 				{
 					lock (lockCurrentLoad)
 					{
-						var cultureName = SiteConfiguration.Current.CultureName;
-						SetCulture(cultureName, SiteConfiguration.Current.LocalizationFilePath(cultureName));
+						var cultureName = SiteConfiguration.Current.General.CultureName;
+						SetCulture(cultureName, SiteConfiguration.Current.General.LocalizationFilePath(cultureName));
 					}
 				}
 				return _current;

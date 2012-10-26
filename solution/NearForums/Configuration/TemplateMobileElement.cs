@@ -11,7 +11,7 @@ namespace NearForums.Configuration
 		/// <summary>
 		/// User agent regular expression
 		/// </summary>
-		[ConfigurationProperty("regex", IsRequired = false)]
+		[ConfigurationProperty("regex")]
 		public string Regex
 		{
 			get

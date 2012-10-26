@@ -1,0 +1,1 @@
+ALTER TABLE [dbo].[Settings] ALTER COLUMN [SettingValue] NVARCHAR(MAX) NULL

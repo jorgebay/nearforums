@@ -9,7 +9,7 @@ namespace NearForums.Configuration.Spam
 	/// <summary>
 	/// Represents the configuration element for the spam prevention features
 	/// </summary>
-	public class SpamPreventionElement : ConfigurationElement
+	public class SpamPreventionElement : SettingConfigurationElement
 	{
 		/// <summary>
 		/// Gets or sets the configuration for flood control inside the forum
@@ -41,6 +41,11 @@ namespace NearForums.Configuration.Spam
 			{
 				this["htmlInput"] = value;
 			}
+		}
+
+		public override void ValidateFields()
+		{
+			
 		}
 	}
 }

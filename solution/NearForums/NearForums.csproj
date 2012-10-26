@@ -36,6 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -45,6 +46,7 @@
     </Compile>
     <Compile Include="AuthenticationProvider.cs" />
     <Compile Include="AuthenticationProviderException.cs" />
+    <Compile Include="Configuration\SettingConfigurationElement.cs" />
     <Compile Include="Configuration\CDataBaseConfigurationElement.cs" />
     <Compile Include="Configuration\AuthorizationProvidersElement.cs" />
     <Compile Include="Configuration\CDataConfigurationPropertyAttribute.cs" />
@@ -52,11 +54,13 @@
     <Compile Include="Configuration\CustomDbAuthenticationProviderElement.cs" />
     <Compile Include="Configuration\DataAccessElement.cs" />
     <Compile Include="Configuration\ForumSorting.cs" />
+    <Compile Include="Configuration\GeneralElement.cs" />
     <Compile Include="Configuration\Integration\FilterElement.cs" />
     <Compile Include="Configuration\Integration\IntegrationConfiguration.cs" />
     <Compile Include="Configuration\Integration\ServiceElement.cs" />
     <Compile Include="Configuration\Integration\TypeElement.cs" />
     <Compile Include="Configuration\IUniqueConfigurationElement.cs" />
+    <Compile Include="Configuration\Settings\ISettingsRepository.cs" />
     <Compile Include="Configuration\Spam\FloodControlElement.cs" />
     <Compile Include="Configuration\Spam\HtmlInputElement.cs" />
     <Compile Include="Configuration\IOptionalElement.cs" />

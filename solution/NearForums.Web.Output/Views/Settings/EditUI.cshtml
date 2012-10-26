@@ -1,0 +1,75 @@
+﻿@model UIElement
+@{
+	ViewBag.Title = S("Appearance settings");
+
+	var forumSortLabels = new Dictionary<ForumSort, string>() 
+	{ 
+		{ForumSort.LatestActivity, S("Latest activity")},
+		{ForumSort.MostViewedTopics, S("Most viewed threads")}
+	};
+	
+}
+<div class="settingForm">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	</ul>
+	@Html.Partial("Submenu")
+	<h1>@ViewBag.Title</h1>
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
+		{
+			{"DateFormat", S("Date format is not valid")}
+			,{"TopicsPerPage", S("Threads per page must be greater than 0.")}
+			,{"MessagesPerPage", S("Messages per page must be greater than 0.")}
+			,{"TagsCloudCount", S("Amount of tags in the tag cloud must be greater than 0.")}
+			,{"Resources.JQueryUrl", S("JQuery library url must be either a virtual path (starting with ~/) or an absolute url.")}
+		}, null)
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Date format", m => m.DateFormat)
+			@Html.TextBoxFor(m => m.DateFormat)
+			<span class="largeNote">@Html.Link(".NET Standard or custom date and time format strings", "http://msdn.microsoft.com/en-us/library/az4se3k1.aspx", new { target="_blank"})</span>
+		</div>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Threads per page", m => m.TopicsPerPage)
+			@Html.TextBoxFor(m => m.TopicsPerPage)
+		</div>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Messages per page", m => m.MessagesPerPage)
+			@Html.TextBoxFor(m => m.MessagesPerPage)
+		</div>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Default forum sort", m => m.DefaultForumSort)
+			@Html.DropDownListFor(m => m.DefaultForumSort, new SelectList(forumSortLabels, "Key", "Value"))
+		</div>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Amount of tags in the tag cloud", m => m.TagsCloudCount)
+			@Html.TextBoxFor(m => m.TagsCloudCount)
+		</div>
+		<div class="formItem checkbox">
+			@Html.CheckBoxFor(m => m.ShowUserDetailsOnList)
+			@Html.LocalizedLabelFor("Show user details (image, member since, ...) on thread detail page", m => m.ShowUserDetailsOnList)
+		</div>
+		<div class="formItem checkbox">
+			@Html.CheckBoxFor(m => m.Template.UseTemplates)
+			@Html.LocalizedLabelFor("Use templates", m => m.Template.UseTemplates)
+		</div>
+		<h2>Mobile</h2>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Mobile user agents", m => m.Template.Mobile.Regex)
+			@Html.TextBoxFor(m => m.Template.Mobile.Regex)
+			<span class="largeNote">@T("Regex to match the user agent string to. Leave empty to disable mobile specific server layout.")</span>
+		</div>
+		<h2>Resources</h2>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Jquery library", m => m.Resources.JQueryUrl)
+			@Html.TextBoxFor(m => m.Resources.JQueryUrl)
+			<span class="largeNote">@T("JQuery library Url. Can be either a virtual path (starting with ~/) or an absolute url, like <a href=\"{0}\" target=\"_blank\">the url of the JQuery libraries hosted on Google CDNs</a>.")</span>
+		</div>
+		<div class="formItem buttons">
+			<input type="submit" value="@T("Send")" />
+		</div>
+	}
+</div>

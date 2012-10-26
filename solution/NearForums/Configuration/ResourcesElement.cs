@@ -8,7 +8,10 @@ namespace NearForums.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
 	{
-		[ConfigurationProperty("jqueryUrl", IsRequired = true)]
+		/// <summary>
+		/// JQuery library Url. Can be either a virtual path (starting with ~/) or an absolute url, like Google CDNS. 
+		/// </summary>
+		[ConfigurationProperty("jqueryUrl", DefaultValue="~/scripts/jquery-1.7.1.min.js")]
 		public string JQueryUrl
 		{
 			get

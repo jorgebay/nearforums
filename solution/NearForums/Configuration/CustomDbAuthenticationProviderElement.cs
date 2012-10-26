@@ -35,20 +35,14 @@ namespace NearForums.Configuration
 			{
 				if (_connectionString == null)
 				{
-					//Default provider
-					var providerName = "System.Data.SqlClient";
-					ConnectionStringSettings conn = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+					var conn = ConfigurationManager.ConnectionStrings[ConnectionStringName];
 
 					if (conn == null)
 					{
 						throw new ConfigurationErrorsException("A connection string with the name '" + ConnectionStringName + "' was not found in the web configuration file.");
 					}
 
-					if (!String.IsNullOrEmpty(conn.ProviderName))
-					{
-						providerName = conn.ProviderName;
-					}
-					_connectionString = new ConnectionStringSettings(ConnectionStringName, conn.ConnectionString, providerName);
+					_connectionString = conn;
 				}
 				return _connectionString;
 			}

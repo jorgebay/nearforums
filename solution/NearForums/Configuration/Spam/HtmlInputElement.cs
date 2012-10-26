@@ -11,7 +11,7 @@ namespace NearForums.Configuration.Spam
 		/// <summary>
 		/// Determines if the html entered by the user should be parsed and fix html errors like unclosed elements / hierarchy / ...
 		/// </summary>
-		[ConfigurationProperty("fixErrors", IsRequired = false, DefaultValue=true)]
+		[ConfigurationProperty("fixErrors", DefaultValue=true)]
 		public bool FixErrors
 		{
 			get
@@ -27,7 +27,7 @@ namespace NearForums.Configuration.Spam
 		/// <summary>
 		///
 		/// </summary>
-		[ConfigurationProperty("allowedElements", IsRequired = false, DefaultValue = "b(lockquote)?|code|d(d|t|l|el)|em|h(1|2|3|4)|i|kbd|li|ol|p(re)?|s(ub|up|trong|trike)?|ul|a|img")]
+		[ConfigurationProperty("allowedElements", DefaultValue = "b(lockquote)?|code|d(d|t|l|el)|em|h(2|3|4)|i|kbd|li|ol|p(re)?|s(ub|up|trong|trike)?|ul|a|img")]
 		public string AllowedElements
 		{
 			get

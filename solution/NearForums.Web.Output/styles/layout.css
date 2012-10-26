@@ -260,3 +260,42 @@ strong a
 {
 	border: 1px solid #FFFFFF;
 }
+.submenu
+{
+	overflow: visible;
+	margin: 10px 0;
+	border-bottom: 1px solid #C0C0C0;
+	height: 27px;
+}
+.submenu ul
+{
+	float: left;
+	list-style-type: none;
+	margin: 0 0 -1px 0;
+	padding: 0;
+}
+.submenu li
+{
+	background-color: #F9F9F9;
+    border-left: 1px solid #C0C0C0;
+    border-right: 1px solid #C0C0C0;
+    border-top: 1px solid #C0C0C0;
+    border-radius: 5px 5px 0 0;
+	margin: 0 0 0 5px;
+	padding: 0;
+	float: left;
+}
+.submenu li a
+{
+	float: left;
+	padding: 7px 10px 0 10px;
+	text-decoration: none;
+    border-radius: 5px 5px 0 0;
+	margin: 0 0 -1px 0;
+	height: 20px;
+}
+.submenu a.active
+{
+	color: #333333;
+	background-color: #FFFFFF;
+}

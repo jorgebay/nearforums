@@ -13,15 +13,11 @@ namespace NearForums.DataAccess
 	/// </summary>
 	public class CustomAuthenticationDataAccess : BaseDataAccess, ICustomAuthenticationDataAccess
 	{
-		public CustomAuthenticationDataAccess()
-		{
-		}
-
-		private DbProviderFactory _factory;
+		private ConnectionStringSettings _connectionString;
 		/// <summary>
-		/// Gets an instance of the db provider factory for the custom db authentication
+		/// Gets the forums connection string
 		/// </summary>
-		public override DbProviderFactory Factory
+		protected override ConnectionStringSettings ConnectionString
 		{
 			get
 			{
@@ -29,23 +25,13 @@ namespace NearForums.DataAccess
 				{
 					throw new ConfigurationErrorsException("Custom Authentication Provider is not defined in the site configuration.");
 				}
-				if (_factory == null)
+				if (_connectionString == null)
 				{
-					_factory = DbProviderFactories.GetFactory(Config.AuthenticationProviders.CustomDb.ConnectionString.ProviderName);
+					var conn = Config.AuthenticationProviders.CustomDb.ConnectionString;
+					_connectionString = EnsureProvider(conn);
 				}
-				return _factory;
+				return _connectionString;
 			}
-			set
-			{
-				_factory = value;
-			}
-		}
-
-		public override DbConnection GetConnection()
-		{
-			var conn = this.Factory.CreateConnection();
-			conn.ConnectionString = Config.AuthenticationProviders.CustomDb.ConnectionString.ConnectionString;
-			return conn;
 		}
 
 		public User GetUser(string userName, string password)

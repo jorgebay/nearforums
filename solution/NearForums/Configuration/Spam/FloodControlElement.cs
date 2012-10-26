@@ -14,7 +14,7 @@ namespace NearForums.Configuration.Spam
 		/// <summary>
 		/// Time (in minutes) required to pass between postings
 		/// </summary>
-		[ConfigurationProperty("timeBetweenPosts", IsRequired = false, DefaultValue = 5D)]
+		[ConfigurationProperty("timeBetweenPosts", DefaultValue = 5D)]
 		public double TimeBetweenPosts
 		{
 			get
@@ -30,7 +30,7 @@ namespace NearForums.Configuration.Spam
 		/// <summary>
 		/// Determines the role for which the flood control rules are ignored
 		/// </summary>
-		[ConfigurationProperty("ignoreForRole", IsRequired = false)]
+		[ConfigurationProperty("ignoreForRole", DefaultValue=UserRole.Moderator)]
 		public UserRole? IgnoreForRole
 		{
 			get
