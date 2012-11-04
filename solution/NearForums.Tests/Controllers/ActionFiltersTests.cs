@@ -130,7 +130,7 @@ namespace NearForums.Tests.Controllers
 			//set up attr
 			var attr = new PreventFloodAttribute(typeof(EmptyResult));
 			attr.Config.SpamPrevention.FloodControl.TimeBetweenPosts = 5;
-			attr.Config.SpamPrevention.FloodControl.IgnoreForRole = null; //do not ignore
+			attr.Config.SpamPrevention.FloodControl.IgnoreForRole = (UserRole) Int16.MaxValue; //do not ignore
 
 			//first execution
 			attr.OnActionExecuting(executingFilterContext);

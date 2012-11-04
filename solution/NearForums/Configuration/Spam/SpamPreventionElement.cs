@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using System.Text.RegularExpressions;
+using NearForums.Validation;
 
 namespace NearForums.Configuration.Spam
 {
@@ -45,7 +47,23 @@ namespace NearForums.Configuration.Spam
 
 		public override void ValidateFields()
 		{
-			
+			var errors = new List<ValidationError>();
+			try
+			{
+				new Regex(HtmlInput.AllowedElements);
+			}
+			catch
+			{
+				errors.Add(new ValidationError("HtmlInput.AllowedElements", ValidationErrorType.Format));
+			}
+			if (FloodControl.TimeBetweenPosts < 0)
+			{
+				errors.Add(new ValidationError("FloodControl.TimeBetweenPosts", ValidationErrorType.Range));
+			}
+			if (errors.Count > 0)
+			{
+				throw new ValidationException(errors);
+			}
 		}
 	}
 }

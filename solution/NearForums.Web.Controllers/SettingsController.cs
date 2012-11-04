@@ -13,10 +13,15 @@ namespace NearForums.Web.Controllers
 {
 	public class SettingsController : BaseController
 	{
+		/// <summary>
+		/// Users service
+		/// </summary>
+		private readonly IUsersService _userService;
+
 		public SettingsController(IUsersService service)
 			: base(service)
 		{
-
+			_userService = service;
 		}
 
 		[HttpGet]
@@ -77,6 +82,7 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult EditSpamPrevention()
 		{
+			ViewBag.UserRoles = new SelectList(_userService.GetRoles(), "Key", "Value");
 			return View(Config.SpamPrevention.GetEditable<SpamPreventionElement>());
 		}
 
@@ -97,6 +103,7 @@ namespace NearForums.Web.Controllers
 					AddErrors(ModelState, ex);
 				}
 			}
+			ViewBag.UserRoles = new SelectList(_userService.GetRoles(), "Key", "Value");
 			return View(element);
 		}
 	}

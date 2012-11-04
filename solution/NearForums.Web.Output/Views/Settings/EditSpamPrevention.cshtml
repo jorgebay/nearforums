@@ -14,7 +14,8 @@
 		@Html.AntiForgeryToken()
 		@Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 		{
-			{"AllowedElements", S("Allowed html elements must not be blank.")}
+			{"HtmlInput.AllowedElements", S("Allowed html elements must be a valid regular expression.")},
+			{"FloodControl.TimeBetweenPosts", S("Wait time must be zero or greater.")}
 		}, null)
 		<div class="formItem floatContainer">
 			@Html.LocalizedLabelFor("Allowed html elements in a post", m => m.HtmlInput.AllowedElements)
@@ -24,6 +25,16 @@
 		<div class="formItem checkbox">
 			@Html.CheckBoxFor(m => m.HtmlInput.FixErrors)
 			@Html.LocalizedLabelFor("Fix posted html errors in a post (like unclosed elements / hierarchy / ...)", m => m.HtmlInput.FixErrors)
+		</div>
+		<h2>Flood control</h2>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Wait time between posts", m => m.FloodControl.TimeBetweenPosts)
+			@Html.TextBoxFor(m => m.FloodControl.TimeBetweenPosts)
+			<span class="largeNote">@T("Expressed in minutes.")</span>
+		</div>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Ignore wait time for role (or above)", m => m.FloodControl.IgnoreForRole)
+			@Html.DropDownListFor(m => m.FloodControl.IgnoreForRole, (IEnumerable<SelectListItem>)ViewBag.UserRoles)
 		</div>
 		<div class="formItem buttons">
 			<input type="submit" value="@T("Send")" />

@@ -30,12 +30,12 @@ namespace NearForums.Configuration.Spam
 		/// <summary>
 		/// Determines the role for which the flood control rules are ignored
 		/// </summary>
-		[ConfigurationProperty("ignoreForRole", DefaultValue=UserRole.Moderator)]
-		public UserRole? IgnoreForRole
+		[ConfigurationProperty("ignoreForRole", DefaultValue=UserRole.Admin)]
+		public UserRole IgnoreForRole
 		{
 			get
 			{
-				return (UserRole?)this["ignoreForRole"];
+				return (UserRole)this["ignoreForRole"];
 			}
 			set
 			{
