@@ -275,7 +275,7 @@ namespace NearForums.Web.Extensions
 			{
 				throw new ArgumentNullException("url");
 			}
-			if ((!url.StartsWith("http://")) && (!url.StartsWith("https://")) && url[0] != '~')
+			if (!(url.StartsWith("http://") || url.StartsWith("https://") || url.StartsWith("~/") || url.StartsWith("//")))
 			{
 				throw new ArgumentException("Url must start tilde character '~' or be absolute.", "url");
 			}
