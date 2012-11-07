@@ -106,5 +106,21 @@ namespace NearForums.Web.Controllers
 			ViewBag.UserRoles = new SelectList(_userService.GetRoles(), "Key", "Value");
 			return View(element);
 		}
+
+		/// <summary>
+		/// Enables or disables the search engine on the website.
+		/// </summary>
+		/// <returns></returns>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[RequireAuthorization(UserRole.Admin)]
+		public ActionResult ToggleEnable()
+		{
+			var isSearchEnabled = Config.Search.Enabled;
+			var searchConfig = Config.Search.GetEditable<SearchElement>();
+			searchConfig.Enabled = !isSearchEnabled;
+			Config.SaveSetting(searchConfig);
+			return RedirectToAction("Manage", "SearchEngine");
+		}
 	}
 }

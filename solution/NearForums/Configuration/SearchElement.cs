@@ -7,7 +7,7 @@ using System.IO;
 
 namespace NearForums.Configuration
 {
-	public class SearchElement : ConfigurationElement
+	public class SearchElement : SettingConfigurationElement
 	{
 		public SiteConfiguration ParentElement
 		{
@@ -155,6 +155,11 @@ namespace NearForums.Configuration
 			{
 				this["resultsPageSize"] = value;
 			}
+		}
+
+		public override void ValidateFields()
+		{
+			//Nothing to validate (either enable or disable)
 		}
 	}
 }
