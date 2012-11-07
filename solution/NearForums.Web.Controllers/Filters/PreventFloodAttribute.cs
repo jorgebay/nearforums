@@ -113,15 +113,10 @@ namespace NearForums.Web.Controllers.Filters
 		/// </summary>
 		protected virtual bool IsFlooding(ControllerContext context)
 		{
-			//check if the user is of a role marked to be
-			//ignored by configuration
-			if (Config.SpamPrevention.FloodControl.IgnoreForRole != null)
+			var session = new SessionWrapper(context.HttpContext);
+			if (session.User != null && session.User.Role >= Config.SpamPrevention.FloodControl.IgnoreForRole)
 			{
-				var session = new SessionWrapper(context.HttpContext);
-				if (session.User != null && session.User.Role >= Config.SpamPrevention.FloodControl.IgnoreForRole)
-				{
-					return false;
-				}
+				return false;
 			}
 			//Check if the required time has passed
 			DateTime? latestPosting = GetLatestPosting(context);
