@@ -896,6 +896,10 @@ input.button, .buttons input
 {
 	cursor: pointer;
 }
+input.button:hover
+{
+	border: 1px solid #333333;
+}
 form div.formItem span.largeNote
 {
 	font-weight: normal;

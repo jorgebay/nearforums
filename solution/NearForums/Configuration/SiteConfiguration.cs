@@ -285,6 +285,10 @@ namespace NearForums.Configuration
 			{
 				SpamPrevention = (SpamPreventionElement)element;
 			}
+			else if (element is SearchElement)
+			{
+				Search = (SearchElement)element;
+			}
 			else
 			{
 				throw new NotSupportedException("Element of type " + element.GetType().Name + " is not supported.");

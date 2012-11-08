@@ -91,4 +91,11 @@
 		});
 		return params;
 	}
+	,
+	enableToggle : function(url)
+	{
+		$("#containerForm")
+			.prop("action", url)
+			.submit();
+	}
 }

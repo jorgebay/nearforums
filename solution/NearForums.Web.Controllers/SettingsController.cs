@@ -114,7 +114,7 @@ namespace NearForums.Web.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[RequireAuthorization(UserRole.Admin)]
-		public ActionResult ToggleEnable()
+		public ActionResult SearchToggle()
 		{
 			var isSearchEnabled = Config.Search.Enabled;
 			var searchConfig = Config.Search.GetEditable<SearchElement>();

@@ -1,12 +1,21 @@
 ﻿@{
 	ViewBag.Title = S("Manage search index");
 }
+@section Head
+{
+	@Html.Script("~/scripts/search-indexer.js")
+}
 <ul class="path floatContainer">
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
 <p>@T("The search index contains {0} documents.", ViewBag.DocumentCount)</p>
+<form id="containerForm" method="post">
+	@Html.AntiForgeryToken()
+</form>
+<input type="button" class="button" onclick="indexer.enableToggle('@Url.Action("SearchToggle", "Settings")');" value="enable toggle" />
+<br />
 @if (Config.Search.Enabled)
 {
 	<h2>@T("Reindex")</h2>
@@ -23,11 +32,7 @@
 			@T("Reindexing Forums...<br />Please do not close this web page")
 		</p>
 	</div>
-	<form id="containerForm">
-		@Html.AntiForgeryToken()
-	</form>
 	@Html.Hidden("indexBatchUrl", Url.Action("IndexBatch"))
-	@Html.Script("~/scripts/search-indexer.js")
 }
 else
 {

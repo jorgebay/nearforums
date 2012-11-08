@@ -113,6 +113,10 @@ namespace NearForums.DataAccess
 			{
 				elementName = "spamPrevention";
 			}
+			else if (element is SearchElement)
+			{
+				elementName = "search";
+			}
 			else
 			{
 				throw new NotSupportedException("Element of type " + element.GetType().Name + " is not supported.");
