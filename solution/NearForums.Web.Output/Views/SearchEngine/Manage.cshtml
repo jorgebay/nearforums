@@ -5,36 +5,43 @@
 {
 	@Html.Script("~/scripts/search-indexer.js")
 }
-<ul class="path floatContainer">
-	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
-	<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
-</ul>
-<h1>@ViewBag.Title</h1>
-<p>@T("The search index contains {0} documents.", ViewBag.DocumentCount)</p>
-<form id="containerForm" method="post">
-	@Html.AntiForgeryToken()
-</form>
-<input type="button" class="button" onclick="indexer.enableToggle('@Url.Action("SearchToggle", "Settings")');" value="enable toggle" />
-<br />
-@if (Config.Search.Enabled)
-{
-	<h2>@T("Reindex")</h2>
-	<p>
-		@T("You can drop the current search index contents, rebuild and reindex all the threads.") 
-		<br />
-		@T("This operation may take a while depending on the amount of threads and messages.")
-		<br /> 
-		<input type="button" class="button" value="@T("Reindex")" onclick="indexer.init(this, '@Url.Action("ReindexStart")', '@T("Are you sure you want to drop the current search index and start reindexing?")', '@T("Reindexing finished successfully")');" />
-	</p>
-	<div id="loading" style="display:none;">
-		<p class="warning">
-			@Html.Img("~/images/loadingMini.gif", S("Loading..."))
-			@T("Reindexing Forums...<br />Please do not close this web page")
+<div class="searchManage">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+		<li>@Html.ActionLinkLocalized("Admin", "Dashboard", "Admin")</li>
+	</ul>
+	<h1>@ViewBag.Title</h1>
+	<form id="containerForm" method="post">
+		@Html.AntiForgeryToken()
+	</form>
+	@if (Config.Search.Enabled)
+	{
+		<p>
+			@T("Search engine is enabled")
+			<br />
+			<input type="button" class="button" onclick="indexer.enableToggle('@Url.Action("SearchToggle", "Settings")');" value="@T("Disable")" />
+			<br /><br />
 		</p>
-	</div>
-	@Html.Hidden("indexBatchUrl", Url.Action("IndexBatch"))
-}
-else
-{
-	<p class="warning">@T("Search index is disabled by configuration")</p>
-}
+		<h2>@T("Reindex")</h2>
+		<p>@T("The search index contains {0} documents.", ViewBag.DocumentCount)</p>
+		<p>
+			@T("You can drop the current search index contents, rebuild and reindex all the threads.") 
+			<br />
+			<em>@T("This operation may take a while depending on the amount of threads and messages.")</em>
+			<br /><br />
+			<input type="button" class="button" value="@T("Reindex")" onclick="indexer.init(this, '@Url.Action("ReindexStart")', '@T("Are you sure you want to drop the current search index and start reindexing?")', '@T("Reindexing finished successfully")');" />
+		</p>
+		<div id="loading" style="display:none;">
+			<p class="warning">
+				@Html.Img("~/images/loadingMini.gif", S("Loading..."))
+				@T("Reindexing Forums...<br />Please do not close this web page")
+			</p>
+		</div>
+		@Html.Hidden("indexBatchUrl", Url.Action("IndexBatch"))
+	}
+	else
+	{
+		<p class="warning">@T("Search index is disabled")</p>
+		<input type="button" class="button" onclick="indexer.enableToggle('@Url.Action("SearchToggle", "Settings")');" value="@T("Enable")" />
+	}
+</div>
