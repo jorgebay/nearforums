@@ -30,6 +30,40 @@ namespace NearForums.Web.Controllers
 			_topicService = topicService;
 		}
 
+		[RequireAuthorization(UserRole.Moderator)]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Ban(int id, ModeratorReason reason, string reasonText)
+		{
+			throw new NotImplementedException();
+		}
+
+		[RequireAuthorization(UserRole.Admin)]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(int id, string searched)
+		{
+			_service.Delete(id);
+			return RedirectToAction("List", new
+			{
+				userName = searched,
+				page = 0
+			});
+		}
+
+		[RequireAuthorization(UserRole.Admin)]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Demote(int id, string searched)
+		{
+			_service.Demote(id);
+			return RedirectToAction("List", new
+			{
+				userName = searched,
+				page = 0
+			});
+		}
+
 		public ActionResult Detail(int id)
 		{
 			User user = _service.Get(id);
@@ -43,37 +77,6 @@ namespace NearForums.Web.Controllers
 			return View(user);
 		}
 
-		[RequireAuthorization(UserRole.Admin)]
-		public ActionResult List(string userName, int page)
-		{
-			List<User> users = null;
-			if (String.IsNullOrEmpty(userName))
-			{
-				users = _service.GetAll();
-			}
-			else
-			{
-				users = _service.GetByName(userName);
-			}
-			ViewBag.UserName = userName;
-			ViewBag.Page = page;
-
-			return View(users);
-		}
-
-		public ActionResult MessagesByUser(int id)
-		{
-			User user = _service.Get(id);
-			if (user == null)
-			{
-				return ResultHelper.NotFoundResult(this);
-			}
-			//Get posted messages (ordered 
-			var topics = _topicService.GetTopicsAndMessagesByUser(id);
-			return View(false, topics);
-		}
-
-		#region Edit
 		[RequireAuthorization]
 		[HttpGet]
 		public ActionResult Edit(int id)
@@ -126,9 +129,37 @@ namespace NearForums.Web.Controllers
 			ViewBag.GravatarPhoto = _service.GetGravatarImageUrl(user);
 			return View(user);
 		}
-		#endregion
 
-		#region Promote / Demote / Delete
+		[RequireAuthorization(UserRole.Admin)]
+		public ActionResult List(string userName, int page)
+		{
+			List<User> users = null;
+			if (String.IsNullOrEmpty(userName))
+			{
+				users = _service.GetAll();
+			}
+			else
+			{
+				users = _service.GetByName(userName);
+			}
+			ViewBag.UserName = userName;
+			ViewBag.Page = page;
+
+			return View(users);
+		}
+
+		public ActionResult MessagesByUser(int id)
+		{
+			User user = _service.Get(id);
+			if (user == null)
+			{
+				return ResultHelper.NotFoundResult(this);
+			}
+			//Get posted messages (ordered 
+			var topics = _topicService.GetTopicsAndMessagesByUser(id);
+			return View(false, topics);
+		}
+
 		[RequireAuthorization(UserRole.Admin)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -142,31 +173,20 @@ namespace NearForums.Web.Controllers
 			});
 		}
 
-		[RequireAuthorization(UserRole.Admin)]
+		[RequireAuthorization(UserRole.Moderator)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Demote(int id, string searched)
+		public ActionResult Suspend(int id, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
-			_service.Demote(id);
-			return RedirectToAction("List", new
-			{
-				userName = searched,
-				page = 0
-			});
+			throw new NotImplementedException();
 		}
 
-		[RequireAuthorization(UserRole.Admin)]
+		[RequireAuthorization(UserRole.Moderator)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, string searched)
+		public ActionResult Warn(int id, ModeratorReason reason, string reasonText)
 		{
-			_service.Delete(id);
-			return RedirectToAction("List", new
-			{
-				userName = searched,
-				page = 0
-			});
+			throw new NotImplementedException();
 		}
-		#endregion
 	}
 }

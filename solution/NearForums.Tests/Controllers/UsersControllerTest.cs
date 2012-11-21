@@ -92,5 +92,26 @@ namespace NearForums.Tests.Controllers
 			IList topics = (IList)controller.ViewData.Model;
 			Assert.IsNotNull(topics);
 		}
+
+		[TestMethod]
+		public void User_Ban_Test()
+		{
+			var controller = TestHelper.Resolve<UsersController>();
+			controller.Ban(0, ModeratorReason.Spamming, null);
+		}
+
+		[TestMethod]
+		public void User_Suspend_Test()
+		{
+			var controller = TestHelper.Resolve<UsersController>();
+			controller.Suspend(0, ModeratorReason.Spamming, null, DateTime.Now.AddMonths(1));
+		}
+
+		[TestMethod]
+		public void User_Warn_Test()
+		{
+			var controller = TestHelper.Resolve<UsersController>();
+			controller.Warn(0, ModeratorReason.Spamming, null);
+		}
 	}
 }
