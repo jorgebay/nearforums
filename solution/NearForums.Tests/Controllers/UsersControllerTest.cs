@@ -97,6 +97,10 @@ namespace NearForums.Tests.Controllers
 		public void User_Ban_Test()
 		{
 			var controller = TestHelper.Resolve<UsersController>();
+			var context = new FakeControllerContext(controller);
+			var sessionWrapper = new SessionWrapper(context.HttpContext);
+			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
+			controller.ControllerContext = context;
 			controller.Ban(0, ModeratorReason.Spamming, null);
 		}
 
