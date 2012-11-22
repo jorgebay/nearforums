@@ -100,6 +100,14 @@ namespace NearForums.Services
 			return user;
 		}
 
+		/// <summary>
+		/// Marks a user as banned
+		/// </summary>
+		public void Ban(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		{
+			_dataAccess.Ban(id, moderatorId, reason, reasonText);
+		}
+
 		public void Delete(int id)
 		{
 			UsersDataAccess da = new UsersDataAccess();
@@ -191,6 +199,11 @@ namespace NearForums.Services
 			_notificationService.SendResetPassword(user, linkUrl);
 		}
 
+		public void Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate)
+		{
+			_dataAccess.Suspend(id, moderatorId, reason, reasonText, endDate);
+		}
+
 		public void ValidateUserAndPassword(string userName, string password)
 		{
 			var errors = new List<ValidationError>();
@@ -206,6 +219,11 @@ namespace NearForums.Services
 			{
 				throw new ValidationException(errors);
 			}
+		}
+
+		public void Warn(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		{
+			_dataAccess.Warn(id, moderatorId, reason, reasonText);
 		}
 	}
 }

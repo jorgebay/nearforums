@@ -26,6 +26,14 @@ namespace NearForums.Services
 		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
 		User AuthenticateWithCustomProvider(string userName, string password);
 		/// <summary>
+		/// Bans a user
+		/// </summary>
+		/// <param name="id">Id of the user to ban</param>
+		/// <param name="moderatorId">UserId of the moderator</param>
+		/// <param name="reason"></param>
+		/// <param name="reasonText"></param>
+		void Ban(int id, int moderatorId, ModeratorReason reason, string reasonText);
+		/// <summary>
 		/// Removes the user from the repository
 		/// </summary>
 		/// <param name="id"></param>
@@ -72,9 +80,26 @@ namespace NearForums.Services
 		/// <param name="linkUrl">Url of the page to set the new password</param>
 		void ResetPassword(string membershipKey, string guid, string linkUrl);
 		/// <summary>
+		/// Temporarily suspends a user
+		/// </summary>
+		/// <param name="id">Id of the user to ban</param>
+		/// <param name="moderatorId">UserId of the moderator</param>
+		/// <param name="reason"></param>
+		/// <param name="reasonText"></param>
+		/// <param name="endDate">End date of the suspension</param>
+		void Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate);
+		/// <summary>
 		/// Validates username and password
 		/// </summary>
 		/// <exception cref="ValidationException">Throws a ValidationException when userName and/or password are empty</exception>
 		void ValidateUserAndPassword(string userName, string password);
+		/// <summary>
+		/// Warns a user.
+		/// </summary>
+		/// <param name="id">user id of the user to warn</param>
+		/// <param name="moderatorId">UserId of the moderator</param>
+		/// <param name="reason"></param>
+		/// <param name="reasonText"></param>
+		void Warn(int id, int moderatorId, ModeratorReason reason, string reasonText);
 	}
 }

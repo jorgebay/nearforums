@@ -30,12 +30,17 @@ namespace NearForums.Web.Controllers
 			_topicService = topicService;
 		}
 
+		/// <summary>
+		/// Bans a user permanently from the site
+		/// </summary>
+		/// <returns>Empty JSON</returns>
 		[RequireAuthorization(UserRole.Moderator)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Ban(int id, ModeratorReason reason, string reasonText)
 		{
-			throw new NotImplementedException();
+			_service.Ban(id, User.Id, reason, reasonText);
+			return Json(null);
 		}
 
 		[RequireAuthorization(UserRole.Admin)]
@@ -155,7 +160,7 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
-			//Get posted messages (ordered 
+			//Get posted messages
 			var topics = _topicService.GetTopicsAndMessagesByUser(id);
 			return View(false, topics);
 		}
@@ -173,20 +178,30 @@ namespace NearForums.Web.Controllers
 			});
 		}
 
+		/// <summary>
+		/// Suspends a user for a period of time
+		/// </summary>
+		/// <returns>Empty JSON</returns>
 		[RequireAuthorization(UserRole.Moderator)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Suspend(int id, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
-			throw new NotImplementedException();
+			_service.Suspend(id, User.Id, reason, reasonText, endDate);
+			return Json(null);
 		}
 
+		/// <summary>
+		/// Warns
+		/// </summary>
+		/// <returns>Empty JSON</returns>
 		[RequireAuthorization(UserRole.Moderator)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Warn(int id, ModeratorReason reason, string reasonText)
 		{
-			throw new NotImplementedException();
+			_service.Warn(id, User.Id, reason, reasonText);
+			return Json(null);
 		}
 	}
 }

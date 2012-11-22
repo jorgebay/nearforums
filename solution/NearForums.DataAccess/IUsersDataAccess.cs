@@ -10,6 +10,7 @@ namespace NearForums.DataAccess
 	{
 		void AddEmail(int id, string email, EmailPolicy policy);
 		User AddUser(User user, AuthenticationProvider provider, string providerId);
+		void Ban(int id, int moderatorId, ModeratorReason reason, string reasonText);
 		void Delete(int id);
 		void Demote(int id);
 		void Edit(User user);
@@ -22,6 +23,8 @@ namespace NearForums.DataAccess
 		System.Collections.Generic.Dictionary<UserRole, string> GetRoles();
 		User GetTestUser();
 		void Promote(int id);
+		void Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate);
 		void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate);
+		void Warn(int id, int moderatorId, ModeratorReason reason, string reasonText);
 	}
 }
