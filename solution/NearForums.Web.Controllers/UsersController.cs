@@ -102,7 +102,7 @@ namespace NearForums.Web.Controllers
 				_service.Edit(user);
 
 				//Update membership data
-				if (Session.User.Provider == AuthenticationProvider.Membership && !String.IsNullOrEmpty(user.Email))
+				if (Session.User.AuthenticatedBy(AuthenticationProvider.Membership) && !String.IsNullOrEmpty(user.Email))
 				{
 					if (HttpContext.User.Identity.Name == "")
 					{

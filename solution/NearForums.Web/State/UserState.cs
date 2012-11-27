@@ -9,14 +9,16 @@ namespace NearForums.Web.State
 	/// <summary>
 	/// Represents user account information that is going to persist on session state
 	/// </summary>
+	[Serializable]
 	public class UserState
 	{
-		public UserState(User user, AuthenticationProvider provider) : this(user, provider, SiteConfiguration.Current.AuthenticationProviders)
+		public UserState(User user, AuthenticationProvider provider)
+			: this(user, provider, true, null)
 		{
 
 		}
 
-		public UserState(User user, AuthenticationProvider provider, AuthenticationProvidersElement config)
+		public UserState(User user, AuthenticationProvider provider, bool allowChangeEmail, string editAccountUrl)
 		{
 			Id = user.Id;
 			UserName = user.UserName;
@@ -24,22 +26,13 @@ namespace NearForums.Web.State
 			Guid = user.Guid;
 			TimeZone = user.TimeZone;
 			ExternalProfileUrl = user.ExternalProfileUrl;
-			Provider = provider;
 			Email = user.Email;
-			Config = config;
-			ProviderInfo = new ProviderInfo();
-
-			if (provider == AuthenticationProvider.CustomDb)
+			ProviderInfo = new ProviderInfo()
 			{
-				ProviderInfo.AllowChangeEmail = Config.CustomDb.AllowChangeEmail;
-				ProviderInfo.EditAccountUrl = Config.CustomDb.AccountEditUrl;
-			}
-		}
-
-		protected AuthenticationProvidersElement Config
-		{
-			get;
-			set;
+				Provider = provider,
+				AllowChangeEmail = allowChangeEmail,
+				EditAccountUrl = editAccountUrl
+			};
 		}
 
 		public int Id
@@ -110,21 +103,22 @@ namespace NearForums.Web.State
 		}
 
 		/// <summary>
-		/// Determines the authentication provider used by the user
-		/// </summary>
-		public AuthenticationProvider Provider
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
 		/// Gets the info from the authentication provider that authenticated this account.
 		/// </summary>
 		public ProviderInfo ProviderInfo
 		{
 			get;
 			protected set;
+		}
+
+		/// <summary>
+		/// Determines if the user has been authenticated by the authentication provider
+		/// </summary>
+		/// <param name="provider"></param>
+		/// <returns></returns>
+		public bool AuthenticatedBy(AuthenticationProvider provider)
+		{
+			return ProviderInfo.Provider == provider;
 		}
 
 		public User ToUser()

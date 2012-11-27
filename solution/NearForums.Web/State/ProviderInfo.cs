@@ -5,6 +5,7 @@ using System.Text;
 
 namespace NearForums.Web.State
 {
+	[Serializable]
 	public class ProviderInfo
 	{
 		public ProviderInfo()
@@ -12,16 +13,13 @@ namespace NearForums.Web.State
 			AllowChangeEmail = true;
 		}
 
-		public bool AllowChangeEmail
-		{
-			get;
-			set;
-		}
+		/// <summary>
+		/// Determines if the provider allows to change the email
+		/// </summary>
+		public bool AllowChangeEmail { get; set; }
 
-		public string EditAccountUrl
-		{
-			get;
-			set;
-		}
+		public AuthenticationProvider Provider { get; set; }
+
+		public string EditAccountUrl { get; set; }
 	}
 }

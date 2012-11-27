@@ -28,7 +28,7 @@ namespace NearForums.Web.Controllers.Filters
 			}
 			else
 			{
-				if (session.User != null && session.User.Provider != AuthenticationProvider.Membership)
+				if (session.User != null && !session.User.AuthenticatedBy(AuthenticationProvider.Membership))
 				{
 					filterContext.Result = ResultHelper.ForbiddenResult(filterContext.Controller as BaseController);
 				}

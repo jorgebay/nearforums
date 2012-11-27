@@ -40,7 +40,7 @@
 		<label for="website">@T("Website")</label>
         @Html.TextBox("website", null, new { @class = "text" })
 	</div>
-	@if (User.Provider == AuthenticationProvider.Membership)
+	@if (User.AuthenticatedBy(AuthenticationProvider.Membership))
 	{
 		<p class="button"><input type="button" class="button" value="@T("Change Password")" onclick="window.location.href='@Url.Action("ChangePassword", "FormsAuthentication", new { returnUrl = this.Request.Url.PathAndQuery })';" /></p>
     }
