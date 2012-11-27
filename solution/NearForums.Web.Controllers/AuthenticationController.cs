@@ -246,7 +246,7 @@ namespace NearForums.Web.Controllers
 				var user = _service.AuthenticateWithCustomProvider(userName, password);
 				if (user != null)
 				{
-					Session.User = new UserState(user, AuthenticationProvider.CustomDb);
+					Session.User = new UserState(user, AuthenticationProvider.CustomDb, Config.AuthenticationProviders.CustomDb.AllowChangeEmail, Config.AuthenticationProviders.CustomDb.AccountEditUrl);
 					return Redirect(returnUrl);
 				}
 			}
