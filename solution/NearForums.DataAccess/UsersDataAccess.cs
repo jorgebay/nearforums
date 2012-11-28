@@ -45,9 +45,15 @@ namespace NearForums.DataAccess
 			return user;
 		}
 
-		public void Ban(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		public bool Ban(int id, int moderatorId, ModeratorReason reason, string reasonText)
 		{
-			throw new NotImplementedException();
+			var comm = GetCommand("SPUsersBan");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+			comm.AddParameter<int>(this.Factory, "ModeratorUserId", id);
+			comm.AddParameter<ModeratorReason>(this.Factory, "ModeratorReason", reason);
+			comm.AddParameter<string>(this.Factory, "ModeratorReasonFull", reasonText);
+
+			return comm.SafeExecuteNonQuery() > 0;
 		}
 
 		public void Delete(int id)
@@ -267,9 +273,16 @@ namespace NearForums.DataAccess
 			comm.SafeExecuteNonQuery();
 		}
 
-		public void Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate)
+		public bool Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
-			throw new NotImplementedException();
+			var comm = GetCommand("SPUsersSuspend");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+			comm.AddParameter<int>(this.Factory, "ModeratorUserId", id);
+			comm.AddParameter<ModeratorReason>(this.Factory, "ModeratorReason", reason);
+			comm.AddParameter<string>(this.Factory, "ModeratorReasonFull", reasonText);
+			comm.AddParameter<DateTime>(this.Factory, "SuspendedEnd", endDate);
+
+			return comm.SafeExecuteNonQuery() > 0;
 		}
 
 		public void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate)
@@ -282,9 +295,15 @@ namespace NearForums.DataAccess
 			comm.SafeExecuteNonQuery();
 		}
 
-		public void Warn(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		public bool Warn(int id, int moderatorId, ModeratorReason reason, string reasonText)
 		{
-			throw new NotImplementedException();
+			var comm = GetCommand("SPUsersWarn");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+			comm.AddParameter<int>(this.Factory, "ModeratorUserId", id);
+			comm.AddParameter<ModeratorReason>(this.Factory, "ModeratorReason", reason);
+			comm.AddParameter<string>(this.Factory, "ModeratorReasonFull", reasonText);
+
+			return comm.SafeExecuteNonQuery() > 0;
 		}
 	}
 }

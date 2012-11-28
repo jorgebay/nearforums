@@ -32,7 +32,8 @@ namespace NearForums.Services
 		/// <param name="moderatorId">UserId of the moderator</param>
 		/// <param name="reason"></param>
 		/// <param name="reasonText"></param>
-		void Ban(int id, int moderatorId, ModeratorReason reason, string reasonText);
+		/// <returns>True if the user was banned</returns>
+		bool Ban(int id, int moderatorId, ModeratorReason reason, string reasonText);
 		/// <summary>
 		/// Removes the user from the repository
 		/// </summary>
@@ -87,7 +88,7 @@ namespace NearForums.Services
 		/// <param name="reason"></param>
 		/// <param name="reasonText"></param>
 		/// <param name="endDate">End date of the suspension</param>
-		void Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate);
+		bool Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate);
 		/// <summary>
 		/// Validates username and password
 		/// </summary>
@@ -100,6 +101,6 @@ namespace NearForums.Services
 		/// <param name="moderatorId">UserId of the moderator</param>
 		/// <param name="reason"></param>
 		/// <param name="reasonText"></param>
-		void Warn(int id, int moderatorId, ModeratorReason reason, string reasonText);
+		bool Warn(int id, int moderatorId, ModeratorReason reason, string reasonText);
 	}
 }

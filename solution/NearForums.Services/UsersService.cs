@@ -32,21 +32,6 @@ namespace NearForums.Services
 			_notificationService = notificationService;
 		}
 
-		public User GetByProviderId(AuthenticationProvider provider, string providerId)
-		{
-			return _dataAccess.GetByProviderId(provider, providerId);
-		}
-
-		public User GetByPasswordResetGuid(AuthenticationProvider provider, string PasswordResetGuid)
-		{
-			return _dataAccess.GetByPasswordResetGuid(provider, PasswordResetGuid);
-		}
-
-		public User GetTestUser()
-		{
-			return _dataAccess.GetTestUser();
-		}
-
 		/// <exception cref="ValidationException">
 		/// Throws ValidationException when user fields are invalid
 		/// </exception>
@@ -103,9 +88,10 @@ namespace NearForums.Services
 		/// <summary>
 		/// Marks a user as banned
 		/// </summary>
-		public void Ban(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		public bool Ban(int id, int moderatorId, ModeratorReason reason, string reasonText)
 		{
-			_dataAccess.Ban(id, moderatorId, reason, reasonText);
+			//TODO: Check if the moderator has a role greater or equal than the 
+			return _dataAccess.Ban(id, moderatorId, reason, reasonText);
 		}
 
 		public void Delete(int id)
@@ -126,6 +112,11 @@ namespace NearForums.Services
 			_dataAccess.Edit(user);
 		}
 
+		public User Get(int userId)
+		{
+			return _dataAccess.Get(userId);
+		}
+
 		public List<User> GetAll()
 		{
 			return _dataAccess.GetAll();
@@ -136,9 +127,14 @@ namespace NearForums.Services
 			return _dataAccess.GetByName(userName);
 		}
 
-		public User Get(int userId)
+		public User GetByPasswordResetGuid(AuthenticationProvider provider, string PasswordResetGuid)
 		{
-			return _dataAccess.Get(userId);
+			return _dataAccess.GetByPasswordResetGuid(provider, PasswordResetGuid);
+		}
+
+		public User GetByProviderId(AuthenticationProvider provider, string providerId)
+		{
+			return _dataAccess.GetByProviderId(provider, providerId);
 		}
 
 		public string GetGravatarImageUrl(User user)
@@ -165,6 +161,11 @@ namespace NearForums.Services
 		public Dictionary<UserRole, string> GetRoles()
 		{
 			return _dataAccess.GetRoles();
+		}
+
+		public User GetTestUser()
+		{
+			return _dataAccess.GetTestUser();
 		}
 
 		/// <summary>
@@ -199,9 +200,9 @@ namespace NearForums.Services
 			_notificationService.SendResetPassword(user, linkUrl);
 		}
 
-		public void Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate)
+		public bool Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
-			_dataAccess.Suspend(id, moderatorId, reason, reasonText, endDate);
+			return _dataAccess.Suspend(id, moderatorId, reason, reasonText, endDate);
 		}
 
 		public void ValidateUserAndPassword(string userName, string password)
@@ -221,9 +222,9 @@ namespace NearForums.Services
 			}
 		}
 
-		public void Warn(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		public bool Warn(int id, int moderatorId, ModeratorReason reason, string reasonText)
 		{
-			_dataAccess.Warn(id, moderatorId, reason, reasonText);
+			return _dataAccess.Warn(id, moderatorId, reason, reasonText);
 		}
 	}
 }

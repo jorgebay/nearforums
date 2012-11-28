@@ -86,6 +86,12 @@ namespace NearForums.DataAccess
 					parameterValue = ((Guid)(object)value).ToString("N");
 					break;
 				default:
+					if (type.IsEnum)
+					{
+						dbType = DbType.String;
+						parameterValue = Convert.ToInt32(value);
+						break;
+					}
 					throw new System.Data.DataException("Type not supported for implicit DbType mapping.");
 			}
 			return AddParameter(comm, factory, parameterName, dbType, parameterValue);
