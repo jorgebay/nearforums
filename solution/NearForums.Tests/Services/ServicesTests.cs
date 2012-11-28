@@ -132,6 +132,7 @@ namespace NearForums.Tests
 			Assert.IsFalse(subscribedTopics.Any(x => x.Id == topic.Id));
 		}
 
+		//Gets an admin user
 		public static User GetTestUser()
 		{
 			var userService = TestHelper.Resolve<IUsersService>();

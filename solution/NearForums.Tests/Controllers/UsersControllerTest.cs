@@ -106,6 +106,25 @@ namespace NearForums.Tests.Controllers
 		}
 
 		[TestMethod]
+		public void User_Manage_Access_Test()
+		{
+			var controller = TestHelper.Resolve<UsersController>();
+			var context = new FakeControllerContext(controller);
+			var sessionWrapper = new SessionWrapper(context.HttpContext);
+			sessionWrapper.User = new UserState(new User() { Role = UserRole.Member }, AuthenticationProvider.CustomDb);
+			controller.ControllerContext = context;
+			try
+			{
+				controller.Ban(0, ModeratorReason.Spamming, null);
+				Assert.Fail("The user banning is not a moderator or admin");
+			}
+			catch (System.Security.SecurityException)
+			{
+				
+			}
+		}
+
+		[TestMethod]
 		public void User_Suspend_Test()
 		{
 			var controller = TestHelper.Resolve<UsersController>();

@@ -88,9 +88,9 @@ namespace NearForums.Services
 		/// <summary>
 		/// Marks a user as banned
 		/// </summary>
-		public bool Ban(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		public bool Ban(int id, int moderatorId, UserRole moderatorRole, ModeratorReason reason, string reasonText)
 		{
-			//TODO: Check if the moderator has a role greater or equal than the 
+			CheckCanManage(id, moderatorId, moderatorRole);
 			return _dataAccess.Ban(id, moderatorId, reason, reasonText);
 		}
 
@@ -200,8 +200,9 @@ namespace NearForums.Services
 			_notificationService.SendResetPassword(user, linkUrl);
 		}
 
-		public bool Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate)
+		public bool Suspend(int id, int moderatorId, UserRole moderatorRole, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
+			CheckCanManage(id, moderatorId, moderatorRole);
 			return _dataAccess.Suspend(id, moderatorId, reason, reasonText, endDate);
 		}
 
@@ -222,9 +223,37 @@ namespace NearForums.Services
 			}
 		}
 
-		public bool Warn(int id, int moderatorId, ModeratorReason reason, string reasonText)
+		public bool Warn(int id, int moderatorId, UserRole moderatorRole, ModeratorReason reason, string reasonText)
 		{
+			CheckCanManage(id, moderatorId, moderatorRole);
 			return _dataAccess.Warn(id, moderatorId, reason, reasonText);
+		}
+
+		/// <summary>
+		/// Determines if a user (moderator) can ban/suspend/warn another user
+		/// </summary>
+		/// <param name="moderatorId">id of the user moderating</param>
+		/// <param name="userId">id of the user to be banned/suspended/warned</param>
+		/// <exception cref="System.Security.SecurityException">Throws a security exception when user (moderator) can not manage the user</exception>
+		private void CheckCanManage(int userId, int moderatorId, UserRole moderatorRole)
+		{
+			if (moderatorRole == UserRole.Admin)
+			{
+				return;
+			}
+			if (moderatorRole < UserRole.Moderator)
+			{
+				throw new System.Security.SecurityException("User '" + moderatorId + "' can not manage / moderate other users");
+			}
+			var user = _dataAccess.Get(userId);
+			if (user == null)
+			{
+				throw new ArgumentException("user with id " + userId + " does not exist");
+			}
+			if (moderatorRole < user.Role)
+			{
+				throw new System.Security.SecurityException("User '" + moderatorId + "' can not manage / moderate user '" + userId + "'");
+			}
 		}
 	}
 }

@@ -6,6 +6,9 @@ using NearForums;
 
 namespace NearForums.DataAccess
 {
+	/// <summary>
+	/// Represents the repository for the user
+	/// </summary>
 	public interface IUsersDataAccess
 	{
 		void AddEmail(int id, string email, EmailPolicy policy);

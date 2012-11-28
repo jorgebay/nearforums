@@ -40,7 +40,7 @@ namespace NearForums.Web.Controllers
 		public ActionResult Ban(int id, ModeratorReason reason, string reasonText)
 		{
 			//Include the result of banning in the viewdata for tracking (testing)
-			ViewData.Model = _service.Ban(id, User.Id, reason, reasonText);
+			ViewData.Model = _service.Ban(id, User.Id, User.Role, reason, reasonText);
 			return Json(null);
 		}
 
@@ -188,7 +188,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Suspend(int id, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
-			ViewData.Model = _service.Suspend(id, User.Id, reason, reasonText, endDate);
+			ViewData.Model = _service.Suspend(id, User.Id, User.Role, reason, reasonText, endDate);
 			return Json(null);
 		}
 
@@ -201,7 +201,7 @@ namespace NearForums.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Warn(int id, ModeratorReason reason, string reasonText)
 		{
-			ViewData.Model = _service.Warn(id, User.Id, reason, reasonText);
+			ViewData.Model = _service.Warn(id, User.Id, User.Role, reason, reasonText);
 			return Json(null);
 		}
 	}
