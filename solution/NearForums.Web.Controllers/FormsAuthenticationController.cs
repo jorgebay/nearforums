@@ -18,7 +18,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IUsersService _service;
 
-		public FormsAuthenticationController(IUsersService service) : base(service)
+		public FormsAuthenticationController(IUsersService service)
 		{
 			_service = service;
 		}

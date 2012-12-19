@@ -18,7 +18,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IPageContentsService _service;
 
-		public PageContentsController(IPageContentsService serv, IUsersService userService) : base(userService)
+		public PageContentsController(IPageContentsService serv)
 		{
 			_service = serv;
 		}

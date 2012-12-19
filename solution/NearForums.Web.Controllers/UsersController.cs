@@ -24,7 +24,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ITopicsService _topicService;
 
-		public UsersController(IUsersService service, ITopicsService topicService) : base(service)
+		public UsersController(IUsersService service, ITopicsService topicService)
 		{
 			_service = service;
 			_topicService = topicService;

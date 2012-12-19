@@ -8,8 +8,7 @@ namespace NearForums.Web.Controllers
 {
 	public class TagsController : BaseController
 	{
-		public TagsController(IUsersService service)
-			: base(service)
+		public TagsController()
 		{
 
 		}

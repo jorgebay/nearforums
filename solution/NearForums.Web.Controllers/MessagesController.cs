@@ -31,7 +31,6 @@ namespace NearForums.Web.Controllers
 		private readonly IUsersService _userService;
 
 		public MessagesController(IMessagesService service, ITopicsService topicService, IUsersService userService, ITopicsSubscriptionsService topicSubscriptionService)
-			: base(userService)
 		{
 			_service = service;
 			_topicService = topicService;

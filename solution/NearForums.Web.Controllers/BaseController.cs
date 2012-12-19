@@ -21,14 +21,9 @@ namespace NearForums.Web.Controllers
 	[ContextAuthentication]
 	public class BaseController : Controller
 	{
-		/// <summary>
-		/// User service
-		/// </summary>
-		private IUsersService _service;
-
-		public BaseController(IUsersService service)
+		public BaseController()
 		{
-			_service = service;
+
 		}
 
 		#region Props

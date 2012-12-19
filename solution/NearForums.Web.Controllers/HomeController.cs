@@ -11,8 +11,7 @@ namespace NearForums.Web.Controllers
 {
 	public class HomeController : BaseController
 	{
-		public HomeController(IUsersService service)
-			: base(service)
+		public HomeController()
 		{
 
 		}

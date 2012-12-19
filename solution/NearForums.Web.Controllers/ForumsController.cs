@@ -30,7 +30,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ITagsService _tagService;
 
-		public ForumsController(IForumsService service, IUsersService userService, ITopicsService topicService, ITagsService tagService) : base(userService)
+		public ForumsController(IForumsService service, IUsersService userService, ITopicsService topicService, ITagsService tagService)
 		{
 			_service = service;
 			_userService = userService;

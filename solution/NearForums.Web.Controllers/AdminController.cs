@@ -8,8 +8,7 @@ namespace NearForums.Web.Controllers
 {
 	public class AdminController : BaseController
 	{
-		public AdminController(IUsersService service)
-			: base(service)
+		public AdminController()
 		{
 
 		}

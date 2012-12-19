@@ -29,7 +29,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly IUsersService _userService;
 
-		public TopicsSubscriptionsController(ITopicsSubscriptionsService service, ITopicsService topicService, IUsersService userService) : base(userService)
+		public TopicsSubscriptionsController(ITopicsSubscriptionsService service, ITopicsService topicService, IUsersService userService)
 		{
 			_service = service;
 			_topicService = topicService;

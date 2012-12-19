@@ -19,8 +19,7 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		private readonly ISearchIndexBatchService _batchService;
 
-		public SearchEngineController(ISearchService searchService, ISearchIndexBatchService batchService, IUsersService userService)
-			: base(userService)
+		public SearchEngineController(ISearchService searchService, ISearchIndexBatchService batchService)
 		{
 			_searchService = searchService;
 			_batchService = batchService;

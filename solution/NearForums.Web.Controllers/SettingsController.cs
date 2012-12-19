@@ -19,7 +19,6 @@ namespace NearForums.Web.Controllers
 		private readonly IUsersService _userService;
 
 		public SettingsController(IUsersService service)
-			: base(service)
 		{
 			_userService = service;
 		}
