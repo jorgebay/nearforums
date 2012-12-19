@@ -82,6 +82,7 @@
     <Compile Include="Filters\AddVisitAttribute.cs" />
     <Compile Include="Filters\BaseActionFilterAttribute.cs" />
     <Compile Include="Filters\CaptchaAttribute.cs" />
+    <Compile Include="Filters\ContextAuthenticationAttribute.cs" />
     <Compile Include="Filters\TemplatingAttribute.cs" />
     <Compile Include="Filters\ValidateReadAccessAttribute.cs" />
     <Compile Include="Filters\HandleErrorLogAttribute.cs" />

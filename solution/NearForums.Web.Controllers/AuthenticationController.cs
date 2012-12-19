@@ -172,14 +172,13 @@ namespace NearForums.Web.Controllers
 			Identifier id;
 			if (Identifier.TryParse(openidIdentifier, out id))
 			{
-				#region Build openid return urls
+				//Build openid return urls
 				var returnAbsoluteUrl = new Uri(Request.Url, Url.Action("OpenIdFinishLogin", new
 				{
 					returnUrl = returnUrl
 				}));
 
 				var realmUrl = new Uri(Request.Url, "/");
-				#endregion
 
 				OpenIdRelyingParty openid = new OpenIdRelyingParty();
 				var authenticationRequest = openid.CreateRequest(id, realmUrl, returnAbsoluteUrl);

@@ -18,6 +18,7 @@ namespace NearForums.Web.Controllers
 {
 	[HandleErrorLog(View = "Errors/500")]
 	[Templating]
+	[ContextAuthentication]
 	public class BaseController : Controller
 	{
 		/// <summary>
@@ -180,23 +181,6 @@ namespace NearForums.Web.Controllers
 			}
 		} 
 		#endregion
-		#endregion
-
-		#region Init
-		protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-		{
-			base.Initialize(requestContext);
-
-			this.Init();
-		}
-
-		protected virtual void Init()
-		{
-			if (Session.User == null)
-			{
-				SecurityHelper.TryLoginFromProviders(HttpContext, Session, Cache, MembershipProvider, _service);
-			}
-		}
 		#endregion
 
 		#region Model state errors
