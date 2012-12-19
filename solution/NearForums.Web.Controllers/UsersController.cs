@@ -189,11 +189,11 @@ namespace NearForums.Web.Controllers
 		public ActionResult Suspend(int id, ModeratorReason reason, string reasonText, DateTime endDate)
 		{
 			ViewData.Model = _service.Suspend(id, User.Id, User.Role, reason, reasonText, endDate);
-			return Json(null);
+			return Json(ViewData.Model);
 		}
 
 		/// <summary>
-		/// Warns
+		/// Warns the user of bad behaviour
 		/// </summary>
 		/// <returns>Empty JSON</returns>
 		[RequireAuthorization(UserRole.Moderator)]
@@ -202,7 +202,22 @@ namespace NearForums.Web.Controllers
 		public ActionResult Warn(int id, ModeratorReason reason, string reasonText)
 		{
 			ViewData.Model = _service.Warn(id, User.Id, User.Role, reason, reasonText);
-			return Json(null);
+			return Json(ViewData.Model);
+		}
+
+		/// <summary>
+		/// Confirms that the user read the warning and dismisses the user message.
+		/// </summary>
+		/// <returns>Empty JSON</returns>
+		[RequireAuthorization]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult WarnDismiss()
+		{
+			ViewData.Model = _service.WarnDismiss(User.Id);
+			//TODO: Mark in session state that the warning was dismissed.
+			throw new NotImplementedException();
+			//return Json(ViewData.Model);
 		}
 	}
 }

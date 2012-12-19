@@ -105,5 +105,12 @@ namespace NearForums.Services
 		/// <param name="reason"></param>
 		/// <param name="reasonText"></param>
 		bool Warn(int id, int moderatorId, UserRole moderatorRole, ModeratorReason reason, string reasonText);
+		/// <summary>
+		/// Dismisses the warning from a moderator. 
+		/// Confirmimg that the user read the message.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		bool WarnDismiss(int id);
 	}
 }

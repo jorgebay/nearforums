@@ -305,5 +305,13 @@ namespace NearForums.DataAccess
 
 			return comm.SafeExecuteNonQuery() > 0;
 		}
+
+		public bool WarnDismiss(int id)
+		{
+			var comm = GetCommand("SPUsersWarnDismiss");
+			comm.AddParameter<int>(this.Factory, "UserId", id);
+
+			return comm.SafeExecuteNonQuery() > 0;
+		}
 	}
 }

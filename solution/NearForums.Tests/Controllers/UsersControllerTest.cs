@@ -145,7 +145,23 @@ namespace NearForums.Tests.Controllers
 			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
 			controller.Warn(0, ModeratorReason.Spamming, null);
+
+			//False if no record was affected.
 			Assert.IsFalse((bool)controller.ViewData.Model);
+		}
+
+		[TestMethod]
+		public void User_Warn_Dismiss_Test()
+		{
+			var controller = TestHelper.Resolve<UsersController>();
+			var context = new FakeControllerContext(controller);
+			var sessionWrapper = new SessionWrapper(context.HttpContext);
+			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
+			controller.ControllerContext = context;
+			controller.WarnDismiss();
+
+			//True if a record was affected.
+			Assert.IsTrue((bool)controller.ViewData.Model);
 		}
 	}
 }

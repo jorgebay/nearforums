@@ -29,5 +29,11 @@ namespace NearForums.DataAccess
 		bool Suspend(int id, int moderatorId, ModeratorReason reason, string reasonText, DateTime endDate);
 		void UpdatePasswordResetGuid(int id, string Guid, DateTime expireDate);
 		bool Warn(int id, int moderatorId, ModeratorReason reason, string reasonText);
+		/// <summary>
+		/// Stores on the repository that the warning was read.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		bool WarnDismiss(int id);
 	}
 }
