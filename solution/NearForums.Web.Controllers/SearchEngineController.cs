@@ -37,7 +37,7 @@ namespace NearForums.Web.Controllers
 		{
 			var results = _searchService.Search(q, page ?? 0);
 			ViewBag.Page = page ?? 0;
-			ViewBag.Q = q;
+			ViewBag.Q = q ?? "";
 			return View(results);
 		}
 
