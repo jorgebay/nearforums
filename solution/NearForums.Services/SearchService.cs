@@ -37,7 +37,7 @@ namespace NearForums.Services
 			get
 			{
 				//TODO: Make sure that the directory exist / create if not
-				return FSDirectory.Open(new DirectoryInfo(Config.IndexPath));
+				return FSDirectory.Open(new DirectoryInfo(Config.IndexPath), new SimpleFSLockFactory());
 			}
 		}
 

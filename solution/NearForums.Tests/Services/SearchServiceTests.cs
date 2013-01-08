@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NearForums.Services;
+using System.IO;
+using Lucene.Net.Store;
+using Lucene.Net.Index;
+using Lucene.Net.Analysis.Standard;
+using NearForums.Configuration;
+using NearForums.Services.Helpers;
 
 namespace NearForums.Tests.Services
 {
@@ -270,6 +276,32 @@ namespace NearForums.Tests.Services
 		{
 			var indexService = TestHelper.Resolve<ISearchService>();
 			Assert.IsTrue(indexService.DocumentCount >= 0);
+		}
+
+		[TestMethod]
+		public void SearchIndex_LockTest()
+		{
+			var config = SiteConfiguration.Current.Search;
+			var directory = FSDirectory.Open(new DirectoryInfo(config.IndexPath), new Lucene.Net.Store.SimpleFSLockFactory());
+			//Create a new index and a writer to that index.
+			var writer = new IndexWriter(directory, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), true, IndexWriter.MaxFieldLength.UNLIMITED);
+			var doc = new Topic(99999) { Title = "Whatever", Tags = new TagList(), Description = "", Forum = new Forum() { Name = "safsd", ShortName = "snafyusfa" } }.ToDocument(config);
+			writer.AddDocument(doc);
+			writer.Commit();
+
+			Assert.IsTrue(IndexWriter.IsLocked(directory));
+
+			try
+			{
+				writer = new IndexWriter(directory, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), IndexWriter.MaxFieldLength.UNLIMITED);
+				Assert.Fail("It must not allow to create a new index writer on the same directory");
+			}
+			catch
+			{
+
+			}
+			IndexWriter.Unlock(directory);
+			writer = new IndexWriter(directory, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), IndexWriter.MaxFieldLength.UNLIMITED);
 		}
 
 		/*
