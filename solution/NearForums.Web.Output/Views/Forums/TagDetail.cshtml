@@ -12,5 +12,5 @@
 	PagedList<Topic> topics = new PagedList<Topic>(Model.Topics, this.PageIndex, Config.UI.TopicsPerPage);
 }
 	@Html.Partial("ForumTopicList", topics)
-	@Html.Pager(Config.UI.TopicsPerPage, this.PageIndex, topics.Count, S("Previous"), S("Next"))
+	@Html.Pager(topics, S("Previous"), S("Next"))
 </div>
