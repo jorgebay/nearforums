@@ -241,9 +241,14 @@ namespace NearForums.DataAccess
 			return user;
 		}
 
+		/// <summary>
+		/// Converts a user data row into a app user entity
+		/// </summary>
+		/// <param name="dr"></param>
+		/// <returns></returns>
 		protected virtual User ParseUserLoginInfo(DataRow dr)
 		{
-			User user = new User();
+			var user = new User();
 			user.Id = dr.Get<int>("UserId");
 			user.UserName = dr.GetString("UserName");
 			user.Role = dr.Get<UserRole>("UserGroupId");
@@ -252,9 +257,13 @@ namespace NearForums.DataAccess
 			user.ProviderLastCall = dr.GetDate("UserProviderLastCall");
 			user.Email = dr.GetString("UserEmail");
 			decimal offSet = dr.Get<decimal>("UserTimeZone");
-			//user.PasswordResetGuid = dr.GetString("PasswordResetGuid");
-			//user.PasswordResetGuidExpireDate = dr.GetDate("PasswordResetGuidExpireDate");
 			user.TimeZone = new TimeSpan((long)(offSet * (decimal)TimeSpan.TicksPerHour));
+			if (dr.Table.Columns.Contains("WarningStart"))
+			{
+				user.Warned = (!dr.IsNull("WarningStart")) && dr.GetNullableStruct<bool>("WarningRead") != true;
+				user.Suspended = (!dr.IsNull("SuspendedStart")) && (dr.IsNull("SuspendedEnd") || dr.GetNullableStruct<DateTime>("SuspendedEnd") >= DateTime.UtcNow);
+				user.Banned = !dr.IsNull("BannedStart");
+			}
 
 			return user;
 		}

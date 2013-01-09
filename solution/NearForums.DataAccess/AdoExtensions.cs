@@ -152,6 +152,10 @@ namespace NearForums.DataAccess
 			{
 				return (T?)null;
 			}
+			if (typeof(T) == typeof(DateTime))
+			{
+				return (T) Convert.ChangeType(dr.GetDate(columnName), typeof(T));
+			}
 			return (T) value;
 		}
 
