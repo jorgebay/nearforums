@@ -7,5 +7,6 @@
 	$("#messages").attr("data-role", "listview");
 	$("ul.items div.topicCount, ul.items div.views, ul.items div.replies").addClass("ui-li-count");
 	$("ul.items div.separator").hide();
+	$(".facebook a, .twitter a").attr("rel", "external");
 });
 $("#messages li").live("tap", function () { $(this).toggleClass("over"); });
