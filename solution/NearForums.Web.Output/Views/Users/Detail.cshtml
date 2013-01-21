@@ -10,7 +10,7 @@
 <p>
 	<strong>@T("Member for:")</strong> @Html.Partial("SinceDate", Model.RegistrationDate)
 </p>
-@if (Model.ExternalProfileUrl != null)
+@if (!string.IsNullOrEmpty(Model.ExternalProfileUrl))
 {
 <p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()):</strong> @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
 }
