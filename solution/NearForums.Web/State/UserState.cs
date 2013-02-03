@@ -13,12 +13,6 @@ namespace NearForums.Web.State
 	public class UserState
 	{
 		public UserState(User user, AuthenticationProvider provider)
-			: this(user, provider, true, null)
-		{
-
-		}
-
-		public UserState(User user, AuthenticationProvider provider, bool allowChangeEmail, string editAccountUrl)
 		{
 			Id = user.Id;
 			UserName = user.UserName;
@@ -27,30 +21,50 @@ namespace NearForums.Web.State
 			TimeZone = user.TimeZone;
 			ExternalProfileUrl = user.ExternalProfileUrl;
 			Email = user.Email;
+			Warned = user.Warned;
 			ProviderInfo = new ProviderInfo()
 			{
 				Provider = provider,
-				AllowChangeEmail = allowChangeEmail,
-				EditAccountUrl = editAccountUrl
+				AllowChangeEmail = true
 			};
 		}
 
-		public int Id
+		public string Email
 		{
 			get;
 			set;
 		}
 
-		public string UserName
+		public string ExternalProfileUrl
 		{
 			get;
 			set;
 		}
 
 		/// <summary>
-		/// The hierarchical role of the user
+		/// Private GUID, not send over the wire
 		/// </summary>
-		public UserRole Role
+		public Guid Guid
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Determines if the user has the priviledges of a moderator (is moderator or admin)
+		/// </summary>
+		public bool HasModeratorPriviledges
+		{
+			get
+			{
+				return Role >= UserRole.Moderator;
+			}
+		}
+
+		/// <summary>
+		/// public identifier of the user
+		/// </summary>
+		public int Id
 		{
 			get;
 			set;
@@ -68,17 +82,18 @@ namespace NearForums.Web.State
 		}
 
 		/// <summary>
-		/// Determines if the user has the priviledges of a moderator (is moderator or admin)
+		/// Gets the info from the authentication provider that authenticated this account.
 		/// </summary>
-		public bool HasModeratorPriviledges
+		public ProviderInfo ProviderInfo
 		{
-			get
-			{
-				return Role >= UserRole.Moderator;
-			}
+			get;
+			set;
 		}
 
-		public string Email
+		/// <summary>
+		/// The hierarchical role of the user
+		/// </summary>
+		public UserRole Role
 		{
 			get;
 			set;
@@ -90,25 +105,22 @@ namespace NearForums.Web.State
 			set;
 		}
 
-		public Guid Guid
-		{
-			get;
-			set;
-		}
-
-		public string ExternalProfileUrl
+		/// <summary>
+		/// public user name
+		/// </summary>
+		public string UserName
 		{
 			get;
 			set;
 		}
 
 		/// <summary>
-		/// Gets the info from the authentication provider that authenticated this account.
+		/// Determines if the user has been warned by a moderator
 		/// </summary>
-		public ProviderInfo ProviderInfo
+		public bool Warned
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>

@@ -59,7 +59,7 @@ namespace NearForums.Web.Controllers.Helpers
 					user = service.Add(user, AuthenticationProvider.Facebook, fakeFacebookUserId.ToString());
 				}
 				//Log in
-				session.User = new UserState(user, AuthenticationProvider.Facebook);
+				session.SetUser(user, AuthenticationProvider.Facebook);
 			}
 
 			return SiteConfiguration.Current.AuthenticationProviders.FakeProvider;
@@ -152,8 +152,7 @@ namespace NearForums.Web.Controllers.Helpers
 						user = service.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
 					}
 
-
-					session.User = new UserState(user, AuthenticationProvider.Twitter);
+					session.SetUser(user, AuthenticationProvider.Twitter);
 					logged = true;
 					//Redirect to the same page without oauth params.
 					//Response.Redirect(Request.Url.StripQueryArgumentsWithPrefix("oauth_").ToString());
@@ -193,7 +192,7 @@ namespace NearForums.Web.Controllers.Helpers
 				user = service.Add(user, AuthenticationProvider.OpenId, externalId);
 			}
 
-			session.User = new UserState(user, AuthenticationProvider.OpenId);
+			session.SetUser(user, AuthenticationProvider.OpenId);
 
 			return true;
 		}
@@ -236,7 +235,7 @@ namespace NearForums.Web.Controllers.Helpers
 					siteUser.Email = membershipUser.Email;
 					siteUser = service.Add(siteUser, AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
 				}
-				session.User = new UserState(siteUser, AuthenticationProvider.Membership);
+				session.SetUser(siteUser, AuthenticationProvider.Membership);
 				logged = true;
 			}
 

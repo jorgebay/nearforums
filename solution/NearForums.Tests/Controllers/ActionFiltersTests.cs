@@ -160,7 +160,7 @@ namespace NearForums.Tests.Controllers
 			attr.Config.SpamPrevention.FloodControl.IgnoreForRole = UserRole.Moderator; //ignore for moderator or admin
 
 			var session = new SessionWrapper(httpContext);
-			session.User = new UserState(new User() { Role = UserRole.Moderator }, AuthenticationProvider.CustomDb);
+			session.SetUser(new User() { Role = UserRole.Moderator }, AuthenticationProvider.CustomDb);
 
 			//first execution
 			attr.OnActionExecuting(executingFilterContext);

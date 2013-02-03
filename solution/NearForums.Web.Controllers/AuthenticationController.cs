@@ -59,7 +59,7 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult Logout(string returnUrl)
 		{
-			Session.User = null;
+			Session.ClearUser();
 			FormsAuthentication.SignOut();
 
 			return Redirect(returnUrl);
@@ -113,42 +113,47 @@ namespace NearForums.Web.Controllers
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
-			FacebookOAuthResult oauthResult;
-			if (state == Session.SessionToken && FacebookOAuthResult.TryParse(Request.Url, out oauthResult))
+			FacebookOAuthResult oauthResult = null;
+			if (!(state == Session.SessionToken && FacebookOAuthResult.TryParse(Request.Url, out oauthResult)))
 			{
-				if (oauthResult.IsSuccess)
-				{
-					var oAuthClient = new FacebookOAuthClient();
-					oAuthClient.AppId = this.Config.AuthenticationProviders.Facebook.ApiKey;
-					oAuthClient.AppSecret = this.Config.AuthenticationProviders.Facebook.SecretKey;
-					oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
+				return ResultHelper.ForbiddenResult(this);
+			}
+			if (!oauthResult.IsSuccess)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			var oAuthClient = new FacebookOAuthClient();
+			oAuthClient.AppId = this.Config.AuthenticationProviders.Facebook.ApiKey;
+			oAuthClient.AppSecret = this.Config.AuthenticationProviders.Facebook.SecretKey;
+			oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
 					
-					//Could throw an OAuth exception if validation fails.
-					dynamic tokenResult = oAuthClient.ExchangeCodeForAccessToken(code);
-					string accessToken = tokenResult.access_token;
+			//Could throw an OAuth exception if validation fails.
+			dynamic tokenResult = oAuthClient.ExchangeCodeForAccessToken(code);
+			string accessToken = tokenResult.access_token;
 
-					DateTime expiresOn = DateTime.MaxValue;
-					if (tokenResult.ContainsKey("expires"))
-					{
-						expiresOn = DateTimeConvertor.FromUnixTime(tokenResult.expires);
-					}
-
-					FacebookClient fbClient = new FacebookClient(accessToken);
-					dynamic facebookUser = fbClient.Get("me?fields=id,name,first_name,last_name,about,link,birthday,timezone");
-
-					User user = _service.GetByProviderId(AuthenticationProvider.Facebook, facebookUser.id);
-					if (user == null)
-					{
-						//Its a new user for the application
-						user = SecurityHelper.CreateUser(facebookUser);
-						user = _service.Add(user, AuthenticationProvider.Facebook, facebookUser.id);
-					}
-
-					//Log the user in
-					Session.User = new UserState(user, AuthenticationProvider.Facebook);
-				}
+			DateTime expiresOn = DateTime.MaxValue;
+			if (tokenResult.ContainsKey("expires"))
+			{
+				expiresOn = DateTimeConvertor.FromUnixTime(tokenResult.expires);
 			}
 
+			FacebookClient fbClient = new FacebookClient(accessToken);
+			dynamic facebookUser = fbClient.Get("me?fields=id,name,first_name,last_name,about,link,birthday,timezone");
+
+			User user = _service.GetByProviderId(AuthenticationProvider.Facebook, facebookUser.id);
+			if (user == null)
+			{
+				//Its a new user for the application
+				user = SecurityHelper.CreateUser(facebookUser);
+				user = _service.Add(user, AuthenticationProvider.Facebook, facebookUser.id);
+			}
+
+			//Log the user in
+			Session.SetUser(user, AuthenticationProvider.Facebook);
+			if (user.Banned || user.Suspended)
+			{
+				return RedirectToAction("Detail", "Users", new {id=user.Id});
+			}
 			return Redirect(Session.NextUrl);
 		}
 		#endregion
@@ -245,7 +250,14 @@ namespace NearForums.Web.Controllers
 				var user = _service.AuthenticateWithCustomProvider(userName, password);
 				if (user != null)
 				{
-					Session.User = new UserState(user, AuthenticationProvider.CustomDb, Config.AuthenticationProviders.CustomDb.AllowChangeEmail, Config.AuthenticationProviders.CustomDb.AccountEditUrl);
+					var userState = Session.SetUser(user, AuthenticationProvider.CustomDb);
+					if (userState == null)
+					{
+						return RedirectToAction("Detail", "Users", new { id=user.Id});
+					}
+					userState.ProviderInfo.AllowChangeEmail = Config.AuthenticationProviders.CustomDb.AllowChangeEmail;
+					userState.ProviderInfo.EditAccountUrl = Config.AuthenticationProviders.CustomDb.AccountEditUrl;
+
 					return Redirect(returnUrl);
 				}
 			}

@@ -99,7 +99,7 @@ namespace NearForums.Tests.Controllers
 			var controller = TestHelper.Resolve<UsersController>();
 			var context = new FakeControllerContext(controller);
 			var sessionWrapper = new SessionWrapper(context.HttpContext);
-			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
+			sessionWrapper.SetUser(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
 			controller.Ban(0, ModeratorReason.Spamming, null);
 			Assert.IsFalse((bool)controller.ViewData.Model);
@@ -111,7 +111,7 @@ namespace NearForums.Tests.Controllers
 			var controller = TestHelper.Resolve<UsersController>();
 			var context = new FakeControllerContext(controller);
 			var sessionWrapper = new SessionWrapper(context.HttpContext);
-			sessionWrapper.User = new UserState(new User() { Role = UserRole.Member }, AuthenticationProvider.CustomDb);
+			sessionWrapper.SetUser(new User() { Role = UserRole.Member }, AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
 			try
 			{
@@ -130,7 +130,7 @@ namespace NearForums.Tests.Controllers
 			var controller = TestHelper.Resolve<UsersController>();
 			var context = new FakeControllerContext(controller);
 			var sessionWrapper = new SessionWrapper(context.HttpContext);
-			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
+			sessionWrapper.SetUser(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
 			controller.Suspend(0, ModeratorReason.Spamming, null, DateTime.Now.AddMonths(1));
 			Assert.IsFalse((bool)controller.ViewData.Model);
@@ -142,7 +142,7 @@ namespace NearForums.Tests.Controllers
 			var controller = TestHelper.Resolve<UsersController>();
 			var context = new FakeControllerContext(controller);
 			var sessionWrapper = new SessionWrapper(context.HttpContext);
-			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
+			sessionWrapper.SetUser(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
 			controller.Warn(0, ModeratorReason.Spamming, null);
 
@@ -156,7 +156,7 @@ namespace NearForums.Tests.Controllers
 			var controller = TestHelper.Resolve<UsersController>();
 			var context = new FakeControllerContext(controller);
 			var sessionWrapper = new SessionWrapper(context.HttpContext);
-			sessionWrapper.User = new UserState(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
+			sessionWrapper.SetUser(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
 			controller.WarnDismiss();
 

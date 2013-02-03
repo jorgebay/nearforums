@@ -94,10 +94,33 @@ namespace NearForums.Web.State
 				//return new UserState(1);
 				return GetItem<UserState>("User");
 			}
-			set
+		}
+
+		/// <summary>
+		/// Sets the user related data in the current state.
+		/// If the user is banned or suspended, session.user will be null.
+		/// </summary>
+		/// <param name="user"></param>
+		/// <param name="provider"></param>
+		/// <returns>The user stored in state (could be null)</returns>
+		public UserState SetUser(User user, AuthenticationProvider provider)
+		{
+			if (user.Banned || user.Suspended)
 			{
-				SetItem<UserState>("User", value);
+				SetItem<UserState>("User", null);
+				return null;
 			}
+			var userState = new UserState(user, provider);
+			SetItem<UserState>("User", userState);
+			return userState;
+		}
+
+		/// <summary>
+		/// Removes user information from session
+		/// </summary>
+		public void ClearUser()
+		{
+			SetItem<UserState>("User", null);
 		}
 
 		/// <summary>
