@@ -1,0 +1,13 @@
+﻿@{
+	ViewBag.Title = T("Sign in with your Twitter account");
+}
+<ul class="path floatContainer">
+    <li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+</ul>
+<div class="fail">
+	<h1>@ViewBag.Title</h1>
+	<p>@T("There was a problem while trying to sign in using twitter, please retry.")</p>
+	<div>
+		<input type="button" class="button" value="@T("Retry")" onclick="location.href='@Url.Action("TwitterStartLogin", "Authentication", new { returnUrl = Session.NextUrl })'" />
+	</div>
+</div>

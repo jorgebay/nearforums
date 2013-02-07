@@ -11,8 +11,8 @@ namespace NearForums
 	public enum ModeratorReason
 	{
 		Flamming = 0,
-		Spamming,
-		Harassing,
+		Spamming = 1,
+		Harassing = 2,
 		Other = 100
 	}
 }

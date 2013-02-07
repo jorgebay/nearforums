@@ -26,15 +26,16 @@ namespace NearForums.Web.Controllers
 		/// User service
 		/// </summary>
 		private readonly IUsersService _service;
-
 		/// <summary>
 		/// App Logger
 		/// </summary>
-		public ILoggerService Logger { get; set; }
+		public readonly ILoggerService _logger;
 
-		public AuthenticationController(IUsersService service)
+
+		public AuthenticationController(IUsersService service, ILoggerService logger)
 		{
 			_service = service;
+			_logger = logger;
 		}
 
 		/// <summary>
@@ -90,10 +91,17 @@ namespace NearForums.Web.Controllers
 			Session.NextUrl = returnUrl;
 			//Will redirect to twitter
 			var tokenManager = SecurityHelper.GetTokenManager(Cache, AuthenticationProvider.Twitter, Config.AuthenticationProviders.Twitter);
-			TwitterConsumer.StartOAuthFlow(tokenManager, new Uri(new Uri(Domain), Url.Action("TwitterFinishLogin", "Authentication")));
+			try
+			{
+				TwitterConsumer.StartOAuthFlow(tokenManager, new Uri(new Uri(Domain), Url.Action("TwitterFinishLogin", "Authentication")));
+			}
+			catch (ProtocolException ex)
+			{
+				_logger.LogError(ex);
+			}
 
 			//Normally the twitter consumer will redirect but it does not end execution.
-			return new EmptyResult();
+			return View("TwitterFail");
 		}
 
 		/// <summary>
@@ -109,7 +117,7 @@ namespace NearForums.Web.Controllers
 			IConsumerTokenManager tokenManager = SecurityHelper.GetTokenManager(Cache, AuthenticationProvider.Twitter, Config.AuthenticationProviders.Twitter);
 			long twitterUserId;
 			string accessToken;
-			if (!TwitterConsumer.TryFinishOAuthFlow(tokenManager, Logger, out twitterUserId, out accessToken))
+			if (!TwitterConsumer.TryFinishOAuthFlow(tokenManager, _logger, out twitterUserId, out accessToken))
 			{
 				return View("TwitterFail");
 			}
