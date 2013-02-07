@@ -16,56 +16,6 @@ namespace NearForums.Web.Controllers.Helpers
 	/// </summary>
 	public static class SecurityHelper
 	{
-		/// <summary>
-		/// Checks if a external provider is trying to post a login on this website.
-		/// </summary>
-		public static bool TryLoginFromProviders(HttpContextBase context, SessionWrapper session, CacheWrapper cache, MembershipProvider membershipProvider, IUsersService service)
-		{
-			bool logged = false;
-
-			if (TryLoginFromFake(session, service))
-			{
-				logged = true;
-			}
-			else if (TryFinishLoginFromTwitter(session, cache, service))
-			{
-				logged = true;
-			}
-			else if (TryFinishMembershipLogin(context, session, membershipProvider, service))
-			{
-				logged = true;
-			}
-			return logged;
-		}
-
-		#region Fake login
-		/// <summary>
-		/// Register/login (if the user exists or not) from a fake user of facebook
-		/// </summary>
-		/// <param name="session"></param>
-		/// <returns></returns>
-		private static bool TryLoginFromFake(SessionWrapper session, IUsersService service)
-		{
-			if (SiteConfiguration.Current.AuthenticationProviders.FakeProvider)
-			{
-				//Fake facebook id
-				const int fakeFacebookUserId = -1000;
-
-				User user = service.GetByProviderId(AuthenticationProvider.Facebook, fakeFacebookUserId.ToString());
-				if (user == null)
-				{
-					//Autoregister
-					user = new User(0, "fake user");
-					user = service.Add(user, AuthenticationProvider.Facebook, fakeFacebookUserId.ToString());
-				}
-				//Log in
-				session.SetUser(user, AuthenticationProvider.Facebook);
-			}
-
-			return SiteConfiguration.Current.AuthenticationProviders.FakeProvider;
-		}
-		#endregion
-
 		#region Facebook
 
 		#region Create user
@@ -112,7 +62,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 		#region OAuth
 		#region Token manager
-		private static InMemoryTokenManager GetTokenManager(CacheWrapper cache, AuthenticationProvider provider, KeySecretElement providerConfiguration)
+		internal static InMemoryTokenManager GetTokenManager(CacheWrapper cache, AuthenticationProvider provider, KeySecretElement providerConfiguration)
 		{
 			var tokenManager = (InMemoryTokenManager)cache.Cache[provider.ToString() + "TokenManager"];
 			if (tokenManager == null)
@@ -126,42 +76,36 @@ namespace NearForums.Web.Controllers.Helpers
 		#endregion
 
 		#region Twitter
-		public static void TwitterStartLogin(CacheWrapper cache)
-		{
-			IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthenticationProviders.Twitter);
-			TwitterConsumer.StartOAuthFlow(tokenManager);
-		}
+		//public static bool TryFinishLoginFromTwitter(SessionWrapper session, CacheWrapper cache, IUsersService service)
+		//{
+		//    bool logged = false;
+		//    if (SiteConfiguration.Current.AuthenticationProviders.Twitter.IsDefined)
+		//    {
+		//        IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthenticationProviders.Twitter);
+		//        long twitterUserId;
+		//        string accessToken;
+		//        if (TwitterConsumer.TryFinishOAuthFlow(tokenManager, true, out twitterUserId, out accessToken))
+		//        {
+		//            var user = service.GetByProviderId(AuthenticationProvider.Twitter, twitterUserId.ToString());
 
-		private static bool TryFinishLoginFromTwitter(SessionWrapper session, CacheWrapper cache, IUsersService service)
-		{
-			bool logged = false;
-			if (SiteConfiguration.Current.AuthenticationProviders.Twitter.IsDefined)
-			{
-				IConsumerTokenManager tokenManager = GetTokenManager(cache, AuthenticationProvider.Twitter, SiteConfiguration.Current.AuthenticationProviders.Twitter);
-				long twitterUserId;
-				string accessToken;
-				if (TwitterConsumer.TryFinishOAuthFlow(tokenManager, true, out twitterUserId, out accessToken))
-				{
-					var user = service.GetByProviderId(AuthenticationProvider.Twitter, twitterUserId.ToString());
+		//            if (user == null)
+		//            {
+		//                TwitterConsumer.TwitterUser twitterUser = TwitterConsumer.GetUserFromCredentials(tokenManager, accessToken);
+		//                user = CreateUser(twitterUser);
 
-					if (user == null)
-					{
-						TwitterConsumer.TwitterUser twitterUser = TwitterConsumer.GetUserFromCredentials(tokenManager, accessToken);
-						user = CreateUser(twitterUser);
+		//                user = service.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
+		//            }
 
-						user = service.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
-					}
+		//            session.SetUser(user, AuthenticationProvider.Twitter);
+		//            logged = true;
+		//            //Redirect to the same page without oauth params.
+		//            //Response.Redirect(Request.Url.StripQueryArgumentsWithPrefix("oauth_").ToString());
+		//        }
+		//    }
+		//    return logged;
+		//}
 
-					session.SetUser(user, AuthenticationProvider.Twitter);
-					logged = true;
-					//Redirect to the same page without oauth params.
-					//Response.Redirect(Request.Url.StripQueryArgumentsWithPrefix("oauth_").ToString());
-				}
-			}
-			return logged;
-		}
-
-		private static User CreateUser(TwitterConsumer.TwitterUser twitterUser)
+		public static User CreateUser(TwitterConsumer.TwitterUser twitterUser)
 		{
 			User user = new User();
 			user.UserName = twitterUser.Name;
@@ -180,7 +124,7 @@ namespace NearForums.Web.Controllers.Helpers
 		/// Logs the user in or creates the user account if the user does not exist.
 		/// Sets the logged user in the session.
 		/// </summary>
-		public static bool OpenIdFinishLogin(IAuthenticationResponse response, SessionWrapper session, IUsersService service)
+		public static int OpenIdFinishLogin(IAuthenticationResponse response, SessionWrapper session, IUsersService service)
 		{
 			string externalId = response.ClaimedIdentifier.ToString();
 			string name = response.FriendlyIdentifierForDisplay;
@@ -194,7 +138,7 @@ namespace NearForums.Web.Controllers.Helpers
 
 			session.SetUser(user, AuthenticationProvider.OpenId);
 
-			return true;
+			return user.Id;
 		}
 		#endregion
 
@@ -202,47 +146,43 @@ namespace NearForums.Web.Controllers.Helpers
 		/// <summary>
 		/// If enabled by configuration, tries to login the current membership user (reading cookie / identity) as nearforums user
 		/// </summary>
-		public static bool TryFinishMembershipLogin(HttpContextBase context, SessionWrapper session, MembershipProvider provider, IUsersService service)
+		/// <returns>The user id of the authenticated user, if not -1</returns>
+		public static int TryFinishMembershipLogin(HttpContextBase context, SessionWrapper session, MembershipProvider provider, IUsersService service)
 		{
-			if (provider != null && (!String.IsNullOrEmpty(context.User.Identity.Name)))
+			if (provider == null || String.IsNullOrEmpty(context.User.Identity.Name))
 			{
-				var membershipUser = provider.GetUser(context.User.Identity.Name, true);
-				return TryFinishMembershipLogin(session, membershipUser, service);
+				return -1;
 			}
-			else
-			{
-				return false;
-			}
+			var membershipUser = provider.GetUser(context.User.Identity.Name, true);
+			return TryFinishMembershipLogin(session, membershipUser, service);
 		}
+
 		/// <summary>
 		/// Logs the user in or creates the a site user account if the user does not exist, based on membership user.
 		/// Sets the logged user in the session.
 		/// </summary>
 		/// <exception cref="ValidationException"></exception>
-		public static bool TryFinishMembershipLogin(SessionWrapper session, MembershipUser membershipUser, IUsersService service)
+		/// <returns>The user id of the authenticated user</returns>
+		public static int TryFinishMembershipLogin(SessionWrapper session, MembershipUser membershipUser, IUsersService service)
 		{
-			bool logged = false;
-
-			if (membershipUser != null)
+			if (membershipUser == null)
 			{
-				var siteUser = service.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
-
-				if (siteUser == null)
-				{
-					//User does not exist on Nearforums db
-					siteUser = new User();
-					siteUser.UserName = membershipUser.UserName;
-					siteUser.Email = membershipUser.Email;
-					siteUser = service.Add(siteUser, AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
-				}
-				session.SetUser(siteUser, AuthenticationProvider.Membership);
-				logged = true;
+				throw new ArgumentNullException("Can not finish membership signin with membership not set.");
 			}
+			var siteUser = service.GetByProviderId(AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
 
-			return logged;
+			if (siteUser == null)
+			{
+				//User does not exist on Nearforums db
+				siteUser = new User();
+				siteUser.UserName = membershipUser.UserName;
+				siteUser.Email = membershipUser.Email;
+				siteUser = service.Add(siteUser, AuthenticationProvider.Membership, membershipUser.ProviderUserKey.ToString());
+			}
+			session.SetUser(siteUser, AuthenticationProvider.Membership);
+
+			return siteUser.Id;
 		}
-
-
 		#endregion
 	}
 }

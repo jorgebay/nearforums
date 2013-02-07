@@ -40,7 +40,12 @@ namespace NearForums.Web.Controllers
 			try
 			{
 				ValidateLogOn(userName, password);
-				SecurityHelper.TryFinishMembershipLogin(Session, MembershipProvider.GetUser(userName, true), _service);
+				var userId = SecurityHelper.TryFinishMembershipLogin(Session, MembershipProvider.GetUser(userName, true), _service);
+				if (Session.User == null)
+				{
+					//User is banned or suspended
+					return RedirectToAction("Detail", "Users", new { id = userId });
+				}
 				FormsAuthentication.SetAuthCookie(userName, rememberMe);
 				return Redirect(returnUrl);
 			}

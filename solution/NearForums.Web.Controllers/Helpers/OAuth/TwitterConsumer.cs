@@ -1,19 +1,21 @@
-﻿namespace NearForums.Web.Controllers.Helpers.OAuth
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Web;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using DotNetOpenAuth.Messaging;
+using DotNetOpenAuth.OAuth;
+using DotNetOpenAuth.OAuth.ChannelElements;
+using DotNetOpenAuth.OAuth.Messages;
+using NearForums.Services;
+
+namespace NearForums.Web.Controllers.Helpers.OAuth
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Configuration;
-	using System.Globalization;
-	using System.IO;
-	using System.Net;
-	using System.Web;
-	using System.Xml;
-	using System.Xml.Linq;
-	using System.Xml.XPath;
-	using DotNetOpenAuth.Messaging;
-	using DotNetOpenAuth.OAuth;
-	using DotNetOpenAuth.OAuth.ChannelElements;
-	using DotNetOpenAuth.OAuth.Messages;
 
 	/// <summary>
 	/// A consumer capable of communicating with Twitter.
@@ -76,36 +78,6 @@
 			return XDocument.Load(XmlReader.Create(response.GetResponseReader()));
 		}
 
-		//public static XDocument UpdateProfileBackgroundImage(ConsumerBase twitter, string accessToken, string image, bool tile)
-		//{
-		//    var parts = new[] {
-		//        MultipartPostPart.CreateFormFilePart("image", image, "image/" + Path.GetExtension(image).Substring(1).ToLowerInvariant()),
-		//        MultipartPostPart.CreateFormPart("tile", tile.ToString().ToLowerInvariant()),
-		//    };
-		//    HttpWebRequest request = twitter.PrepareAuthorizedRequest(UpdateProfileBackgroundImageEndpoint, accessToken, parts);
-		//    request.ServicePoint.Expect100Continue = false;
-		//    IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
-		//    string responseString = response.GetResponseReader().ReadToEnd();
-		//    return XDocument.Parse(responseString);
-		//}
-
-		//public static XDocument UpdateProfileImage(ConsumerBase twitter, string accessToken, string pathToImage)
-		//{
-		//    string contentType = "image/" + Path.GetExtension(pathToImage).Substring(1).ToLowerInvariant();
-		//    return UpdateProfileImage(twitter, accessToken, File.OpenRead(pathToImage), contentType);
-		//}
-
-		//public static XDocument UpdateProfileImage(ConsumerBase twitter, string accessToken, Stream image, string contentType)
-		//{
-		//    var parts = new[] {
-		//        MultipartPostPart.CreateFormFilePart("image", "twitterPhoto", contentType, image),
-		//    };
-		//    HttpWebRequest request = twitter.PrepareAuthorizedRequest(UpdateProfileImageEndpoint, accessToken, parts);
-		//    IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
-		//    string responseString = response.GetResponseReader().ReadToEnd();
-		//    return XDocument.Parse(responseString);
-		//}
-
 		public static XDocument VerifyCredentials(ConsumerBase twitter, string accessToken)
 		{
 			IncomingWebResponse response = twitter.PrepareAuthorizedRequestAndSend(VerifyCredentialsEndpoint, accessToken);
@@ -124,11 +96,11 @@
 		/// Tries to get information the service provider and revalidates it.
 		/// </summary>
 		/// <param name="tokenManager"></param>
-		/// <param name="reissueOnFail">Determines if the flow should be restarted when the parameters are incorrect (due to token invalid or expired).</param>
+		/// <param name="reissueCallback">If not null, the flow will be restarted/reissued when the parameters are incorrect (due to token invalid or expired).</param>
 		/// <param name="userId"></param>
 		/// <param name="accessToken"></param>
-		/// <returns></returns>
-		public static bool TryFinishOAuthFlow(IConsumerTokenManager tokenManager, bool reissueOnFail, out long userId, out string accessToken)
+		/// <returns>true if success, false if fail</returns>
+		public static bool TryFinishOAuthFlow(IConsumerTokenManager tokenManager, ILoggerService logger, out long userId, out string accessToken)
 		{
 			bool success = false;
 			var twitter = new WebConsumer(TwitterConsumer.ServiceDescription, tokenManager);
@@ -145,13 +117,10 @@
 					success = true;
 				}
 			}
-			catch (DotNetOpenAuth.Messaging.ProtocolException)
+			catch (DotNetOpenAuth.Messaging.ProtocolException ex)
 			{
-				//Restart process
-				if (reissueOnFail)
-				{
-					StartOAuthFlow(tokenManager);
-				}
+				//Can failed because the token manager didn't find the key or the service is not available.
+				logger.LogError(ex);
 			}
 			return success;
 		}
@@ -160,10 +129,10 @@
 		/// Starts OAuth by getting a request Token and redirecting the user to the provider.
 		/// </summary>
 		/// <param name="tokenManager"></param>
-		public static void StartOAuthFlow(IConsumerTokenManager tokenManager)
+		public static void StartOAuthFlow(IConsumerTokenManager tokenManager, Uri callback=null)
 		{
 			var twitter = new WebConsumer(TwitterConsumer.ServiceDescription, tokenManager);
-			UserAuthorizationRequest usr = twitter.PrepareRequestUserAuthorization();
+			UserAuthorizationRequest usr = twitter.PrepareRequestUserAuthorization(callback, null, null);
 			twitter.Channel.Send(usr);
 		}
 

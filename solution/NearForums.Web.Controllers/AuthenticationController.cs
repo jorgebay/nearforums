@@ -15,6 +15,8 @@ using Facebook;
 using NearForums.Web.State;
 using System.Web.Routing;
 using NearForums.Validation;
+using NearForums.Web.Controllers.Helpers.OAuth;
+using DotNetOpenAuth.OAuth.ChannelElements;
 
 namespace NearForums.Web.Controllers
 {
@@ -24,6 +26,11 @@ namespace NearForums.Web.Controllers
 		/// User service
 		/// </summary>
 		private readonly IUsersService _service;
+
+		/// <summary>
+		/// App Logger
+		/// </summary>
+		public ILoggerService Logger { get; set; }
 
 		public AuthenticationController(IUsersService service)
 		{
@@ -71,20 +78,59 @@ namespace NearForums.Web.Controllers
 		/// </summary>
 		public ActionResult TwitterStartLogin(string returnUrl)
 		{
-			if (this.User != null)
-			{
-				return Redirect(returnUrl);
-			}
 			if (!this.Config.AuthenticationProviders.Twitter.IsDefined)
 			{
 				return ResultHelper.ForbiddenResult(this);
 			}
+			if (this.User != null)
+			{
+				return Redirect(returnUrl);
+			}
+			//Set the return url in session
+			Session.NextUrl = returnUrl;
 			//Will redirect to twitter
-			SecurityHelper.TwitterStartLogin(this.Cache);
+			var tokenManager = SecurityHelper.GetTokenManager(Cache, AuthenticationProvider.Twitter, Config.AuthenticationProviders.Twitter);
+			TwitterConsumer.StartOAuthFlow(tokenManager, new Uri(new Uri(Domain), Url.Action("TwitterFinishLogin", "Authentication")));
 
 			//Normally the twitter consumer will redirect but it does not end execution.
 			return new EmptyResult();
-		} 
+		}
+
+		/// <summary>
+		/// Finish the twitter flow.
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult TwitterFinishLogin()
+		{
+			if (!this.Config.AuthenticationProviders.Twitter.IsDefined)
+			{
+				return ResultHelper.ForbiddenResult(this);
+			}
+			IConsumerTokenManager tokenManager = SecurityHelper.GetTokenManager(Cache, AuthenticationProvider.Twitter, Config.AuthenticationProviders.Twitter);
+			long twitterUserId;
+			string accessToken;
+			if (!TwitterConsumer.TryFinishOAuthFlow(tokenManager, Logger, out twitterUserId, out accessToken))
+			{
+				return View("TwitterFail");
+			}
+			var user = _service.GetByProviderId(AuthenticationProvider.Twitter, twitterUserId.ToString());
+
+			if (user == null)
+			{
+				var twitterUser = TwitterConsumer.GetUserFromCredentials(tokenManager, accessToken);
+				user = SecurityHelper.CreateUser(twitterUser);
+
+				user = _service.Add(user, AuthenticationProvider.Twitter, twitterUserId.ToString());
+			}
+
+			Session.SetUser(user, AuthenticationProvider.Twitter);
+			if (Session.User == null)
+			{
+				//user is banned or suspended
+				return RedirectToAction("Detail", "Users", new { id = user.Id });
+			}
+			return Redirect(Session.NextUrl);
+		}
 		#endregion
 
 		#region Facebook OAuth 2.0
@@ -99,7 +145,7 @@ namespace NearForums.Web.Controllers
 			}
 			var oAuthClient = new FacebookOAuthClient();
 			oAuthClient.AppId = this.Config.AuthenticationProviders.Facebook.ApiKey;
-			oAuthClient.RedirectUri = new Uri(Request.Url, Url.Action("FacebookFinishLogin", "Authentication"));
+			oAuthClient.RedirectUri = new Uri(new Uri(Domain), Url.Action("FacebookFinishLogin", "Authentication"));
 			var loginUri = oAuthClient.GetLoginUrl(new Dictionary<string, object>(){{"state", Session.SessionToken}});
 
 			Session.NextUrl = returnUrl;
@@ -150,8 +196,9 @@ namespace NearForums.Web.Controllers
 
 			//Log the user in
 			Session.SetUser(user, AuthenticationProvider.Facebook);
-			if (user.Banned || user.Suspended)
+			if (Session.User == null)
 			{
+				//user is banned or suspended
 				return RedirectToAction("Detail", "Users", new {id=user.Id});
 			}
 			return Redirect(Session.NextUrl);
@@ -210,12 +257,15 @@ namespace NearForums.Web.Controllers
 			switch (response.Status)
 			{
 				case AuthenticationStatus.Authenticated:
-					SecurityHelper.OpenIdFinishLogin(response, Session, _service);
-
+					var userId = SecurityHelper.OpenIdFinishLogin(response, Session, _service);
+					if (Session.User == null)
+					{
+						//User is banned or suspended
+						return RedirectToAction("Detail", "Users", new { id = userId });
+					}
 					return Redirect(returnUrl);
 				case AuthenticationStatus.Canceled:
 					//Canceled at provider
-
 					//Return to previous url without logged
 					return Redirect(returnUrl);
 				default:

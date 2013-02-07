@@ -6,7 +6,9 @@ using NearForums.Services;
 using System.Web.Security;
 using NearForums.Web.Controllers.Helpers;
 using System.Web;
+using System.Web.Mvc;
 using NearForums.Web.State;
+using System.Web.Routing;
 
 namespace NearForums.Web.Controllers.Filters
 {
@@ -50,9 +52,12 @@ namespace NearForums.Web.Controllers.Filters
 
 			if (session.User == null)
 			{
-				SecurityHelper.TryLoginFromProviders(context, session, new CacheWrapper(context), MembershipProvider, UserService);
-				//TODO: If authentication is successfull and the user is banned or suspended. 
-				//The user gets redirected to "banned" page.
+				var userId = SecurityHelper.TryFinishMembershipLogin(context, session, MembershipProvider, UserService);
+				if (userId > 0 && session.User == null)
+				{
+					//The user is banned or suspended
+					filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new {controller="Users", action="Detail", id=userId }));
+				}
 			}
 
 			base.OnActionExecuting(filterContext);
