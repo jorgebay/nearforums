@@ -913,3 +913,11 @@ form div.formItem span.largeNote
 {
 	padding-top: 10px;
 }
+.banned, .suspended
+{
+	color: #ffffff;
+	padding: 10px;
+	margin: 10px 0;
+	background-color: #BD2C00;
+	border-radius: 3px;
+}

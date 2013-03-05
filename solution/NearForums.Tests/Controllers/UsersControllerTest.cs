@@ -9,6 +9,7 @@ using NearForums.Web.Controllers;
 using System.Web.Mvc;
 using System.Collections;
 using NearForums.Tests.Fakes;
+using NearForums.Services;
 
 namespace NearForums.Tests.Controllers
 {

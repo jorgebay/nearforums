@@ -110,6 +110,10 @@ namespace NearForums.DataAccess
 				user.Photo = dr.GetString("UserPhoto");
 				user.Website = dr.GetString("UserWebsite");
 				user.BirthDate = dr.GetNullable<DateTime?>("UserBirthDate");
+				user.Warned = (!dr.IsNull("WarningStart")) && dr.GetNullableStruct<bool>("WarningRead") != true;
+				user.Suspended = (!dr.IsNull("SuspendedStart")) && (dr.IsNull("SuspendedEnd") || dr.GetNullableStruct<DateTime>("SuspendedEnd") >= DateTime.UtcNow);
+				user.Banned = !dr.IsNull("BannedStart");
+				user.SuspendedEnd = dr.GetNullableStruct<DateTime>("SuspendedEnd");
 			}
 			return user;
 		}
@@ -263,6 +267,7 @@ namespace NearForums.DataAccess
 				user.Warned = (!dr.IsNull("WarningStart")) && dr.GetNullableStruct<bool>("WarningRead") != true;
 				user.Suspended = (!dr.IsNull("SuspendedStart")) && (dr.IsNull("SuspendedEnd") || dr.GetNullableStruct<DateTime>("SuspendedEnd") >= DateTime.UtcNow);
 				user.Banned = !dr.IsNull("BannedStart");
+				user.SuspendedEnd = dr.GetNullableStruct<DateTime>("SuspendedEnd");
 			}
 
 			return user;

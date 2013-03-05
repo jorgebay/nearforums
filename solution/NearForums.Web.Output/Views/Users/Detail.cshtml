@@ -6,13 +6,25 @@
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 </ul>
 <h1>@ViewBag.Title</h1>
+@if (Model.Banned)
+{
+	<div class="banned">
+		@T("The user is banned from the forums.")
+	</div>
+}
+else if (Model.Suspended)
+{
+	<div class="suspended">
+		@T("The user is suspended from the forums, until {0}.", Model.SuspendedEnd)
+	</div>
+}
 <p><strong>@T("Role"):</strong> @Model.RoleName</p>
 <p>
 	<strong>@T("Member for:")</strong> @Html.Partial("SinceDate", Model.RegistrationDate)
 </p>
 @if (!string.IsNullOrEmpty(Model.ExternalProfileUrl))
 {
-<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()):</strong> @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
+	<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()):</strong> @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
 }
 @if (ViewData.Get<IList>("Topics").Count > 0)
 {
