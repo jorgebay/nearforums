@@ -1,4 +1,11 @@
-﻿@Html.Partial("UserMenu")
+﻿@if (User != null && User.Warned)
+{
+	<div id="accountWarning">
+		@T("A moderator of the forum has sent you a warning. Further inappropriate behavior may result in your suspension or ban from this forum.")
+		@*<div class="button"><a href="#" onclick=""><img src="/" /></a></div>*@
+	</div>
+}
+@Html.Partial("UserMenu")
 @if (Config.Search.Enabled)
 {
 	@Html.Partial("SearchBox")

@@ -299,3 +299,12 @@ strong a
 	color: #333333;
 	background-color: #FFFFFF;
 }
+#accountWarning
+{
+	position: absolute;
+	top: 0;
+	padding: 8px 10px;
+	width: 930px;
+	text-align: center;
+	background-color: #FDE910;
+}

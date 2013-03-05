@@ -208,16 +208,16 @@ namespace NearForums.Web.Controllers
 		/// <summary>
 		/// Confirms that the user read the warning and dismisses the user message.
 		/// </summary>
-		/// <returns>Empty JSON</returns>
+		/// <returns>True or false in Json</returns>
 		[RequireAuthorization]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult WarnDismiss()
+		public JsonResult WarnDismiss()
 		{
 			ViewData.Model = _service.WarnDismiss(User.Id);
-			//TODO: Mark in session state that the warning was dismissed.
-			throw new NotImplementedException();
-			//return Json(ViewData.Model);
+			//Mark in session state that the warning was dismissed.
+			User.Warned = false;
+			return Json(ViewData.Model);
 		}
 	}
 }
