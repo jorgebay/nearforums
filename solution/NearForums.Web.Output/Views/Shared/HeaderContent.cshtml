@@ -1,8 +1,12 @@
 ﻿@if (User != null && User.Warned)
 {
 	<div id="accountWarning">
+		<div class="buttons">
+			<a href="#">@T("Full details")</a>
+			<a href="@Url.Action("WarnDismiss", "Users")" onclick="return postLink(this, null, function(){$('#accountWarning').slideUp();});">@Html.Img("~/images/icon-delete.gif", S("Close"))</a>
+		</div>
 		@T("A moderator of the forum has sent you a warning. Further inappropriate behavior may result in your suspension or ban from this forum.")
-		@*<div class="button"><a href="#" onclick=""><img src="/" /></a></div>*@
+		@Html.AntiForgeryToken()
 	</div>
 }
 @Html.Partial("UserMenu")

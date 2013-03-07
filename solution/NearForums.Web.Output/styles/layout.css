@@ -307,4 +307,13 @@ strong a
 	width: 930px;
 	text-align: center;
 	background-color: #FDE910;
+	line-height: 18px;
+}
+#accountWarning .buttons
+{
+	float: right;
+}
+#accountWarning a
+{
+	padding-left: 10px;
 }

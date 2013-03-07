@@ -20,12 +20,21 @@ function preventMultipleSubmit() {
     });
     return true;
 }
+function postLink(sender, data, callback)
+{
+	if (!data)
+	{
+		data = new Object();
+	}
+	data.__RequestVerificationToken = $("input[name='__RequestVerificationToken']").val();
+	$.post($(sender).attr("href"), data, callback);
+	return false;
+}
 function postAndContinue(sender, data, confirmMessage)
 {
 	if ((!confirmMessage) || confirm(confirmMessage))
 	{
-		data.__RequestVerificationToken = $("input[name='__RequestVerificationToken']").val();
-		$.post($(sender).attr("href"), data, function(responseData){
+		postLink(sender, data, function(responseData){
 			if (responseData && responseData.nextUrl)
 			{
 				document.location.href = responseData.nextUrl;
