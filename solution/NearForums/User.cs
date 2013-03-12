@@ -78,6 +78,24 @@ namespace NearForums
 		}
 
 		/// <summary>
+		/// Determines the reason why the user was banned/suspended/warned by a moderator
+		/// </summary>
+		public ModeratorReason? ModeratorReason 
+		{ 
+			get; 
+			set; 
+		}
+
+		/// <summary>
+		/// Determines the reason why the user was banned/suspended/warned by a moderator, in plain text.
+		/// </summary>
+		public string ModeratorReasonMessage 
+		{ 
+			get; 
+			set; 
+		}
+
+		/// <summary>
 		/// Used for storing a temporary Guid used for password reset purposes
 		/// </summary>
 		public string PasswordResetGuid

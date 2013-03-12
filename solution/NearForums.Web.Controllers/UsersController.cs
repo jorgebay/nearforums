@@ -166,6 +166,17 @@ namespace NearForums.Web.Controllers
 			return View(false, topics);
 		}
 
+		/// <summary>
+		/// Displays the message the moderator had to ban/warn/suspend the user
+		/// </summary>
+		/// <returns></returns>
+		[RequireAuthorization]
+		public ActionResult ModeratorReasonDetail()
+		{
+			var user = _service.Get(User.Id);
+			return View(user);
+		}
+
 		[RequireAuthorization(UserRole.Admin)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]

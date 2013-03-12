@@ -97,10 +97,10 @@ namespace NearForums.DataAccess
 		public User Get(int userId)
 		{
 			User user = null;
-			DbCommand comm = GetCommand("SPUsersGet");
+			var comm = GetCommand("SPUsersGet");
 			comm.AddParameter<int>(this.Factory, "UserId", userId);
 
-			DataRow dr = GetFirstRow(comm);
+			var dr = GetFirstRow(comm);
 			if (dr != null)
 			{
 				user = ParseUserInfo(dr);
@@ -109,11 +109,13 @@ namespace NearForums.DataAccess
 				user.EmailPolicy = (EmailPolicy)(dr.GetNullable<int?>("UserEmailPolicy") ?? (int)EmailPolicy.None);
 				user.Photo = dr.GetString("UserPhoto");
 				user.Website = dr.GetString("UserWebsite");
-				user.BirthDate = dr.GetNullable<DateTime?>("UserBirthDate");
+				user.BirthDate = dr.GetNullableStruct<DateTime>("UserBirthDate");
 				user.Warned = (!dr.IsNull("WarningStart")) && dr.GetNullableStruct<bool>("WarningRead") != true;
 				user.Suspended = (!dr.IsNull("SuspendedStart")) && (dr.IsNull("SuspendedEnd") || dr.GetNullableStruct<DateTime>("SuspendedEnd") >= DateTime.UtcNow);
 				user.Banned = !dr.IsNull("BannedStart");
 				user.SuspendedEnd = dr.GetNullableStruct<DateTime>("SuspendedEnd");
+				user.ModeratorReason = dr.GetNullableStruct<ModeratorReason>("ModeratorReason");
+				user.ModeratorReasonMessage = dr.GetString("ModeratorReasonFull");
 			}
 			return user;
 		}

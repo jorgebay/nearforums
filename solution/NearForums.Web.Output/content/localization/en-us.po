@@ -1141,3 +1141,10 @@ msgstr "{0:##,#} result(s)"
 #: NearForums.Web.Output\Views\SearchEngine\Search.cshtml
 msgid "We did not find results for <strong>{0}</strong>"
 msgstr "We did not find results for <strong>{0}</strong>"
+
+#: NearForums.ModeratorReason.cs
+# Include 
+#	Flamming
+#	Spamming
+#	Harassing
+#	Other

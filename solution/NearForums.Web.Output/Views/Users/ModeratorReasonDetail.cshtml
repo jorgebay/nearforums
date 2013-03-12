@@ -1,0 +1,29 @@
+﻿@model User
+@{
+	ViewBag.Title = T("Moderator message to {0}", Model.UserName);
+}
+<ul class="path floatContainer">
+	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
+	<li>@Html.ActionLinkLocalized("Account", "Detail", "Users", new {id=Model.Id})</li>
+</ul>
+<div class="moderatorReasonDetail">
+<h1>@ViewBag.Title</h1>
+@if (Model.ModeratorReason != null)
+{
+	if (Model.Warned)
+	{
+		<p>
+			<strong class="warning">@T("You have been warned by a Moderator.")</strong>
+		</p>
+	}
+	<p><strong>@T("Reason")</strong>: @T(Model.ModeratorReason.ToString())</p>
+	if (Model.ModeratorReasonMessage != null)
+	{
+		<p><em>@Model.ModeratorReasonMessage</em></p>
+	}
+}
+else
+{
+	<p>@T("You haven't got any pending notification.")</p>
+}
+</div>

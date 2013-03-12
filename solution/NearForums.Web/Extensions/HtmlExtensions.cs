@@ -50,6 +50,25 @@ namespace NearForums.Web.Extensions
 			}
 		}
 
+		/// <summary>
+		/// Evaluates the condition and returns the resulting expression.
+		/// </summary>
+		/// <param name="condition"></param>
+		/// <param name="textIfTrue"></param>
+		/// <param name="textIfFalse"></param>
+		/// <returns></returns>
+		public static MvcHtmlString If(this HtmlHelper htmlHelper, bool condition, string textIfTrue, string textIfFalse = null)
+		{
+			if (condition)
+			{
+				return MvcHtmlString.Create(textIfTrue);
+			}
+			else
+			{
+				return MvcHtmlString.Create(textIfFalse);
+			}
+		}
+
 		public static MvcHtmlString DropDownListDefault(this HtmlHelper htmlHelper, string name, IEnumerable<SelectListItem> selectList, object defaultValue, string defaultText)
 		{
 			List<SelectListItem> list = new List<SelectListItem>(selectList);

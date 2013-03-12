@@ -2,7 +2,7 @@
 {
 	<div id="accountWarning">
 		<div class="buttons">
-			<a href="#">@T("Full details")</a>
+			@Html.ActionLinkLocalized("Full details", "ModeratorReasonDetail", "Users")
 			<a href="@Url.Action("WarnDismiss", "Users")" onclick="return postLink(this, null, function(){$('#accountWarning').slideUp();});">@Html.Img("~/images/icon-delete.gif", S("Close"))</a>
 		</div>
 		@T("A moderator of the forum has sent you a warning. Further inappropriate behavior may result in your suspension or ban from this forum.")
