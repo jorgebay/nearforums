@@ -1,7 +1,7 @@
 ﻿@model User
 @{
 }
-@if (true || ViewData.GetDefault<bool>("CanModerate"))
+@if (ViewData.GetDefault<bool>("CanModerate"))
 {
 	var moderatorReasonLabels = new Dictionary<ModeratorReason, string>() 
 	{ 
@@ -23,7 +23,7 @@
 			@Html.AntiForgeryToken()
 			@Html.Hidden("id", Model.Id)
 			<div class="formItem floatContainer">
-				<label for="reason">@T("Moderation action")</label>
+				<label for="moderationAction">@T("Moderation action")</label>
 				<select id="moderationAction">
 					@if ((!Model.Warned) && (!Model.Suspended) && (!Model.Banned))
 					{
@@ -50,4 +50,22 @@
 			<div><input type="button" class="button" value="@T("Submit")" onclick="submitModeration(this);" /></div>
 		</form>
 	</div>
+	<script type="text/javascript">
+		function submitModeration(sender)
+		{
+			var urls = {};
+			urls.warn = '@Url.Action("Warn", "Users")';
+			urls.suspend = '@Url.Action("Suspend", "Users")';
+			urls.ban = '@Url.Action("Ban", "Users")';
+			var data = $(sender).closest("form").serializeObject();
+			var url = urls[$("#moderationAction").val()];
+			$("#userModerateForm").find('input, textarea, button, select').prop("disabled",true);
+			$.post(url, data, function(message){
+				location.reload();
+			});
+		}
+		$(function(){
+			$("#userModerateForm").find('input, textarea, button, select').prop("disabled",false);
+		});
+	</script>
 }

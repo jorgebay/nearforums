@@ -7,16 +7,22 @@
 		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	</ul>
 	<h1>@ViewBag.Title</h1>
-	@if (Model.Banned)
+
+	@if (Model.Banned || Model.Warned || Model.Suspended)
 	{
-		<div class="banned">
+		<div class="moderated">
+		@if (Model.Banned)
+		{
 			@T("The user is banned from the forums.")
-		</div>
-	}
-	else if (Model.Suspended)
-	{
-		<div class="suspended">
-			@T("The user is suspended from the forums, until {0}.", Model.SuspendedEnd)
+		}
+		else if (Model.Suspended)
+		{
+			@T("The user is suspended from the forums, until {0:d}.", Model.SuspendedEnd)
+		}
+		else
+		{
+			@T("The user has been warned by a moderator.")
+		}
 		</div>
 	}
 	<p><strong>@T("Role"):</strong> @Model.RoleName</p>

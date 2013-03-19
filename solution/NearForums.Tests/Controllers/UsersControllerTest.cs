@@ -133,7 +133,7 @@ namespace NearForums.Tests.Controllers
 			var sessionWrapper = new SessionWrapper(context.HttpContext);
 			sessionWrapper.SetUser(ServicesTests.GetTestUser(), AuthenticationProvider.CustomDb);
 			controller.ControllerContext = context;
-			controller.Suspend(0, ModeratorReason.Spamming, null, DateTime.Now.AddMonths(1));
+			controller.Suspend(0, ModeratorReason.Spamming, null);
 			Assert.IsFalse((bool)controller.ViewData.Model);
 		}
 

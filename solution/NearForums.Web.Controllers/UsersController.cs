@@ -34,7 +34,7 @@ namespace NearForums.Web.Controllers
 		/// Bans a user permanently from the site
 		/// </summary>
 		/// <returns>Empty JSON</returns>
-		[RequireAuthorization(UserRole.Moderator)]
+		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Ban(int id, ModeratorReason reason, string reasonText)
@@ -72,13 +72,15 @@ namespace NearForums.Web.Controllers
 
 		public ActionResult Detail(int id)
 		{
-			User user = _service.Get(id);
+			var user = _service.Get(id);
 			if (user == null)
 			{
 				return ResultHelper.NotFoundResult(this);
 			}
 			//Get posted topics
 			ViewData["Topics"] = _topicService.GetByUser(id, Role);
+			//Determine if the current logged user can warn/suspend/ban the user
+			ViewData["CanModerate"] = User != null && User.Role >= UserRole.Moderator && User.Role >= user.Role;
 
 			return View(user);
 		}
@@ -194,12 +196,12 @@ namespace NearForums.Web.Controllers
 		/// Suspends a user for a period of time
 		/// </summary>
 		/// <returns>Empty JSON</returns>
-		[RequireAuthorization(UserRole.Moderator)]
+		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Suspend(int id, ModeratorReason reason, string reasonText, DateTime endDate)
+		public ActionResult Suspend(int id, ModeratorReason reason, string reasonText)
 		{
-			ViewData.Model = _service.Suspend(id, User.Id, User.Role, reason, reasonText, endDate);
+			ViewData.Model = _service.Suspend(id, User.Id, User.Role, reason, reasonText, DateTime.UtcNow.AddDays(15));
 			return Json(ViewData.Model);
 		}
 
@@ -207,7 +209,7 @@ namespace NearForums.Web.Controllers
 		/// Warns the user of bad behaviour
 		/// </summary>
 		/// <returns>Empty JSON</returns>
-		[RequireAuthorization(UserRole.Moderator)]
+		[RequireAuthorization(UserRole.Moderator, RefuseOnFail = true)]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Warn(int id, ModeratorReason reason, string reasonText)
