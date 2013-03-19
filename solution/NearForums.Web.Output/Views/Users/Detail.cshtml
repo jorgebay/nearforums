@@ -2,69 +2,41 @@
 @{
 	ViewBag.Title = T("{0} profile", Model.UserName);
 }
-<ul class="path floatContainer">
-	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
-</ul>
-<h1>@ViewBag.Title</h1>
-@if (Model.Banned)
-{
-	<div class="banned">
-		@T("The user is banned from the forums.")
-	</div>
-}
-else if (Model.Suspended)
-{
-	<div class="suspended">
-		@T("The user is suspended from the forums, until {0}.", Model.SuspendedEnd)
-	</div>
-}
-<p><strong>@T("Role"):</strong> @Model.RoleName</p>
-<p>
-	<strong>@T("Member for:")</strong> @Html.Partial("SinceDate", Model.RegistrationDate)
-</p>
-@if (!string.IsNullOrEmpty(Model.ExternalProfileUrl))
-{
-	<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()):</strong> @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
-}
-@if (ViewData.Get<IList>("Topics").Count > 0)
-{
-	<h2>@T("Threads posted by {0}", Model.UserName)</h2>
-	<ul>
-	@foreach (Topic t in (IList)ViewData["Topics"])
-	{
-		<li>@Html.ActionLink(t.Title, "ShortUrl", "Topics", new{id=t.Id}, null)</li>	
-	}
+<div class="userDetail">
+	<ul class="path floatContainer">
+		<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
 	</ul>
-}
-<h2>@T("Messages posted by {0}", Model.UserName)</h2>
-<p class="messageButton"><a href="#" onclick="return getMessages()">@T("Get all messages posted by {0}", Model.UserName)</a></p>
-<p class="loading" style="display:none;font-style: italic;">@Html.Img("~/images/loadingMini.gif", "") @T("Loading...")</p>
-<div id="messagesResult" style="display:none;"></div>
-<script type="text/javascript">
-	function getMessages()
+	<h1>@ViewBag.Title</h1>
+	@if (Model.Banned)
 	{
-		$("p.messageButton").hide();
-		$("p.loading").fadeIn();
-		$.ajax({
-			url: '@(Url.Action("MessagesByUser"))',
-			cache: true,
-			dataType: "html",
-			success: function (html)
-			{
-				if ($.trim(html) != "")
-				{
-					$("p.loading").hide();
-					$("#messagesResult").append(html).slideDown();
-				}
-				else
-				{
-					$("p.loading").fadeOut(function ()
-					{
-						$("p.loading").html('@T("No messages found.")').fadeIn();
-					});
-				}
-			}
-		});
-		return false;
+		<div class="banned">
+			@T("The user is banned from the forums.")
+		</div>
 	}
-</script>
+	else if (Model.Suspended)
+	{
+		<div class="suspended">
+			@T("The user is suspended from the forums, until {0}.", Model.SuspendedEnd)
+		</div>
+	}
+	<p><strong>@T("Role"):</strong> @Model.RoleName</p>
+	<p>
+		<strong>@T("Member for:")</strong> @Html.Partial("SinceDate", Model.RegistrationDate)
+	</p>
+	@if (!string.IsNullOrEmpty(Model.ExternalProfileUrl))
+	{
+		<p><strong>@T("{0} profile", new Uri(Model.ExternalProfileUrl).Host.Replace("www.", "").FirstUpperCase()):</strong> @Html.Link(Model.ExternalProfileUrl, new { @target = "_blank" })</p>
+	}
+	@if (ViewData.Get<IList>("Topics").Count > 0)
+	{
+		<h2>@T("Threads posted by {0}", Model.UserName)</h2>
+		<ul>
+		@foreach (Topic t in (IList)ViewData["Topics"])
+		{
+			<li>@Html.ActionLink(t.Title, "ShortUrl", "Topics", new{id=t.Id}, null)</li>	
+		}
+		</ul>
+	}
+	@Html.Partial("DetailMessages")
+	@Html.Partial("Toolbar")
+</div>

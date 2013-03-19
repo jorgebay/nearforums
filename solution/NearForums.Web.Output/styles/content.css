@@ -921,3 +921,8 @@ form div.formItem span.largeNote
 	background-color: #BD2C00;
 	border-radius: 3px;
 }
+.toolbar .moderate a
+{
+	background-image: url("../images/icon-moderate.png");
+    padding-left: 27px;
+}

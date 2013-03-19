@@ -1,0 +1,53 @@
+﻿@model User
+@{
+}
+@if (true || ViewData.GetDefault<bool>("CanModerate"))
+{
+	var moderatorReasonLabels = new Dictionary<ModeratorReason, string>() 
+	{ 
+		{ModeratorReason.Flamming, S(ModeratorReason.Flamming.ToString())},
+		{ModeratorReason.Harassing, S(ModeratorReason.Harassing.ToString())},
+		{ModeratorReason.Spamming, S(ModeratorReason.Spamming.ToString())},
+		{ModeratorReason.Other, S(ModeratorReason.Other.ToString())},
+	};
+	<div class="toolbar floatContainer">
+		<ul>
+			@if (!Model.Banned)
+			{
+				<li class="moderate"><a href="#" onclick="$('#userModerateForm').slideToggle();return false;">@T("Moderate")</a></li>
+			}
+		</ul>
+	</div>
+	<div id="userModerateForm" style="display:none;">
+		<form>
+			@Html.AntiForgeryToken()
+			@Html.Hidden("id", Model.Id)
+			<div class="formItem floatContainer">
+				<label for="reason">@T("Moderation action")</label>
+				<select id="moderationAction">
+					@if ((!Model.Warned) && (!Model.Suspended) && (!Model.Banned))
+					{
+						<option value="warn">@T("Warn")</option>
+					}
+					@if ((!Model.Suspended) && (!Model.Banned))
+					{
+						<option value="suspend">@T("Suspend")</option>
+					}
+					@if (!Model.Banned)
+					{
+						<option value="ban">@T("Ban")</option>
+					}
+				</select>
+			</div>
+			<div class="formItem floatContainer">
+				<label for="reason">@T("Reason")</label>
+				@Html.DropDownList("reason", new SelectList(moderatorReasonLabels, "Key", "Value"))
+			</div>
+			<div class="formItem textarea floatContainer">
+				<label for="reasonText">@T("Reason message")</label>
+				@Html.TextArea("reasonText")
+			</div>
+			<div><input type="button" class="button" value="@T("Submit")" onclick="submitModeration(this);" /></div>
+		</form>
+	</div>
+}

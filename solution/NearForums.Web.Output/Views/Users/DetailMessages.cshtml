@@ -1,0 +1,31 @@
+﻿@model User
+<h2>@T("Messages posted by {0}", Model.UserName)</h2>
+<p class="messageButton"><a href="#" onclick="return getMessages()">@T("Get all messages posted by {0}", Model.UserName)</a></p>
+<p id="loadingMessages" style="display:none;font-style: italic;">@Html.Img("~/images/loadingMini.gif", "") @T("Loading...")</p>
+<div id="messagesResult" style="display:none;"></div>
+<script type="text/javascript">
+	function getMessages()
+	{
+		$("p.messageButton").hide();
+		$("#loadingMessages").fadeIn();
+		$.ajax({
+			url: '@(Url.Action("MessagesByUser"))',
+			cache: true,
+			dataType: "html",
+			success: function (html)
+			{
+				if ($.trim(html) != "")
+				{
+					$("#loadingMessages").hide();
+					$("#messagesResult").append(html).slideDown();
+				}
+				else
+				{
+					$("#loadingMessages").hide();
+					$("#loadingMessages").html('@T("No messages found.")').fadeIn();
+				}
+			}
+		});
+		return false;
+	}
+</script>

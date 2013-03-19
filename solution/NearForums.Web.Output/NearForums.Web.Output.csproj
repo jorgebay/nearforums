@@ -119,6 +119,7 @@
     <Content Include="images\icon-delete.gif" />
     <Content Include="images\icon-edit.gif" />
     <Content Include="images\icon-manage.gif" />
+    <Content Include="images\icon-moderate.png" />
     <Content Include="images\icon-move.gif" />
     <Content Include="images\icon-open.gif" />
     <Content Include="images\icon-print.gif" />
@@ -470,6 +471,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Users\ModeratorReasonDetail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Toolbar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\DetailMessages.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
