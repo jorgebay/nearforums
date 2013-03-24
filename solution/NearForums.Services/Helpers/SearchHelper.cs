@@ -10,6 +10,7 @@ using Lucene.Net.Util;
 using System.Collections;
 using System.Linq;
 using NearForums.Configuration;
+using System.Text.RegularExpressions;
 
 namespace NearForums.Services.Helpers
 {
@@ -228,7 +229,9 @@ namespace NearForums.Services.Helpers
 			}
 			catch (ParseException)
 			{
-				query = parser.Parse(QueryParser.Escape(searchQuery.Trim()));
+				var escapedQuery = QueryParser.Escape(searchQuery.Trim());
+				escapedQuery = Regex.Replace(escapedQuery, "\\b(OR|AND|NOT)\\b", "\"$1\"", RegexOptions.None);
+				query = parser.Parse(escapedQuery);
 			}
 			return query;
 		}
