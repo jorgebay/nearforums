@@ -5,13 +5,13 @@
 		<div class="msgUser group@((int)Model.User.Role)">
 			@if (Model.User.Photo != null)
 			{
-				<div class="photo"><img src="@Model.User.Photo" alt="@Model.User.UserName" /></div>
+				<div class="photo"><a href="@Url.Action("Detail", "Users", new { id=Model.User.Id})"><img src="@Model.User.Photo" alt="@Model.User.UserName" /></a></div>
 			}
 			else
 			{
 				<div class="nophoto"><span></span></div>
 			}
-			<div class="userName"><strong>@Model.User.UserName</strong></div>
+			<div class="userName"><strong>@Html.ActionLink(Model.User.UserName, "Detail", "Users", new { id=Model.User.Id}, null)</strong></div>
 			<div class="groupName"><span>@Model.User.RoleName</span></div>
 			<div class="memberSince">@T("Member for:") @Html.Partial("SinceDate", Model.User.RegistrationDate)</div>
 		</div>

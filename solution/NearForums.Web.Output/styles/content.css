@@ -462,6 +462,10 @@ div.msgUser .photo img
 {
 	width: 48px;
 }
+div.msgUser a
+{
+	text-decoration: none;
+}
 div.msgOptions
 {
 	clear: both;

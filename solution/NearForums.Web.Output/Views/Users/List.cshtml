@@ -44,7 +44,7 @@
 							<a href="#" onclick="return deleteUser(@u.Id, '@u.UserName');">@T("Delete")</a>
 						</span>
 					</td>
-					<td><strong>@u.UserName</strong></td>
+					<td><strong>@Html.ActionLink(u.UserName, "Detail", "Users", new {id=u.Id}, null)</strong></td>
 					<td>@u.RoleName</td>
 					<td>@Html.Date(u.RegistrationDate)</td>
 				</tr>			
