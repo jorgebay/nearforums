@@ -41,6 +41,11 @@
 	{
 		<p class="action">@Html.ActionLinkLocalized("Post a thread >>", "Add", "Topics", new{forum=this.Model.ShortName}, null)</p>
 	}
+	else if (User == null)
+	{
+		<h2>@T("New Topic in this Forum")</h2>
+		<p>@T("You must <a href=\"{0}\">sign in</a> to post.", Url.Action("Login", "Authentication", new { returnUrl = Request.Url.PathAndQuery }))</p>
+	}
 	
 	@if (Role >= UserRole.Moderator)
 	{
