@@ -42,7 +42,7 @@ namespace NearForums.Web.State
 		}
 
 		/// <summary>
-		/// Private GUID, not send over the wire
+		/// Private GUID, dot not send over the wire
 		/// </summary>
 		public Guid Guid
 		{
@@ -133,11 +133,18 @@ namespace NearForums.Web.State
 			return ProviderInfo.Provider == provider;
 		}
 
+		/// <summary>
+		/// Returns an instance of Nearforums.User with the current UserState id, username, role and guid
+		/// </summary>
+		/// <returns></returns>
 		public User ToUser()
 		{
 			return new User
 			{
-				Id=this.Id
+				Id=this.Id,
+				UserName = this.UserName,
+				Role = this.Role,
+				Guid = this.Guid
 			};
 		}
 	}

@@ -35,6 +35,14 @@ namespace NearForums.Services
 		/// <param name="reasonText"></param>
 		/// <returns>True if the user was banned</returns>
 		bool Ban(int id, int moderatorId, UserRole moderatorRole, ModeratorReason reason, string reasonText);
+
+		/// <summary>
+		/// Determines if a user can moderate (warn,suspend,ban) and manage (promote/demote) another user
+		/// </summary>
+		/// <param name="moderatorUser"></param>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		bool CanModerate(User moderatorUser, User user);
 		/// <summary>
 		/// Removes the user from the repository
 		/// </summary>

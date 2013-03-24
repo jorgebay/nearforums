@@ -79,8 +79,10 @@ namespace NearForums.Web.Controllers
 			}
 			//Get posted topics
 			ViewData["Topics"] = _topicService.GetByUser(id, Role);
-			//Determine if the current logged user can warn/suspend/ban the user
-			ViewData["CanModerate"] = User != null && User.Role >= UserRole.Moderator && User.Role >= user.Role;
+			if (User != null)
+			{
+				ViewData["CanModerate"] = _service.CanModerate(User.ToUser(), user);
+			}
 
 			return View(user);
 		}

@@ -94,6 +94,22 @@ namespace NearForums.Services
 			return _dataAccess.Ban(id, moderatorId, reason, reasonText);
 		}
 
+		/// <summary>
+		/// Checks that the moderator user role is greater that user, among other things
+		/// </summary>
+		/// <param name="moderatorUser"></param>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public bool CanModerate(User moderatorUser, User user)
+		{
+			if (moderatorUser == null)
+			{
+				return false;
+			}
+			return moderatorUser.Role >= UserRole.Moderator && 
+				moderatorUser.Role >= user.Role &&
+				moderatorUser.Id != user.Id;
+		}
 
 		/// <summary>
 		/// Determines if a user (moderator) can ban/suspend/warn another user
