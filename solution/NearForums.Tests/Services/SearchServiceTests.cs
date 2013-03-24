@@ -279,6 +279,58 @@ namespace NearForums.Tests.Services
 		}
 
 		[TestMethod]
+		public void SearchIndex_ReservedWords_Test()
+		{
+			var service = TestHelper.Resolve<ISearchService>();
+			//Delete all previous index data
+			service.CreateIndex();
+			service.Add(new Topic()
+			{
+				Id = 1,
+				Title = "SOMETHING OR SOMETHING ELSE AND",
+				Description = "<p>Lorem ipsum</p>",
+				Tags = new TagList(),
+				Date = DateTime.UtcNow.AddDays(-1d),
+				Forum = new Forum()
+				{
+					Name = "Dummy forum",
+					ShortName = "dummy-forum"
+				}
+			});
+			service.Add(new Topic()
+			{
+				Id = 2,
+				Title = "Cool n' the Gang: (In concert)",
+				Description = "<p>Lorem ipsum</p>",
+				Date = DateTime.UtcNow.AddDays(-0.5d),
+				Tags = new TagList(),
+				Forum = new Forum()
+				{
+					Name = "Dummy forum 2",
+					ShortName = "dummy-forum-2"
+				}
+			});
+
+			var results = service.Search("Cool n' the Gang", 0);
+			Assert.IsTrue(results.Count == 1);
+
+			results = service.Search("SOMETHING OR", 0);
+			Assert.IsTrue(results.Count == 1);
+
+			results = service.Search("SOMETHING AND", 0);
+			Assert.IsTrue(results.Count == 1);
+
+			results = service.Search("NOT ME", 0);
+			Assert.IsTrue(results.Count == 0);
+
+			results = service.Search("I NOT", 0);
+			Assert.IsTrue(results.Count == 0);
+
+			results = service.Search("AND", 0);
+			Assert.IsTrue(results.Count == 0);
+		}
+
+		[TestMethod]
 		public void SearchIndex_LockTest()
 		{
 			var config = SiteConfiguration.Current.Search;
