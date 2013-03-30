@@ -43,8 +43,8 @@ msgid "Manage users"
 msgstr "Manage users"
 
 #: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
-msgid "Promote, demote and delete forum users."
-msgstr "Promote, demote and delete forum users."
+msgid "Promote, demote, delete and manage forum users."
+msgstr "Promote, demote, delete and manage forum users."
 
 #: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
 msgid "Administration"
@@ -1073,6 +1073,10 @@ msgstr "Promote"
 #: NearForums.Web.Output\Views\Users\List.cshtml
 msgid "Demote"
 msgstr "Demote"
+
+#: NearForums.Web.Output\Views\Users\List.cshtml
+msgid "Edit Profile"
+msgstr "Edit Profile"
 
 #: NearForums.Web.Output\Views\Users\List.cshtml
 msgid "Are you sure you want to DELETE the user {0}?"

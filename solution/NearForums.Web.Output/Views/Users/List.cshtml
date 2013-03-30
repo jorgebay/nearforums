@@ -42,6 +42,7 @@
 							<a href="#" onclick="return promoteUser(@u.Id, '@u.UserName');">@T("Promote")</a>
 							<a href="#" onclick="return demoteUser(@u.Id, '@u.UserName');">@T("Demote")</a>
 							<a href="#" onclick="return deleteUser(@u.Id, '@u.UserName');">@T("Delete")</a>
+							@Html.ActionLinkLocalized("Edit Profile", "Edit", "Users", new { id = u.Id }, null)
 						</span>
 					</td>
 					<td><strong>@Html.ActionLink(u.UserName, "Detail", "Users", new {id=u.Id}, null)</strong></td>

@@ -91,9 +91,8 @@ namespace NearForums.Web.Controllers
 		[HttpGet]
 		public ActionResult Edit(int id)
 		{
-			if (this.User.Id != id)
+			if (this.User.Id != id && !this.User.HasModeratorPriviledges)
 			{
-				//Maybe handle a moderator/admin users
 				return ResultHelper.ForbiddenResult(this);
 			}
 			var user = _service.Get(id);
@@ -107,7 +106,12 @@ namespace NearForums.Web.Controllers
 		{
 			if (this.User.Id != id)
 			{
-				//Future: Maybe handle a moderator/admin users
+				if (this.User.HasModeratorPriviledges)
+				{
+					user.Id = id;
+					_service.Edit(user);
+					return RedirectToAction("Detail", new { id = id });
+				}
 				return ResultHelper.ForbiddenResult(this);
 			}
 			try
