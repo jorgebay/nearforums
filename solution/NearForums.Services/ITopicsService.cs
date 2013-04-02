@@ -13,8 +13,12 @@ namespace NearForums.Services
 		/// Closes a topic to disallow further replies.
 		/// </summary>
 		void Close(int id, int userId, string ip);
+		/// <summary>
+		/// Creates a topic
+		/// </summary>
 		/// <exception cref="ValidationException"></exception>
-		void Create(Topic topic, string ip);
+		/// <param name="user">User editing the topic</param>
+		void Create(Topic topic, string ip, User user);
 		/// <summary>
 		/// Deletes (inactive) a user from the application
 		/// </summary>
@@ -23,7 +27,8 @@ namespace NearForums.Services
 		/// Edits a topic
 		/// </summary>
 		/// <exception cref="ValidationException"></exception>
-		void Edit(Topic topic, string ip);
+		/// <param name="user">User editing the topic</param>
+		void Edit(Topic topic, string ip, User user);
 		/// <summary>
 		/// Gets a topic by id, validating that the shortName matches
 		/// </summary>

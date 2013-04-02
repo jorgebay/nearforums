@@ -9,25 +9,9 @@ namespace NearForums.Configuration.Spam
 	public class HtmlInputElement : ConfigurationElement
 	{
 		/// <summary>
-		/// Determines if the html entered by the user should be parsed and fix html errors like unclosed elements / hierarchy / ...
+		/// A regex of a allowed elements for the user to input, for example: p|ul|li|strong|em
 		/// </summary>
-		[ConfigurationProperty("fixErrors", DefaultValue=true)]
-		public bool FixErrors
-		{
-			get
-			{
-				return (bool)this["fixErrors"];
-			}
-			set
-			{
-				this["fixErrors"] = value;
-			}
-		}
-
-		/// <summary>
-		///
-		/// </summary>
-		[ConfigurationProperty("allowedElements", DefaultValue = "b(lockquote)?|code|d(d|t|l|el)|em|h(2|3|4)|i|kbd|li|ol|p(re)?|s(ub|up|trong|trike)?|ul|a|img")]
+		[ConfigurationProperty("allowedElements", DefaultValue = "b(lockquote)?|code|d(d|t|l|el)|em|h(2|3|4)|i|kbd|li|ol|p(re)?|s(ub|up|trong|trike)?|ul")]
 		public string AllowedElements
 		{
 			get
@@ -37,6 +21,35 @@ namespace NearForums.Configuration.Spam
 			set
 			{
 				this["allowedElements"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Determine for which role (or higher) the system does not perform html validation
+		/// </summary>
+		[ConfigurationProperty("avoidValidationForRole", DefaultValue = UserRole.Moderator)]
+		public UserRole? AvoidValidationForRole
+		{
+			get
+			{
+				return (UserRole)this["avoidValidationForRole"];
+			}
+			set
+			{
+				this["avoidValidationForRole"] = value;
+			}
+		}
+
+		[ConfigurationProperty("fixErrors", DefaultValue = true)]
+		public bool FixErrors
+		{
+			get
+			{
+				return (bool)this["fixErrors"];
+			}
+			set
+			{
+				this["fixErrors"] = value;
 			}
 		}
 	}

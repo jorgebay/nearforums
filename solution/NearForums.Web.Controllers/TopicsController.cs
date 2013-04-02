@@ -126,12 +126,11 @@ namespace NearForums.Web.Controllers
 					return ResultHelper.ForbiddenResult(this);
 				}
 
-				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = topic.Title.ToUrlSegment(64);
 				topic.IsSticky = (topic.IsSticky && this.User.Role >= UserRole.Moderator);
 				if (ModelState.IsValid)
 				{
-					_service.Create(topic, Request.UserHostAddress);
+					_service.Create(topic, Request.UserHostAddress, User.ToUser());
 					SubscriptionHelper.Manage(notify, topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
 					return RedirectToRoute(new { action = "Detail", controller = "Topics", id = topic.Id, name = topic.ShortName, forum = forum, page = 0 });
 				}
@@ -211,9 +210,8 @@ namespace NearForums.Web.Controllers
 			{
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 
-				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
-				_service.Edit(topic, Request.UserHostAddress);
+				_service.Edit(topic, Request.UserHostAddress, User.ToUser());
 				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config, _topicSubscriptionService);
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
 			}

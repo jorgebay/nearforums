@@ -85,24 +85,30 @@ namespace NearForums.Services
 			topic.Related = _dataAccess.GetRelatedTopics(topic, amount);
 		}
 
-		public void Create(Topic topic, string ip)
+		public void Create(Topic topic, string ip, User user)
 		{
+			topic.User = user;
 			topic.ValidateFields();
 			var htmlInputConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
-			topic.Description = topic.Description
-				.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements)
-				.ReplaceValues(SiteConfiguration.Current.Replacements);
+			if (!(user.Role > htmlInputConfig.AvoidValidationForRole))
+			{
+				topic.Description = topic.Description.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements);
+			}
+			topic.Description = topic.Description.ReplaceValues(SiteConfiguration.Current.Replacements);
 			_dataAccess.Add(topic, ip);
 			_searchIndex.Add(topic);
 		}
 
-		public void Edit(Topic topic, string ip)
+		public void Edit(Topic topic, string ip, User user)
 		{
+			topic.User = user;
 			topic.ValidateFields();
 			var htmlInputConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
-			topic.Description = topic.Description
-				.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements)
-				.ReplaceValues(SiteConfiguration.Current.Replacements);
+			if (!(user.Role >= htmlInputConfig.AvoidValidationForRole))
+			{
+				topic.Description = topic.Description.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements);
+			}
+			topic.Description = topic.Description.ReplaceValues(SiteConfiguration.Current.Replacements);
 			_dataAccess.Edit(topic, ip);
 			_searchIndex.Update(topic);
 		}
