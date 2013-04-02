@@ -27,12 +27,12 @@ namespace NearForums.Configuration.Spam
 		/// <summary>
 		/// Determine for which role (or higher) the system does not perform html validation
 		/// </summary>
-		[ConfigurationProperty("avoidValidationForRole", DefaultValue = UserRole.Moderator)]
+		[ConfigurationProperty("avoidValidationForRole", DefaultValue = null)]
 		public UserRole? AvoidValidationForRole
 		{
 			get
 			{
-				return (UserRole)this["avoidValidationForRole"];
+				return (UserRole?)this["avoidValidationForRole"];
 			}
 			set
 			{

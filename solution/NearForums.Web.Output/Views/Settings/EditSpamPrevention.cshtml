@@ -22,6 +22,10 @@
 			@Html.TextBoxFor(m => m.HtmlInput.AllowedElements)
 			<span class="largeNote">@T("Regex to match the html elements")</span>
 		</div>
+		<div class="formItem floatContainer">
+			@Html.LocalizedLabelFor("Do not sanitize html input by users of role", m => m.HtmlInput.AllowedElements)
+			@Html.DropDownListFor(m => m.HtmlInput.AvoidValidationForRole, (IEnumerable<SelectListItem>)ViewBag.UserRoles, " ")
+		</div>
 		<div class="formItem checkbox">
 			@Html.CheckBoxFor(m => m.HtmlInput.FixErrors)
 			@Html.LocalizedLabelFor("Fix posted html errors in a post (like unclosed elements / hierarchy / ...)", m => m.HtmlInput.FixErrors)
