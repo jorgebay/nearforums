@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NearForums.DataAccess;
+using NearForums.Configuration;
 
 namespace NearForums.Services
 {
@@ -23,21 +24,20 @@ namespace NearForums.Services
 			_searchIndex = searchIndex;
 		}
 
-		public  List<Message> GetByTopic(int topicId)
-		{
-			return _dataAccess.GetByTopic(topicId); 
-		}
-
-		public  List<Message> GetByTopicLatest(int topicId)
-		{
-			return _dataAccess.GetByTopicLatest(topicId);
-		}
-
 		public  void Add(Message message, string ip)
 		{
 			message.ValidateFields();
+			var htmlInputConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
+			message.Body = message.Body
+				.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements)
+				.ReplaceValues(SiteConfiguration.Current.Replacements);
 			_dataAccess.Add(message, ip);
 			_searchIndex.Add(message);
+		}
+
+		public  bool ClearFlags(int topicId, int messageId)
+		{
+			return _dataAccess.ClearFlags(topicId, messageId);
 		}
 
 		public  void Delete(int topicId, int messageId, int userId)
@@ -51,14 +51,24 @@ namespace NearForums.Services
 			return _dataAccess.Flag(topicId, messageId, ip);
 		}
 
+		/// <summary>
+		/// Gets all the messages of a topic
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <returns></returns>
+		public List<Message> GetByTopic(int topicId)
+		{
+			return _dataAccess.GetByTopic(topicId); 
+		}
+
+		public  List<Message> GetByTopicLatest(int topicId)
+		{
+			return _dataAccess.GetByTopicLatest(topicId);
+		}
+
 		public  List<Topic> ListFlagged()
 		{
 			return _dataAccess.ListFlagged();
-		}
-
-		public  bool ClearFlags(int topicId, int messageId)
-		{
-			return _dataAccess.ClearFlags(topicId, messageId);
 		}
 	}
 }

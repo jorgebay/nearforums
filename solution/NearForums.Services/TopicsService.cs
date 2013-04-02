@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NearForums.DataAccess;
+using NearForums.Configuration;
 
 namespace NearForums.Services
 {
@@ -87,6 +88,10 @@ namespace NearForums.Services
 		public void Create(Topic topic, string ip)
 		{
 			topic.ValidateFields();
+			var htmlInputConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
+			topic.Description = topic.Description
+				.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements)
+				.ReplaceValues(SiteConfiguration.Current.Replacements);
 			_dataAccess.Add(topic, ip);
 			_searchIndex.Add(topic);
 		}
@@ -94,6 +99,10 @@ namespace NearForums.Services
 		public void Edit(Topic topic, string ip)
 		{
 			topic.ValidateFields();
+			var htmlInputConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
+			topic.Description = topic.Description
+				.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements)
+				.ReplaceValues(SiteConfiguration.Current.Replacements);
 			_dataAccess.Edit(topic, ip);
 			_searchIndex.Update(topic);
 		}

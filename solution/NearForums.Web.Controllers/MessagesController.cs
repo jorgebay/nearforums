@@ -107,12 +107,6 @@ namespace NearForums.Web.Controllers
 			{
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
-
-				if (message.Body != null)
-				{
-					//TODO: Move to services
-					message.Body = message.Body.SafeHtml(Config.SpamPrevention.HtmlInput.FixErrors, Config.SpamPrevention.HtmlInput.AllowedElements).ReplaceValues(Config.Replacements.Select<NearForums.Configuration.ReplacementItem, IReplacement>(r => r));
-				}
 				message.User = Session.User.ToUser();
 				if (msg != null)
 				{

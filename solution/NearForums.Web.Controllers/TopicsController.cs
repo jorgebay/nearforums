@@ -129,12 +129,6 @@ namespace NearForums.Web.Controllers
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = topic.Title.ToUrlSegment(64);
 				topic.IsSticky = (topic.IsSticky && this.User.Role >= UserRole.Moderator);
-				if (topic.Description != null)
-				{
-					//TODO: Move to services
-					topic.Description = topic.Description.SafeHtml(Config.SpamPrevention.HtmlInput.FixErrors, Config.SpamPrevention.HtmlInput.AllowedElements).ReplaceValues(Config.Replacements.Select<NearForums.Configuration.ReplacementItem, IReplacement>(r => r));
-				}
-
 				if (ModelState.IsValid)
 				{
 					_service.Create(topic, Request.UserHostAddress);
@@ -219,11 +213,6 @@ namespace NearForums.Web.Controllers
 
 				topic.User = new User(User.Id, User.UserName);
 				topic.ShortName = name;
-				if (topic.Description != null)
-				{
-					//TODO: Move to services
-					topic.Description = topic.Description.SafeHtml(Config.SpamPrevention.HtmlInput.FixErrors, Config.SpamPrevention.HtmlInput.AllowedElements).ReplaceValues(Config.Replacements.Select<NearForums.Configuration.ReplacementItem, IReplacement>(r => r));
-				}
 				_service.Edit(topic, Request.UserHostAddress);
 				SubscriptionHelper.Manage(notify, topic.Id, User.Id, this.User.Guid, Config, _topicSubscriptionService);
 				return RedirectToRoute(new{action="Detail",controller="Topics",id=topic.Id,name=name,forum=forum});
