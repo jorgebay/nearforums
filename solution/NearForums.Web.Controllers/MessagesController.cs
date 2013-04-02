@@ -110,7 +110,8 @@ namespace NearForums.Web.Controllers
 
 				if (message.Body != null)
 				{
-					message.Body = message.Body.SafeHtml().ReplaceValues();
+					//TODO: Move to services
+					message.Body = message.Body.SafeHtml(Config.SpamPrevention.HtmlInput.FixErrors, Config.SpamPrevention.HtmlInput.AllowedElements).ReplaceValues(Config.Replacements.Select<NearForums.Configuration.ReplacementItem, IReplacement>(r => r));
 				}
 				message.User = Session.User.ToUser();
 				if (msg != null)

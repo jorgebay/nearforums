@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using NearForums.Configuration;
 using System.Configuration;
 using System.IO;
 using HtmlAgilityPack;
-using System.Web;
-using System.Web.Mvc;
 
-namespace NearForums.Web.Extensions
+namespace NearForums
 {
 	public static class StringExtensions
 	{
 		/// <summary>
 		/// Replace pattern (determined by the configuration files) of in the text
 		/// </summary>
-		public static string ReplaceValues(this string value)
+		public static string ReplaceValues(this string value, IEnumerable<IReplacement> replacements)
 		{
-			if (SiteConfiguration.Current != null)
+			if (replacements != null)
 			{
-				var replacements = SiteConfiguration.Current.Replacements;
-				foreach (ReplacementItem item in replacements)
+				foreach (IReplacement item in replacements)
 				{
 					value = Regex.Replace(value, item.Pattern, item.Replacement, item.RegexOptions);
 				}
@@ -35,15 +31,14 @@ namespace NearForums.Web.Extensions
 		/// </summary>
 		/// <param name="value"></param>
 		/// <returns></returns>
-		public static string SafeHtml(this string value)
+		public static string SafeHtml(this string value, bool fixHtmlErrors, string allowedElements)
 		{
-			var htmlConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
 			if (String.IsNullOrEmpty(value))
 			{
 				return value;
 			}
-			var html = Utils.SanitizeHtml(value, htmlConfig.AllowedElements);
-			if (htmlConfig.FixErrors && html.Length > 0)
+			var html = Utils.SanitizeHtml(value, allowedElements);
+			if (fixHtmlErrors && html.Length > 0)
 			{
 				const string wrapperStart = "<div class=\"htmlWrapper\">";
 				const string wrapperEnd = "</div>";
@@ -153,11 +148,6 @@ namespace NearForums.Web.Extensions
 			{
 				return Convert.ToInt32(value);
 			}
-		}
-
-		public static IHtmlString ToHtmlString(this string value)
-		{
-			return MvcHtmlString.Create(value);
 		}
 	}
 }

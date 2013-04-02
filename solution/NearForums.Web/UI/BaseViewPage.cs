@@ -173,7 +173,7 @@ namespace NearForums.Web.UI
 		/// <param name="neutralValue">The text to be localized</param>
 		public virtual IHtmlString T(string neutralValue)
 		{
-			return S(neutralValue).ToHtmlString();
+			return MvcHtmlString.Create(S(neutralValue));
 		}
 
 		/// <summary>
@@ -182,7 +182,7 @@ namespace NearForums.Web.UI
 		/// <param name="neutralValue">The text to be localized</param>
 		public virtual IHtmlString T(string neutralValue, params object[] args)
 		{
-			return S(neutralValue, args).ToHtmlString();
+			return MvcHtmlString.Create(S(neutralValue, args));
 		}
 
 

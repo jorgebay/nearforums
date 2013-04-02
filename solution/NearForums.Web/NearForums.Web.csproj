@@ -39,10 +39,6 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\references\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\references\HtmlAgilityPack.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -78,7 +74,6 @@
     <Compile Include="Extensions\PagerExtensions.cs" />
     <Compile Include="Extensions\RedirectToRouteExtraResult.cs" />
     <Compile Include="Extensions\RoutingHelper.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\ViewDataExtensions.cs" />
     <Compile Include="Handlers\StaticFileHandler.cs" />
     <Compile Include="Integration\NearForumsActionFilter.cs" />

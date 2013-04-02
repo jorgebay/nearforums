@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace NearForums.Configuration
 {
-	public class ReplacementItem : ConfigurationElement, IUniqueConfigurationElement
+	public class ReplacementItem : ConfigurationElement, IReplacement, IUniqueConfigurationElement
 	{
 		[ConfigurationProperty("pattern", IsRequired = true)]
 		public string Pattern

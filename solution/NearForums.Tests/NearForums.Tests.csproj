@@ -141,6 +141,7 @@
     <Compile Include="Services\SearchServiceTests.cs" />
     <Compile Include="Services\ServicesTests.cs" />
     <Compile Include="HtmlInputTests.cs" />
+    <Compile Include="TestExtensions.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
