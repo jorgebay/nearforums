@@ -24,13 +24,16 @@ namespace NearForums.Services
 			_searchIndex = searchIndex;
 		}
 
-		public  void Add(Message message, string ip)
+		public void Add(Message message, string ip, User user)
 		{
+			message.User = user;
 			message.ValidateFields();
 			var htmlInputConfig = SiteConfiguration.Current.SpamPrevention.HtmlInput;
-			message.Body = message.Body
-				.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements)
-				.ReplaceValues(SiteConfiguration.Current.Replacements);
+			if (!(user.Role >= htmlInputConfig.AvoidValidationForRole))
+			{
+				message.Body = message.Body.SafeHtml(htmlInputConfig.FixErrors, htmlInputConfig.AllowedElements);
+			}
+			message.Body = message.Body.ReplaceValues(SiteConfiguration.Current.Replacements);
 			_dataAccess.Add(message, ip);
 			_searchIndex.Add(message);
 		}

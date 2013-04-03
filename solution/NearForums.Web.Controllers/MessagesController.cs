@@ -107,14 +107,13 @@ namespace NearForums.Web.Controllers
 			{
 				SubscriptionHelper.SetNotificationEmail(notify, email, Session, Config, _userService);
 				SubscriptionHelper.Manage(notify, message.Topic.Id, this.User.Id, this.User.Guid, this.Config, _topicSubscriptionService);
-				message.User = Session.User.ToUser();
 				if (msg != null)
 				{
 					message.InReplyOf = new Message(msg.Value);
 				}
 				if (ModelState.IsValid)
 				{
-					_service.Add(message, Request.UserHostAddress);
+					_service.Add(message, Request.UserHostAddress, User.ToUser());
 					SubscriptionHelper.SendNotifications(this, message, this.Config, _topicSubscriptionService);
 					//Redirect to the message posted
 					return new RedirectToRouteExtraResult(new { action = "Detail", controller = "Topics", id = id, name = name, forum = forum }, "#msg" + message.Id);

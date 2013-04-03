@@ -8,7 +8,8 @@ namespace NearForums.Services
 		/// Adds a new message to the topic
 		/// </summary>
 		/// <exception cref="ValidationException">If the model is not valid</exception>
-		void Add(Message message, string ip);
+		/// <param name="user">User posting the message</param>
+		void Add(Message message, string ip, User user);
 		/// <summary>
 		/// Removes the flags/marks on a message
 		/// </summary>
