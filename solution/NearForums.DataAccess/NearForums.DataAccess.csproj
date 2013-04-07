@@ -49,8 +49,10 @@
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="CustomAuthenticationDataAccess.cs" />
     <Compile Include="DatabaseSettingsRepository.cs" />
+    <Compile Include="ForumCategoriesDataAccess.cs" />
     <Compile Include="ForumsDataAccess.cs" />
     <Compile Include="ICustomAuthenticationDataAccess.cs" />
+    <Compile Include="IForumCategoriesDataAccess.cs" />
     <Compile Include="IForumsDataAccess.cs" />
     <Compile Include="IMessagesDataAccess.cs" />
     <Compile Include="IPageContentsDataAccess.cs" />

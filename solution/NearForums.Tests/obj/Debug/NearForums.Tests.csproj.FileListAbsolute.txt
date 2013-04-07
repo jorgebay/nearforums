@@ -28,3 +28,36 @@ C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_2013032
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.Tests\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.Tests\obj\Debug\NearForums.Tests.dll
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.Tests\obj\Debug\NearForums.Tests.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Tests.dll.config
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Tests.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Tests.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Autofac.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\HtmlAgilityPack.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Lucene.Net.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\MySql.Data.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\mysql.web.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.DataAccess.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Services.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Web.Controllers.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Web.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Web.Output.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NLog.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\DotNetOpenAuth.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Facebook.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Autofac.Integration.Mvc.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\log4net.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Microsoft.Contracts.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.DataAccess.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Services.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Web.Controllers.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Web.Output.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.Web.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Autofac.xml
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\HtmlAgilityPack.xml
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\bin\Debug\Lucene.Net.xml
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\obj\Debug\NearForums.Tests.csprojResolveAssemblyReference.cache
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\obj\Debug\NearForums.Tests.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Tests\obj\Debug\NearForums.Tests.pdb

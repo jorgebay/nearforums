@@ -90,6 +90,7 @@
     <Compile Include="Filters\RequireAuthorizationAttribute.cs" />
     <Compile Include="Filters\ValidateFormsAuthAttribute.cs" />
     <Compile Include="FormsAuthenticationController.cs" />
+    <Compile Include="ForumCategoriesController.cs" />
     <Compile Include="ForumsController.cs" />
     <Compile Include="Helpers\OAuth\InMemoryTokenManager.cs" />
     <Compile Include="Helpers\OAuth\TwitterConsumer.cs" />

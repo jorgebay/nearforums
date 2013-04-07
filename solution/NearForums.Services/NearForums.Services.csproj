@@ -51,8 +51,10 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="ForumCategoriesService.cs" />
     <Compile Include="ForumsService.cs" />
     <Compile Include="Helpers\SearchHelper.cs" />
+    <Compile Include="IForumCategoriesService.cs" />
     <Compile Include="IForumsService.cs" />
     <Compile Include="ILoggerService.cs" />
     <Compile Include="IMessagesService.cs" />

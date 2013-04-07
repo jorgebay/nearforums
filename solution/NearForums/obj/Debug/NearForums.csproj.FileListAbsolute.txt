@@ -3,3 +3,8 @@ C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_2013032
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums\obj\Debug\NearForums.dll
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums\obj\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums\bin\Debug\NearForums.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums\bin\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums\obj\Debug\NearForums.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums\obj\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums\obj\Debug\NearForums.csprojResolveAssemblyReference.cache

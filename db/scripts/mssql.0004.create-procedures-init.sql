@@ -2,6 +2,134 @@
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
+CREATE PROCEDURE [dbo].[SPForumsCategoriesDelete]
+	@categoryId int
+AS
+BEGIN
+	DELETE FROM ForumsCategories WHERE CategoryId = @categoryId
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGet]    Script Date: 4/7/2013 9:41:13 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SPForumsCategoriesGet] 
+	@CategoryId int
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM ForumsCategories WHERE CategoryId = @CategoryId
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetAll]    Script Date: 4/7/2013 9:41:13 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SPForumsCategoriesGetAll]
+AS
+SELECT 
+	CategoryId
+	,CategoryName
+	,CategoryOrder
+FROM
+	ForumsCategories
+ORDER BY
+	CategoryOrder
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetForumsCountPerCategory]    Script Date: 4/7/2013 9:41:13 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SPForumsCategoriesGetForumsCountPerCategory] 
+	@CategoryId int 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT  count(*) as NoofForums FROM Forums WHERE CategoryId = @CategoryId 
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesInsert]    Script Date: 4/7/2013 9:41:13 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SPForumsCategoriesInsert] 
+	-- Add the parameters for the stored procedure here
+	@categoryName nvarchar(255),
+	@categoryOrder int
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION
+		INSERT INTO ForumsCategories
+		(
+			CategoryName,
+			CategoryOrder
+		)
+		VALUES
+		(
+			@categoryName,
+			@categoryOrder
+		)
+		COMMIT
+
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK
+
+	  -- Raise an error with the details of the exception
+		DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
+		SELECT @ErrMsg = ERROR_MESSAGE(),
+			 @ErrSeverity = ERROR_SEVERITY()
+
+		RAISERROR(@ErrMsg, @ErrSeverity, 1)
+
+	END CATCH
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesUpdate]    Script Date: 4/7/2013 9:41:13 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SPForumsCategoriesUpdate] 
+	@CategoryId int,
+	@CategoryName nvarchar(255),
+	@CategoryOrder int
+AS
+BEGIN
+	UPDATE ForumsCategories
+	SET
+	CategoryName = @CategoryName,
+	CategoryOrder = @CategoryOrder
+	WHERE
+	CategoryId = @CategoryId
+END
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE [dbo].[SPTopicsGet]
 	@TopicId int=1
 AS

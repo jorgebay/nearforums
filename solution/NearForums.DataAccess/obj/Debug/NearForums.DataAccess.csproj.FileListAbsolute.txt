@@ -5,3 +5,10 @@ C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_2013032
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.DataAccess\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.dll
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\bin\Debug\NearForums.DataAccess.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\bin\Debug\NearForums.DataAccess.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\bin\Debug\NearForums.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\bin\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.csprojResolveAssemblyReference.cache
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.pdb

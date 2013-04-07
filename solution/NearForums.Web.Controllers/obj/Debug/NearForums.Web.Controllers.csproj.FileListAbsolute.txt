@@ -23,3 +23,29 @@ C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_2013032
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.Web.Controllers\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.Web.Controllers\obj\Debug\NearForums.Web.Controllers.dll
 C:\Users\Jason\Documents\Visual Studio 2010\Projects\NearForums\NF_Clone_20130328\solution\NearForums.Web.Controllers\obj\Debug\NearForums.Web.Controllers.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.Web.Controllers.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.Web.Controllers.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\DotNetOpenAuth.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Facebook.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\log4net.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Microsoft.Contracts.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.Services.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.Web.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.DataAccess.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Lucene.Net.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NLog.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Autofac.Integration.Mvc.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Autofac.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\HtmlAgilityPack.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.Services.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.Web.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\NearForums.DataAccess.pdb
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Lucene.Net.xml
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\Autofac.xml
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\bin\Debug\HtmlAgilityPack.xml
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\obj\Debug\NearForums.Web.Controllers.csprojResolveAssemblyReference.cache
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\obj\Debug\NearForums.Web.Controllers.dll
+D:\Dev\CodePlex\NearForm\solution\NearForums.Web.Controllers\obj\Debug\NearForums.Web.Controllers.pdb
