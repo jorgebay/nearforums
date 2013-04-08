@@ -1,0 +1,12 @@
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\NearForums.Web.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\NearForums.Web.pdb
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\Autofac.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\Autofac.Integration.Mvc.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\NearForums.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\HtmlAgilityPack.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\Autofac.xml
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\bin\Debug\HtmlAgilityPack.xml
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\obj\Debug\NearForums.Web.csprojResolveAssemblyReference.cache
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\obj\Debug\NearForums.Web.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums.Web\obj\Debug\NearForums.Web.pdb

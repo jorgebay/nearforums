@@ -1,6 +1,6 @@
 ﻿@model List<ForumCategory>
 @{
-    ViewBag.Title = T("Manage Forum Categories");
+	ViewBag.Title = T("Manage Forum Categories");
 }
 <ul class="path floatContainer">
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
@@ -9,53 +9,54 @@
 <h1>@ViewBag.Title</h1>
 @if (this.Model.Count > 0)
 {
-    <table cellpadding="0" cellspacing="5" class="admin">
-			<thead>
-				<tr>
-					<th><span style="visibility:hidden;">@T("Action")</span></th>
-					<th>@T("Name")</th>
-					<th>@T("Order")</th>
-				</tr>
-			</thead>
-			<tbody>
+	<table cellpadding="0" cellspacing="5" class="admin">
+		<thead>
+			<tr>
+				<th>
+					<span style="visibility: hidden;">@T("Action")</span>
+				</th>
+				<th>@T("Name")
+				</th>
+				<th>@T("Order")
+				</th>
+			</tr>
+		</thead>
+		<tbody>
 			@foreach (ForumCategory u in @Model)
-           {
-			    <tr>
-				    <td>
-					    <span class="actions">
-						    <a href="#" onclick="return deletePage('@Url.Action("Delete")', '@u.Id','@u.Name');">@T("Delete")</a>
-						    @Html.ActionLinkLocalized("Edit", "Edit", "ForumCategories", new { id = u.Id }, null)
-					    </span>
-				    </td>
-				    <td><strong>@u.Name</strong></td>
-				    <td>@u.Order</td>
-			
-			    </tr>			
-           }
-			        </tbody>
-		        </table>
+   {
+				<tr>
+					<td>
+						<span class="actions"><a href="#" onclick="return deletePage('@Url.Action("Delete")', '@u.Id','@u.Name');">@T("Delete")</a>
+							@Html.ActionLinkLocalized("Edit", "Edit", "ForumCategories", new { id = u.Id }, null)
+						</span>
+					</td>
+					<td>
+						<strong>@u.Name</strong>
+					</td>
+					<td>@u.Order
+					</td>
+				</tr>			
+   }
+		</tbody>
+	</table>
 }
 <p>@Html.ActionLinkLocalized("Create a new category >>", "Add")</p>
-
 <script type="text/javascript">
-    function deletePage(url, id, name) {
-        if (confirm('@T("Are you sure you want to delete category {0}?")'.replace('{0}', name)))
-		{
-		    $.ajax({
-		        url: url,
-		        type: 'POST',
-		        data: { id: id },
-		        success: function (data) {
-		            alert(data.toString());
-		            if (data.toString() === "False") {
-		                alert("There are existing forums under this catgory");
-		            }
-		            else {
-		                setTimeout("location.reload(true);", 0);
-		            }
-		        }
-		    });
-    }
-    }
+	function deletePage(url, id, name) {
+		if (confirm('@T("Are you sure you want to delete category {0}?")'.replace('{0}', name))) {
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: { id: id },
+				success: function (data) {
+					if (data.toString() === "False") {
+						alert("There are existing forums under this catgory");
+					}
+					else {
+						setTimeout("location.reload(true);", 0);
+					}
+				}
+			});
+		}
+	}
 </script>
-	    

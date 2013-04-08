@@ -1,0 +1,7 @@
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\bin\Debug\NearForums.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\bin\Debug\NearForums.pdb
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\bin\Debug\HtmlAgilityPack.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\bin\Debug\HtmlAgilityPack.xml
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\obj\Debug\NearForums.csprojResolveAssemblyReference.cache
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\obj\Debug\NearForums.dll
+D:\Dev\CodePlex\NearformRepo\solution\NearForums\obj\Debug\NearForums.pdb
