@@ -6,8 +6,9 @@ using NearForums.Validation;
 
 namespace NearForums
 {
-	public class ForumCategory
+    public class ForumCategory : Entity
 	{
+        
 		public ForumCategory()
 		{
 
@@ -20,13 +21,21 @@ namespace NearForums
 			this.Name = name;
 		}
 
-		[Range(1, Int32.MaxValue)]
+
 		public int Id
 		{
 			get;
 			set;
 		}
 
+        [Range(1, Int32.MaxValue)]
+        public int Order
+        {
+            get;
+            set;
+        }
+
+        [RequireField]
 		public string Name
 		{
 			get;

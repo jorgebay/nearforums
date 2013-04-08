@@ -102,6 +102,17 @@ namespace NearForums.Validation
 		}
 	}
 
+    public class NumericAttribute : RegexFormatAttribute
+    {
+        public NumericAttribute()
+            : base(@"([1-9][0-9]*)", RegexOptions.IgnoreCase)
+        {
+
+        }
+
+        
+    }
+
 	public class UrlFormatAttribute : RegexFormatAttribute
 	{
 		public UrlFormatAttribute()
