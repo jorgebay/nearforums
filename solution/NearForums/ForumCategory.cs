@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NearForums.Validation;
 
 namespace NearForums
 {
-    public class ForumCategory : Entity
+	public class ForumCategory : Entity
 	{
-        
+
 		public ForumCategory()
 		{
 
@@ -28,14 +26,14 @@ namespace NearForums
 			set;
 		}
 
-        [Range(1, Int32.MaxValue)]
-        public int Order
-        {
-            get;
-            set;
-        }
+		[Range(1, Int32.MaxValue)]
+		public int Order
+		{
+			get;
+			set;
+		}
 
-        [RequireField]
+		[RequireField]
 		public string Name
 		{
 			get;
