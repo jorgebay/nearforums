@@ -1,9 +1,0 @@
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\bin\Debug\NearForums.DataAccess.dll
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\bin\Debug\NearForums.DataAccess.pdb
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\bin\Debug\NearForums.dll
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\bin\Debug\HtmlAgilityPack.dll
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\bin\Debug\NearForums.pdb
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\bin\Debug\HtmlAgilityPack.xml
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.csprojResolveAssemblyReference.cache
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.dll
-D:\Dev\CodePlex\NearformRepo\solution\NearForums.DataAccess\obj\Debug\NearForums.DataAccess.pdb
