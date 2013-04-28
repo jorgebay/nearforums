@@ -10,8 +10,17 @@ namespace NearForums
 	/// </summary>
 	public enum ModeratorReason
 	{
-		Flamming = 0,
+		/// <summary>
+		/// Flam / bash
+		/// </summary>
+		Flaming = 0,
+		/// <summary>
+		/// Sending spam
+		/// </summary>
 		Spamming = 1,
+		/// <summary>
+		/// Offensive behaviour
+		/// </summary>
 		Harassing = 2,
 		Other = 100
 	}
