@@ -22,21 +22,21 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (ForumCategory u in @Model)
-   {
-				<tr>
-					<td>
-						<span class="actions"><a href="#" onclick="return deletePage('@Url.Action("Delete")', '@u.Id','@u.Name');">@T("Delete")</a>
-							@Html.ActionLinkLocalized("Edit", "Edit", "ForumCategories", new { id = u.Id }, null)
-						</span>
-					</td>
-					<td>
-						<strong>@u.Name</strong>
-					</td>
-					<td>@u.Order
-					</td>
-				</tr>			
-   }
+		@foreach (ForumCategory u in @Model)
+		{
+			<tr>
+				<td>
+					<span class="actions"><a href="#" onclick="return deletePage('@Url.Action("Delete")', '@u.Id','@u.Name');">@T("Delete")</a>
+						@Html.ActionLinkLocalized("Edit", "Edit", "ForumCategories", new { id = u.Id }, null)
+					</span>
+				</td>
+				<td>
+					<strong>@u.Name</strong>
+				</td>
+				<td>@u.Order
+				</td>
+			</tr>
+		}
 		</tbody>
 	</table>
 }

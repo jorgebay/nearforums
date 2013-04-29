@@ -1,6 +1,6 @@
 ﻿@model ForumCategory
 @{
-	ViewBag.Title = ViewData.WriteIf("IsEdit", S("Edit Category"), S("Create a new forum category"));
+	ViewBag.Title = ViewData.WriteIf("IsEdit", S("Edit Forum Category"), S("Create a new forum category"));
 }
 <ul class="path floatContainer">
 	<li class="first">@Html.ActionLinkLocalized("Forums", "List", "Forums")</li>
@@ -10,22 +10,22 @@
 <h1>@ViewBag.Title</h1>
 @Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 {
-	{"Name", S("New category should have a name")},
-    {"Order", S("New category order should be number 1 or above")}
+	{"Name", S("Name must not be blank.")},
+    {"Order", S("Category order must be a number greater than 0.")}
 }, null)
 @using (Html.BeginForm())
 {
 	<div class="formItem floatContainer">
-		@Html.LabelFor(p => p.Name, S("Forum Category"))
-		@Html.TextBoxFor(p => p.Name, new { placeholder = "Category name here." })
+		@Html.LabelFor(p => p.Name, S("Forum category"))
+		@Html.TextBoxFor(p => p.Name)
 	</div>
     
 	<div class="formItem floatContainer">
-		@Html.LabelFor(p => p.Order, S("Order"))
+		@Html.LabelFor(p => p.Order, S("Category order"))
 		@Html.TextBoxFor(p => p.Order)
 	</div>
 	
 	<div class="formItem buttons">
-		<input type="submit" value="@T("Save")" />
+		<input type="submit" value="@T("Send")" />
 	</div>
 }

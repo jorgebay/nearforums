@@ -1162,3 +1162,299 @@ msgstr "Acosando"
 #: NearForums\ModeratorReason.cs
 msgid "Other"
 msgstr "Otros"
+
+#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
+msgid "Settings"
+msgstr "Ajustes"
+
+#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
+msgid "Change application settings."
+msgstr "Cambiar los ajustes de la aplicación."
+
+#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
+msgid "Manage categories"
+msgstr "Administrar categorias"
+
+#: NearForums.Web.Output\Views\Admin\Dashboard.cshtml
+msgid "Add, edit or delete categories."
+msgstr "Añadir, editar o eliminar categorías."
+
+#: NearForums.Web.Output\Views\Authentication\TwitterFail.cshtml
+msgid "There was a problem while trying to sign in using twitter, please retry."
+msgstr "Hubo un problema al iniciar sesión con Twitter, por favor vuelva a intentar."
+
+#: NearForums.Web.Output\Views\Authentication\TwitterFail.cshtml
+msgid "Retry"
+msgstr "Reintentar"
+
+#: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
+msgid "Edit Forum Category"
+msgstr "Editar categoría"
+
+#: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
+msgid "Create a new forum category"
+msgstr "Crear una nueva categoría de foros"
+
+#: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
+msgid "Forum Category"
+msgstr "Categoría de foros"
+
+#: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
+msgid "Name must not be blank."
+msgstr "El nombre no puede estar vacío."
+
+#: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
+msgid "Category order must be a number greater than 0."
+msgstr "El orden debe ser mayor que 0."
+
+#: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
+msgid "Category order"
+msgstr "Orden de la categoría"
+
+#: NearForums.Web.Output\Views\ForumCategories\List.cshtml
+msgid "Manage Forum Categories"
+msgstr "Administrar categorías de foros"
+
+#: NearForums.Web.Output\Views\ForumCategories\List.cshtml
+msgid "Create a new category >>"
+msgstr "Añadir una nueva categoría >>"
+
+#: NearForums.Web.Output\Views\ForumCategories\List.cshtml
+msgid "Are you sure you want to delete category {0}?"
+msgstr "¿Está seguro que desea eliminar la categoría {0}?"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "New Topic in this Forum"
+msgstr "Nuevo tema en este Foro"
+
+#: NearForums.Web.Output\Views\Forums\Detail.cshtml
+msgid "You must <a href=\"{0}\">sign in</a> to post."
+msgstr "Debe <a href=\"{0}\">iniciar sesión</a> para publicar un nuevo tema."
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Search engine is enabled"
+msgstr "El motor de búsqueda está activado"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Disable"
+msgstr "Desactivar"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Search index is disabled"
+msgstr "El motor de búsqueda está desactivado"
+
+#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
+msgid "Enable"
+msgstr "Activar"
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "General settings"
+msgstr "Ajustes generales"
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "Language is not valid. There is no matching translation (.po) file."
+msgstr "El idioma no es válido. No existe un fichero de traducción (.po) para ese idioma."
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "Content path is not valid."
+msgstr "La ruta de contenido no es válida."
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "The timezone offset is not valid."
+msgstr "El desplazamiento de zona horaria no es válido."
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "Language"
+msgstr "Idioma"
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "IETF language tag (RFC 5646)"
+msgstr "Código de lenguaje IETF (RFC 5646)"
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "Content path"
+msgstr "Ruta de contenido"
+
+#: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
+msgid "Time offset from UTC, expressed in hours, used to display the dates inside the forum"
+msgstr "Desplazamiento de UTC, expresada en horas, utilizado para mostrar las fechas dentro del foro"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Spam prevention settings"
+msgstr "Ajustes de prevención de spam"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Allowed html elements must be a valid regular expression."
+msgstr "Los elementos HTML permitidos debe ser una expresión regular válida."
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Wait time must be zero or greater."
+msgstr "El tiempo de espera debe ser cero o mayor."
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Allowed html elements in a post"
+msgstr "Elementos HTML permitidos"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Regex to match the html elements"
+msgstr "Expresión regular de los elementos permitidos"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Do not sanitize html input by users of role"
+msgstr "No procesar HTML de entrada de los usuarios del rol"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Fix posted html errors in a post (like unclosed elements / hierarchy / ...)"
+msgstr "Arreglar los errores de sintáxis de HTML (como elementos no cerrados / jerarquía / ...)"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Wait time between posts"
+msgstr "Tiempo de espera entre mensajes"
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Expressed in minutes."
+msgstr "expresado en minutos."
+
+#: NearForums.Web.Output\Views\Settings\EditSpamPrevention.cshtml
+msgid "Ignore wait time for role (or above)"
+msgstr "Ignorar el tiempo de espera para el rol (o superior)"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Appearance settings"
+msgstr "Ajustes de apariencia"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Date format is not valid"
+msgstr "Formato de fecha no es válida"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Threads per page must be greater than 0."
+msgstr "Temas por página debe ser mayor que 0."
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Messages per page must be greater than 0."
+msgstr "Mensajes por página debe ser mayor que 0."
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Amount of tags in the tag cloud must be greater than 0."
+msgstr "Cantidad de etiquetas en la nube de etiquetas debe ser mayor que 0."
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "JQuery library url must be either a virtual path (starting with ~/) or an absolute url."
+msgstr "La url del fichero de jQuery debe ser una ruta de acceso virtual (comenzando con ~ /) o una URL absoluta."
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Date format"
+msgstr "Formato de fecha"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Threads per page"
+msgstr "Temas por página"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Messages per page"
+msgstr "Mensajes por página"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Default forum sort"
+msgstr "Orden del foro por defecto"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Amount of tags in the tag cloud"
+msgstr "Cantidad de etiquetas en la nube de etiquetas"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Show user details (image, member since, ...) on thread detail page"
+msgstr "Mostrar datos de usuario (imagen, miembro desde, ...) en la página de detalle del tema"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Use templates"
+msgstr "Activar plantillas"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Mobile user agents"
+msgstr "User agents móvi"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "Regex to match the user agent string to. Leave empty to disable mobile specific server layout."
+msgstr "Expresión regular que coincida con la cadena de agente de usuario. Dejar en blanco para desactivar el layout específico móvil."
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "JQuery library"
+msgstr "Librería JQuery"
+
+#: NearForums.Web.Output\Views\Settings\EditUI.cshtml
+msgid "JQuery library Url. Can be either a virtual path (starting with ~/) or an absolute url, like <a href=\"{0}\" target=\"_blank\">the url of the JQuery libraries hosted on Google CDNs</a>."
+msgstr "Url de la librería JQuery. Puede ser una ruta de acceso virtual (comenzando con ~/) o una url absoluta, como <a href=\"{0}\" target=\"_blank\">la Url de la librería jQuery alojadas en la CDN de Google</a>."
+
+#: NearForums.Web.Output\Views\Shared\HeaderContent.cshtml
+msgid "Full details"
+msgstr "Detalle completo"
+
+#: NearForums.Web.Output\Views\Shared\HeaderContent.cshtml
+msgid "A moderator of the forum has sent you a warning. Further inappropriate behavior may result in your suspension or ban from this forum."
+msgstr "Un moderador del foro te ha enviado una advertencia. Si continúa con el comportamiento inapropiado puede dar lugar a su suspensión o prohibición de este foro."
+
+#: NearForums.Web.Output\Views\Users\Detail.cshtml
+msgid "The user is banned from the forums."
+msgstr "El usuario ha sido expulsado (ban)."
+
+#: NearForums.Web.Output\Views\Users\Detail.cshtml
+msgid "The user is suspended from the forums, until {0:d}."
+msgstr "El usuario está suspendido de los foros, hasta {0: d}."
+
+#: NearForums.Web.Output\Views\Users\Detail.cshtml
+msgid "The user has been warned by a moderator."
+msgstr "El usuario ha sido advertido por un moderador."
+
+#: NearForums.Web.Output\Views\Users\Edit.cshtml
+msgid "Change photo"
+msgstr "Cambiar foto"
+
+#: NearForums.Web.Output\Views\Users\Edit.cshtml
+msgid "Use gravatar image"
+msgstr "Usar imagen gravatar"
+
+#: NearForums.Web.Output\Views\Users\Edit.cshtml
+msgid "Remove photo"
+msgstr "Eliminar imagen"
+
+#: NearForums.Web.Output\Views\Users\ModeratorReasonDetail.cshtml
+msgid "Moderator message to {0}"
+msgstr "Mensaje del moderador a {0}"
+
+#: NearForums.Web.Output\Views\Users\ModeratorReasonDetail.cshtml
+msgid "You have been warned by a Moderator."
+msgstr "Usted ha sido advertido por los moderadores."
+
+#: NearForums.Web.Output\Views\Users\ModeratorReasonDetail.cshtml
+msgid "Reason"
+msgstr "Razón"
+
+#: NearForums.Web.Output\Views\Users\ModeratorReasonDetail.cshtml
+msgid "You haven't got any pending notification."
+msgstr "No tiene ninguna notificación pendiente."
+
+#: NearForums.Web.Output\Views\Users\Toolbar.cshtml
+msgid "Moderate"
+msgstr "Moderar"
+
+#: NearForums.Web.Output\Views\Users\Toolbar.cshtml
+msgid "Moderation action"
+msgstr "Acción"
+
+#: NearForums.Web.Output\Views\Users\Toolbar.cshtml
+msgid "Warn"
+msgstr "Advertir"
+
+#: NearForums.Web.Output\Views\Users\Toolbar.cshtml
+msgid "Suspend"
+msgstr "Suspender"
+
+#: NearForums.Web.Output\Views\Users\Toolbar.cshtml
+msgid "Ban"
+msgstr "Expulsar"
+
+#: NearForums.Web.Output\Views\Users\Toolbar.cshtml
+msgid "Reason message"
+msgstr "Detalle de la razón"
