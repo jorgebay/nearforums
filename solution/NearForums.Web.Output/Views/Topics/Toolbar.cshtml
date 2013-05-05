@@ -1,8 +1,9 @@
 ﻿@model Topic
 <div class="toolbar floatContainer">
 	<ul>
-		@if (Model.HasPostAccess(Role) && !Model.IsClosed)
+		@if ((Model.HasPostAccess(Role) || (User == null && Model.PostAccessRole == UserRole.Member)) && !Model.IsClosed)
 		{
+			@* Show the reply link for nonmembers and for users who can edit *@
 			<li class="reply">@Html.ActionLinkLocalized("Reply", "Add", "Messages", null, new{rel="nofollow"})</li>
 		}
 		<li class="showAll"><a href="#" onclick="return pager.showAll();">@T("Show all messages")</a></li>
