@@ -16,15 +16,13 @@
 @using (Html.BeginForm())
 {
 	<div class="formItem floatContainer">
-		@Html.LabelFor(p => p.Name, S("Forum category"))
+		@Html.LabelFor(p => p.Name, S("Forum Category"))
 		@Html.TextBoxFor(p => p.Name)
 	</div>
-    
 	<div class="formItem floatContainer">
 		@Html.LabelFor(p => p.Order, S("Category order"))
 		@Html.TextBoxFor(p => p.Order)
 	</div>
-	
 	<div class="formItem buttons">
 		<input type="submit" value="@T("Send")" />
 	</div>

@@ -1130,10 +1130,6 @@ msgstr "Se ha terminado de reindexar con éxito"
 msgid "Reindexing Forums...<br />Please do not close this web page"
 msgstr "Reindexando ... <br /> Por favor, no cierre esta página web"
 
-#: NearForums.Web.Output\Views\SearchEngine\Manage.cshtml
-msgid "Search index is disabled by configuration"
-msgstr "El índice de búsqueda está desactivado por configuración"
-
 #: NearForums.Web.Output\Views\SearchEngine\Search.cshtml
 msgid "Search results"
 msgstr "Resultados de búsqueda"
