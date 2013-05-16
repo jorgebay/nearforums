@@ -1,79 +1,4 @@
-/****** Object:  Table [dbo].[Templates]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Templates]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Templates](
-	[TemplateId] [int] IDENTITY(1,1) NOT NULL,
-	[TemplateKey] [nvarchar](64) NOT NULL,
-	[TemplateDescription] [nvarchar](256) NULL,
-	[TemplateIsCurrent] [bit] NOT NULL,
-	[TemplateDate] [datetime] NOT NULL,
- CONSTRAINT [PK_Templates] PRIMARY KEY CLUSTERED 
-(
-	[TemplateId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[UsersGroups]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UsersGroups]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[UsersGroups](
-	[UserGroupId] [smallint] NOT NULL,
-	[UserGroupName] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_UsersGroups] PRIMARY KEY CLUSTERED 
-(
-	[UserGroupId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[PageContents]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PageContents]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[PageContents](
-	[PageContentId] [int] IDENTITY(1,1) NOT NULL,
-	[PageContentTitle] [nvarchar](128) NOT NULL,
-	[PageContentBody] [nvarchar](max) NOT NULL,
-	[PageContentShortName] [nvarchar](128) NOT NULL,
-	[PageContentEditDate] [datetime] NOT NULL,
- CONSTRAINT [PK_PageContents] PRIMARY KEY CLUSTERED 
-(
-	[PageContentId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[ForumsCategories]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ForumsCategories]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[ForumsCategories](
-	[CategoryId] [int] IDENTITY(1,1) NOT NULL,
-	[CategoryName] [nvarchar](255) NOT NULL,
-	[CategoryOrder] [int] NOT NULL,
- CONSTRAINT [PK_ForumsCategories] PRIMARY KEY CLUSTERED 
-(
-	[CategoryId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 02/22/2012 16:34:52 ******/
+/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -97,7 +22,186 @@ RETURN (
   )' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsUpdate]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  Table [dbo].[Settings]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Settings]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Settings](
+	[SettingKey] [varchar](256) NOT NULL,
+	[SettingValue] [nvarchar](max) NULL,
+	[SettingDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_Settings] PRIMARY KEY CLUSTERED 
+(
+	[SettingKey] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  Table [dbo].[PageContents]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PageContents]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[PageContents](
+	[PageContentId] [int] IDENTITY(1,1) NOT NULL,
+	[PageContentTitle] [nvarchar](128) NOT NULL,
+	[PageContentBody] [nvarchar](max) NOT NULL,
+	[PageContentShortName] [nvarchar](128) NOT NULL,
+	[PageContentEditDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_PageContents] PRIMARY KEY CLUSTERED 
+(
+	[PageContentId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  Table [dbo].[ForumsCategories]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ForumsCategories]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[ForumsCategories](
+	[CategoryId] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [nvarchar](255) NOT NULL,
+	[CategoryOrder] [int] NOT NULL,
+ CONSTRAINT [PK_ForumsCategories] PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  Table [dbo].[Templates]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Templates]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Templates](
+	[TemplateId] [int] IDENTITY(1,1) NOT NULL,
+	[TemplateKey] [nvarchar](64) NOT NULL,
+	[TemplateDescription] [nvarchar](256) NULL,
+	[TemplateIsCurrent] [bit] NOT NULL,
+	[TemplateDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_Templates] PRIMARY KEY CLUSTERED 
+(
+	[TemplateId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  Table [dbo].[UsersGroups]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UsersGroups]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[UsersGroups](
+	[UserGroupId] [smallint] NOT NULL,
+	[UserGroupName] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_UsersGroups] PRIMARY KEY CLUSTERED 
+(
+	[UserGroupId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Users]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Users](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [nvarchar](50) NOT NULL,
+	[UserProfile] [nvarchar](max) NULL,
+	[UserSignature] [nvarchar](max) NULL,
+	[UserGroupId] [smallint] NOT NULL,
+	[Active] [bit] NOT NULL,
+	[UserBirthDate] [datetime] NULL,
+	[UserWebsite] [nvarchar](255) NULL,
+	[UserGuid] [char](32) NOT NULL,
+	[UserTimezone] [decimal](9, 2) NOT NULL,
+	[UserEmail] [nvarchar](100) NULL,
+	[UserEmailPolicy] [int] NULL,
+	[UserPhoto] [nvarchar](1024) NULL,
+	[UserRegistrationDate] [datetime] NOT NULL,
+	[UserExternalProfileUrl] [nvarchar](255) NULL,
+	[UserProvider] [nvarchar](32) NOT NULL,
+	[UserProviderId] [nvarchar](64) NOT NULL,
+	[UserProviderLastCall] [datetime] NOT NULL,
+	[PasswordResetGuid] [nvarchar](100) NULL,
+	[PasswordResetGuidExpireDate] [datetime] NULL,
+	[WarningStart] [datetime] NULL,
+	[WarningRead] [bit] NULL,
+	[SuspendedStart] [datetime] NULL,
+	[SuspendedEnd] [datetime] NULL,
+	[BannedStart] [datetime] NULL,
+	[ModeratorReasonFull] [nvarchar](max) NULL,
+	[ModeratorReason] [int] NULL,
+	[ModeratorUserId] [int] NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPSettingsSet]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPSettingsSet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPSettingsSet]
+	@SettingKey varchar(256)
+	,@SettingValue nvarchar(max)
+AS
+IF EXISTS (SELECT * FROM Settings WHERE SettingKey=@SettingKey)
+	BEGIN
+	UPDATE Settings	
+	SET SettingValue = @SettingValue, 
+		SettingDate = GETUTCDATE()
+	WHERE SettingKey=@SettingKey
+	END
+ELSE
+	BEGIN
+	INSERT INTO Settings (SettingKey, SettingValue, SettingDate)
+	VALUES (@SettingKey, @SettingValue, GETUTCDATE())
+	END' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPSettingsGet]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPSettingsGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPSettingsGet]
+	@SettingKey varchar(256)
+AS
+SELECT 
+	SettingKey, SettingValue, SettingDate
+FROM 
+	Settings
+WHERE
+	SettingKey = @SettingKey' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPPageContentsUpdate]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -118,7 +222,7 @@ WHERE
 	PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsInsert]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsInsert]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -146,7 +250,7 @@ VALUES
 )' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsGetUsedShortNames]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsGetUsedShortNames]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -187,7 +291,7 @@ ELSE
 		PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsGetAll]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsGetAll]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -208,7 +312,7 @@ ORDER BY
 	PageContentTitle' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsGet]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsGet]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -229,7 +333,7 @@ WHERE
 	PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPPageContentsDelete]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPPageContentsDelete]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -244,7 +348,110 @@ WHERE
 	PageContentShortName = @PageContentShortName' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesUpdateCurrent]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetAll]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesGetAll]
+AS
+SELECT 
+	CategoryId
+	,CategoryName
+	,CategoryOrder
+FROM
+	ForumsCategories
+ORDER BY
+	CategoryOrder' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGet]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesGet] 
+	@CategoryId int
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM ForumsCategories WHERE CategoryId = @CategoryId
+END' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesDelete]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesDelete]
+	@categoryId int
+AS
+BEGIN
+	DELETE FROM ForumsCategories WHERE CategoryId = @categoryId
+END' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesUpdate]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesUpdate] 
+	@CategoryId int,
+	@CategoryName nvarchar(255),
+	@CategoryOrder int
+AS
+BEGIN
+	UPDATE ForumsCategories
+	SET
+	CategoryName = @CategoryName,
+	CategoryOrder = @CategoryOrder
+	WHERE
+	CategoryId = @CategoryId
+END
+
+SET ANSI_NULLS ON' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesInsert]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesInsert] 
+	-- Add the parameters for the stored procedure here
+	@categoryName nvarchar(255),
+	@categoryOrder int
+AS
+BEGIN
+	INSERT INTO ForumsCategories
+	(
+		CategoryName,
+		CategoryOrder
+	)
+	VALUES
+	(
+		@categoryName,
+		@categoryOrder
+	)
+END' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTemplatesUpdateCurrent]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -262,7 +469,7 @@ FROM
 	Templates T' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesInsert]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesInsert]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -309,7 +516,7 @@ ELSE
 	END' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesGetCurrent]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesGetCurrent]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -329,7 +536,7 @@ WHERE
 	TemplateIsCurrent = 1' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesGetAll]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesGetAll]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -347,7 +554,7 @@ FROM
 	Templates' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesGet]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesGet]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -368,7 +575,7 @@ WHERE
 	TemplateId = @TemplateId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTemplatesDelete]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTemplatesDelete]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -381,65 +588,7 @@ AS
 DELETE FROM Templates WHERE TemplateId = @TemplateId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetAll]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesGetAll]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesGetAll]
-AS
-SELECT 
-	CategoryId
-	,CategoryName
-	,CategoryOrder
-FROM
-	ForumsCategories
-ORDER BY
-	CategoryOrder' 
-END
-GO
-/****** Object:  Table [dbo].[Users]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Users]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Users](
-	[UserId] [int] IDENTITY(1,1) NOT NULL,
-	[UserName] [nvarchar](50) NOT NULL,
-	[UserProfile] [nvarchar](max) NULL,
-	[UserSignature] [nvarchar](max) NULL,
-	[UserGroupId] [smallint] NOT NULL,
-	[Active] [bit] NOT NULL,
-	[UserBirthDate] [datetime] NULL,
-	[UserWebsite] [nvarchar](255) NULL,
-	[UserGuid] [char](32) NOT NULL,
-	[UserTimezone] [decimal](9, 2) NOT NULL,
-	[UserEmail] [nvarchar](100) NULL,
-	[UserEmailPolicy] [int] NULL,
-	[UserPhoto] [nvarchar](1024) NULL,
-	[UserRegistrationDate] [datetime] NOT NULL,
-	[UserExternalProfileUrl] [nvarchar](255) NULL,
-	[UserProvider] [nvarchar](32) NOT NULL,
-	[UserProviderId] [nvarchar](64) NOT NULL,
-	[UserProviderLastCall] [datetime] NOT NULL,
-	[PasswordResetGuid] [nvarchar](100) NULL,
-	[PasswordResetGuidExpireDate] [datetime] NULL,
- CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
-(
-	[UserId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGetAll]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGetAll]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -459,7 +608,7 @@ ORDER BY
 	UserGroupId asc' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGet]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGroupsGet]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -478,7 +627,339 @@ WHERE
 	UserGroupId = @UserGroupId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersUpdatePasswordResetGuid]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersGetTestUser]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetTestUser]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetTestUser]
+	
+AS
+SELECT 
+	Top 1
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+FROM
+	Users U
+WHERE
+	U.Active = 1
+ORDER BY
+	U.UserGroupId DESC' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersGetByProvider]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByProvider]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPUsersGetByProvider]
+	@Provider nvarchar(32)
+	,@ProviderId nvarchar(64)
+AS
+SELECT 
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+	,U.UserProfile
+	,U.UserSignature
+	,U.WarningStart
+	,U.WarningRead
+	,U.SuspendedStart
+	,U.SuspendedEnd
+	,U.BannedStart
+	,U.ModeratorReasonFull
+	,U.ModeratorReason
+	,U.ModeratorUserId
+FROM
+	Users U
+WHERE
+	UserProvider = @Provider
+	AND
+	UserProviderId = @ProviderId
+	AND
+	U.Active = 1
+' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersGetByPasswordResetGuid]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByPasswordResetGuid]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPUsersGetByPasswordResetGuid]
+	@Provider nvarchar(32)
+	,@PasswordResetGuid nvarchar(64)
+AS
+SELECT 
+	U.UserId
+	,U.UserName
+	,U.UserGroupId
+	,U.UserGuid
+	,U.UserTimeZone
+	,U.UserExternalProfileUrl
+	,U.UserProviderLastCall
+	,U.UserEmail
+	,U.UserProviderId
+	,U.PasswordResetGuid
+	,U.PasswordResetGuidExpireDate
+	,U.UserProfile
+	,U.UserSignature
+	,U.WarningStart
+	,U.WarningRead
+	,U.SuspendedStart
+	,U.SuspendedEnd
+	,U.BannedStart
+	,U.ModeratorReasonFull
+	,U.ModeratorReason
+	,U.ModeratorUserId
+FROM
+	Users U
+WHERE
+	UserProvider = @Provider
+	AND
+	PasswordResetGuid = @PasswordResetGuid
+' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersGetByName]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByName]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByName]
+	@UserName nvarchar(50)=''Jorge''	
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserProfile
+	,U.UserSignature
+	,U.UserGroupId
+	,U.UserBirthDate
+	,U.UserWebsite
+	,U.UserTimezone
+	,U.UserPhoto
+	,U.UserRegistrationDate
+	,UG.UserGroupId
+	,UG.UserGroupName
+FROM
+	Users U
+	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.UserName LIKE ''%'' + @UserName +  ''%''
+	AND
+	U.Active = 1
+ORDER BY 
+	U.UserName' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersGetAll]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetAll]
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserProfile
+	,U.UserSignature
+	,U.UserGroupId
+	,U.UserBirthDate
+	,U.UserWebsite
+	,U.UserTimezone
+	,U.UserPhoto
+	,U.UserRegistrationDate
+	,UG.UserGroupId
+	,UG.UserGroupName
+FROM
+	Users U
+	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.Active = 1
+ORDER BY 
+	U.UserName' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersGet]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGet]
+	@UserId int=11
+AS
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserProfile
+	,U.UserSignature
+	,U.UserGroupId
+	,U.UserBirthDate
+	,U.UserWebsite
+	,U.UserTimezone
+	,U.UserPhoto
+	,U.UserRegistrationDate
+	,U.UserExternalProfileUrl
+	,U.UserEmail
+	,U.UserEmailPolicy
+	,UG.UserGroupId
+	,UG.UserGroupName
+	,U.WarningStart
+	,U.WarningRead
+	,U.SuspendedStart
+	,U.SuspendedEnd
+	,U.BannedStart
+	,U.ModeratorReasonFull
+	,U.ModeratorReason
+	,U.ModeratorUserId
+FROM
+	Users U
+	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
+WHERE
+	U.UserId = @UserId;' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersDemote]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersDemote]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersDemote]
+	@UserId int
+AS
+DECLARE @UserGroupId int
+SELECT @UserGroupId = UserGroupId FROM Users WHERE UserId = @UserId
+SELECT @UserGroupId = MAX(UserGroupId) FROM UsersGroups WHERE UserGroupId < @UserGroupId
+
+IF @UserGroupId IS NOT NULL
+	UPDATE Users
+	SET
+		UserGroupId = @UserGroupId
+	WHERE
+		UserId = @UserId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersDelete]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersDelete]
+	@UserId int
+AS
+UPDATE Users
+SET	
+	Active = 0
+WHERE 
+	UserId = @UserId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersBan]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersBan]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersBan]
+(
+	@UserId int
+	, @ModeratorUserId int
+	, @ModeratorReason int
+	, @ModeratorReasonFull nvarchar(max)
+)
+AS
+
+UPDATE Users
+SET
+	BannedStart = GETUTCDATE()
+	, ModeratorReason = @ModeratorReason
+	, ModeratorReasonFull = @ModeratorReasonFull
+	, ModeratorUserId = @ModeratorUserId
+WHERE 
+	UserId = @UserId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersWarnDismiss]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersWarnDismiss]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPUsersWarnDismiss]
+(
+	@UserId int
+)
+AS
+
+UPDATE Users
+SET
+	WarningRead = 1
+WHERE 
+	UserId = @UserId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersWarn]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersWarn]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersWarn]
+(
+	@UserId int
+	, @ModeratorUserId int
+	, @ModeratorReason int
+	, @ModeratorReasonFull nvarchar(max)
+)
+AS
+
+UPDATE Users
+SET
+	WarningStart = GETUTCDATE()
+	, WarningRead = 0
+	, ModeratorReason = @ModeratorReason
+	, ModeratorReasonFull = @ModeratorReasonFull
+	, ModeratorUserId = @ModeratorUserId
+WHERE 
+	UserId = @UserId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersUpdatePasswordResetGuid]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -498,7 +979,7 @@ WHERE
 	UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersUpdateEmail]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersUpdateEmail]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -518,7 +999,7 @@ WHERE
 	UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersUpdate]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersUpdate]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -555,7 +1036,36 @@ WHERE
 	UserId = @UserId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersPromote]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPUsersSuspend]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersSuspend]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[SPUsersSuspend]
+(
+	@UserId int
+	, @ModeratorUserId int
+	, @ModeratorReason int
+	, @ModeratorReasonFull nvarchar(max)
+	, @SuspendedEnd datetime
+)
+AS
+
+UPDATE Users
+SET
+	SuspendedStart = GETUTCDATE()
+	, SuspendedEnd = @SuspendedEnd
+	, ModeratorReason = @ModeratorReason
+	, ModeratorReasonFull = @ModeratorReasonFull
+	, ModeratorUserId = @ModeratorUserId
+WHERE 
+	UserId = @UserId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersPromote]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -577,7 +1087,301 @@ IF @UserGroupId IS NOT NULL
 		UserId = @UserId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersInsertFromProvider]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  Table [dbo].[Forums]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Forums](
+	[ForumId] [int] IDENTITY(1,1) NOT NULL,
+	[ForumName] [nvarchar](255) NOT NULL,
+	[ForumShortName] [nvarchar](32) NOT NULL,
+	[ForumDescription] [nvarchar](max) NOT NULL,
+	[CategoryId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[ForumCreationDate] [datetime] NOT NULL,
+	[ForumLastEditDate] [datetime] NOT NULL,
+	[ForumLastEditUser] [int] NOT NULL,
+	[Active] [bit] NOT NULL,
+	[ForumTopicCount] [int] NOT NULL,
+	[ForumMessageCount] [int] NOT NULL,
+	[ForumOrder] [int] NOT NULL,
+	[ReadAccessGroupId] [smallint] NULL,
+	[PostAccessGroupId] [smallint] NOT NULL,
+ CONSTRAINT [PK_Forums] PRIMARY KEY CLUSTERED 
+(
+	[ForumId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsUpdate]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdate]
+(
+	@ForumShortName nvarchar(32)
+	,@ForumName nvarchar(255)
+	,@ForumDescription nvarchar(max)
+	,@CategoryId int
+	,@UserId int
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
+)
+AS
+UPDATE Forums
+SET
+	ForumName = @ForumName
+	,ForumDescription = @ForumDescription 
+	,CategoryId = @CategoryId
+	,ForumLastEditDate = GETUTCDATE()
+	,ForumLastEditUser = @UserId
+	,ReadAccessGroupId = @ReadAccessGroupId
+	,PostAccessGroupId = @PostAccessGroupId
+WHERE
+	ForumShortName = @ForumShortName' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsInsert]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsInsert]
+(
+	@ForumName nvarchar(255)
+	,@ForumShortName nvarchar(32)
+	,@ForumDescription nvarchar(max)
+	,@CategoryId int
+	,@UserId int
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
+)
+AS
+INSERT INTO Forums
+(
+	ForumName
+	,ForumShortName
+	,ForumDescription
+	,CategoryId
+	,UserId
+	,ForumCreationDate
+	,ForumLastEditDate
+	,ForumLastEditUser
+	,Active
+	,ForumTopicCount
+	,ForumMessageCount
+	,ForumOrder
+	,ReadAccessGroupId
+	,PostAccessGroupId
+)
+VALUES
+(
+	@ForumName
+	,@ForumShortName
+	,@ForumDescription
+	,@CategoryId
+	,@UserId
+	,GETUTCDATE()
+	,GETUTCDATE()
+	,@UserId
+	,1
+	,0
+	,0
+	,0
+	,@ReadAccessGroupId
+	,@PostAccessGroupId
+)' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsGetUsedShortNames]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetUsedShortNames]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetUsedShortNames]
+(
+	@ForumShortName nvarchar(32), 
+	@SearchShortName nvarchar(32)
+)
+AS
+/*
+	Gets used short names for forums
+	returns:
+		IF NOT USED SHORTNAME: empty result set
+		IF USED SHORTNAME: resultset with amount of rows used
+*/
+DECLARE @CurrentValue nvarchar(32)
+SELECT 
+	@CurrentValue = ForumShortName
+FROM 
+	Forums
+WHERE
+	ForumShortName = @ForumShortName
+	
+
+IF @CurrentValue IS NULL
+	SELECT NULL As ForumShortName WHERE 1=0
+ELSE
+	SELECT 
+		ForumShortName
+	FROM
+		Forums
+	WHERE
+		ForumShortName LIKE @SearchShortName + ''%''
+		OR
+		ForumShortName = @ForumShortName' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsGetByShortName]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByShortName]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByShortName]
+	@ShortName nvarchar(32)
+AS
+SELECT
+	F.ForumId
+	,F.ForumName
+	,F.ForumShortName
+	,F.ForumDescription
+	,F.UserId
+	,F.ForumCreationDate
+	,F.ForumTopicCount
+	,F.ForumMessageCount
+	,C.CategoryId
+	,C.CategoryName
+	,F.ReadAccessGroupId
+	,F.PostAccessGroupId
+FROM
+	Forums F 
+	INNER JOIN ForumsCategories C ON F.CategoryId = C.CategoryId
+WHERE
+	F.ForumShortName = @ShortName
+	AND
+	F.Active = 1' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsGetByCategory]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByCategory]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByCategory]
+	@UserGroupId smallint=NULL
+AS
+SELECT
+	F.ForumId
+	,F.ForumName
+	,F.ForumShortName
+	,F.ForumDescription
+	,F.UserId
+	,F.ForumCreationDate
+	,F.ForumTopicCount
+	,F.ForumMessageCount
+	,C.CategoryId
+	,C.CategoryName
+FROM
+	ForumsCategories C
+	INNER JOIN Forums F ON F.CategoryId = C.CategoryId
+WHERE
+	F.Active = 1
+	AND
+	ISNULL(F.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
+ORDER BY
+	C.CategoryOrder,
+	F.ForumOrder' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsDelete]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsDelete]
+	@ForumShortName nvarchar(32)
+AS
+
+UPDATE Forums
+SET
+	Active = 0
+WHERE
+	ForumShortName = @ForumShortName' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsCategoriesGetForumsCountPerCategory]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsCategoriesGetForumsCountPerCategory]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsCategoriesGetForumsCountPerCategory] 
+	@CategoryId int 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT  count(*) as NoofForums FROM Forums WHERE CategoryId = @CategoryId 
+END' 
+END
+GO
+/****** Object:  Table [dbo].[Topics]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Topics]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Topics](
+	[TopicId] [int] IDENTITY(1,1) NOT NULL,
+	[TopicTitle] [nvarchar](256) NOT NULL,
+	[TopicShortName] [nvarchar](64) NOT NULL,
+	[TopicDescription] [nvarchar](max) NOT NULL,
+	[TopicCreationDate] [datetime] NOT NULL,
+	[TopicLastEditDate] [datetime] NOT NULL,
+	[TopicViews] [int] NOT NULL,
+	[TopicReplies] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[TopicTags] [nvarchar](256) NOT NULL,
+	[ForumId] [int] NOT NULL,
+	[TopicLastEditUser] [int] NOT NULL,
+	[TopicLastEditIp] [varchar](39) NOT NULL,
+	[Active] [bit] NOT NULL,
+	[TopicIsClose] [bit] NOT NULL,
+	[TopicOrder] [int] NULL,
+	[LastMessageId] [int] NULL,
+	[MessagesIdentity] [int] NOT NULL,
+	[ReadAccessGroupId] [smallint] NULL,
+	[PostAccessGroupId] [smallint] NOT NULL,
+ CONSTRAINT [PK_Topics] PRIMARY KEY CLUSTERED 
+(
+	[TopicId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPUsersInsertFromProvider]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -648,526 +1452,69 @@ VALUES
 
 DECLARE @UserId int;
 SELECT @UserId = @@IDENTITY;
-SELECT 	
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-FROM
-	Users U
-WHERE
-	U.UserId = @UserId;' 
+EXEC dbo.SPUsersGetByProvider @UserProvider, @UserProviderId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetTestUser]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsUpdateLastMessage]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetTestUser]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsUpdateLastMessage]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetTestUser]
-	
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdateLastMessage]
+	@TopicId int
+	,@MessageId int
 AS
-SELECT 
-	Top 1
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-FROM
-	Users U
-WHERE
-	U.Active = 1
-ORDER BY
-	U.UserGroupId DESC' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetByProvider]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByProvider]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByProvider]
-	@Provider nvarchar(32)
-	,@ProviderId nvarchar(64)
-AS
-SELECT 
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-FROM
-	Users U
-WHERE
-	UserProvider = @Provider
-	AND
-	UserProviderId = @ProviderId
-	AND
-	U.Active = 1' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetByPasswordResetGuid]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByPasswordResetGuid]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByPasswordResetGuid]
-	@Provider nvarchar(32)
-	,@PasswordResetGuid nvarchar(64)
-AS
-SELECT 
-	U.UserId
-	,U.UserName
-	,U.UserGroupId
-	,U.UserGuid
-	,U.UserTimeZone
-	,U.UserExternalProfileUrl
-	,U.UserProviderLastCall
-	,U.UserEmail
-	,U.UserProviderId
-	,U.PasswordResetGuid
-	,U.PasswordResetGuidExpireDate
-FROM
-	Users U
-WHERE
-	UserProvider = @Provider
-	AND
-	PasswordResetGuid = @PasswordResetGuid' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetByName]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetByName]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetByName]
-	@UserName nvarchar(50)=''Jorge''	
-AS
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserProfile
-	,U.UserSignature
-	,U.UserGroupId
-	,U.UserBirthDate
-	,U.UserWebsite
-	,U.UserTimezone
-	,U.UserPhoto
-	,U.UserRegistrationDate
-	,UG.UserGroupId
-	,UG.UserGroupName
-FROM
-	Users U
-	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
-WHERE
-	U.UserName LIKE ''%'' + @UserName +  ''%''
-	AND
-	U.Active = 1
-ORDER BY 
-	U.UserName' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGetAll]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGetAll]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGetAll]
-AS
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserProfile
-	,U.UserSignature
-	,U.UserGroupId
-	,U.UserBirthDate
-	,U.UserWebsite
-	,U.UserTimezone
-	,U.UserPhoto
-	,U.UserRegistrationDate
-	,UG.UserGroupId
-	,UG.UserGroupName
-FROM
-	Users U
-	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
-WHERE
-	U.Active = 1
-ORDER BY 
-	U.UserName' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersGet]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersGet]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersGet]
-	@UserId int=11
-AS
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserProfile
-	,U.UserSignature
-	,U.UserGroupId
-	,U.UserBirthDate
-	,U.UserWebsite
-	,U.UserTimezone
-	,U.UserPhoto
-	,U.UserRegistrationDate
-	,U.UserExternalProfileUrl
-	,U.UserEmail
-	,U.UserEmailPolicy
-	,UG.UserGroupId
-	,UG.UserGroupName
-FROM
-	Users U
-	INNER JOIN UsersGroups UG ON UG.UserGroupId = U.UserGroupId
-WHERE
-	U.UserId = @UserId' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPUsersDemote]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersDemote]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersDemote]
-	@UserId int
-AS
-DECLARE @UserGroupId int
-SELECT @UserGroupId = UserGroupId FROM Users WHERE UserId = @UserId
-SELECT @UserGroupId = MAX(UserGroupId) FROM UsersGroups WHERE UserGroupId < @UserGroupId
 
-IF @UserGroupId IS NOT NULL
-	UPDATE Users
+UPDATE Topics
+SET
+	TopicReplies = TopicReplies + 1
+	,LastMessageId = @MessageId
+WHERE
+	TopicId = @TopicId' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTopicsClose]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsClose]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsClose]
+	@TopicId int
+	,@UserId int
+	,@Ip varchar (39)
+AS
+	UPDATE Topics
 	SET
-		UserGroupId = @UserGroupId
+		TopicIsClose = 1
+		,TopicLastEditDate = GETUTCDATE()
+		,TopicLastEditUser = @UserId
+		,TopicLastEditIp = @Ip
 	WHERE
-		UserId = @UserId' 
+		TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPUsersDelete]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsAddVisit]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPUsersDelete]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsAddVisit]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPUsersDelete]
-	@UserId int
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsAddVisit]
+	@TopicId int=2
 AS
-UPDATE Users
-SET	
-	Active = 0
-WHERE 
-	UserId = @UserId' 
-END
-GO
-/****** Object:  Table [dbo].[Forums]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Forums](
-	[ForumId] [int] IDENTITY(1,1) NOT NULL,
-	[ForumName] [nvarchar](255) NOT NULL,
-	[ForumShortName] [nvarchar](32) NOT NULL,
-	[ForumDescription] [nvarchar](max) NOT NULL,
-	[CategoryId] [int] NOT NULL,
-	[UserId] [int] NOT NULL,
-	[ForumCreationDate] [datetime] NOT NULL,
-	[ForumLastEditDate] [datetime] NOT NULL,
-	[ForumLastEditUser] [int] NOT NULL,
-	[Active] [bit] NOT NULL,
-	[ForumTopicCount] [int] NOT NULL,
-	[ForumMessageCount] [int] NOT NULL,
-	[ForumOrder] [int] NOT NULL,
-	[ReadAccessGroupId] [smallint] NULL,
-	[PostAccessGroupId] [smallint] NOT NULL,
- CONSTRAINT [PK_Forums] PRIMARY KEY CLUSTERED 
-(
-	[ForumId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsUpdate]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdate]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdate]
-(
-	@ForumShortName nvarchar(32)
-	,@ForumName nvarchar(255)
-	,@ForumDescription nvarchar(max)
-	,@CategoryId int
-	,@UserId int
-	,@ReadAccessGroupId smallint
-	,@PostAccessGroupId smallint
-)
-AS
-UPDATE Forums
+UPDATE Topics
 SET
-	ForumName = @ForumName
-	,ForumDescription = @ForumDescription 
-	,CategoryId = @CategoryId
-	,ForumLastEditDate = GETUTCDATE()
-	,ForumLastEditUser = @UserId
-	,ReadAccessGroupId = @ReadAccessGroupId
-	,PostAccessGroupId = @PostAccessGroupId
+	TopicViews = TopicViews+1
 WHERE
-	ForumShortName = @ForumShortName' 
+	TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsInsert]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsInsert]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsInsert]
-(
-	@ForumName nvarchar(255)
-	,@ForumShortName nvarchar(32)
-	,@ForumDescription nvarchar(max)
-	,@CategoryId int
-	,@UserId int
-	,@ReadAccessGroupId smallint
-	,@PostAccessGroupId smallint
-)
-AS
-INSERT INTO Forums
-(
-	ForumName
-	,ForumShortName
-	,ForumDescription
-	,CategoryId
-	,UserId
-	,ForumCreationDate
-	,ForumLastEditDate
-	,ForumLastEditUser
-	,Active
-	,ForumTopicCount
-	,ForumMessageCount
-	,ForumOrder
-	,ReadAccessGroupId
-	,PostAccessGroupId
-)
-VALUES
-(
-	@ForumName
-	,@ForumShortName
-	,@ForumDescription
-	,@CategoryId
-	,@UserId
-	,GETUTCDATE()
-	,GETUTCDATE()
-	,@UserId
-	,1
-	,0
-	,0
-	,0
-	,@ReadAccessGroupId
-	,@PostAccessGroupId
-)' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsGetUsedShortNames]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetUsedShortNames]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetUsedShortNames]
-(
-	@ForumShortName nvarchar(32), 
-	@SearchShortName nvarchar(32)
-)
-AS
-/*
-	Gets used short names for forums
-	returns:
-		IF NOT USED SHORTNAME: empty result set
-		IF USED SHORTNAME: resultset with amount of rows used
-*/
-DECLARE @CurrentValue nvarchar(32)
-SELECT 
-	@CurrentValue = ForumShortName
-FROM 
-	Forums
-WHERE
-	ForumShortName = @ForumShortName
-	
-
-IF @CurrentValue IS NULL
-	SELECT NULL As ForumShortName WHERE 1=0
-ELSE
-	SELECT 
-		ForumShortName
-	FROM
-		Forums
-	WHERE
-		ForumShortName LIKE @SearchShortName + ''%''
-		OR
-		ForumShortName = @ForumShortName' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsGetByShortName]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByShortName]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByShortName]
-	@ShortName nvarchar(32)
-AS
-SELECT
-	F.ForumId
-	,F.ForumName
-	,F.ForumShortName
-	,F.ForumDescription
-	,F.UserId
-	,F.ForumCreationDate
-	,F.ForumTopicCount
-	,F.ForumMessageCount
-	,C.CategoryId
-	,C.CategoryName
-	,F.ReadAccessGroupId
-	,F.PostAccessGroupId
-FROM
-	Forums F 
-	INNER JOIN ForumsCategories C ON F.CategoryId = C.CategoryId
-WHERE
-	F.ForumShortName = @ShortName
-	AND
-	F.Active = 1' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsGetByCategory]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsGetByCategory]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsGetByCategory]
-	@UserGroupId smallint=NULL
-AS
-SELECT
-	F.ForumId
-	,F.ForumName
-	,F.ForumShortName
-	,F.ForumDescription
-	,F.UserId
-	,F.ForumCreationDate
-	,F.ForumTopicCount
-	,F.ForumMessageCount
-	,C.CategoryId
-	,C.CategoryName
-FROM
-	ForumsCategories C
-	INNER JOIN Forums F ON F.CategoryId = C.CategoryId
-WHERE
-	F.Active = 1
-	AND
-	ISNULL(F.ReadAccessGroupId,-1) <= ISNULL(@UserGroupId,-1)
-ORDER BY
-	C.CategoryOrder,
-	F.ForumOrder' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsDelete]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsDelete]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsDelete]
-	@ForumShortName nvarchar(32)
-AS
-
-UPDATE Forums
-SET
-	Active = 0
-WHERE
-	ForumShortName = @ForumShortName' 
-END
-GO
-/****** Object:  Table [dbo].[Topics]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Topics]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Topics](
-	[TopicId] [int] IDENTITY(1,1) NOT NULL,
-	[TopicTitle] [nvarchar](256) NOT NULL,
-	[TopicShortName] [nvarchar](64) NOT NULL,
-	[TopicDescription] [nvarchar](max) NOT NULL,
-	[TopicCreationDate] [datetime] NOT NULL,
-	[TopicLastEditDate] [datetime] NOT NULL,
-	[TopicViews] [int] NOT NULL,
-	[TopicReplies] [int] NOT NULL,
-	[UserId] [int] NOT NULL,
-	[TopicTags] [nvarchar](256) NOT NULL,
-	[ForumId] [int] NOT NULL,
-	[TopicLastEditUser] [int] NOT NULL,
-	[TopicLastEditIp] [varchar](39) NOT NULL,
-	[Active] [bit] NOT NULL,
-	[TopicIsClose] [bit] NOT NULL,
-	[TopicOrder] [int] NULL,
-	[LastMessageId] [int] NULL,
-	[MessagesIdentity] [int] NOT NULL,
-	[ReadAccessGroupId] [smallint] NULL,
-	[PostAccessGroupId] [smallint] NOT NULL,
- CONSTRAINT [PK_Topics] PRIMARY KEY CLUSTERED 
-(
-	[TopicId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsOpen]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsOpen]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1189,7 +1536,88 @@ AS
 		TopicId = @TopicId' 
 END
 GO
-/****** Object:  Table [dbo].[TopicsSubscriptions]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  StoredProcedure [dbo].[SPForumsUpdateRecount]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdateRecount]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdateRecount]
+	@ForumId int = 2
+AS
+/*
+	RECOUNTS THE CHILDREN MESSAGES AND TOPICS
+*/
+DECLARE @ForumTopicCount int, @ForumMessageCount int;
+
+SELECT
+	@ForumTopicCount = COUNT(TopicId)
+	,@ForumMessageCount = SUM(TopicReplies)
+FROM
+	Topics
+WHERE
+	ForumId = @ForumId
+	AND
+	Active = 1;
+
+UPDATE Forums
+SET 
+	ForumTopicCount = ISNULL(@ForumTopicCount, 0)
+	,ForumMessageCount = ISNULL(@ForumMessageCount, 0)
+WHERE	
+	ForumId = @ForumId;' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPForumsUpdateLastMessage]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdateLastMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdateLastMessage]
+	@TopicId int
+	,@MessageId int
+AS
+
+UPDATE F
+SET
+	F.ForumMessageCount = F.ForumMessageCount + 1
+FROM
+	Topics T
+	INNER JOIN Forums F ON F.ForumId = T.ForumId
+WHERE
+  T.TopicId = @TopicId;' 
+END
+GO
+/****** Object:  Table [dbo].[Messages]    Script Date: 05/17/2013 14:46:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Messages]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Messages](
+	[TopicId] [int] NOT NULL,
+	[MessageId] [int] NOT NULL,
+	[MessageBody] [nvarchar](max) NOT NULL,
+	[MessageCreationDate] [datetime] NOT NULL,
+	[MessageLastEditDate] [datetime] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[ParentId] [int] NULL,
+	[Active] [bit] NOT NULL,
+	[EditIp] [varchar](39) NULL,
+	[MessageLastEditUser] [int] NOT NULL,
+ CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED 
+(
+	[TopicId] ASC,
+	[MessageId] ASC
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+END
+GO
+/****** Object:  Table [dbo].[TopicsSubscriptions]    Script Date: 05/17/2013 14:46:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1203,11 +1631,11 @@ CREATE TABLE [dbo].[TopicsSubscriptions](
 (
 	[TopicId] ASC,
 	[UserId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
 END
 GO
-/****** Object:  View [dbo].[TopicsComplete]    Script Date: 02/22/2012 16:34:40 ******/
+/****** Object:  View [dbo].[TopicsComplete]    Script Date: 05/17/2013 14:46:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1247,27 +1675,7 @@ SELECT
 		AND
 		F.Active = 1'
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsUpdateLastMessage]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsUpdateLastMessage]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdateLastMessage]
-	@TopicId int
-	,@MessageId int
-AS
-
-UPDATE Topics
-SET
-	TopicReplies = TopicReplies + 1
-	,LastMessageId = @MessageId
-WHERE
-	TopicId = @TopicId' 
-END
-GO
-/****** Object:  Table [dbo].[Tags]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  Table [dbo].[Tags]    Script Date: 05/17/2013 14:46:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1281,135 +1689,34 @@ CREATE TABLE [dbo].[Tags](
 (
 	[Tag] ASC,
 	[TopicId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPForumsUpdateRecount]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesDelete]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdateRecount]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesDelete]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdateRecount]
-	@ForumId int = 2
-AS
-/*
-	RECOUNTS THE CHILDREN MESSAGES AND TOPICS
-*/
-DECLARE @ForumTopicCount int, @ForumMessageCount int;
-
-SELECT
-	@ForumTopicCount = COUNT(TopicId)
-	,@ForumMessageCount = SUM(TopicReplies)
-FROM
-	Topics
-WHERE
-	ForumId = @ForumId
-	AND
-	Active = 1;
-
-UPDATE Forums
-SET 
-	ForumTopicCount = ISNULL(@ForumTopicCount, 0)
-	,ForumMessageCount = ISNULL(@ForumMessageCount, 0)
-WHERE	
-	ForumId = @ForumId;' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPForumsUpdateLastMessage]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPForumsUpdateLastMessage]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPForumsUpdateLastMessage]
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesDelete]
 	@TopicId int
 	,@MessageId int
-AS
-
-UPDATE F
-SET
-	F.ForumMessageCount = F.ForumMessageCount + 1
-FROM
-	Topics T
-	INNER JOIN Forums F ON F.ForumId = T.ForumId
-WHERE
-  T.TopicId = @TopicId;' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsClose]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsClose]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsClose]
-	@TopicId int
 	,@UserId int
-	,@Ip varchar (39)
 AS
-	UPDATE Topics
-	SET
-		TopicIsClose = 1
-		,TopicLastEditDate = GETUTCDATE()
-		,TopicLastEditUser = @UserId
-		,TopicLastEditIp = @Ip
-	WHERE
-		TopicId = @TopicId' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsAddVisit]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsAddVisit]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsAddVisit]
-	@TopicId int=2
-AS
-UPDATE Topics
+UPDATE Messages
 SET
-	TopicViews = TopicViews+1
+	Active = 0
+	,MessageLastEditDate = GETUTCDATE()
+	,MessageLastEditUser = @UserId
 WHERE
-	TopicId = @TopicId' 
+	TopicId = @TopicId
+	AND
+	MessageId = @MessageId' 
 END
 GO
-/****** Object:  Table [dbo].[Messages]    Script Date: 02/22/2012 16:34:39 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Messages]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Messages](
-	[TopicId] [int] NOT NULL,
-	[MessageId] [int] NOT NULL,
-	[MessageBody] [nvarchar](max) NOT NULL,
-	[MessageCreationDate] [datetime] NOT NULL,
-	[MessageLastEditDate] [datetime] NOT NULL,
-	[UserId] [int] NOT NULL,
-	[ParentId] [int] NULL,
-	[Active] [bit] NOT NULL,
-	[EditIp] [varchar](39) NULL,
-	[MessageLastEditUser] [int] NOT NULL,
- CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED 
-(
-	[TopicId] ASC,
-	[MessageId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  View [dbo].[MessagesComplete]    Script Date: 02/22/2012 16:34:40 ******/
+/****** Object:  View [dbo].[MessagesComplete]    Script Date: 05/17/2013 14:46:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1438,12 +1745,10 @@ FROM
 	INNER JOIN dbo.UsersGroups G ON G.UserGroupId = U.UserGroupId
 	LEFT JOIN dbo.Messages P ON P.TopicId = M.TopicId AND P.MessageId = M.ParentId AND P.Active = 1'
 GO
-/****** Object:  Table [dbo].[Flags]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  Table [dbo].[Flags]    Script Date: 05/17/2013 14:46:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Flags]') AND type in (N'U'))
 BEGIN
@@ -1456,99 +1761,11 @@ CREATE TABLE [dbo].[Flags](
  CONSTRAINT [PK_Flags] PRIMARY KEY CLUSTERED 
 (
 	[FlagId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
 END
 GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesDelete]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPMessagesDelete]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPMessagesDelete]
-	@TopicId int
-	,@MessageId int
-	,@UserId int
-AS
-UPDATE Messages
-SET
-	Active = 0
-	,MessageLastEditDate = GETUTCDATE()
-	,MessageLastEditUser = @UserId
-WHERE
-	TopicId = @TopicId
-	AND
-	MessageId = @MessageId' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPTagsInsert]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsInsert]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsInsert]
-	@Tags nvarchar(256),
-	@TopicId int,
-	@PreviousTags nvarchar(256)=NULL
-AS
-
-IF NOT @PreviousTags IS NULL
-	BEGIN
-	DELETE FROM Tags
-	WHERE
-		Tag IN (SELECT part FROM dbo.Split(@PreviousTags, '' ''))
-		AND
-		TopicId = @TopicId
-	END
-
-INSERT INTO Tags
-(Tag,TopicId)
-SELECT part, @TopicId FROM dbo.Split(@Tags, '' '')' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPTagsGetMostViewed]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsGetMostViewed]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsGetMostViewed]
-	@ForumId int=2
-	,@Top bigint=5
-AS
-SELECT
-	Tag, 
-	TagViews, 
-	(TagViews*100.00)/SUM(case when TagViews > 0 then TagViews else 1 end) OVER() AS Weight
-FROM
-	(
-	SELECT
-		TOP (@Top)
-		Tags.Tag
-		,SUM(T.TopicViews) As TagViews
-		,COUNT(T.TopicId) As TopicCount
-	FROM
-		Tags
-		INNER JOIN Topics T ON Tags.TopicId = T.TopicId
-	WHERE
-		T.ForumId = @ForumId
-		AND
-		T.Active = 1
-	GROUP BY
-		Tags.Tag
-	ORDER BY SUM(T.TopicViews) desc
-	) T
-ORDER BY Tag' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesInsert]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesInsert]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1627,109 +1844,70 @@ BEGIN CATCH
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsInsert]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTagsInsert]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsInsert]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsInsert]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsInsert]
-	@TopicId int
-	,@UserId int
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsInsert]
+	@Tags nvarchar(256),
+	@TopicId int,
+	@PreviousTags nvarchar(256)=NULL
 AS
-IF NOT EXISTS (SELECT TopicId FROM TopicsSubscriptions WHERE TopicId = @TopicId AND UserID = @UserId)
-BEGIN
-	INSERT INTO TopicsSubscriptions
-	(TopicId, UserId)
-	VALUES
-	(@TopicId, @UserId)
-END' 
+
+IF NOT @PreviousTags IS NULL
+	BEGIN
+	DELETE FROM Tags
+	WHERE
+		Tag IN (SELECT part FROM dbo.Split(@PreviousTags, '' ''))
+		AND
+		TopicId = @TopicId
+	END
+
+INSERT INTO Tags
+(Tag,TopicId)
+SELECT part, @TopicId FROM dbo.Split(@Tags, '' '')' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByUser]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTagsGetMostViewed]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsGetByUser]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTagsGetMostViewed]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByUser]
-	@UserId int=21
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTagsGetMostViewed]
+	@ForumId int=2
+	,@Top bigint=5
 AS
 SELECT
-	T.TopicId
-	,T.TopicTitle
-	,T.TopicShortName
-	,T.ForumId
-	,T.ForumName
-	,T.ForumShortName
+	Tag, 
+	TagViews, 
+	(TagViews*100.00)/SUM(case when TagViews > 0 then TagViews else 1 end) OVER() AS Weight
 FROM
-	TopicsSubscriptions S
-	INNER JOIN TopicsComplete T ON T.TopicId = S.TopicId
-WHERE
-	S.UserId = @UserId
-ORDER BY
-	S.TopicId DESC' 
+	(
+	SELECT
+		TOP (@Top)
+		Tags.Tag
+		,SUM(T.TopicViews) As TagViews
+		,COUNT(T.TopicId) As TopicCount
+	FROM
+		Tags
+		INNER JOIN Topics T ON Tags.TopicId = T.TopicId
+	WHERE
+		T.ForumId = @ForumId
+		AND
+		T.Active = 1
+	GROUP BY
+		Tags.Tag
+	ORDER BY SUM(T.TopicViews) desc
+	) T
+ORDER BY Tag' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByTopic]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsGetByTopic]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByTopic]
-	@TopicId int
-AS
-/*
-	Gets the active users subscribed to a topic.
-	Checks read access of topic vs user role
-*/
-SELECT
-	U.UserId
-	,U.UserName
-	,U.UserEmail
-	,U.UserEmailPolicy
-	,U.UserGuid
-FROM
-	TopicsSubscriptions S
-	INNER JOIN Topics T ON T.TopicId = S.TopicId
-	INNER JOIN Users U ON U.UserId = S.UserId
-WHERE
-	S.TopicId = @TopicId
-	AND
-	U.Active = 1
-	AND
-	U.UserGroupId >= ISNULL(T.ReadAccessGroupId, -1)' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsDelete]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsDelete]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsDelete]
-	@TopicId int
-	,@UserId int
-	,@Userguid char(32)
-AS
-DELETE S
-FROM 
-	TopicsSubscriptions S
-	INNER JOIN Users U ON U.UserId = S.UserId
-WHERE
-	S.TopicId = @TopicId
-	AND
-	S.UserId = @UserId	
-	AND
-	U.UserGuid = @UserGuid' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetUnanswered]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetUnanswered]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1767,7 +1945,7 @@ ORDER BY
 	TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetMessagesByUser]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetMessagesByUser]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1802,7 +1980,7 @@ WHERE
 ORDER BY T.TopicId desc, M.MessageId desc' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetLatest]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetLatest]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1839,7 +2017,7 @@ AS
 	ORDER BY T.TopicId desc' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByUser]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByUser]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1877,7 +2055,7 @@ WHERE
 ORDER BY T.TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByTag]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByTag]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1925,7 +2103,7 @@ WHERE
 ORDER BY TopicOrder DESC,TopicViews DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByRelated]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByRelated]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1998,7 +2176,7 @@ ORDER BY
 	1 desc, Topics.TopicViews DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumUnanswered]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumUnanswered]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2044,7 +2222,7 @@ ORDER BY
 	TopicViews DESC, TopicId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumLatest]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForumLatest]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2101,7 +2279,7 @@ WHERE
 	RowNumber BETWEEN @StartIndex+1 AND @StartIndex + @Length' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForum]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGetByForum]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2154,7 +2332,7 @@ WHERE
 	RowNumber BETWEEN @StartIndex+1 AND @StartIndex + @Length' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsGet]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsGet]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2189,7 +2367,7 @@ WHERE
 	T.TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsDelete]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsDelete]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2221,7 +2399,109 @@ WHERE
 exec dbo.SPForumsUpdateRecount @ForumId;' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsMove]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsInsert]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsInsert]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsInsert]
+	@TopicId int
+	,@UserId int
+AS
+IF NOT EXISTS (SELECT TopicId FROM TopicsSubscriptions WHERE TopicId = @TopicId AND UserID = @UserId)
+BEGIN
+	INSERT INTO TopicsSubscriptions
+	(TopicId, UserId)
+	VALUES
+	(@TopicId, @UserId)
+END' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByUser]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsGetByUser]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByUser]
+	@UserId int=21
+AS
+SELECT
+	T.TopicId
+	,T.TopicTitle
+	,T.TopicShortName
+	,T.ForumId
+	,T.ForumName
+	,T.ForumShortName
+FROM
+	TopicsSubscriptions S
+	INNER JOIN TopicsComplete T ON T.TopicId = S.TopicId
+WHERE
+	S.UserId = @UserId
+ORDER BY
+	S.TopicId DESC' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsGetByTopic]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsGetByTopic]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsGetByTopic]
+	@TopicId int
+AS
+/*
+	Gets the active users subscribed to a topic.
+	Checks read access of topic vs user role
+*/
+SELECT
+	U.UserId
+	,U.UserName
+	,U.UserEmail
+	,U.UserEmailPolicy
+	,U.UserGuid
+FROM
+	TopicsSubscriptions S
+	INNER JOIN Topics T ON T.TopicId = S.TopicId
+	INNER JOIN Users U ON U.UserId = S.UserId
+WHERE
+	S.TopicId = @TopicId
+	AND
+	U.Active = 1
+	AND
+	U.UserGroupId >= ISNULL(T.ReadAccessGroupId, -1)' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTopicsSubscriptionsDelete]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsSubscriptionsDelete]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsSubscriptionsDelete]
+	@TopicId int
+	,@UserId int
+	,@Userguid char(32)
+AS
+DELETE S
+FROM 
+	TopicsSubscriptions S
+	INNER JOIN Users U ON U.UserId = S.UserId
+WHERE
+	S.TopicId = @TopicId
+	AND
+	S.UserId = @UserId	
+	AND
+	U.UserGuid = @UserGuid' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTopicsMove]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2267,7 +2547,71 @@ BEGIN CATCH
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsInsert]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPTopicsUpdate]    Script Date: 05/17/2013 14:46:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsUpdate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdate]
+	@TopicId int
+	,@TopicTitle nvarchar(256)
+	,@TopicDescription nvarchar(max)
+	,@UserId int
+	,@TopicTags nvarchar(256)
+	,@TopicOrder int
+	,@ReadAccessGroupId smallint
+	,@PostAccessGroupId smallint
+	,@Ip varchar (39)
+AS
+DECLARE @PreviousTags nvarchar(256)
+SELECT @PreviousTags=TopicTags FROM Topics WHERE TopicId=@TopicId
+
+IF @TopicOrder IS NOT NULL
+	BEGIN
+	SELECT @TopicOrder = MAX(TopicOrder)+1 FROM Topics
+	SELECT @TopicOrder = ISNULL(@TopicOrder, 1)
+	END
+
+BEGIN TRY
+	BEGIN TRANSACTION
+
+	UPDATE T
+	SET
+		TopicTitle = @TopicTitle
+		,TopicDescription = @TopicDescription
+		,TopicLastEditDate = GETUTCDATE()
+		,TopicTags = @TopicTags
+		,TopicLastEditUser = @UserId
+		,TopicLastEditIp = @Ip
+		,TopicOrder = @TopicOrder
+		,ReadAccessGroupId = @ReadAccessGroupId
+		,PostAccessGroupId = @PostAccessGroupId
+	FROM
+		Topics T
+	WHERE
+		TopicId = @TopicId
+
+	--Edit tags
+	EXEC dbo.[SPTagsInsert] @Tags=@TopicTags, @TopicId=@TopicId, @PreviousTags=@PreviousTags
+
+	COMMIT
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK
+
+  -- Raise an error with the details of the exception
+	DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
+	SELECT @ErrMsg = ERROR_MESSAGE(),
+		 @ErrSeverity = ERROR_SEVERITY()
+
+	RAISERROR(@ErrMsg, @ErrSeverity, 1)
+END CATCH' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SPTopicsInsert]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2375,71 +2719,7 @@ BEGIN CATCH
 END CATCH' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPTopicsUpdate]    Script Date: 02/22/2012 16:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SPTopicsUpdate]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[SPTopicsUpdate]
-	@TopicId int
-	,@TopicTitle nvarchar(256)
-	,@TopicDescription nvarchar(max)
-	,@UserId int
-	,@TopicTags nvarchar(256)
-	,@TopicOrder int
-	,@ReadAccessGroupId smallint
-	,@PostAccessGroupId smallint
-	,@Ip varchar (39)
-AS
-DECLARE @PreviousTags nvarchar(256)
-SELECT @PreviousTags=TopicTags FROM Topics WHERE TopicId=@TopicId
-
-IF @TopicOrder IS NOT NULL
-	BEGIN
-	SELECT @TopicOrder = MAX(TopicOrder)+1 FROM Topics
-	SELECT @TopicOrder = ISNULL(@TopicOrder, 1)
-	END
-
-BEGIN TRY
-	BEGIN TRANSACTION
-
-	UPDATE T
-	SET
-		TopicTitle = @TopicTitle
-		,TopicDescription = @TopicDescription
-		,TopicLastEditDate = GETUTCDATE()
-		,TopicTags = @TopicTags
-		,TopicLastEditUser = @UserId
-		,TopicLastEditIp = @Ip
-		,TopicOrder = @TopicOrder
-		,ReadAccessGroupId = @ReadAccessGroupId
-		,PostAccessGroupId = @PostAccessGroupId
-	FROM
-		Topics T
-	WHERE
-		TopicId = @TopicId
-
-	--Edit tags
-	EXEC dbo.[SPTagsInsert] @Tags=@TopicTags, @TopicId=@TopicId, @PreviousTags=@PreviousTags
-
-	COMMIT
-END TRY
-BEGIN CATCH
-	IF @@TRANCOUNT > 0
-		ROLLBACK
-
-  -- Raise an error with the details of the exception
-	DECLARE @ErrMsg nvarchar(4000), @ErrSeverity int
-	SELECT @ErrMsg = ERROR_MESSAGE(),
-		 @ErrSeverity = ERROR_SEVERITY()
-
-	RAISERROR(@ErrMsg, @ErrSeverity, 1)
-END CATCH' 
-END
-GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicUpTo]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicUpTo]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2480,7 +2760,7 @@ WHERE
 	M.MessageId <= @LastMsg' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicLatest]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicLatest]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2512,7 +2792,7 @@ ORDER BY
 	TopicId, MessageId DESC' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicFrom]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopicFrom]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2558,7 +2838,7 @@ WHERE
 	RowNumber <= @Amount' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopic]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesGetByTopic]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2593,7 +2873,7 @@ WHERE
 	M.TopicId = @TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsGetAll]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsGetAll]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2640,7 +2920,7 @@ GROUP BY
 ORDER BY COUNT(FlagId) DESC, F.TopicId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsClear]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesFlagsClear]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2661,7 +2941,7 @@ WHERE
 	MessageId = @MessageId' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SPMessagesFlag]    Script Date: 02/22/2012 16:34:50 ******/
+/****** Object:  StoredProcedure [dbo].[SPMessagesFlag]    Script Date: 05/17/2013 14:46:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2684,7 +2964,7 @@ IF NOT EXISTS (SELECT * FROM Flags WHERE TopicId=@TopicId AND IP=@Ip AND (Messag
 	END' 
 END
 GO
-/****** Object:  ForeignKey [FK_Flags_Messages]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Flags_Messages]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Flags_Messages]') AND parent_object_id = OBJECT_ID(N'[dbo].[Flags]'))
 ALTER TABLE [dbo].[Flags]  WITH CHECK ADD  CONSTRAINT [FK_Flags_Messages] FOREIGN KEY([TopicId], [MessageId])
 REFERENCES [dbo].[Messages] ([TopicId], [MessageId])
@@ -2692,7 +2972,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Flags_Messages]') AND parent_object_id = OBJECT_ID(N'[dbo].[Flags]'))
 ALTER TABLE [dbo].[Flags] CHECK CONSTRAINT [FK_Flags_Messages]
 GO
-/****** Object:  ForeignKey [FK_Forums_ForumsCategories]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Forums_ForumsCategories]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_ForumsCategories]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_ForumsCategories] FOREIGN KEY([CategoryId])
 REFERENCES [dbo].[ForumsCategories] ([CategoryId])
@@ -2700,7 +2980,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_ForumsCategories]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_ForumsCategories]
 GO
-/****** Object:  ForeignKey [FK_Forums_Users]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Forums_Users]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2708,7 +2988,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_Users]
 GO
-/****** Object:  ForeignKey [FK_Forums_Users_LastEdit]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Forums_Users_LastEdit]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Users_LastEdit] FOREIGN KEY([ForumLastEditUser])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2716,7 +2996,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_Users_LastEdit]
 GO
-/****** Object:  ForeignKey [FK_Forums_UsersGroups_Post]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Forums_UsersGroups_Post]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_UsersGroups_Post] FOREIGN KEY([PostAccessGroupId])
 REFERENCES [dbo].[UsersGroups] ([UserGroupId])
@@ -2724,7 +3004,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_UsersGroups_Post]
 GO
-/****** Object:  ForeignKey [FK_Forums_UsersGroups_Read]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Forums_UsersGroups_Read]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_UsersGroups_Read] FOREIGN KEY([ReadAccessGroupId])
 REFERENCES [dbo].[UsersGroups] ([UserGroupId])
@@ -2732,7 +3012,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums]'))
 ALTER TABLE [dbo].[Forums] CHECK CONSTRAINT [FK_Forums_UsersGroups_Read]
 GO
-/****** Object:  ForeignKey [FK_Messages_Topics]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Messages_Topics]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Topics] ([TopicId])
@@ -2740,7 +3020,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages] CHECK CONSTRAINT [FK_Messages_Topics]
 GO
-/****** Object:  ForeignKey [FK_Messages_Users]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Messages_Users]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2748,7 +3028,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Messages_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Messages]'))
 ALTER TABLE [dbo].[Messages] CHECK CONSTRAINT [FK_Messages_Users]
 GO
-/****** Object:  ForeignKey [FK_Tags_Topics]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Tags_Topics]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Tags]'))
 ALTER TABLE [dbo].[Tags]  WITH CHECK ADD  CONSTRAINT [FK_Tags_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Topics] ([TopicId])
@@ -2756,7 +3036,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Tags]'))
 ALTER TABLE [dbo].[Tags] CHECK CONSTRAINT [FK_Tags_Topics]
 GO
-/****** Object:  ForeignKey [FK_Topics_Forums]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Topics_Forums]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Forums] FOREIGN KEY([ForumId])
 REFERENCES [dbo].[Forums] ([ForumId])
@@ -2764,7 +3044,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_Forums]
 GO
-/****** Object:  ForeignKey [FK_Topics_Users]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Topics_Users]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2772,7 +3052,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_Users]
 GO
-/****** Object:  ForeignKey [FK_Topics_Users_LastEdit]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Topics_Users_LastEdit]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_Users_LastEdit] FOREIGN KEY([TopicLastEditUser])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2780,7 +3060,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_Users_LastEdit]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_Users_LastEdit]
 GO
-/****** Object:  ForeignKey [FK_Topics_UsersGroups_Post]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Topics_UsersGroups_Post]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_UsersGroups_Post] FOREIGN KEY([PostAccessGroupId])
 REFERENCES [dbo].[UsersGroups] ([UserGroupId])
@@ -2788,7 +3068,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Post]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_UsersGroups_Post]
 GO
-/****** Object:  ForeignKey [FK_Topics_UsersGroups_Read]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Topics_UsersGroups_Read]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics]  WITH CHECK ADD  CONSTRAINT [FK_Topics_UsersGroups_Read] FOREIGN KEY([ReadAccessGroupId])
 REFERENCES [dbo].[UsersGroups] ([UserGroupId])
@@ -2796,7 +3076,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Topics_UsersGroups_Read]') AND parent_object_id = OBJECT_ID(N'[dbo].[Topics]'))
 ALTER TABLE [dbo].[Topics] CHECK CONSTRAINT [FK_Topics_UsersGroups_Read]
 GO
-/****** Object:  ForeignKey [FK_TopicsSubscriptions_Topics]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_TopicsSubscriptions_Topics]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions]  WITH CHECK ADD  CONSTRAINT [FK_TopicsSubscriptions_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Topics] ([TopicId])
@@ -2804,7 +3084,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions] CHECK CONSTRAINT [FK_TopicsSubscriptions_Topics]
 GO
-/****** Object:  ForeignKey [FK_TopicsSubscriptions_Users]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_TopicsSubscriptions_Users]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions]  WITH CHECK ADD  CONSTRAINT [FK_TopicsSubscriptions_Users] FOREIGN KEY([UserId])
 REFERENCES [dbo].[Users] ([UserId])
@@ -2812,7 +3092,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_TopicsSubscriptions_Users]') AND parent_object_id = OBJECT_ID(N'[dbo].[TopicsSubscriptions]'))
 ALTER TABLE [dbo].[TopicsSubscriptions] CHECK CONSTRAINT [FK_TopicsSubscriptions_Users]
 GO
-/****** Object:  ForeignKey [FK_Users_UsersGroups]    Script Date: 02/22/2012 16:34:39 ******/
+/****** Object:  ForeignKey [FK_Users_UsersGroups]    Script Date: 05/17/2013 14:46:08 ******/
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Users_UsersGroups]') AND parent_object_id = OBJECT_ID(N'[dbo].[Users]'))
 ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_UsersGroups] FOREIGN KEY([UserGroupId])
 REFERENCES [dbo].[UsersGroups] ([UserGroupId])
