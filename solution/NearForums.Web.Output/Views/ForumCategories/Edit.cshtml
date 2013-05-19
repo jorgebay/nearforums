@@ -11,7 +11,7 @@
 @Html.ValidationSummary("<h3>" + S("Please check the following errors:") + "</h3>", new Dictionary<string, object>
 {
 	{"Name", S("Name must not be blank.")},
-    {"Order", S("Category order must be a number greater than 0.")}
+    {"Order", S("Category order must be a number.")}
 }, null)
 @using (Html.BeginForm())
 {
