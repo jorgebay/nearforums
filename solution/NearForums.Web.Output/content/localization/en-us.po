@@ -1265,7 +1265,7 @@ msgstr "Language"
 
 #: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
 msgid "IETF language tag (RFC 5646)"
-msgstr "IETF language tag (RFC 5646)"
+msgstr "IETF language tag (RFC 5646). Requires an application restart for the application to use the translation file."
 
 #: NearForums.Web.Output\Views\Settings\EditGeneral.cshtml
 msgid "Content path"

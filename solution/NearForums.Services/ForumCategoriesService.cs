@@ -26,11 +26,13 @@ namespace NearForums.Services
 
 		public void Add(ForumCategory category)
 		{
+			category.ValidateFields();
 			_dataAccess.Add(category);
 		}
 
 		public void Edit(ForumCategory category)
 		{
+			category.ValidateFields();
 			_dataAccess.Edit(category);
 		}
 

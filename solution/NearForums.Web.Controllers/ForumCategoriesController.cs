@@ -15,7 +15,6 @@ namespace NearForums.Web.Controllers
 			_service = service;
 		}
 
-
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult List()
 		{
@@ -39,7 +38,6 @@ namespace NearForums.Web.Controllers
 		{
 			try
 			{
-				category.ValidateFields();
 				_service.Add(category);
 			}
 			catch (ValidationException ex)
@@ -51,10 +49,7 @@ namespace NearForums.Web.Controllers
 			{
 				return RedirectToAction("List");
 			}
-			else
-			{
-				return View("Edit", category);
-			}
+			return View("Edit", category);
 		}
 
 
@@ -85,11 +80,7 @@ namespace NearForums.Web.Controllers
 			{
 				return false;
 			}
-			else
-			{
-				return _service.Delete(id);
-			}
-
+			return _service.Delete(id);
 		}
 
 	}
