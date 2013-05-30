@@ -156,6 +156,20 @@ namespace NearForums.DataAccess
 			{
 				return (T) Convert.ChangeType(dr.GetDate(columnName), typeof(T));
 			}
+			if (typeof(T) == typeof(bool))
+			{
+				//Depending on the db engine it can come as a boxed boolean or a boxed int
+				//Watch out for the ints!
+				var stringValue = Convert.ToString(value);
+				if (stringValue == "0")
+				{
+					return (T)Convert.ChangeType(false, typeof(T));
+				}
+				else if (stringValue == "1")
+				{
+					return (T)Convert.ChangeType(true, typeof(T));
+				}
+			}
 			return (T) value;
 		}
 
