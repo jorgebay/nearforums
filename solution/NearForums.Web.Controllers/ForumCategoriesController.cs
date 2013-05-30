@@ -67,8 +67,19 @@ namespace NearForums.Web.Controllers
 		[RequireAuthorization(UserRole.Admin)]
 		public ActionResult Edit(ForumCategory category)
 		{
-			_service.Edit(category);
-			return RedirectToAction("List");
+			try
+			{
+				_service.Edit(category);
+			}
+			catch (ValidationException ex)
+			{
+				this.AddErrors(this.ModelState, ex);
+			}
+			if (ModelState.IsValid)
+			{
+				return RedirectToAction("List");
+			}
+			return View("Edit", category);
 		}
 
 

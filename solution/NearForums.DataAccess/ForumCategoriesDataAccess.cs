@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
@@ -80,12 +81,10 @@ namespace NearForums.DataAccess
 		{
 			DbCommand comm = this.GetCommand("SPForumsCategoriesGetForumsCountPerCategory");
 			comm.AddParameter<int>(this.Factory, "CategoryId", id);
-
+			
+			//Get the first column of the first row
 			DataRow dtr1 = this.GetFirstRow(comm);
-
-			return (int)dtr1.ItemArray[0];
-
-
+			return Convert.ToInt32(dtr1[0]);
 		}
 	}
 }
