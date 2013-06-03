@@ -1,6 +1,5 @@
 ﻿/*
 	This css contains all base styles for classes and id used in nearforums content
-	Copied from main dev, replaced paths.
 */
 ul.items
 {
@@ -289,6 +288,26 @@ div.msgUser
 	text-align: center;
 	border-left: 1px solid #666666;
 	width: 140px;
+}
+div.msgUser .nophoto, div.msgUser .photo
+{
+	float: left;
+	padding-right: 10px;
+}
+div.msgUser .nophoto span
+{
+	display: block;
+	width: 48px;
+	height: 48px;
+	background-color: #E0E0E0;
+}
+div.msgUser .photo img
+{
+	width: 48px;
+}
+div.msgUser a
+{
+	text-decoration: none;
 }
 ul div.msgOptions
 {
@@ -691,4 +710,53 @@ ul.results .date
 	font-weight: bold;
 	position: relative;
 	top: -10px;
+}
+
+.formItem .photo
+{
+	float: left;
+	margin-right: 10px;
+	background-color: #E0E0E0;
+	display: block;
+	width: 48px;
+	height: 48px;
+}
+.formItem .photo img
+{
+	width: 48px;
+	border: 1px solid #A3A3A5;
+}
+input.button, .buttons input
+{
+	cursor: pointer;
+}
+input.button:hover
+{
+	border: 1px solid #333333;
+}
+form div.formItem span.largeNote
+{
+	font-weight: normal;
+	float: left;
+	width: 300px;
+	padding: 5px 10px;
+	font-style: italic;
+	color: #666666;
+}
+.settingForm h2
+{
+	padding-top: 10px;
+}
+.userDetail .moderated
+{
+	color: #ffffff;
+	padding: 7px;
+	margin: 10px 0;
+	background-color: #CD3C10;
+	border-radius: 3px;
+}
+.toolbar .moderate a
+{
+	background-image: url(icon-moderate.png);
+    padding-left: 27px;
 }

@@ -1200,8 +1200,8 @@ msgid "Name must not be blank."
 msgstr "Name must not be blank."
 
 #: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
-msgid "Category order must be a number greater than 0."
-msgstr "Category order must be a number greater than 0."
+msgid "Category order must be a number."
+msgstr "Category order must be a number."
 
 #: NearForums.Web.Output\Views\ForumCategories\Edit.cshtml
 msgid "Category order"
