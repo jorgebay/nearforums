@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-using NearForums.Web.Controllers;
-using System.Web.Mvc;
 using System.Collections;
+using System.Web.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NearForums.Tests.Fakes;
+using NearForums.Web.Controllers;
 
 
 namespace NearForums.Tests.Controllers
@@ -19,7 +11,7 @@ namespace NearForums.Tests.Controllers
 	/// <summary>
 	/// Summary description for CodedUITest1
 	/// </summary>
-	[CodedUITest]
+	[TestClass]
 	public class PageContentsControllerTest
 	{
 		public PageContentsControllerTest()
