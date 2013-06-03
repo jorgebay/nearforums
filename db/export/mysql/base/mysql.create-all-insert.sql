@@ -1,6 +1,6 @@
 -- mysql dump 10.13  distrib 5.5.15, for win32 (x86)
 --
--- host: localhost    database: forums_working
+-- host: localhost    database: forums
 -- ------------------------------------------------------
 -- server version	5.5.17
 
@@ -12,6 +12,28 @@
 /*!40014 set @old_foreign_key_checks=@@foreign_key_checks, foreign_key_checks=0 */;
 /*!40101 set @old_sql_mode=@@sql_mode, sql_mode='no_auto_value_on_zero' */;
 /*!40111 set @old_sql_notes=@@sql_notes, sql_notes=0 */;
+
+--
+-- table structure for table `settings`
+--
+
+drop table if exists settings;
+/*!40101 set @saved_cs_client     = @@character_set_client */;
+/*!40101 set character_set_client = utf8 */;
+create table settings (
+  settingkey varchar(255) not null,
+  settingvalue longtext,
+  settingdate datetime not null,
+  primary key (settingkey)
+) default charset=utf8;
+/*!40101 set character_set_client = @saved_cs_client */;
+
+--
+-- dumping data for table `settings`
+--
+
+/*!40000 alter table settings disable keys */;
+/*!40000 alter table settings enable keys */;
 
 --
 -- table structure for table `flags`
@@ -28,7 +50,7 @@ create table flags (
   flagdate datetime not null,
   primary key (flagid,topicid),
   unique key ix_topicid_messageid_ip (topicid,messageid,ip)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +95,7 @@ create table forums (
   constraint fk_forums_usersgroups_post foreign key (postaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
   constraint fk_forums_usersgroups_read foreign key (readaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
   constraint fk_forums_users_lastedit foreign key (forumlastedituser) references `users` (userid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +117,7 @@ create table forumscategories (
   categoryname varchar(255) not null,
   categoryorder int(11) not null,
   primary key (categoryid)
-) engine=innodb auto_increment=2 default charset=utf8;
+) auto_increment=2 default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +125,7 @@ create table forumscategories (
 --
 
 /*!40000 alter table forumscategories disable keys */;
-insert into forumscategories values (1,'general',10);
+insert into forumscategories values (1,'general',1);
 /*!40000 alter table forumscategories enable keys */;
 
 --
@@ -128,7 +150,7 @@ create table messages (
   key fk_messages_users (userid),
   constraint fk_messages_topics foreign key (topicid) references topics (topicid),
   constraint fk_messages_users foreign key (userid) references `users` (userid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +200,7 @@ create table pagecontents (
   pagecontentshortname varchar(128) not null,
   pagecontenteditdate datetime not null,
   primary key (pagecontentid)
-) engine=innodb auto_increment=3 default charset=utf8;
+) auto_increment=3 default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -186,7 +208,7 @@ create table pagecontents (
 --
 
 /*!40000 alter table pagecontents disable keys */;
-insert into pagecontents values (1,'about','\n	<p>this forum is powered by <a href=\"http://www.nearforums.com\">nearforums</a>, an open source forum engine.</p>\n	<p>nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">mit license</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2012-02-21 11:21:51'),(2,'terms and conditions','<h2>legal notices</h2>  <p>we, the operators of this website, provide it as a public service to our users.</p>  <p>please carefully review the following basic rules that govern your use of the website. please note that your use of the website constitutes your unconditional agreement to follow and be bound by these terms and conditions of use. if you (the \"user\") do not agree to them, do not use the website, provide any materials to the website or download any materials from them.</p>  <p>the operators reserve the right to update or modify these terms and conditions at any time without prior notice to user. your use of the website following any such change constitutes your unconditional agreement to follow and be bound by these terms and conditions as changed. for this reason, we encourage you to review these terms and conditions of use whenever you use the website.</p>  <p>these terms and conditions of use apply to the use of the website and do not extend to any linked third party sites. these terms and conditions and our <span>privacy policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “agreement”) between you and the operators with respect to the website. any rights not expressly granted herein are reserved.</p>  <h2><span>permitted and prohibited uses</span></h2>  <p>you may use the the website for the sole purpose of sharing and exchanging ideas with other users. you may not use the the website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the u.s. securities and exchange commission, any rules of any national or other securities exchange, and any u.s. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>you may not upload or transmit any material that infringes or misappropriates any person\'s copyright, patent, trademark, or trade secret, or disclose via the the website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>you may not upload any viruses, worms, trojan horses, or other forms of harmful computer code, nor subject the website\'s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the website.</p>  <p>you are strictly prohibited from communicating on or through the website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>you are expressly prohibited from compiling and using other users\' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>you also are expressly prohibited from distributing users\' personal information to third-party parties for marketing purposes. the operators shall deem the compiling of marketing and mailing lists using users\' personal information, the sending of unsolicited marketing materials to users, or the distribution of users\' personal information to third parties for marketing purposes as a material breach of these terms and conditions of use, and the operators reserve the right to terminate or suspend your access to and use of the website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>the operators note that unauthorized use of users\' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. the operators reserve the right to report the abuse of users\' personal information to the appropriate law enforcement and government authorities, and the operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>user submissions</span></h2>  <p>the operators do not want to receive confidential or proprietary information from you through the website. any material, information, or other communication you transmit or post (\"contributions\") to the website will be considered non-confidential.</p>  <p>all contributions to this site are licensed by you under the mit license to anyone who wishes to use them, including the operators.</p>  <p>if you work for a company or at a university, it\'s likely that you\'re not the copyright holder of anything you make, even in your free time. before making contributions to this site, get written permission from your employer.</p>  <h2><span>user discussion lists and forums</span></h2>  <p>the operators may, but are not obligated to, monitor or review any areas on the website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. the operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. the operators may edit or remove content on the the website at their discretion at any time.</p>  <h2><span>use of personally identifiable information</span></h2>  <p>information submitted to the website is governed according to the operators’s current <span>privacy policy</span> and the stated license of this website.</p>  <p>you agree to provide true, accurate, current, and complete information when registering with the website. it is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. if you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website.</p>  <p>although sections of the website may be viewed simply by visiting the website, in order to access some content and/or additional features offered at the website, you may need to sign on as a guest or register as a member. if you create an account on the website, you may be asked to supply your name, address, a user id and password. you are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. you agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. you further agree that you will not permit others, including those whose accounts have been terminated, to access the website using your account or user id. you grant the operators and all other persons or entities involved in the operation of the website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the website and in the provision of services to you. the operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. to learn more about how we protect the privacy of the personal information in your account, please visit our<span>privacy policy</span>.</p>  <h2><span>indemnification</span></h2>  <p>you agree to defend, indemnify and hold harmless the operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys\' fees, arising from or related to your use or misuse of the website, including, without limitation, your violation of these terms and conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>termination</span></h2>  <p>these terms and conditions of use are effective until terminated by either party. if you no longer agree to be bound by these terms and conditions, you must cease use of the website. if you are dissatisfied with the website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the website. the operators reserve the right to terminate or suspend your access to and use of the website, or parts of the website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the operators have reason to believe that you are in violation of these terms and conditions of use.</p>  <h2><span>warranty disclaimer</span></h2>  <p>the website and associated materials are provided on an \"as is\" and \"as available\" basis. to the full extent permissible by applicable law, the operators disclaim all warranties, express or implied, including, but not limited to, implied warranties of merchantability and fitness for a particular purpose, or non-infringementof intellectual property. the operators make no representations or warranty that the website will meet your requirements, or that your use of the website will be uninterrupted, timely, secure, or error free; nor do the operators make any representation or warranty as to the results that may be obtained from the use of the website. the operators make no representations or warranties of any kind, express or implied, as to the operation of the website or the information, content, materials, or products included on the website.</p>  <p>in no event shall the operators or any of their agents, vendors or suppliers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information) arising out of the use, misuse of or inability to use the website, even if the operators have been advised of the possibility of such damages. this disclaimer constitutes an essential part of this agreement. because some jurisdictions prohibit the exclusion or limitation of liability for consequential or incidental damages, the above limitation may not apply to you.</p>  <p>you understand and agree that any content downloaded or otherwise obtained through the use of the website is at your own discretion and risk and that you will be solely responsible for any damage to your computer system or loss of data or business interruption that results from the download of content. the operators shall not be responsible for any loss or damage caused, or alleged to have been caused, directly or indirectly, by the information or ideas contained, suggested or referenced in or appearing on the website. your participation in the website is solely at your own risk. no advice or information, whether oral or written, obtained by you from the operators or through the operators, their employees, or third parties shall create any warranty not expressly made herein. you acknowledge, by your use of the the website, that your use of the website is at your sole risk.</p>  <p>liability limitation. under no circumstances and under no legal or equitable theory, whether in tort, contract, negligence, strict liability or otherwise, shall the operators or any of their agents, vendors or suppliers be liable to user or to any other person for any indirect, special, incidental or consequential losses or damages of any nature arising out of or in connection with the use of or inability to use the the website or for any breach of security associated with the transmission of sensitive information through the website or for any information obtained through the website, including, without limitation, damages for lost profits, loss of goodwill, loss or corruption of data, work stoppage, accuracy of results, or computer failure or malfunction, even if an authorized representative of the operators has been advised of or should have known of the possibility of such damages.</p>  <p>the operators\'s total cumulative liability for any and all claims in connection with the website will not exceed five u.s. dollars ($5.00). user agrees and acknowledges that the foregoing limitations on liability are an essential basis of the bargain and that the operators would not provide the website absent such limitation.</p>  <h2>links to other materials.</h2>  <p>the website may contain links to sites owned or operated by independent third parties. these links are provided for your convenience and reference only. we do not control such sites and, therefore, we are not responsible for any content posted on these sites. the fact that the operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the website. if you decide to access any of the third party sites linked to by the website, you do this entirely at your own risk. because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>notification of possible copyright infringement</span></h2>  <p>in the event you believe that material or content published on the website may infringe on your copyright or that of another, please <span>contact</span> us.</p>','terms','2012-02-21 11:21:51');
+insert into pagecontents values (1,'about','\n	<p>this forum is powered by <a href=\"http://www.nearforums.com\">nearforums</a>, an open source forum engine.</p>\n	<p>nearforums is released under <a href=\"http://nearforums.codeplex.com/license\" target=\"_blank\">mit license</a>, you can get the source at <a href=\"http://www.nearforums.com/source-code\">www.nearforums.com/source-code</a>.</p>','about','2013-06-04 12:29:14'),(2,'terms and conditions','<h2>legal notices</h2>  <p>we, the operators of this website, provide it as a public service to our users.</p>  <p>please carefully review the following basic rules that govern your use of the website. please note that your use of the website constitutes your unconditional agreement to follow and be bound by these terms and conditions of use. if you (the \"user\") do not agree to them, do not use the website, provide any materials to the website or download any materials from them.</p>  <p>the operators reserve the right to update or modify these terms and conditions at any time without prior notice to user. your use of the website following any such change constitutes your unconditional agreement to follow and be bound by these terms and conditions as changed. for this reason, we encourage you to review these terms and conditions of use whenever you use the website.</p>  <p>these terms and conditions of use apply to the use of the website and do not extend to any linked third party sites. these terms and conditions and our <span>privacy policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “agreement”) between you and the operators with respect to the website. any rights not expressly granted herein are reserved.</p>  <h2><span>permitted and prohibited uses</span></h2>  <p>you may use the the website for the sole purpose of sharing and exchanging ideas with other users. you may not use the the website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the u.s. securities and exchange commission, any rules of any national or other securities exchange, and any u.s. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>you may not upload or transmit any material that infringes or misappropriates any person\'s copyright, patent, trademark, or trade secret, or disclose via the the website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>you may not upload any viruses, worms, trojan horses, or other forms of harmful computer code, nor subject the website\'s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the website.</p>  <p>you are strictly prohibited from communicating on or through the website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>you are expressly prohibited from compiling and using other users\' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>you also are expressly prohibited from distributing users\' personal information to third-party parties for marketing purposes. the operators shall deem the compiling of marketing and mailing lists using users\' personal information, the sending of unsolicited marketing materials to users, or the distribution of users\' personal information to third parties for marketing purposes as a material breach of these terms and conditions of use, and the operators reserve the right to terminate or suspend your access to and use of the website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>the operators note that unauthorized use of users\' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. the operators reserve the right to report the abuse of users\' personal information to the appropriate law enforcement and government authorities, and the operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>user submissions</span></h2>  <p>the operators do not want to receive confidential or proprietary information from you through the website. any material, information, or other communication you transmit or post (\"contributions\") to the website will be considered non-confidential.</p>  <p>all contributions to this site are licensed by you under the mit license to anyone who wishes to use them, including the operators.</p>  <p>if you work for a company or at a university, it\'s likely that you\'re not the copyright holder of anything you make, even in your free time. before making contributions to this site, get written permission from your employer.</p>  <h2><span>user discussion lists and forums</span></h2>  <p>the operators may, but are not obligated to, monitor or review any areas on the website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. the operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. the operators may edit or remove content on the the website at their discretion at any time.</p>  <h2><span>use of personally identifiable information</span></h2>  <p>information submitted to the website is governed according to the operators’s current <span>privacy policy</span> and the stated license of this website.</p>  <p>you agree to provide true, accurate, current, and complete information when registering with the website. it is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. if you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website.</p>  <p>although sections of the website may be viewed simply by visiting the website, in order to access some content and/or additional features offered at the website, you may need to sign on as a guest or register as a member. if you create an account on the website, you may be asked to supply your name, address, a user id and password. you are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. you agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. you further agree that you will not permit others, including those whose accounts have been terminated, to access the website using your account or user id. you grant the operators and all other persons or entities involved in the operation of the website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the website and in the provision of services to you. the operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. to learn more about how we protect the privacy of the personal information in your account, please visit our<span>privacy policy</span>.</p>  <h2><span>indemnification</span></h2>  <p>you agree to defend, indemnify and hold harmless the operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys\' fees, arising from or related to your use or misuse of the website, including, without limitation, your violation of these terms and conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>termination</span></h2>  <p>these terms and conditions of use are effective until terminated by either party. if you no longer agree to be bound by these terms and conditions, you must cease use of the website. if you are dissatisfied with the website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the website. the operators reserve the right to terminate or suspend your access to and use of the website, or parts of the website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the operators have reason to believe that you are in violation of these terms and conditions of use.</p>  <h2><span>warranty disclaimer</span></h2>  <p>the website and associated materials are provided on an \"as is\" and \"as available\" basis. to the full extent permissible by applicable law, the operators disclaim all warranties, express or implied, including, but not limited to, implied warranties of merchantability and fitness for a particular purpose, or non-infringementof intellectual property. the operators make no representations or warranty that the website will meet your requirements, or that your use of the website will be uninterrupted, timely, secure, or error free; nor do the operators make any representation or warranty as to the results that may be obtained from the use of the website. the operators make no representations or warranties of any kind, express or implied, as to the operation of the website or the information, content, materials, or products included on the website.</p>  <p>in no event shall the operators or any of their agents, vendors or suppliers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information) arising out of the use, misuse of or inability to use the website, even if the operators have been advised of the possibility of such damages. this disclaimer constitutes an essential part of this agreement. because some jurisdictions prohibit the exclusion or limitation of liability for consequential or incidental damages, the above limitation may not apply to you.</p>  <p>you understand and agree that any content downloaded or otherwise obtained through the use of the website is at your own discretion and risk and that you will be solely responsible for any damage to your computer system or loss of data or business interruption that results from the download of content. the operators shall not be responsible for any loss or damage caused, or alleged to have been caused, directly or indirectly, by the information or ideas contained, suggested or referenced in or appearing on the website. your participation in the website is solely at your own risk. no advice or information, whether oral or written, obtained by you from the operators or through the operators, their employees, or third parties shall create any warranty not expressly made herein. you acknowledge, by your use of the the website, that your use of the website is at your sole risk.</p>  <p>liability limitation. under no circumstances and under no legal or equitable theory, whether in tort, contract, negligence, strict liability or otherwise, shall the operators or any of their agents, vendors or suppliers be liable to user or to any other person for any indirect, special, incidental or consequential losses or damages of any nature arising out of or in connection with the use of or inability to use the the website or for any breach of security associated with the transmission of sensitive information through the website or for any information obtained through the website, including, without limitation, damages for lost profits, loss of goodwill, loss or corruption of data, work stoppage, accuracy of results, or computer failure or malfunction, even if an authorized representative of the operators has been advised of or should have known of the possibility of such damages.</p>  <p>the operators\'s total cumulative liability for any and all claims in connection with the website will not exceed five u.s. dollars ($5.00). user agrees and acknowledges that the foregoing limitations on liability are an essential basis of the bargain and that the operators would not provide the website absent such limitation.</p>  <h2>links to other materials.</h2>  <p>the website may contain links to sites owned or operated by independent third parties. these links are provided for your convenience and reference only. we do not control such sites and, therefore, we are not responsible for any content posted on these sites. the fact that the operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the website. if you decide to access any of the third party sites linked to by the website, you do this entirely at your own risk. because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>notification of possible copyright infringement</span></h2>  <p>in the event you believe that material or content published on the website may infringe on your copyright or that of another, please <span>contact</span> us.</p>','terms','2013-06-04 12:29:14');
 /*!40000 alter table pagecontents enable keys */;
 
 --
@@ -202,7 +224,7 @@ create table tags (
   primary key (tag,topicid),
   key fk_tags_topics (topicid),
   constraint fk_tags_topics foreign key (topicid) references topics (topicid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +248,7 @@ create table templates (
   templateiscurrent tinyint(1) not null,
   templatedate datetime not null,
   primary key (templateid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +298,7 @@ create table topics (
   constraint fk_topics_usersgroups_post foreign key (postaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
   constraint fk_topics_usersgroups_read foreign key (readaccessgroupid) references usersgroups (usergroupid) on delete no action on update no action,
   constraint fk_topics_users_lastedit foreign key (topiclastedituser) references `users` (userid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -330,7 +352,7 @@ create table topicssubscriptions (
   key fk_topicssubscriptions_users (userid),
   constraint fk_topicssubscriptions_topics foreign key (topicid) references topics (topicid),
   constraint fk_topicssubscriptions_users foreign key (userid) references `users` (userid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -368,10 +390,18 @@ create table users (
   userproviderlastcall datetime not null,
   passwordresetguid varchar(100) default null,
   passwordresetguidexpiredate datetime default null,
+  warningstart datetime default null,
+  warningread bit(1) default null,
+  suspendedstart datetime default null,
+  suspendedend datetime default null,
+  bannedstart datetime default null,
+  moderatorreasonfull longtext,
+  moderatorreason int(11) default null,
+  moderatoruserid int(11) default null,
   primary key (userid),
   key fk_users_usersgroups (usergroupid),
   constraint fk_users_usersgroups foreign key (usergroupid) references usersgroups (usergroupid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -392,7 +422,7 @@ create table usersgroups (
   usergroupid smallint(6) not null,
   usergroupname varchar(50) not null,
   primary key (usergroupid)
-) engine=innodb default charset=utf8;
+) default charset=utf8;
 /*!40101 set character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +434,7 @@ insert into usersgroups values (1,'member'),(2,'trusted member'),(3,'moderator')
 /*!40000 alter table usersgroups enable keys */;
 
 --
--- dumping routines for database 'forums_working'
+-- dumping routines for database 'forums'
 --
 /*!50003 drop function if exists fncasttoint */;
 /*!50003 set @saved_cs_client      = @@character_set_client */ ;
@@ -416,7 +446,7 @@ insert into usersgroups values (1,'member'),(2,'trusted member'),(3,'moderator')
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 function fncasttoint(number bigint) returns int(11)
+/*!50003 create function fncasttoint(number bigint) returns int(11)
 begin
   return number;
 end */;;
@@ -435,7 +465,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 function fnsplit(
+/*!50003 create function fnsplit(
   x nvarchar(255),
   delim nvarchar(12),
   pos int
@@ -458,11 +488,12 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spcleandb()
+/*!50003 create procedure spcleandb()
 begin
 
     set foreign_key_checks = 0;
 
+  truncate table settings;
   truncate table tags;
   truncate table messages;
   truncate table topicssubscriptions;
@@ -472,6 +503,7 @@ begin
   truncate table users;
   truncate table pagecontents;
   truncate table flags;
+  truncate table forumscategories;
   
     set foreign_key_checks = 1;
   
@@ -486,7 +518,50 @@ insert into pagecontents (pagecontenttitle, pagecontentshortname, pagecontentedi
 	values ('terms and conditions', 'terms', utc_timestamp(),
 	'<h2>legal notices</h2>  <p>we, the operators of this website, provide it as a public service to our users.</p>  <p>please carefully review the following basic rules that govern your use of the website. please note that your use of the website constitutes your unconditional agreement to follow and be bound by these terms and conditions of use. if you (the "user") do not agree to them, do not use the website, provide any materials to the website or download any materials from them.</p>  <p>the operators reserve the right to update or modify these terms and conditions at any time without prior notice to user. your use of the website following any such change constitutes your unconditional agreement to follow and be bound by these terms and conditions as changed. for this reason, we encourage you to review these terms and conditions of use whenever you use the website.</p>  <p>these terms and conditions of use apply to the use of the website and do not extend to any linked third party sites. these terms and conditions and our <span>privacy policy</span>, which are hereby incorporated by reference, contain the entire agreement (the “agreement”) between you and the operators with respect to the website. any rights not expressly granted herein are reserved.</p>  <h2><span>permitted and prohibited uses</span></h2>  <p>you may use the the website for the sole purpose of sharing and exchanging ideas with other users. you may not use the the website to violate any applicable local, state, national, or international law, including without limitation any applicable laws relating to antitrust or other illegal trade or business practices, federal and state securities laws, regulations promulgated by the u.s. securities and exchange commission, any rules of any national or other securities exchange, and any u.s. laws, rules, and regulations governing the export and re-export of commodities or technical data.</p>  <p>you may not upload or transmit any material that infringes or misappropriates any person''s copyright, patent, trademark, or trade secret, or disclose via the the website any information the disclosure of which would constitute a violation of any confidentiality obligations you may have.</p>  <p>you may not upload any viruses, worms, trojan horses, or other forms of harmful computer code, nor subject the website''s network or servers to unreasonable traffic loads, or otherwise engage in conduct deemed disruptive to the ordinary operation of the website.</p>  <p>you are strictly prohibited from communicating on or through the website any unlawful, harmful, offensive, threatening, abusive, libelous, harassing, defamatory, vulgar, obscene, profane, hateful, fraudulent, sexually explicit, racially, ethnically, or otherwise objectionable material of any sort, including, but not limited to, any material that encourages conduct that would constitute a criminal offense, give rise to civil liability, or otherwise violate any applicable local, state, national, or international law.</p>  <p>you are expressly prohibited from compiling and using other users'' personal information, including addresses, telephone numbers, fax numbers, email addresses or other contact information that may appear on the website, for the purpose of creating or compiling marketing and/or mailing lists and from sending other users unsolicited marketing materials, whether by facsimile, email, or other technological means.</p>  <p>you also are expressly prohibited from distributing users'' personal information to third-party parties for marketing purposes. the operators shall deem the compiling of marketing and mailing lists using users'' personal information, the sending of unsolicited marketing materials to users, or the distribution of users'' personal information to third parties for marketing purposes as a material breach of these terms and conditions of use, and the operators reserve the right to terminate or suspend your access to and use of the website and to suspend or revoke your membership in the consortium without refund of any membership dues paid.</p>  <p>the operators note that unauthorized use of users'' personal information in connection with unsolicited marketing correspondence also may constitute violations of various state and federal anti-spam statutes. the operators reserve the right to report the abuse of users'' personal information to the appropriate law enforcement and government authorities, and the operators will fully cooperate with any authorities investigating violations of these laws.</p>  <h2><span>user submissions</span></h2>  <p>the operators do not want to receive confidential or proprietary information from you through the website. any material, information, or other communication you transmit or post ("contributions") to the website will be considered non-confidential.</p>  <p>all contributions to this site are licensed by you under the mit license to anyone who wishes to use them, including the operators.</p>  <p>if you work for a company or at a university, it''s likely that you''re not the copyright holder of anything you make, even in your free time. before making contributions to this site, get written permission from your employer.</p>  <h2><span>user discussion lists and forums</span></h2>  <p>the operators may, but are not obligated to, monitor or review any areas on the website where users transmit or post communications or communicate solely with each other, including but not limited to user forums and email lists, and the content of any such communications. the operators, however, will have no liability related to the content of any such communications, whether or not arising under the laws of copyright, libel, privacy, obscenity, or otherwise. the operators may edit or remove content on the the website at their discretion at any time.</p>  <h2><span>use of personally identifiable information</span></h2>  <p>information submitted to the website is governed according to the operators’s current <span>privacy policy</span> and the stated license of this website.</p>  <p>you agree to provide true, accurate, current, and complete information when registering with the website. it is your responsibility to maintain and promptly update this account information to keep it true, accurate, current, and complete. if you provides any information that is fraudulent, untrue, inaccurate, incomplete, or not current, or we have reasonable grounds to suspect that such information is fraudulent, untrue, inaccurate, incomplete, or not current, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website.</p>  <p>although sections of the website may be viewed simply by visiting the website, in order to access some content and/or additional features offered at the website, you may need to sign on as a guest or register as a member. if you create an account on the website, you may be asked to supply your name, address, a user id and password. you are responsible for maintaining the confidentiality of the password and account and are fully responsible for all activities that occur in connection with your password or account. you agree to immediately notify us of any unauthorized use of either your password or account or any other breach of security. you further agree that you will not permit others, including those whose accounts have been terminated, to access the website using your account or user id. you grant the operators and all other persons or entities involved in the operation of the website the right to transmit, monitor, retrieve, store, and use your information in connection with the operation of the website and in the provision of services to you. the operators cannot and do not assume any responsibility or liability for any information you submit, or your or third parties’ use or misuse of information transmitted or received using website. to learn more about how we protect the privacy of the personal information in your account, please visit our<span>privacy policy</span>.</p>  <h2><span>indemnification</span></h2>  <p>you agree to defend, indemnify and hold harmless the operators, agents, vendors or suppliers from and against any and all claims, damages, costs and expenses, including reasonable attorneys'' fees, arising from or related to your use or misuse of the website, including, without limitation, your violation of these terms and conditions, the infringement by you, or any other subscriber or user of your account, of any intellectual property right or other right of any person or entity.</p>  <h2><span>termination</span></h2>  <p>these terms and conditions of use are effective until terminated by either party. if you no longer agree to be bound by these terms and conditions, you must cease use of the website. if you are dissatisfied with the website, their content, or any of these terms, conditions, and policies, your sole legal remedy is to discontinue using the website. the operators reserve the right to terminate or suspend your access to and use of the website, or parts of the website, without notice, if we believe, in our sole discretion, that such use (i) is in violation of any applicable law; (ii) is harmful to our interests or the interests, including intellectual property or other rights, of another person or entity; or (iii) where the operators have reason to believe that you are in violation of these terms and conditions of use.</p>  <h2><span>warranty disclaimer</span></h2>  <p>the website and associated materials are provided on an "as is" and "as available" basis. to the full extent permissible by applicable law, the operators disclaim all warranties, express or implied, including, but not limited to, implied warranties of merchantability and fitness for a particular purpose, or non-infringementof intellectual property. the operators make no representations or warranty that the website will meet your requirements, or that your use of the website will be uninterrupted, timely, secure, or error free; nor do the operators make any representation or warranty as to the results that may be obtained from the use of the website. the operators make no representations or warranties of any kind, express or implied, as to the operation of the website or the information, content, materials, or products included on the website.</p>  <p>in no event shall the operators or any of their agents, vendors or suppliers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information) arising out of the use, misuse of or inability to use the website, even if the operators have been advised of the possibility of such damages. this disclaimer constitutes an essential part of this agreement. because some jurisdictions prohibit the exclusion or limitation of liability for consequential or incidental damages, the above limitation may not apply to you.</p>  <p>you understand and agree that any content downloaded or otherwise obtained through the use of the website is at your own discretion and risk and that you will be solely responsible for any damage to your computer system or loss of data or business interruption that results from the download of content. the operators shall not be responsible for any loss or damage caused, or alleged to have been caused, directly or indirectly, by the information or ideas contained, suggested or referenced in or appearing on the website. your participation in the website is solely at your own risk. no advice or information, whether oral or written, obtained by you from the operators or through the operators, their employees, or third parties shall create any warranty not expressly made herein. you acknowledge, by your use of the the website, that your use of the website is at your sole risk.</p>  <p>liability limitation. under no circumstances and under no legal or equitable theory, whether in tort, contract, negligence, strict liability or otherwise, shall the operators or any of their agents, vendors or suppliers be liable to user or to any other person for any indirect, special, incidental or consequential losses or damages of any nature arising out of or in connection with the use of or inability to use the the website or for any breach of security associated with the transmission of sensitive information through the website or for any information obtained through the website, including, without limitation, damages for lost profits, loss of goodwill, loss or corruption of data, work stoppage, accuracy of results, or computer failure or malfunction, even if an authorized representative of the operators has been advised of or should have known of the possibility of such damages.</p>  <p>the operators''s total cumulative liability for any and all claims in connection with the website will not exceed five u.s. dollars ($5.00). user agrees and acknowledges that the foregoing limitations on liability are an essential basis of the bargain and that the operators would not provide the website absent such limitation.</p>  <h2>links to other materials.</h2>  <p>the website may contain links to sites owned or operated by independent third parties. these links are provided for your convenience and reference only. we do not control such sites and, therefore, we are not responsible for any content posted on these sites. the fact that the operators offer such links should not be construed in any way as an endorsement, authorization, or sponsorship of that site, its content or the companies or products referenced therein, and the operators reserve the right to note its lack of affiliation, sponsorship, or endorsement on the website. if you decide to access any of the third party sites linked to by the website, you do this entirely at your own risk. because some sites employ automated search results or otherwise link you to sites containing information that may be deemed inappropriate or offensive, the operators cannot be held responsible for the accuracy, copyright compliance, legality, or decency of material contained in third party sites, and you hereby irrevocably waive any claim against us with respect to such sites.</p>  <h2><span>notification of possible copyright infringement</span></h2>  <p>in the event you believe that material or content published on the website may infringe on your copyright or that of another, please <span>contact</span> us.</p>');
 
-
+insert into forumscategories (categoryname, categoryorder)
+  values ('general', 1);
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumscategoriesdelete */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spforumscategoriesdelete(
+	param_categoryid int
+)
+begin
+    delete from forumscategories where categoryid = param_categoryid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumscategoriesget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spforumscategoriesget(
+	param_categoryid int
+)
+begin
+    select * from forumscategories where categoryid = param_categoryid;
 end */;;
 delimiter ;
 /*!50003 set sql_mode              = @saved_sql_mode */ ;
@@ -503,7 +578,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumscategoriesgetall()
+/*!50003 create procedure spforumscategoriesgetall()
 begin
 select
 	categoryid
@@ -513,6 +588,86 @@ from
 	forumscategories
 order by
 	categoryorder;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumscategoriesgetforumscountpercategory */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spforumscategoriesgetforumscountpercategory(
+	param_categoryid int 
+)
+begin
+	select  count(*) as noofforums from forums where categoryid = param_categoryid;
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumscategoriesinsert */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spforumscategoriesinsert(
+	param_categoryname nvarchar(255),
+	param_categoryorder int
+)
+begin
+	insert into forumscategories
+	(
+		categoryname,
+		categoryorder
+	)
+	values
+	(
+		param_categoryname,
+		param_categoryorder
+	);
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spforumscategoriesupdate */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spforumscategoriesupdate(
+	param_categoryid int,
+	param_categoryname nvarchar(255),
+	param_categoryorder int
+)
+begin
+	update forumscategories
+	set
+	categoryname = param_categoryname,
+	categoryorder = param_categoryorder
+	where
+	categoryid = param_categoryid;
 end */;;
 delimiter ;
 /*!50003 set sql_mode              = @saved_sql_mode */ ;
@@ -529,7 +684,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsdelete(
+/*!50003 create procedure spforumsdelete(
   param_forumshortname nvarchar(32)
 )
 begin
@@ -554,7 +709,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsgetbycategory(
+/*!50003 create procedure spforumsgetbycategory(
     param_usergroupid smallint
 )
 begin
@@ -597,7 +752,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsgetbyshortname(param_shortname nvarchar(32))
+/*!50003 create procedure spforumsgetbyshortname(param_shortname nvarchar(32))
 begin
 select
 	f.forumid
@@ -635,7 +790,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsgetusedshortnames(
+/*!50003 create procedure spforumsgetusedshortnames(
   param_forumshortname nvarchar(32), param_searchshortname nvarchar(32)
 )
 begin
@@ -684,7 +839,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsinsert(
+/*!50003 create procedure spforumsinsert(
 	param_forumname nvarchar(255)
 	,param_forumshortname nvarchar(32)
 	,param_forumdescription longtext
@@ -746,7 +901,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsupdate(
+/*!50003 create procedure spforumsupdate(
 	param_forumshortname nvarchar(32)
 	,param_forumname nvarchar(255)
 	,param_forumdescription longtext
@@ -786,7 +941,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsupdatelastmessage(
+/*!50003 create procedure spforumsupdatelastmessage(
 	param_topicid int
 	,param_messageid int
 )
@@ -816,7 +971,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsupdatelasttopic(param_forumid int)
+/*!50003 create procedure spforumsupdatelasttopic(param_forumid int)
 begin
 
 
@@ -842,7 +997,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spforumsupdaterecount(param_forumid int)
+/*!50003 create procedure spforumsupdaterecount(param_forumid int)
 begin
 
 /*
@@ -887,7 +1042,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesdelete(
+/*!50003 create procedure spmessagesdelete(
 	param_topicid int
 	,param_messageid int
 	,param_userid int
@@ -920,7 +1075,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesflag(
+/*!50003 create procedure spmessagesflag(
 	param_topicid int
 	,param_messageid int
 	,param_ip varchar(39)
@@ -946,7 +1101,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesflagsclear(
+/*!50003 create procedure spmessagesflagsclear(
 	param_topicid int
 	,param_messageid int
 )
@@ -973,7 +1128,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesflagsgetall()
+/*!50003 create procedure spmessagesflagsgetall()
 begin
 /*
 	lists all flagged messages (not topics)
@@ -1028,7 +1183,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesgetbytopic(param_topicid int)
+/*!50003 create procedure spmessagesgetbytopic(param_topicid int)
 begin
 
 select
@@ -1069,7 +1224,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesgetbytopicfrom(
+/*!50003 create procedure spmessagesgetbytopicfrom(
 	param_topicid int
 	,param_firstmsg int
 	,param_amount int
@@ -1126,7 +1281,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesgetbytopiclatest(param_topicid int)
+/*!50003 create procedure spmessagesgetbytopiclatest(param_topicid int)
 begin
 
 select
@@ -1166,7 +1321,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesgetbytopicupto(
+/*!50003 create procedure spmessagesgetbytopicupto(
   param_topicid int,
 	param_firstmsg int,
 	param_lastmsg int
@@ -1215,7 +1370,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spmessagesinsert(
+/*!50003 create procedure spmessagesinsert(
 	param_topicid int
 	,param_messagebody longtext
 	,param_userid int
@@ -1291,7 +1446,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sppagecontentsdelete(
+/*!50003 create procedure sppagecontentsdelete(
   param_pagecontentshortname nvarchar(128)
 )
 begin
@@ -1314,7 +1469,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sppagecontentsget(
+/*!50003 create procedure sppagecontentsget(
   param_pagecontentshortname nvarchar(128)
 )
 begin
@@ -1343,7 +1498,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sppagecontentsgetall()
+/*!50003 create procedure sppagecontentsgetall()
 begin
 select
 	pagecontentid
@@ -1370,7 +1525,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sppagecontentsgetusedshortnames(
+/*!50003 create procedure sppagecontentsgetusedshortnames(
 	param_pagecontentshortname nvarchar(32),
 	param_searchshortname nvarchar(32)
 )
@@ -1418,7 +1573,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sppagecontentsinsert(
+/*!50003 create procedure sppagecontentsinsert(
 	param_pagecontentshortname nvarchar(128)
 	,param_pagecontenttitle nvarchar(128)
 	,param_pagecontentbody longtext
@@ -1456,7 +1611,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sppagecontentsupdate(
+/*!50003 create procedure sppagecontentsupdate(
 	param_pagecontentshortname nvarchar(128)
 	,param_pagecontenttitle nvarchar(128)
 	,param_pagecontentbody longtext
@@ -1475,6 +1630,75 @@ delimiter ;
 /*!50003 set character_set_client  = @saved_cs_client */ ;
 /*!50003 set character_set_results = @saved_cs_results */ ;
 /*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spsettingsget */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spsettingsget(
+
+	param_settingkey varchar(256)
+
+)
+begin
+
+select 
+	settingkey, settingvalue, settingdate
+from 
+	settings
+where
+	settingkey = param_settingkey;
+
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spsettingsset */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spsettingsset(
+
+	param_settingkey varchar(256)
+
+	,param_settingvalue longtext
+
+)
+begin
+
+    insert into settings 
+
+        (settingkey, settingvalue, settingdate) 
+
+    values
+
+        (param_settingkey, param_settingvalue, utc_timestamp())
+
+    on duplicate key update 
+
+        settingvalue = param_settingvalue, 
+
+        settingdate = utc_timestamp();
+
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
 /*!50003 drop procedure if exists sptagsgetmostviewed */;
 /*!50003 set @saved_cs_client      = @@character_set_client */ ;
 /*!50003 set @saved_cs_results     = @@character_set_results */ ;
@@ -1485,7 +1709,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptagsgetmostviewed(
+/*!50003 create procedure sptagsgetmostviewed(
   param_forumid int
 	,param_top bigint
 )
@@ -1553,7 +1777,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptagsinsert(
+/*!50003 create procedure sptagsinsert(
 	param_tags nvarchar(256)
 	,param_topicid int
 	,param_previoustags nvarchar(256)
@@ -1599,7 +1823,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptemplatesdelete(param_templateid int)
+/*!50003 create procedure sptemplatesdelete(param_templateid int)
 begin
 
 delete from templates where templateid = param_templateid;
@@ -1620,7 +1844,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptemplatesget(param_templateid int)
+/*!50003 create procedure sptemplatesget(param_templateid int)
 begin
 
 
@@ -1651,7 +1875,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptemplatesgetall()
+/*!50003 create procedure sptemplatesgetall()
 begin
 
 select
@@ -1678,7 +1902,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptemplatesgetcurrent()
+/*!50003 create procedure sptemplatesgetcurrent()
 begin
 select
 	templateid
@@ -1704,7 +1928,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptemplatesinsert(
+/*!50003 create procedure sptemplatesinsert(
 	param_templatekey nvarchar(64)
 	,param_templatedescription nvarchar(256)
 	,out param_templateid int
@@ -1754,7 +1978,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptemplatesupdatecurrent(param_templateid int)
+/*!50003 create procedure sptemplatesupdatecurrent(param_templateid int)
 begin
 
 
@@ -1778,7 +2002,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsaddvisit(param_topicid int)
+/*!50003 create procedure sptopicsaddvisit(param_topicid int)
 begin
 
 update topics
@@ -1803,7 +2027,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsclose(
+/*!50003 create procedure sptopicsclose(
 	param_topicid int
 	,param_userid int
 	,param_ip varchar(39)
@@ -1835,7 +2059,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsdelete(
+/*!50003 create procedure sptopicsdelete(
 	param_topicid int
 	,param_userid int
 	,param_ip varchar(39)
@@ -1876,7 +2100,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsget(param_topicid int)
+/*!50003 create procedure sptopicsget(param_topicid int)
 begin
 
 select
@@ -1919,7 +2143,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetbyforum(
+/*!50003 create procedure sptopicsgetbyforum(
 	param_forumid int
 	,param_startindex int
 	,param_length int
@@ -1984,7 +2208,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetbyforumlatest(
+/*!50003 create procedure sptopicsgetbyforumlatest(
 	param_forumid int
 	,param_startindex int
 	,param_length int
@@ -2054,7 +2278,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetbyforumunanswered(
+/*!50003 create procedure sptopicsgetbyforumunanswered(
    param_forumid int
 	,param_usergroupid int
 )
@@ -2110,7 +2334,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetbyrelated(
+/*!50003 create procedure sptopicsgetbyrelated(
   param_tag1 nvarchar(50)
 	,param_tag2 nvarchar(50)
 	,param_tag3 nvarchar(50)
@@ -2195,7 +2419,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetbytag(
+/*!50003 create procedure sptopicsgetbytag(
   param_tag nvarchar(50)
 	,param_forumid int
 	,param_usergroupid int
@@ -2251,7 +2475,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetbyuser(
+/*!50003 create procedure sptopicsgetbyuser(
 	param_userid int
 	,param_usergroupid int
 )
@@ -2299,7 +2523,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetlatest(
+/*!50003 create procedure sptopicsgetlatest(
     param_usergroupid int
 )
 begin
@@ -2346,7 +2570,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetmessagesbyuser(
+/*!50003 create procedure sptopicsgetmessagesbyuser(
 	param_userid int
 )
 begin
@@ -2390,7 +2614,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsgetunanswered()
+/*!50003 create procedure sptopicsgetunanswered()
 begin
 select
 	t.topicid
@@ -2435,7 +2659,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsinsert(
+/*!50003 create procedure sptopicsinsert(
 	param_topictitle nvarchar(255)
 	,param_topicshortname nvarchar(64)
 	,param_topicdescription longtext
@@ -2538,7 +2762,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsmove(
+/*!50003 create procedure sptopicsmove(
 	param_topicid int
 	,param_forumid int
 	,param_userid int
@@ -2587,7 +2811,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsopen(
+/*!50003 create procedure sptopicsopen(
 	param_topicid int
 	,param_userid int
 	,param_ip varchar(39)
@@ -2617,7 +2841,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsdelete(
+/*!50003 create procedure sptopicssubscriptionsdelete(
 	param_topicid int
 	,param_userid int
 	,param_userguid char(32)
@@ -2653,7 +2877,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsgetbytopic(
+/*!50003 create procedure sptopicssubscriptionsgetbytopic(
 	param_topicid int
 )
 begin
@@ -2693,7 +2917,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsgetbyuser(
+/*!50003 create procedure sptopicssubscriptionsgetbyuser(
   param_userid int
 )
 begin
@@ -2729,7 +2953,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicssubscriptionsinsert(
+/*!50003 create procedure sptopicssubscriptionsinsert(
 	param_topicid int
 	,param_userid int
 )
@@ -2757,7 +2981,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsupdate(
+/*!50003 create procedure sptopicsupdate(
 	param_topicid int
 	,param_topictitle nvarchar(256)
 	,param_topicdescription longtext
@@ -2820,7 +3044,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure sptopicsupdatelastmessage(
+/*!50003 create procedure sptopicsupdatelastmessage(
 	param_topicid int
 	,param_messageid int
 )
@@ -2840,6 +3064,39 @@ delimiter ;
 /*!50003 set character_set_client  = @saved_cs_client */ ;
 /*!50003 set character_set_results = @saved_cs_results */ ;
 /*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spusersban */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spusersban(
+	param_userid int
+	, param_moderatoruserid int
+	, param_moderatorreason int
+	, param_moderatorreasonfull longtext
+)
+begin
+
+update users
+set
+	bannedstart = utc_timestamp()
+	, moderatorreason = param_moderatorreason
+	, moderatorreasonfull = param_moderatorreasonfull
+	, moderatoruserid = param_moderatoruserid
+where 
+	userid = param_userid;
+    
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
 /*!50003 drop procedure if exists spusersdelete */;
 /*!50003 set @saved_cs_client      = @@character_set_client */ ;
 /*!50003 set @saved_cs_results     = @@character_set_results */ ;
@@ -2850,7 +3107,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersdelete(param_userid int)
+/*!50003 create procedure spusersdelete(param_userid int)
 begin
 update users
 set
@@ -2873,7 +3130,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersdemote(param_userid int)
+/*!50003 create procedure spusersdemote(param_userid int)
 begin
 declare var_usergroupid int;
 select usergroupid into var_usergroupid from users where userid = param_userid;
@@ -2902,7 +3159,9 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersget(param_userid int)
+/*!50003 create procedure spusersget(
+	param_userid int
+)
 begin
 
 select
@@ -2921,12 +3180,20 @@ select
 	,u.useremailpolicy
 	,ug.usergroupid
 	,ug.usergroupname
+	,u.warningstart
+	,u.warningread
+	,u.suspendedstart
+	,u.suspendedend
+	,u.bannedstart
+	,u.moderatorreasonfull
+	,u.moderatorreason
+	,u.moderatoruserid
 from
 	users u
 	inner join usersgroups ug on ug.usergroupid = u.usergroupid
 where
 	u.userid = param_userid;
-
+    
 end */;;
 delimiter ;
 /*!50003 set sql_mode              = @saved_sql_mode */ ;
@@ -2943,7 +3210,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgetall()
+/*!50003 create procedure spusersgetall()
 begin
 select
 	u.userid
@@ -2982,7 +3249,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgetbyname(
+/*!50003 create procedure spusersgetbyname(
   param_username nvarchar(50)
 )
 begin
@@ -3026,12 +3293,13 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgetbypasswordresetguid(
+/*!50003 create procedure spusersgetbypasswordresetguid(
 	param_provider nvarchar(32)
 	,param_passwordresetguid nvarchar(64)
 )
 begin
-select
+
+select 
 	u.userid
 	,u.username
 	,u.usergroupid
@@ -3043,12 +3311,23 @@ select
 	,u.userproviderid
 	,u.passwordresetguid
 	,u.passwordresetguidexpiredate
+	,u.userprofile
+	,u.usersignature
+	,u.warningstart
+	,u.warningread
+	,u.suspendedstart
+	,u.suspendedend
+	,u.bannedstart
+	,u.moderatorreasonfull
+	,u.moderatorreason
+	,u.moderatoruserid
 from
 	users u
 where
 	userprovider = param_provider
 	and
 	passwordresetguid = param_passwordresetguid;
+    
 end */;;
 delimiter ;
 /*!50003 set sql_mode              = @saved_sql_mode */ ;
@@ -3065,12 +3344,13 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgetbyprovider(
-	param_provider nvarchar(32)
-	,param_providerid nvarchar(64)
+/*!50003 create procedure spusersgetbyprovider(
+	param_provider longtext
+	,param_providerid longtext
 )
 begin
-select
+
+select 
 	u.userid
 	,u.username
 	,u.usergroupid
@@ -3079,6 +3359,16 @@ select
 	,u.userexternalprofileurl
 	,u.userproviderlastcall
 	,u.useremail
+	,u.userprofile
+	,u.usersignature
+	,u.warningstart
+	,u.warningread
+	,u.suspendedstart
+	,u.suspendedend
+	,u.bannedstart
+	,u.moderatorreasonfull
+	,u.moderatorreason
+	,u.moderatoruserid
 from
 	users u
 where
@@ -3087,6 +3377,7 @@ where
 	userproviderid = param_providerid
 	and
 	u.active = 1;
+    
 end */;;
 delimiter ;
 /*!50003 set sql_mode              = @saved_sql_mode */ ;
@@ -3103,7 +3394,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgettestuser()
+/*!50003 create procedure spusersgettestuser()
 begin
 select
 	u.userid
@@ -3137,7 +3428,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgroupsget(param_usergroupid smallint)
+/*!50003 create procedure spusersgroupsget(param_usergroupid smallint)
 begin
 
 select
@@ -3164,7 +3455,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersgroupsgetall()
+/*!50003 create procedure spusersgroupsgetall()
 begin
     select 
         usergroupid
@@ -3189,8 +3480,8 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersinsertfromprovider(
-  param_username nvarchar(50)
+/*!50003 create procedure spusersinsertfromprovider(
+    param_username nvarchar(50)
 	,param_userprofile longtext
 	,param_usersignature longtext
 	,param_usergroupid smallint
@@ -3204,8 +3495,9 @@ delimiter ;;
 	,param_userexternalprofileurl nvarchar(255)
 	,param_userprovider nvarchar(32)
 	,param_userproviderid nvarchar(64)
- )
+)
 begin
+
 
 -- if it is the first active user -> make it an admin
 declare var_usercount int;
@@ -3255,21 +3547,8 @@ values
    ,utc_timestamp() -- userproviderlastcall
 	);
 
-select last_insert_id() into var_userid;
-select
-	u.userid
-	,u.username
-	,u.usergroupid
-	,u.userguid
-	,u.usertimezone
-	,u.userexternalprofileurl
-	,u.userproviderlastcall
-	,u.useremail
-from
-	users u
-where
-	u.userid = var_userid;
-
+call spusersgetbyprovider(param_userprovider, param_userproviderid);
+    
 end */;;
 delimiter ;
 /*!50003 set sql_mode              = @saved_sql_mode */ ;
@@ -3286,7 +3565,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spuserspromote(param_userid int)
+/*!50003 create procedure spuserspromote(param_userid int)
 begin
 declare var_usergroupid int;
 select usergroupid into var_usergroupid from users where userid = param_userid;
@@ -3305,6 +3584,42 @@ delimiter ;
 /*!50003 set character_set_client  = @saved_cs_client */ ;
 /*!50003 set character_set_results = @saved_cs_results */ ;
 /*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spuserssuspend */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spuserssuspend(
+	param_userid int
+	, param_moderatoruserid int
+	, param_moderatorreason int
+	, param_moderatorreasonfull longtext
+	, param_suspendedend datetime
+)
+begin
+
+
+update users
+set
+	suspendedstart = utc_timestamp()
+	, suspendedend = param_suspendedend
+	, moderatorreason = param_moderatorreason
+	, moderatorreasonfull = param_moderatorreasonfull
+	, moderatoruserid = param_moderatoruserid
+where 
+	userid = param_userid;
+    
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
 /*!50003 drop procedure if exists spusersupdate */;
 /*!50003 set @saved_cs_client      = @@character_set_client */ ;
 /*!50003 set @saved_cs_results     = @@character_set_results */ ;
@@ -3315,7 +3630,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersupdate(
+/*!50003 create procedure spusersupdate(
 	param_userid int
 	,param_username nvarchar(50)
 	,param_userprofile longtext
@@ -3361,7 +3676,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersupdateemail(
+/*!50003 create procedure spusersupdateemail(
 	param_userid int
 	,param_useremail nvarchar(100)
 	,param_useremailpolicy int
@@ -3390,7 +3705,7 @@ delimiter ;
 /*!50003 set @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
 delimiter ;;
-/*!50003 create*/ /*!50003 procedure spusersupdatepasswordresetguid(
+/*!50003 create procedure spusersupdatepasswordresetguid(
 	param_userid int
 	,param_passwordresetguid nvarchar(100)
 	,param_passwordresetguidexpiredate datetime
@@ -3408,8 +3723,67 @@ delimiter ;
 /*!50003 set character_set_client  = @saved_cs_client */ ;
 /*!50003 set character_set_results = @saved_cs_results */ ;
 /*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spuserswarn */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spuserswarn(
+	param_userid int
+	, param_moderatoruserid int
+	, param_moderatorreason int
+	, param_moderatorreasonfull longtext
+)
+begin
 
+update users
+set
+	warningstart = utc_timestamp()
+	, warningread = 0
+	, moderatorreason = param_moderatorreason
+	, moderatorreasonfull = param_moderatorreasonfull
+	, moderatoruserid = param_moderatoruserid
+where 
+	userid = param_userid;
 
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
+/*!50003 drop procedure if exists spuserswarndismiss */;
+/*!50003 set @saved_cs_client      = @@character_set_client */ ;
+/*!50003 set @saved_cs_results     = @@character_set_results */ ;
+/*!50003 set @saved_col_connection = @@collation_connection */ ;
+/*!50003 set character_set_client  = utf8 */ ;
+/*!50003 set character_set_results = utf8 */ ;
+/*!50003 set collation_connection  = utf8_general_ci */ ;
+/*!50003 set @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 set sql_mode              = 'strict_trans_tables,no_auto_create_user,no_engine_substitution' */ ;
+delimiter ;;
+/*!50003 create procedure spuserswarndismiss(
+	param_userid int
+)
+begin
+
+update users
+set
+	warningread = 1
+where 
+	userid = param_userid;
+    
+end */;;
+delimiter ;
+/*!50003 set sql_mode              = @saved_sql_mode */ ;
+/*!50003 set character_set_client  = @saved_cs_client */ ;
+/*!50003 set character_set_results = @saved_cs_results */ ;
+/*!50003 set collation_connection  = @saved_col_connection */ ;
 --
 -- final view structure for view `messagescomplete`
 --
@@ -3454,4 +3828,4 @@ delimiter ;
 /*!40101 set collation_connection=@old_collation_connection */;
 /*!40111 set sql_notes=@old_sql_notes */;
 
--- dump completed on 2012-02-21 12:28:58
+-- dump completed on 2013-06-04 14:41:39
