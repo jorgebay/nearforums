@@ -9,6 +9,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("NearForums.Tests")]
 
 //Only modify the assembly version values on pre release commits, only changes to major and minor
-[assembly: AssemblyVersion("8.5")]
+[assembly: AssemblyVersion("9.0")]
 //Major and minor are copied from assembly version. Real revisions.
-[assembly: AssemblyFileVersion("8.5.3.0")]
+[assembly: AssemblyFileVersion("9.0.0.0")]

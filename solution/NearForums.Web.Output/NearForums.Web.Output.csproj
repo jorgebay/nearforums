@@ -421,9 +421,6 @@
     <Content Include="Views\Shared\FooterContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\templates\installation\clear-table.zip" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="content\templates\installation\clear-list.zip" />
   </ItemGroup>
   <ItemGroup>
