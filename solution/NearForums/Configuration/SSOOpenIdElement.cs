@@ -28,6 +28,22 @@ namespace NearForums.Configuration
 		}
 
 		/// <summary>
+		/// Use this property to enable claims request for custom sso logins to enable improved user integration.
+		/// </summary>
+		[ConfigurationProperty("enableClaimsRequest", IsRequired = false)]
+		public bool EnableClaimsRequest
+		{
+			get
+			{
+				return (bool)this["enableClaimsRequest"];
+			}
+			set
+			{
+				this["enableClaimsRequest"] = value;
+			}
+		}
+
+		/// <summary>
 		/// Determines if the provider required data has been defined.
 		/// </summary>
 		public bool IsDefined

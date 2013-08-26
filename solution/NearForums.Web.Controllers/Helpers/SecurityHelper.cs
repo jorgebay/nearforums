@@ -1,4 +1,5 @@
 ﻿using System;
+using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using NearForums.Web.State;
 using System.Web;
 using NearForums.Configuration;
@@ -124,16 +125,33 @@ namespace NearForums.Web.Controllers.Helpers
 		/// Logs the user in or creates the user account if the user does not exist.
 		/// Sets the logged user in the session.
 		/// </summary>
-		public static int OpenIdFinishLogin(IAuthenticationResponse response, SessionWrapper session, IUsersService service)
+		public static int OpenIdFinishLogin(IAuthenticationResponse response, SessionWrapper session, IUsersService service, bool enableClaimsRequest)
 		{
 			string externalId = response.ClaimedIdentifier.ToString();
-			string name = response.FriendlyIdentifierForDisplay;
 			User user = service.GetByProviderId(AuthenticationProvider.OpenId, externalId);
+			
+			var claimsResponse = response.GetExtension<ClaimsResponse>();
+			string name = enableClaimsRequest ? claimsResponse.Nickname : response.FriendlyIdentifierForDisplay;
 
 			if (user == null)
 			{
 				user = new User(0, name);
+
+				if (enableClaimsRequest)
+				{
+					user.Email = claimsResponse.Email;
+					user.BirthDate = claimsResponse.BirthDate;
+				}
+
 				user = service.Add(user, AuthenticationProvider.OpenId, externalId);
+			}
+			else 
+			{
+				if (enableClaimsRequest && !claimsResponse.Email.Equals(user.Email, StringComparison.CurrentCultureIgnoreCase))
+				{
+					user.Email = claimsResponse.Email;
+					service.Edit(user);
+				}
 			}
 
 			session.SetUser(user, AuthenticationProvider.OpenId);

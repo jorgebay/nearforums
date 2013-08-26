@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using NearForums.Web.Controllers.Helpers;
 using NearForums.Services;
 using NearForums.Web.Extensions;
@@ -243,6 +244,13 @@ namespace NearForums.Web.Controllers
 				OpenIdRelyingParty openid = new OpenIdRelyingParty();
 				var authenticationRequest = openid.CreateRequest(id, realmUrl, returnAbsoluteUrl);
 
+				if (this.Config.AuthenticationProviders.SSOOpenId.EnableClaimsRequest)
+				{
+					var claimsRequest = new ClaimsRequest {Nickname = DemandLevel.Require, Email = DemandLevel.Request, BirthDate = DemandLevel.Request};
+
+					authenticationRequest.AddExtension(claimsRequest);
+				}
+
 				return authenticationRequest.RedirectingResponse.AsActionResult();
 			}
 			throw new FormatException("openid identifier not valid");
@@ -265,7 +273,7 @@ namespace NearForums.Web.Controllers
 			switch (response.Status)
 			{
 				case AuthenticationStatus.Authenticated:
-					var userId = SecurityHelper.OpenIdFinishLogin(response, Session, _service);
+					var userId = SecurityHelper.OpenIdFinishLogin(response, Session, _service, Config.AuthenticationProviders.SSOOpenId.EnableClaimsRequest);
 					if (Session.User == null)
 					{
 						//User is banned or suspended
